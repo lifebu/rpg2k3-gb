@@ -33,6 +33,10 @@ Simplified Environment to run emulator code as C-Code for debugging purposes. Pl
 
 
 ## How To Run
+### RPG Maker Project Files.
+This software requires RPG Maker Project files, which cannot be added to this project for legal reasons. RPG Maker 2003 can be purchased from [Steam](https://store.steampowered.com/app/362870/RPG_Maker_2003/).
+The user needs to create an empty project in RPG-Maker 2003. Add the following files to the `rpg2k3/project` folder:
+- RPG_RT.exe, RPG_RT.ini, *.r3proj, ultimate_rt_eb.dll
 
 ## Illustrations
 
