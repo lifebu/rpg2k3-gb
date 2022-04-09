@@ -1,6 +1,5 @@
 Map ROM/RAM Compiler:
-
-    - GB2MRDBR: Gameboy 2 Map ROM/RAM and Database RAM.
+    - GB2MRDBR: Gameboy 2 Map/Database ROM/RAM.
         - .gb   => MAP-ROM + MAP-RAM as .xml => mapfile. 
                 => DB-RAM as .xml => databasefile.
 
