@@ -1,0 +1,150 @@
+Main:
+    - called once per frame @ 60.0 fps
+    - responsibilities:
+        - init: once
+        - input_gather: Gather Input and set appropriate memory locations.
+            => setting memory area FF00 => call update_input_bytes
+        - main CPU/PPU-cycle loop (70.224 CPU/PPU-cycles)
+            - update_timer: clock-timer.
+                - Timer-Interrupt.
+            - ppu: execute one dot (dot ~ cycle).
+            - cpu: execute one cycle.
+
+Memory compression: ?
+    - pack_memory:
+        - pack 3 Bytes into 1 RPGMaker Variable
+    - unpack_memory:
+        - unpack 1 RPGMaker Variable into 3 Bytes
+    - really needed?
+        - can't i directly access individual bits in a Variable?
+
+
+
+Init:
+    - load ROM Banks 0+1
+    - load DMG Boot rom
+        - merge Rom Bank 0 with DMG Boot rom 
+    - set memory (VAR0003-VAR0012) to zero. 
+        (REAL GB do not intialize RAM it is random values).
+    - set registers to zero (VAR0013-VAR0018)
+    - other setup:
+        Input: FF00.7-FF00.6 are unused and are always set to 1
+        - certain state variables for emulations need to be set.
+            - PPU: Change mode to 2 (starts in mode 2!)
+
+Input:
+    - input_gather:
+        input-map: (Maker -> GameBoy)
+            if: down (1)        -> then: down   (FF00.4=0 && FF00.3=0),
+            if: left (2)        -> then: left   (FF00.4=0 && FF00.1=0),
+            if: right (3)       -> then: right  (FF00.4=0 && FF00.0=0),
+            if: up (4)          -> then: up     (FF00.4=0 && FF00.2=0),
+            if: Numpad 0 (10)   -> then: A      (FF00.5=0 && FF00.0=0),
+            if: Numpad 1 (11)   -> then: B      (FF00.5=0 && FF00.1=0),
+            if: Numpad 2 (12)   -> then: select (FF00.5=0 && FF00.2=0),
+            if: Numpad 3 (13)   -> then: start  (FF00.5=0 && FF00.3=0)
+            otherwise the corresponding bit is 1 (not-pressed, not-selected)
+        sequence:
+            - save current input in variable 2k3_input. (1-13)
+
+        Info:
+            if the bit FF00.4 or FF00.5 is changed to 0
+                => the other bit needs to be set to 1 (not-selected)
+                => call update_input_bytes.
+            if the bit FF00.4 or FF00.5 is changed to 1
+                => the other bit needs to be set to 0 (selected)
+                => call update_input_bytes
+
+    - update_input_bytes:
+        # called every time FF00.4 or FF00.5 is changed.
+        set bits 0-3 to 1
+        FF00.4 == 0:
+            set corresponding bit to 0 from 2k3_input
+        FF00.5 == 0:
+            set corresponding bit to 0 from 2k3_input
+    
+    - interrupts:
+        - when updating input => look at input flanks (0->1) and save them. You need them for interrupts.
+        - set Joypad interrupt if applicable.
+
+Timer-Update:
+    - DIV-Timer:
+        - 16.384Hz, 256 Cycles per increment.
+        - 1 Byte of counting.
+        - Reset:
+            - Write to $FF04
+            - stop (start after stop ends)
+            - on speed switch (GBC Speed Modes)
+            - 
+        - Write-to-FF04 => Reset to $00
+        - 
+
+PPU:   
+    - when to update pictures:
+        - once per frame:
+            - 160*144*4 = 2 Bits/Pixel => 46.080 Bits = 5.760 = 1.920 Variables.
+            - doable, but not memory efficient.
+        - every dot:
+            - 1 Var that stores 4 Color values (output of Pixel FIFO)
+            - minimal memory usage.
+            - don't know if that is slower.
+        - every x line:
+            - compromise of both?
+    
+    - responsibilities: (one dot)
+        - update mode.
+            - Change CPU Access pattern.
+                - What the CPU can access from VRAM, OAM and CGB Palettes.
+                - 3 Bits:
+                    - 000 = No Access.
+                    - 1xx = Accessable VRAM
+                    - x1x = Accessable OAM
+                    - xx1 = Accessable CGB Palletes
+            - mode-var:
+                - 0-3 (Number)
+        - call mode
+            - 0: HBlank (4560 dots)
+            - 1: VBlank (85-208 dots)
+            - 2: Searching OAM (80 dots)
+            - 3: Generate Picture (168-291 dots)
+        etc.
+        - if applicable: Set STAT Interrupt.
+        - Update LCD-Status I/O
+            - $FF40-$FF4B
+
+CPU:
+    512 instruction-variations, 76 unique instructions.
+        - Some instructions are similar, so i can use one function.
+        http://marc.rawer.de/Gameboy/Docs/GBCPUman.pdf
+        This manual groups instructions by similar instruction types.
+        - Instruction-Var:
+            - Type (0-76).
+            - Variant (0-20)
+            - Operant 0: 1Byte
+            - Operant 1: 1Byte
+    
+    - responsibilities:
+        - handle interrupts.
+        - load instruction.
+        - decode instruction.
+        - execute instruction.
+            - Call correct function by instruction type.
+            - change registers & flags.
+            - change memory location.
+    
+    - has an execution FIFO.
+        - for each clock it tells me want RPG-Function I want to call.
+        - It only fetches a new instruction when EXEC-FIFO is empty.
+            - either @ PC or from Interrupt handling.
+            - when fetching: some VARS (always the same) are set to values, that are the operands of the RPG-Maker functions (for each!).
+        - It's size is largest cycle-count for all instructions.
+        => Can an interrupt cancel a currently running instruction? Probably not.
+        - What an Instruction puts into the exec FIFO, is my "microcode".
+            - Can put "WAIT" or a call to a RPG-Maker Function in it.
+
+    - Post Instruction Hook:
+        - When instruction is done, e.g. it is a I/O Write => You might have to call other code like the MBC.
+
+MBC:
+    - Implement Code like the old MBCs to handle functionality there.
+    - They react to writes to specific magic values.

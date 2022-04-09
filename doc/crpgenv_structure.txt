@@ -1,0 +1,24 @@
+CRPGEnv: C-RPG Maker Environment
+    - c-code can be run outside of RPG Maker so that I can debug it normally without dependencies.
+        - Plattform Code that runs my code (kinda like engine).
+
+
+- My C-Code that implements the actual emulator uses a header file (RPGDef.h)
+    => THIS IS AN API / INTERFACE.
+    - This header declares the functions of the RPG Maker code that I use.
+        - Like changeEXP(), setEventLocation().
+    - It could also defines the variables and switches with their names. (?)
+        - My C-Code should set the names (?)
+
+- The Header is implemented in a Runner
+    - Some functions just change the state of the environment.
+        - changeExp(), setEventLocation()
+        - It has a simplified RPGMaker state representation.
+    - Some functions need to do real I/O:
+        - 2D-Rendering / Blitting (SDL? SIMPLE OpenGL?)
+            - showText(), showChoices(), inputNumber(), showPicture(), 
+        - keyInputProcessing()
+        - Init: XML:
+            - Read the xml mapfiles to read-out the rom?
+            - and set-up the map-ram?
+            - read out the .db file to know the setup of the chara-ram?

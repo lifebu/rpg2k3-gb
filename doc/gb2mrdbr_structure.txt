@@ -1,0 +1,148 @@
+Map ROM/RAM Compiler:
+
+    - GB2MRDBR: Gameboy 2 Map ROM/RAM and Database RAM.
+        - .gb   => MAP-ROM + MAP-RAM as .xml => mapfile. 
+                => DB-RAM as .xml => databasefile.
+
+- using liblcf:
+    https://github.com/EasyRPG/liblcf
+
+- .gb file =LCF2XML> mapfile.
+MAP-ROM: Events + Pages
+MAP-RAM: Event + Position!
+DMG-ROM: One Event.
+
+- commands i need:
+    - Control Variables:
+    - Conditional Branch:
+    - Label:
+    - Jump to Label
+    - Call Event:
+    - Comment:
+
+- Map0001.emu (.xml):
+    - <events>: List of events
+    - <event id="0001">
+        <name>MAP-ROM-001</name>
+        <x>0</x>
+        <y>0</y>
+        <pages>: List of Pages
+    - <EventPage id="0001">
+    - I do not need to change all the other settings 
+        => Can use a template file.
+    - Multi-Line Comment:
+        12410: Start of Comment,
+        22410: other lines of comment.
+    - Conditional Branch:
+        12010: Conditional Branch
+        22010: Else
+        22011: Branch End
+        <parameters>1 5 0 1 0 1</parameters>
+            1: Variable Condition:
+            5: Variable Index:
+            0: Function: (Equal-to)
+            1: Value (You want to compar against)
+            0: Constant value (1 = variable.)
+            1: Do you want else-case?
+    - Control Variables:
+        10220
+        <parameters>0 6 6 0 0 255 0</parameters>
+            255: value to set.
+            6-6: from Var 6 to Var 6.
+    - Call Event:
+        12330
+        <parameters>0 1 0</parameters>
+        0: Type (0 = Common Event, 1 = Map event (const), 2 = Map event (variable))
+        1: CommonEventID
+        0: other param.
+    - Label:
+        12110
+        <parameters>1000</parameters>
+            which label
+    - Jump to Label:
+        12120
+        <parameters>1000</parameters>
+            which label
+
+- sequence:
+    - read cartridge header:
+        - $0100-$014F
+            Entry Point:        4 Bytes     Binary
+            Nintendo Logo:      48 Byte     Binary
+            Title:              11 Byte     ASCII
+            Manufacturer Code:  4 Byte      ASCII
+            CGB Flag:           1 Byte      Binary
+            New Lincensee Code: 2 Byte      Binary
+            SGB Flag:           1 Byte      Binary
+            Cartridge Type:     1 Byte      Binary
+            ROM-Size:           1 Byte      Binary
+            RAM-Size:           1 Byte      Binary
+            Destination Code:   1 Byte      Binary
+            Old Lincensee Code: 1 Byte      Binary
+            Version number:     1 Byte      Binary
+            Header Checksum:    1 Byte      Binary
+            Global Checksum:    2 Byte      Binary
+        
+        - read ROM-Size and RAM-Size.
+    
+    - Create Map File:
+        - how to include another library?
+        - use .xml library to load a template map file with everything setup aside from events.
+            - tinyxml2:
+                https://github.com/leethomason/tinyxml2
+
+        - add DMG-ROM:
+            - Read DMG_ROM.bin file.
+            - ROM-Size: 256
+            - create the jump selector
+                - conditional branch on a variable rom_read_index
+                - with jump to Label x (x is the xth byte)
+                            - better code structure:
+                                with these "linear" jump selectors I have an armoticized runtime of 1.000/2 = 500 if-checks
+                                Do A search if(rom_read_index < 500) => search in 0-500
+                                            if(rom_read_index > 500) => search in 500-1000
+                                            if(rom_read_index == 500) => jump to label
+                                        => worst-case log_2(1.000) = 10 if-checks
+                                    - no variable lable index :/
+            - create jump targets:
+                Label x (x is the xth byte)
+                Control Variable rom_read_bytes
+                Jump to label: 1000 (max)
+            - create end:
+                Label 1000
+                call Event 0001
+            
+        - add MAP-ROM Events: (Cartridge-ROM)
+            - use rom-size:
+            - create the jump selector
+                - conditional branch on a variable rom_read_index
+                - with jump to Label x (x is the xth byte)
+            - create jump targets:
+                Label x (x is the xth byte)
+                Control Variable rom_read_bytes
+                Jump to label: 1000 (max)
+            - create end:
+                Label 1000
+                call Event 0001
+            
+            - multiple event pages???
+                - 16kB Pages?
+
+        - add MAP-RAM Events: (DMG-RAM)
+            - 500 by 500 map.
+            - Add empty events. Only Thing I need is position.
+
+        - write output .xml file.
+
+        - call LCF2XML to turn into mapfile.
+
+    - Create Database File:
+        - use .xml library to load a template database file with everything setup aside from Characters and Items.
+            - tinyxml2:
+                https://github.com/leethomason/tinyxml2
+        
+        - add CHARA-RAM:
+
+        - write output .xml file.
+
+        - call LCF2XML to turn into databasefile.

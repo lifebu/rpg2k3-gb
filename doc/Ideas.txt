@@ -1,0 +1,1213 @@
+- paths:
+    /home/burmi/Games/Steam/steamapps/compatdata/362870/pfx/drive_c/users/steamuser/My Documents/RPG Maker 2003/
+    /home/burmi/Games/Steam/steamapps/common/RPG Maker 2003/RTP/
+
+- Links:
+    - Complete Gameboy Architecture Refference:
+    https://gekkio.fi/files/gb-docs/gbctr.pdf
+    - Gameboy OpCodes
+    https://www.pastraiser.com/cpu/gameboy/gameboy_opcodes.html
+    - Gameboy Bootstrap Rom Dissasembly:
+    https://gbdev.gg8.se/wiki/articles/Gameboy_Bootstrap_ROM
+    - Pan Docs for Overall Architecture:
+    https://gbdev.io/pandocs/Memory_Map.html
+
+
+- Programming Language Functionality:
+    Data:
+        - Switches (Bool): 5.000 Switches.
+            - Switch Operations: Set Bools
+        - Variables (Int): 5.000 Variables.
+            - Range: [-9.999.999,9.999.999] ~ 20Mio values ~ 2^25  (1 sign, 24 data)
+            - Variable Operations:
+                - Single Variable, Variable Range, Variable Reference
+                - Single Variable vs. Variable Reference
+                - Operations: Set-Equal, Subtract, Divide, Add, Multiply, Modulus.
+                - Operand: 
+                    Value of Variable, 
+                    Value Stored in Index (Index is another Variable), 
+                    Random Range.
+                    "Sprite": 
+                        - Other/This Event/s:
+                            - Map ID, X/Y Coord, Facing, Screen-Relative X/Y
+        - Possible ROM Data Locations:
+            - Map Events: Create Functions that set Variable Values.
+                => Call Event (ID + Page)
+                => One ROM Event, that sets like 1.000 Variables to specific values => ROM
+                - Different Pages for different ROM-Banks! (99 Banks)
+                - 32.768 Byte ROM:
+                    => 1.366 Vars => 4.096 Bytes/Page (1/4 ROM-Bank) => 8 Pages => 1 Event
+                - 8.388.608 Byte ROM 
+                    => 1.366 Vars => 4.096 Bytes/Page (1/4 ROM-Bank) => 2048 Pages => 21 Events
+                
+                - To Reduce on wasted data being writing (4KB), an only one Byte being read.
+                    => Write to one variable which byte you want. 0-8 MByte. 8MByte ~ 8 Million. Fits into one variable.
+                        - or do that like the DMG by using the offset in the bank (16KBit) and which bank you want.
+                            - 16k if-else instead of up to 8 Million. 
+                            - Each Bank is a different Event Page. 
+                            - Is more like the DMG Works.
+                            => Hybrid Solution!
+                            - One Variable has 3 Bytes as output? (Always use same encoding!)
+                    => looooong code in the event that just writes the value requested into one variable (3 Bytes).
+                        - The event would have roughly 8 Million if else.
+                    - Less Variables needed, but need alot of if-else.
+                        => what is faster???
+        
+        - Possible RAM Data Locations:
+            Need 16.800 - 48.800 Byte of RAM! ~ 48kByte
+            - 5.000 Variables. (15.000 Bytes)
+                - Full-Byte Encoding:
+                    => [0, 19.999.998]_10 >= 16.777.215_10 = FF FF FF_16 => 3 Byte.
+                    => 15.000 Byte
+                - Full-Bit Encoding:
+                    => [0, 19.999.998]_10 >= 16.777.215_10 = 2^24 => 24 Bit => 3 Bytes. :/
+            - 5.000 Switches. (625 Bytes)
+                => 625 Byte.
+            - Player Location: (1 Byte?)
+                - Get: Map_ID, X-Coord, Y-Coord.
+                - Set (Move to): Map_ID, X-Coord, Y-Coord.
+                => at the most 1 Byte.
+            - Map Events: (28.746 Bytes)
+                - ID: 0001 - 9.999
+                    - 9.999 possible Events / Map.
+                - Position: 
+                    (0,0) - (500,500) = [0, 250.000]
+                        - Full-Byte Encoding: 
+                            - 250.000 <= 65.535_10 = FFFF_16 => 2 Bytes
+                        - Full-Bit Encoding: 
+                            - 250.000_10 >= 131.072_10 = 2^17 => 17 Bits >= 2 Bytes.
+                    - SET: Set Event Location 
+                    - GET: Control Variables (X,Y)
+                    - Map Events can overlap.
+                    => Total Bytes:
+                        - Full-Byte: 9.999 * 2Bytes = 19.998 Bytes.
+                        - Full-Bit:  9.999 * 17 Bits = 169.983 Bits ~ 21.247 Bytes (Better!) 
+                        => 16.800 Bytes = 134.400 Bits ~ 7.906 Event Pages
+                - Page: 1-100: 100 Pages. ???
+                    - 100 Pages: 100_10 = 1_100 = 
+                        _10 => 1, 100, 10.000, 1.000.000
+                    - 9.999 Events * 99 Pages = 989.901 Event Pages.
+                        - Half-Byte Encoding:
+                            - 99 Pages = 99_10 = 63_16 >= F_16 Halfbyte per Event
+                            => 9.999 Halfbytes => 4999 Bytes
+                        - Full-Bit Encoding:
+                            - 99 Pages = 99_10 >= 64_10 = 2^6 => 6 Bits >= 4 Bits!
+                            => 6 * 9.999 = 59.994 Bits ~ 7.499 Bytes (Better!)
+                    - SET: Call Event.
+                    - GET: ???
+                        - Switches as Page Indices?
+                            - 989.901_10 = F1ACD_16 ~ 20 Bits => 20 Switches?
+                                - Then I can only save one page at a time?
+                            - 5.000 Switches * 2 = 10.000 Supported Pages.
+                            - Not enough
+                - Position: ~ 21.247 Bytes (enough for DMG RAM)
+                - Position + Page: <= 28.746 Bytes
+                - Can I use the code that is called of the event to have more interesting data stored?
+                - Map 
+                    - On Loading a new Map => all of the events reset!
+                - Other stuff:
+                    - Get Event ID (from location).
+            - Player: (57.466 Bytes)
+                For each Player Character 1-2966: (more than that and it will crash!)
+                    - Can GET, Not SET (just INC/DEC)
+                        - Can use GET+INC to set it!
+                        - Experience (0-9.999.999):
+                            - Linked to EXP, cannot modify freely:
+                                - Level (1-99).
+                            - 9.999.999 >= 8.388.608_10 = 2^23 => 23 Bits
+                        - Character Data:
+                                - Is that REALLY Independent from the EXP?
+                                    - Can I set the curve to 0?
+                                1-9.999, 9.998_10 >= 8.192_10 = 2^13 = 13 Bits
+                                Max HP, Max MP, Attack, Defense, Mind, Agility (6)
+                                => 78 Bits
+                    - Item Ids: 
+                        => Probably only one of them as all the 9.999 items have to be either Weapon, Shield, Body, Head OR Acessory
+                        - Weapon, Shield. Body, Head, Acessory
+                        - 1-9.999 >= 8.192_10 = 2^13 = 13 Bits
+                        => 13 Bits
+                        - 10.000 in 5 buckets (Weapon, Shield. Body, Head, Acessory)
+                            => 2.048 * 4 + 1 * 1024 = 9.216 < 10.000
+                            => 4 * 11-Bits + 1 * 10-Bits = 54 Bits
+                    
+                    => Per Player: 23(EXP) + 78(CHARDATA) "+ 54(ITEMIDS)" = 101-155 Bits
+                    => Total 299.566 - 459.730 Bits ~ 37.445 - 57.466 Bytes
+
+                    => 32kByte = 262.144 Bit / (23+78) Bit = 2.596 Chars needed
+            - Savegames: 
+                - I do not know what the savefiles for RPG-Maker saves
+                - Savegame for 2966 Chars in DB is larger then 3 Chars in DB.
+                => Savegame saves EVERY Character => Can use them to create Battery Backed save in RAM!
+            
+            Total: <= 101.837 Byte ~ 99kByte
+            
+    Debugging:
+        If you Create a textbox in a parallel process every time, you can use that to advance a frame! 
+    
+        Show Text:
+            \\: Displays the character "\".
+            \c[n]: Text displayed after this will be displayed in the nth color (where n is a number from 0~19).
+            \s[n]: Sets the message display speed within a range of 1~20. The default is 1, and the greater the number, the slower the display (n is a number).
+            \n[n]: Displays the name of the nth actor (n is a number). Supports nested variable references (e.g. "\n[\v[123]]"). Use "\n[0]" to show the name of the first party member.
+            \v[n]: Displays the number in the nth variable (n is a number).
+            \$: Displays the amount of money in possession in an additional window.
+            \!: Temporarily halts text display. When a key is pressed, the next part of the message is displayed.
+            \.: Delays the display of the next part of the text by 1/4 of a second.
+            \|: Delays the display of the next part of the text by 1 second.
+            \> "text" \<: Instantly displays the text between “\>” and “\<”.
+            \^: Closes the message window without waiting for a keypress.
+            \_: Displays half the size of a space.
+            $: Special Characters: Special ASCII Symbols.
+
+    ?Timer:
+        - Timer: (2 Timers)
+            - Set/Start/Stop
+                Set: Variable!
+    
+    Resolution:
+        320x240
+    
+    ?Audio:
+        Can play unlimited amount of sound effects I guess?
+        - If I have SE for each of the channels basic sine waves
+        for each of the pitches?
+        - So many Informations, need a really long switch statement
+        for a variable.
+        - Do this in a parllel Process, where the sound is exactly 16.666 ms long.
+        - could be tough.
+    
+    Tiles:
+        20*14 Tiles in Fullscreen => 280 Pixels.
+        Problem: Cannot set tiles from code directly.
+        - Change Event Graphic with Move Event -> Change Graphic.
+        - Have Multiple Event Pages each with different Pixel value.
+            => Call Event (not really, bugs out :/)
+            => Use Variables or Switches to tell which pixel should have which value!
+        - SupTile-Pixel:
+            - Create Tiles with 4 Quadrants. Each Quadrant is a sup-pixel. For each sub-pixel arrangement have one Tile in the tilemap.
+                - And for each color to, so there are alot of them.
+            => 4 Quadrants => ~14 SupTiles Per Tile
+            => 80*56 SubTiles => 4.480
+            - Graphic for Events:
+                - 6*8 possible tiles for an event per "set" => 48
+                A Tileset Graphic can have 3 sets => 144 different Tiles.
+                => up to 10 Colors for the 14 Suptiles.
+            - Colors:
+                - 10 Colors:
+                    - requires 14*10 = 140 States per Tile (encode into 3 digits of a variable)
+                    - can encode 2 pixels per Variable.
+                    => Need 2.240 Variables, 44,8%
+                - 7 Colors 
+                    - requires 7*10 = 98 States per Tile (encode into 2 digits of a variable)
+                    - can encode 3 pixels per Variable.
+                    => Need 1494 Variables, 29,88%
+    
+    Picture:
+        - Picture Number: up to 50 :/
+            -> 4:3 => 8*6 Resolution :/
+            ! RPG Maker 2k3 on Steam:
+                - up 1.000 pictures
+                => 4:3 => 36*27 Resolution.
+                => 1.11111:1 => 33*30 Resolution,
+                => BUT each Picture can be more than one pixel AND
+                you can show pictures with a variable name (Replace last x chars with values of Variable ...)
+        - Specific Coordinates or Variable Coordinates.
+        - Magnification (Scale)
+        - Transparency (Bottom/Top Half)
+        - Color cannot be set with Variables.
+        - can Move Picture.
+        - sprite sheet picture!
+            - show one of the parts of the image.
+    
+    Map-Roms:
+        - Maps can be Roms, that are "mapped" to certain part of global variables (similar to Gameboy)
+        - e.g. Var[0] - Var[499] are rom-mapped. Call an event on your current map => it sets the variables to certain values.
+        - There are an infinite amount of maps (theoretically).
+        - can use tiles in the map outside of the screen (map larger than screen) to load data. these events can have multiple pages.
+        - Events can have up to 100 Pages.
+        - Do a GameBoy Emulator xD
+
+    Interaction:
+        - Key Input Processing.
+
+    Branches and Loops:
+        - Conditional Branch (if-else)
+            - Switch, Variable, TImer (1-2)
+        - Label + Jump to Label
+            - Label only have numbers.
+        - Loop (While-True)
+            - Use Break Loop.
+        - End Event Processing.
+        - Call Event:
+            - Common Event (Global Function)
+            - Map Event:
+                On This Map, an Event and which page.
+                If used in Common Event the Map Event is determined by the currently loaded map.
+                So Event 1 could always be the same for each map.
+            - Event Referenced from Variables:
+                - Event/Page Number stored in Variable.
+    
+    Events/Functions:
+        - Map Events: 
+            - Each Map can be 500x500 big 
+            => 1.000 Map Events.
+        - Common Events: Global Functions
+            - max: 5.000
+            - Trigger: Call, Auto Start (On Switch), Parallel Process.
+    
+    Frame Control:
+        - Wait for x tenths of a second.
+        => max ist 10fps or unlimited fps :/
+        Parallel Process Test:
+            - y: min: 24, max: 263, diff: 239
+            => geschafft in: 4300ms
+            => 4300ms / 239 => ~18ms ~ 60fps
+            => Probably Parallel Processes are called once per frame!
+
+
+    Random:
+        - Teleport:
+            - Change to different map.
+                - Maps could be another data storage?
+        - Memorize/Recall Position:
+            Map-ID & Position of a Event
+        - Change Event Location
+        - Store Event ID @ Location.
+
+        - Insert Comment.
+
+
+Gameboy & RPG-Maker:
+    - Resolution: 
+        - Gameboy: 160*144, Ratio: 1.1111111
+            - Half-Res: 80*72
+            - Quarter-Res: 40*36
+        => 80*72 => Half-Res
+        => 40*36 => Quarter-RES Window?
+        - Tile-Maker: DOES NOT WORK!
+                - 20*14 Tiles, Ratio: 1.42857
+                => Subtiling Ratio: 8:10,285
+                => Subtiling Ratio: ~11
+                Each Maker-Tile represents 11 Tiles
+                - But: Each Tilemap up to 144 Tiles => 144 Combinations for Subtiles. Tile Resolution: 16*16
+                => 4 Colors => 36 Combinations-Tiles
+                => 4 Sub-Pixel => 12 Combinations/Pixel, Okay!
+                => Max 16 Sub-Pixel => Does not work!
+        - Picture-Maker: WORKS!
+            - 1.11111:1 => 32*29 Resolution (928 Pictures)
+            => Subpicture-Ratio: 5
+            => 1 Picture, Resolution: 5*5 = 25 Pixels of the Gameboy.
+            => Need All Possible Combinations of these 25 Pixels and ColorValue as - Alot of Pictures:
+                You could use tinting to save on pictures.
+                e.g. with 2x1 pictures:
+                    white-grey => with tint => grey-darkgrey => with tint 
+                    darkgrey-black etc.
+                - How does the RPG Maker handle 1k pictures at once?
+            - Picture Arrangement and Size:
+                - Line:
+                    Horizontal:
+                        max 6 Pictures as one horizontal line, each 27 pixels
+                        => 864 Pictures < 1k.
+                        Problem: Needs more Combinations than 5x5 Grid
+                    Vertical: (BEST!)
+                        max 6 Pictures as one vertical line, each 24 pixels
+                        => 960 Pictures < 1k.
+                        - Less Combinations than 5x5 Grid.
+                - Grid:
+                    5x5:
+                        32*29 Pictures each 25 pixels.
+                        => 928 Pictures < 1k.
+                    5x4:
+                        32*36 Pictures each 20 pixels.
+                        => 1.152 Pictures > 1k :/
+                    4x5:
+                        40*29 Pictures each 20 pixels.
+                        => 1.160 Pictures > 1k :/
+        
+        - Picture-Variable Layout.
+            - 960 (1x24)-Line Pictures. 
+            - Each Pixel 3 Colors (White always there) 
+            => We need 3^24 Combinations: 282.429.536.481 => 280 Billion, Better then 3^24, but still not good.
+        - .gb Tileset to bitmap files (8x8)
+            => use show-picture by combining picture sprites!
+            => only need 256 pictures at one time (used by sprite and background)!
+            => BUT can switch Tileset! .gb can have alot more tiles.
+
+        - .gb Tileset to RPG-Maker Tileset convertion?
+            => create .bmp files that fit in the RPG Maker way.
+            => BUT: Gameboy: 8x8 Pixels
+            => 
+        
+        - Window?
+            - Only show part of the display
+            - can move the game window to other parts of the actual GB screen?
+            - Looks bad, but hey, best I can do for now :/
+            - 2x2 Block:
+                => 64*58 Resolution Window. 
+                - is okaaaaaaay.
+        
+        - Combine a few methods:
+            - 2 Layer:
+                - Lower Layer: Always White 
+                    => Do not need white in other colors.
+            - "Interlaced": Only render parts of screen each frame.
+                => flickering
+                - 160*72 current lines.
+            - Event Graphics (16x16 or 24x32 (Char)) (still roughly 899 Events still usable).
+                - Tiles:
+                    - 144 Tiles possible (size limitation of map).
+                    - 3^4 = 81 <= 144
+                    => Max 4 different Tiles => 2x2 Grid
+                    => 16x16 per tile => 4 Tiles of 8x8 size
+                    => would fit gameboy tiles.
+                - Charset:
+                    - not reall usefull and not tile aligned
+                    - though can only use 16x32 (rest is transparent)
+                    - theoretically limitless amount. 
+            - Pictures:
+                - 1.000 Pictures
+        
+        - Force more Pictures in RPG Maker?
+            - What did they change between old RPG Maker and new one, so that old supports 50 Pictures and new supports 1.000 Pictures?
+            - need support for 23.040 Picture in RPG Maker!
+                - or for 2x2 Blocks (3 Colors, 3^4 = 81, Not much actually) => 5.760 Pictures would be enough!
+                - or (1x5) Line: (3 Colors, 3^5 = 243, okaaaay) => 4.608 Pictures, not muuuuch better.
+                => would be cool to have arbitrary max-number of pictures
+                => Change RPG_RT.exe binary :/
+            => Maybe can "hack" EasyRPG Player?
+                => GetDefaultNumberOfPictures() in game_pictures
+                    => Change that to 23.040!
+                    - it uses std::vector for pictures, that has no limit.
+                    - picture_id is int => way more than we need!
+
+    - Options:
+        - Press Key (Num-7?) to change to open options menu
+            => use choices etc. so that player can change options. the renderer to full resolution.
+            => Only works on modified easyRPG.
+    
+    - Rendering:
+        - Modes:
+            - Sliding-Window Mode:
+                - Pic-Res: 1x1 => 1.000 Pictures, 32*29 Window
+                - Pic-Res: 2x2 => 1.000 Pictures, 65*58 Window
+                - Can move with 8,4,5,6
+                - Starting Mode
+            - Full-View Mode:
+                - Pic-Res: 1x1 => 23.040 Pictures
+                - Pic-Res: 2x2 => 5.760 Pictures
+                - Only available in EasyRPG, if it has been modified!
+            - GBC:
+                - 32.768 Colors
+                - can only support Pic-Res: 1x1
+                => Can do color with tinting on single white picture?
+                
+
+        - Line-Caches
+            - needed for 2x2 Picture-Mode
+            - cache one full line.
+            - when writing 2nd line => you can update the 2x2 Pictures!
+            => 160 Pixels @ 4 Colors => 320 Bits = 40 Bytes ~ 14 Vars.
+            - otherwise: Can blit pixels directly when FIFO pushes pixel out.
+        
+
+    ROM - Data:
+        - Use Map Events: 8-2048 Event Pages (1-21 Events) each 4kByte (1.366 Vars)
+            - Or less and only write one VAR? need to test!
+    RAM - Data:
+        - DMG-RAM (16.800 Bytes):
+            - use Map-Events Ram, only position (7.906 Eventpages ~ 80 Events)
+        
+        - GBC-RAM (49.152 Bytes):
+            playerExtra = Player - 32.768 Bytes (used for Cartridge-RAM) = 24.698 Bytes.
+            Map-Events = 28.746
+            Total = 53.444 > 49.152 => RAM-Wise I could support GBC!
+            - Color still a problem.
+
+        
+        - Cartridge-RAM (0 - 32.768 Bytes): 
+            - I only support up to 32kByte Cartridge-RAM!!!!
+            - use CHARA, using EXP + STATS (2.596 CHARA)
+            - As this is saved in savegames => support savegames in emulators!
+
+
+RPG-Maker Custom Toolchain:
+    - EasyRPG Project: Interpreter for RPGMaker 2003!
+        - Player: Play games.
+        - Editor: Game editor.
+        - libclf: LCF2XML. Convert RPG Maker data format to XML and vice-versa
+            LMU: Map, LMT: Maptree, LDB: Database, LSD: Savegame.
+    
+    - CEC: Common Event Compiler.
+        - c-code => .xml => common events.
+    - GB2MRDBR: Gameboy 2 Map ROM/RAM and Database RAM.
+        - .gb   => MAP-ROM + MAP-RAM as .xml => mapfile. 
+                => DB-RAM as .xml => databasefile.
+    - CRPGENV: C-RPG Maker Environment
+        - c-code can be run outside of RPG Maker so that I can debug it normally without dependencies.
+            - Plattform Code that runs my code (kinda like engine).
+    
+    - run my compiled binary files in easyRPG => debugging?
+    - run in original RPG Maker for sanity check.
+
+
+Gameboy Info: 
+    Memory Mapping:
+        - 0000-3FFF: 16KiB: ROM bank 00
+        - 4000-7FFF: 16KiB: ROM bank 01~NN (switchable)
+        - 8000-9FFF:  8KiB: VRAM (CGB: 2 switchable Banks)
+        - A000-BFFF:  8KiB: External RAM (from Cartridge)
+        - C000-CFFF:  4KiB: Work Ram (WRAM)
+        - D000-DFFF:  4KiB: Work RAM (WRAM) (CGB: 1-7 switchable Banks)
+        - E000-FDFF:  8KiB: Mirror of C000-DDFF (ECHO RAM) DO NOT USE!
+        - FE00-FE9F:  160B: Sprite attribute table (OAM)
+        - FEA0-FEFF:   60B: Not Usable
+        - FF00-FF7F:  128B: I/O Registers
+        - FF80-FFFE:  127B: High RAM (HRAM)
+        - FFFF-FFFF:    1B: Interrute Enable register (IE)
+
+        - The RPG Maker Map will have the Cartridge Banks as Events.
+            - The Content of an entire Bank can be combined into a single value that is then used to set one of the memory map variables!
+
+        Jump Vectors in first ROM bank:
+            - These Locations are supposed to be used as jump vectors:
+            RST Instructions: 
+                0000 (RST 00H, C7), 
+                0008 (RST 08H, CF), 
+                0010 (RST 10H, D7), 
+                0018 (RST 18H, DF), 
+                0020 (RST 20H, E7), 
+                0028 (RST 28H, EF), 
+                0030 (RST 30H, F7), 
+                0038 (RST 38H, FF)
+            Interrupts:
+                0040 (VBlank) 
+                0048 (LCD STAT), 
+                0050 (Timer), 
+                0058 (Serial), 
+                0060 (Joypad), 
+            - This memory area (0000-00FF, 256B) can be used for other things.
+            - At the start this is where the Bootrom starts.
+            - RST is 1-byte Instruction, slightly faster then CALL (also 3-Byte)
+        
+        Cartridge Header:
+            https://gbdev.io/pandocs/The_Cartridge_Header.html#the-cartridge-header
+            (0100-014F, 80B) is cartridge Header
+            0100-0103: Entry Point after Boot Loader.
+                - usually contains nop (00), followed by jp $0150 (C3)
+            
+            0104-0133: Nintendo Logo:
+                - Bytes define the Nintendo Logo, checked so that it Boots
+            
+            0134-0143: Title:
+                - 16 characters in Uppercase ASCII
+            
+            013F-0142: Manufacturer Code:
+                - Old Cartridges: Part of Title.
+                - 4 Character uppercase manufacturer code.
+            
+            0143: CGB Flag:
+                - In CGB Cartridges, enables CGB Functions
+                80h: Game works on DMG and CGB
+                C0h: Game works only on CGB
+            
+            0144-0145: New Licensee Code
+                - 2-char ASCII license code (newer Games)
+            
+            0146-0146: SGB Flag
+                00: No SGB
+                03: Game supports SGB
+            
+            0147: Cartridge Type:
+                Specifies Memory Bank Controller and other hardware in Cartridge.
+            
+            0148: ROM Size:
+                ROM Size on the cartridge, 32KByte to 1.5MByte
+                Uses Rom Banking.
+            
+            0149: RAM Size:
+                RAM Size on the cartridge, 0-128KByte (8KiB Banks)
+            
+            014A: Destination Code:
+                0 => Japanese, 1 => Non-Japanese
+            
+            014B: Old Licensee Code:
+                - 00-FF for the licensee code.
+                $33 signals new licensee code is used.
+            
+            014C: Mask ROM Version Number:
+                - Version Number of the Game, usually $00
+            
+            014D: Header Checksum
+
+            014E-014F: Global Checksum 
+                  
+        External Memory and Hardware:
+            (0000-7FFF (ROM-Banks)) and (A000-BFFF (External-RAM))
+            Often Memory Bank Controller
+            RAM-Area can be read from and written to like normal
+            ROM-Area can be read, writes control the MBC.
+            Cartridge-RAM often Battery Buffered: Hold-Save Game
+        
+        Echo RAM:
+            Ignore this.
+        
+        I/O Registers:
+            FF00 - FF00:  1B: Controller
+            FF01 - FF02:  2B: Communication
+            FF04 - FF07:  4B: Divider and Timer
+            FF10 - FF26: 23B: Sound
+            FF30 - FF3F: 16B: Waveform RAM
+            FF40 - FF4F: 12B: LCD
+            FF4F - FF4F:  1B: VRam Bank Select (CGB)
+            FF50 - FF50:  1B: Set to non-zero to disable boot ROM
+            FF51 - FF55:  5B: VRAM DMA (CGB)
+            FF68 - FF69:  2B: BG / OBJ Palettes (CGB)
+            FF70 - FF70:  1B: WRAM Bank Select (CGB)
+
+        FFEA0-FFEF:
+            Do not use
+
+    Joypad Input:
+        FF00 - P1/JOYP - JoyPad (R/W)
+        Eight actions/direction in a 2 x 4 Matrix,
+        Bit 5: P15 Select Action buttons    (0=Select)
+        Bit 4: P14 Select Direction buttons (0=Select)
+        Bit 3: Input: Down or Start         (0=Pressed) (Read Only)
+        Bit 2: Input: Up or Select          (0=Pressed) (Read Only)
+        Bit 1: Input: Left or B             (0=Pressed) (Read Only)
+        Bit 0: Input: Right or A            (0=Pressed) (Read Only)
+
+        - Most Programms read from these ports multiple time, allowing input to stabilize, only the value from the last read is actually used.
+
+    Timer and Divider Register:
+        - Built-in timer not the one from the cartridge.
+        FF04 - DIV - Divider Register (R/W)
+            - Is incremented at a rate of 16.384Hz
+            - Writing any value to this register, resets it to $00.
+            - Is reset when executing stop, restarts once stop-mode ends.
+            - CGB Double-Speed Mode: Incremented at a rate of 32.768Hz
+        
+        FF05 - TIMA - Timer counter (R/W)
+            - Incremented at clock freq by the TAC register $FF07
+            - Overflow => Reset to Value specified in TMA $FF06 and interrupt is requested.
+        
+        FF06 - TMA - Timer Modulo (R/W)
+            - Timer overflows, Reset to the Value here and interrupt is requested.
+            - Setting TMA to $FE means the clock resets every two CPU clocks
+            - TMA write on the same cycle as the content of TMA is transferred to TIMA due to timer overflow, the old value is transferred to TIMA.
+        
+
+        FF07 - TAC - Timer Control (R/W)
+            Bit 2 - Timer Enable (only affects TIMA, DIV is always counting)
+            Bit 1-0 - Input Clock Select
+                00: CPU Clock / 1024, ~4096 Hz
+                01: CPU Clock / 16, ~262.144 Hz
+                10: CPU Clock / 64, ~65.536 Hz
+                11: CPU Clock / 256, ~16.384 Hz
+        
+        Timer Obscure Behavior:
+            https://gbdev.io/pandocs/Timer_Obscure_Behaviour.html
+        
+    Interrupts: 
+        IME - Interrupt Master Enable Flag (Write Only)
+            0 - Disable all Interrupts
+            1 - Enable all interrupts that are enabled in the IE register (FFFF)
+            Cannot access IME flag by using the I/O address. Need to be modified with these instructions/events only:
+            EI: Enables interrupts (that is IME=1)
+            DI: Disables interrupts (that is IME=0)
+            RETI: Enables interrupts and returns (same as EI => RET)
+            <INT>: Disables interrupts and calls interrupt vector
+                <INT> is automatically executed by the CPU when it exexutes an interrupt.
+            - effect of ei is delayed by one instruction.
+                ei immideatly followed by DI does not allow interrupts between them.
+        
+        FFFF - IE - Interrupt Enable (R/W)
+            Bit 0: VBlank   Interrupt Enable  (INT $40)  (1=Enable)
+            Bit 1: LCD STAT Interrupt Enable  (INT $48)  (1=Enable)
+            Bit 2: Timer    Interrupt Enable  (INT $50)  (1=Enable)
+            Bit 3: Serial   Interrupt Enable  (INT $58)  (1=Enable)
+            Bit 4: Joypad   Interrupt Enable  (INT $60)  (1=Enable) 
+        
+        FF0F - IF - Interrupt Flag (R/W)
+            Bit 0: VBlank   Interrupt Request (INT $40)  (1=Request)
+            Bit 1: LCD STAT Interrupt Request (INT $48)  (1=Request)
+            Bit 2: Timer    Interrupt Request (INT $50)  (1=Request)
+            Bit 3: Serial   Interrupt Request (INT $58)  (1=Request)
+            Bit 4: Joypad   Interrupt Request (INT $60)  (1=Request)
+
+            - When an interrupt signal has a positiv flank, the corresponding IF register becomes set. Bit 0 becomes set when the LCD controller enters VBlank period.
+
+            - Set bets here are only requesting an interrupt to be executed. actual execution happens only if both IME and the IE are set. Otherwise the interrupt "waits" until both IME and IE allow its execution.
+
+            - Since the CPU automatically sets and clears the bits in the IF register, it is not required to write to the IF register. User might still want to do that to manually request (or discard) interrupts.
+        
+        Interrupt Handling:
+            1. the IF bit corresponding to this interrupt and the IME flag are reset by the CPU. The former "acknowledges" the interrupt, while the latter prevents any further interrupts from being handled until the program re-enables them. typically by using reti
+            2. corresponding interrupt handler is called by the CPU. This is a regular call, exactly like call <vector> instruction (the current PC is pushed on the stack and then set to adress of the interrupt vector).
+
+            Following occurs when control is being transferred to an interrupt handler:
+                1. Two wait states are executed (2 M-cycles pass while nothing occurs, presumably the CPU is executing nops during this time).
+                2. The current PC is pushed to the stack (2 M-Cycles)
+                3. The PC register is sot to the adress of the handler ($40, $48, $50, $58, $60) (1 M-Cycle)
+                => should last 5 M-Cycles.
+        
+        Interrupt Priorities:
+            If more than one bit in the IF register is set:
+                1. More than one interrupt signal changed from Low-to-High at the same time.
+                2. Several Interrupts have been requested while IME/IE didn't allow them to be handled directly.
+                3. The user has written a value with several bits set to the IF register.
+            If IME and IE allow execution of more than one of the requested interrupts, they are executed with priority. Priority being the bit order Vblank (0) is highest Joypad (4) is lowest.
+        
+        Nested Interrupts:
+            Interrupt executes => IME=0
+            When interrupt handler returns IME=1 by using RETI instruction.
+            When to nest interrupts (of any priorty), use EI to set EMI.
+    
+    Interrupts - Sources:
+        INT 40 - VBlank Interrupt:
+            Every Time the PPU enters VBlank (Mode 1). At the Start of VBlank period (LY=144).
+            This period lasts approximately 1.1 milliseconds.
+        
+        INT 48 - STAT Interrupt.
+            Various Interrupts based on the LCD STAT Register.
+            STAT interrupt sources (modes 0-2 and LYC=LY) have their state logically ORed into a shared "STAT interrupt line" if their respective enable bit is turned on.
+            STAT interrupt will be triggedered by a rising edge.
+            STAT Blocking:
+                If a STAT interrupt source logically ORs after it's already set high by another source, then there will be no low-to-high transition and so no interrupt will occur.
+                PPU cycles between the modes in a fixed order. If interrupts are enabled for two consecutive modes such as Mode 0 and Mode1, then no interrupt will trigger for Mode 1, as the STAT interrupt line won't have a chance to go low between them.
+
+        INT 50 - Timer Interrupt:
+            Every Time that the timer overflows, an interrupt is requested by setting bit 2 in the IF register ($FF0F).
+            As soon as that interrupt is enabled, the CPU will execute it by calling the interrupt.
+        
+        INT 58 - Serial Interrupt.
+            ...
+        
+        INT 60 - Joypad Interrupt.
+            When any of the Joypad bits change from High to Low.
+            => Happens when a button is pressed.
+            Due to switch bounce, one or more High to Low transitions are usually produced when pressing a button.
+
+            This interrupt is useful to identify button presses if we have only selected either action or direction, but not both.
+            For Both it will make no different (it is already low).
+            Only usefull to terminate the STOP (low power) standby state.
+
+    Interrupts - HALT:
+        halt:
+            It pasues the CPU (less power consumption) when executed.
+            CPU wakes up as soon as an interrupt is pending (bitwise AND of IE and IF is non-zero)
+            Most commonly, IME is set. CPU wakes up and before executing command after halt, the interrupt handler is called first.
+            if IME is not set, two cases:
+                - If no interrupt is pending, CPU resumes execution as soon as an interrupt becomes pending. However since, IME=0 the interrupt is not handled.
+                - If an interrupt is pending, halt immediately exits, as expected, however this can trigger a "halt bug".
+        
+        halt-bug:
+            In some circumstances, pc fails to be normally incremented.
+            halt + IME=0 + [IE] & [IF] != 0, causes the byte after the halt to be read twice.
+
+            If ei is followed immediately by halt + interrupt is pending as halt is executed.
+                => interrupt is serviced and handler called, but the interrupt returns to the halt, 
+                which is executed again, and thus waits for another interrupt.
+
+    Rendering - Tile Data:
+        Tile data stored in VRAM @ $8000-$97FF. Each tile 16 bytes. 384 tiles total. CGB => doubled (768 tiles).
+        Tile: 8x8 Pixels, 4 Colors. Tiles can be used for Background/Window and OBJ (OBJ: Color 0 = transparrent).
+        3 Blocks each 128 tiles:
+            B       128-255,
+                Tile-iD for BG/Wlock 0: $8000-$87FF, 
+                Tile-ID for Obj:                0-127,
+                Tile-iD for BG/Win if LCDC.4=1: 0-127
+                Tile-ID for BG/Win if LCDC.4=0: 
+            Block 1: $8800-$8FFF,
+                Tile-ID for Obj:         in if LCDC.4=1: 128-255
+                Tile-ID for BG/Win if LCDC.4=0: 128-255 (or -128--1)
+            Block 2: $9000-$97FF,
+                Tile-ID for Obj:                (can't use)
+                Tile-iD for BG/Win if LCDC.4=1: (can't use)
+                Tile-ID for BG/Win if LCDC.4=0: 0-127
+    
+        Tiles are indexed using 8-bit integer. 
+        Adressing method may differ:
+            $8000: uses $8000 as base pointer with unsigned adressing => Block 0: 0-127, Block 1: 128-255
+            $8800: uses $9000 as base pointer with signed adressing => Block 2: 0-127, Block 1: -128--1
+            Sprites always use $8000-Mode, but the BG and Window can use either mode, controlled by LCDC bit 4.
+
+        Tiles occupy 16 Bytes, where each line is represented by 2 bytes
+            Byte 0-1: Topmost Line (Top 8 Pixels)
+            Byte 2-3: Second Line
+            etc.
+        
+        2BPP Pixelformat:
+            Foreach line, the first Byte specifies the LSB of the color ID of each pixel.
+            Second byte specifies the MSB. IN both bytes bit 7 is the leftmost pixel and bit 0 the rightmost.
+            So each pixel has a color ID of 0 to 3.
+            The color IDs are converted into real colors depending on the current pallet.
+    
+    Rendering - Tile Maps:
+        32x32 tile maps in VRAM @ $9800-$9BFF and $9C00-$9FFF
+
+        Tile Indexes:
+            Each tile map contains the 1-byte indexes of the tiles to be displayed (there are up to 256 tiles)
+            They are obtained from the Tile Data Table with the two adressing methods described above.
+            Each Tilemap holds a 256x256 pixels picture. Only 160x144 of those are displayed on the screen at any given time.
+        
+        BG Map Attributes (CGB):
+            Additional map of 32x32 bytes is stored in VRAM Bank 1.
+            Each Byte defines attributes for the corresponding tile-number map envty in VRAM Bank 0.
+            
+            Bit 7:  BG-to-OAM Priority          (0=Use OAM Priority bit, 1=BG priority)
+            Bit 6:  Vertical Flip               (0=Normal, 1=Mirror vertically)
+            Bit 5:  Horizontal Flip             (0=Normal, 1=Mirror horizontally)
+            Bit 4:  Not used
+            Bit 3:  Tile VRAM Bank number       (0=Bank 0, 1=Bank 1)
+            Bit 2-0: Background Palette Number  (BGP 0-7)
+
+            Bit 7 is set: BG tile will have priority above all OBJs. 
+            There's also a Master Priority flag in LCDC register Bit 0 which overrides all other priority bits when cleared.
+            NOTE: if map entry at 0:9800 is tile $2A the attribute at 1:9800 doesn't define properties for all tiles $2A on-screen, only the one at 0:9800.
+        
+        Background (BG):
+            SCY and SCX registers can be used to scroll background.
+            Visible area of background wraps around the background map.
+            Non-CGB Mode: Background (and the Window) can be disabled using LCDC bit 0.
+        
+        Window:
+            Overlay. It is always displayed starting at the top left tile of its tile map.
+            Position changeable with WX and WY registers.
+            Screen corrds of top-left of windows is (WX-7, WY).
+            Window and Background share the same Tile Data Table.
+            Toggle Window Rednering: LCDC bit 5 (only works in non-CGB this only works aslong as LCDC bit 0 is set).
+            Enabling Window: Mode 3 slightly longer on scanlines where the window is visible.
+            Window Internal Line Counter:
+                Window has an internal line counter that's functionally similar to LY. It only works if the window is visible.
+                This line counter determines what window line is to be rendered on the current scanline.
+        
+    Rendering - OAM:
+        Display up to 40 sprites either 8x8 or 8x16 pixels.
+        Only one sprites can be displayed per scan line. 
+        Sprites have their own Table @ $8000-$8FFF and have unsigned numbering.
+        Sprite attributes reside in the Sprite Attribute Table (OAM - Object Attrobute Memory) at $FE00-FE9F. 40 entries each 4 bytes:
+
+        Byte 0 - Y Position:
+        Y = Sprite vertical position on screen + 16. Y = 0 hides the sprite.
+
+        Byte 1 - X Position:
+        X = Sprite horizontal position on screen + 8. X = 0 hides the sprite.
+        Best way to hide a sprite is to set its Y-coordinate off-screen.
+
+        Byte 2 - Tile Index:
+        8x8 mode: Specifies the sprite's only tile index ($00-$FF). 
+            This unsigned value selects a tile from the memory area at $8000-8FFF.
+            CGB: Can be VRAM bank 0 or 1 depending on bit 3 of the 3rd Byte.
+        8x16 mode: Memory area at $8000-$8FFF are still interpreted as a series of 8x8 tiles, where every 2 tiles from a sprite.
+            This byte specifies the index of the top tile of the sprite.
+            Top tile is "NN & $FE" and the bottom tile "NN & $01"
+        
+        Byte 3 - Attributes/Flags:
+            Bit 7   BG and Window over OBJ  (0=No, 1=BG and Window colors 1-3 over the OBJ)
+            Bit 6   Y flip                  (0=Normal, 1=Vertically mirrored)
+            Bit 5   X flip                  (0=Normal, 1=Horizontally mirrored)
+            Bit 4   Palette number          (0=OBP0, 1=OBP1) *Non CGB Mode Only*
+            Bit 3   Tile VRAM-Bank          (0=Bank 0, 1=Bank 1) *CGB Mode Only*
+            Bit 2-0 Palette number          (OBP 0-7) *CGB Mode Only*
+        
+        Writing data to OAM:
+            Write the data to a buffer in normal RAM (typically WRAM) first, then to copy that to OAM using DMA transfer functionality.
+            Writing to OAM directly works only during HBlank or VBlank
+        
+        Object Priorities:
+            Two priorities:
+                First one defines which objects are ignored when there are more than 10 on a given scanline.
+                Second: Which object is displayed on top when some overlap
+            
+            Selection Priority:
+                PPU compares LY to each Objects Y Position to select up to 10 objects to be drawn on that line.
+                It scans OAM sequentially, selecting first (up to) 10 suitably-positioned objects.
+                As it only checks Y coordinate to select objects even off-screen objects count.
+                    => Set Y-Coord to Y = 0 or Y >= 160 (144 + 16)
+            
+            Drawing priority:
+                opaque pixels from two different objects overlap => the pixel belonging to the higher-priority object wins.
+                Priority is determined by:
+                    Non-CGB mode: the smaller the X coord the higher the priority. X coord same = first in OAM has higher priority.
+                    CGB mode: only object location in OAM determines priority.
+    
+    Rendering - OAM - DMA Transfer:
+        FF46 - DMA (DMA Transfer and Start Address) (R/W)
+        Writing to this register launches a DMA transfer from ROM or RAM to OAM.
+        Written value specifies the transfer source address divided by $100:
+            Source:         $XX00-XX9F  ;XX = $00 to $DF
+            Destination:    $FE00-FE9F
+        Transfer takes 160 machine cycles.
+        Memory Access:
+            DMG: CPU can acces only HRAM $FF80-$FFFE. 
+            CGB: the bus used by the source area cannot be used (assume same behavior as DMG)
+            Therefore, programmer must copy a short procedure into HRAM and use this procedure to start the transfer from inside HRAM, and wait until the transfer has finished:
+        Most proramms do this in their VBlank handler. Also able to do it during redraw (Mode 2 and 3), allowing to display more than 40 sprites on the screen.
+
+    Rendering - LCD Control:
+        FF40 - LCDC LCD Control (R/W):
+        Bit 7 - LCD and PPU enable              0=Off, 1=On
+        Bit 6 - Window tile map area            0=9800-9BFF, 1=9C00-9FFF
+        Bit 5 - Window enable                   0=Off, 1=On
+        Bit 4 - BG and Window tile data area    0=8800-97FF, 1=8000-8FFF
+        Bit 3 - BG tile map area                0=9800-9BFF, 1=9C00-9FFF
+        Bit 2 - OBJ Size                        0=8x8, 1=8x16
+        Bit 1 - OBJ enable                      0=Off, 1=On
+        Bit 0 - BG and Window enable/priority   0=Off, 1=On
+
+        LCDC.7 - LCD enable:
+            Enables/Disables PPU & LCD. 
+            Grants immediate and full access to VRAM, OAM, etc.
+            WARNING: STOP LCD IN VBLANK ONLY!
+            Disabled: DMG displays white color.
+            Re-enabling LCD: PPU will immediately start drawing again, but the screen will stay blank during the first frame.
+        
+        LCDC.6 - Window tile map area:
+            Which background map the Window uses for rendering. 
+            Reset: $9800 tilemap is used, otherwise it's the $9C00 one.
+        
+        LCDC.5 - Window enable:
+            Changing the value of this register mid-frame triggers a complex behavior.
+        
+        LCDC.4 - BG and Window tile data area.
+            controls which addressing mode the BG and Window use to pick tiles.
+            sprites will always use $8000 address mode.
+        
+        LCDC.3 - BG tile map area:
+            Reset: $9800 tilemap is used, otherwise it's the $9C00 one.
+        
+        LCDC.2 - OBJ size:
+            Changing mid-frame: "remnants" of the sprites intended for 8X8 could "leak" into the 8x16 zone and cause artifacts.
+        
+        LCDC.1 - OBJ enable
+            Can be tollged mid-frame for example to avoid sprites being displayed on top of a status bar or text box.
+            (Might have wrong results mid-scanline)
+        
+        LCDC.0 - BG and Window enable/priority.
+            Non-CGB: BG and Window Display
+                When Bit 0 is cleared both background and windows become blank (white). Only Sprites may still be displayed.
+            CGB: BG and Window Master Priority
+                When Bit 0 is cleared, background and window lose their priority. 
+                Sprites will always be displayd ontop.
+        
+        Using LCDC:
+            Can modified at any time during the frame.
+            This is never locked by the PPU unlike VRAM.
+            Possible to change it mid scanline!
+        
+    Rendering - LCD Status Register:
+        Terminology:
+            dot: shortest period over which the PPU can output one pixel.
+            One T-State on DMG.
+            On each dot during mode 3, either PPU is outputs a pixel or the fetcher is stalling the FIFOs.
+        
+        FF41 - STAT (LCD Status) (R/W):
+            Bit 6 - LYC=LY STAT Interrupt source            (1=Enable) (R/W)
+            Bit 5 - Mode 2: OAM STAT Interrupt source       (1=Enable) (R/W)
+            Bit 4 - Mode 1: VBlank STAT Interrupt source    (1=Enable) (R/W)
+            Bit 3 - Mode 0: HBlank STAT Interrupt source    (1=Enable) (R/W)
+            Bit 2 - LYC=LY Flag                             (0=Different, 1=Equal) (R)
+            Bit 1-0 - Mode Flag                             (Mode 0-3) (R)
+            Modes:
+                0: HBlank
+                1: VBlank
+                2: Searching OAM
+                3: Transferring Data to LCD Controller
+            
+            Bit 1-0 show current Status of PPU.
+            Bit 2 is set when LY contains the same value as LYC. It is constantly updated.
+            Bits 3-6 select which sources are used for the STAT interrupt.
+            2^22 Hz dot clock, entire frame: 16.74ms. 
+            Scanlines 0 to 143, PPU cycles through modes 2,3 and 0 every 456 dots.
+            Scanlines 144 through 153 are mode 1.
+
+        Mode-table:
+            Mode    Action                      Duration                            Accessible video memory
+            2       Searching OAM whose Y 
+                    coord overlap this line     80 dots (19us)                      VRAM, CGB palettes
+            3       Reading OAM and VRAM 
+                    to generate picture         168-291 dots (40-60us)              None
+            0       HBlank                      85-208 dots (20-49us)               VRAM, OAM, CGB palettes 
+            1       VBlank                      4560 dots (1087us), 10 scanlines    VRAM, OAM, CGB palettes
+
+        Properties of STAT modes:
+            Gameboy can pause dot clock briefly (mode 3 longer, mode 0 shorter).
+            routinely takes 6-11 dot break to fetch an OBJs tile between background tile pattern fetches.
+            mid-scanline writes to BGP allow observing this behavior.
+
+            Three things are known to pause the dot clock:
+            1. Background scrolling: 
+                If SCX % 8 is not zero at the start of the scanline, rendering is paused for that many dots while shifter discards that many pixels from the leftmost tile.
+            2. Window: 
+                an active window pauses for at lest 6 dots, as the background fetching mechanism starts over at the left side of the window. (not 100% confirmed)
+            3. Sprites:
+                Each sprite usually pauses for 11 - min(5, (x + SCX) % 8) dots. Because sprite fetch waits for background fetch to finish. the sprite cost is greate if a sprite is directly aligned over the background tile, less if the sprite is to the right. If the sprite's left side is over the window, use 255 - WX instead of SCX in this formula.
+            
+            in DMG the LCD interrupt sometimes trigger when writing to STAT (including writing to $00) during OAM scan, HBlank, VBlank or LY=LYC. It behaves as if $FF were written for one cycle, and then the written value were written the next cycle. Because the GBC in DMG mode does not have this quirk, two games that depend on this quirk (Ocean’s Road Rash and Vic Tokai’s Xerd no Densetsu) will not run on a GBC.
+    
+    Rendering - Scrolling:
+        These registers can be accessed even during Mode 3, but modifications may not take effect immediately.
+
+        FF42 - SCY (Scroll Y) (R/W), FF43 - SCX (Scroll X) (R/W)
+            specifies top-left coordinates of the visible 160x144 pixel area within the BG map. Value range: 0-255
+        
+        FF44 - LY (LCD Y Coordinate) (R)
+            LY: current horizontal line, which might be about to be drawn, being drawn, or just been drawn.
+            LY value 0 to 153, while values from 144 to 153 indicates the VBlank period.
+        
+        FF45 - LYC (LY Compare) (R/W)
+            Gameboy permanently compares LYC with LY. When they are identical, the "LYC=LY" flag is set and (if enabled) a STAT interrupt is requested.
+        
+        FF4A - WY (Wondow Y Position) (R/W), FF4B - WX (Window X Position + 7) (R/W)
+            top-left coord of Window. The Windows is visible (if enabled) when both coordinates are in the ranges WX=0-166 and WY=0-143. Values WX=7, WY=0 places Window at top left.
+            WARNING: 
+                WX=0: the window will "stutter" horizontally when SCX changes.
+                WX=166: Window will span the entirety of the following scanline.
+        
+        Mid-frame behavior:
+            Scrolling:
+                Scroll registers are re-read on each tile-fetch, except for the low 3 bits of SCX, which are only read at the beginning of scanline (for initial shifting of pixels).
+                Before CGB-D: read he Y coordinate once for each bitplane (so a very precisely timed SCY write allows "desyncing" them)
+                    => CGB-D and later use the same Y coordinate for both no matter what.
+            
+            Window:
+                For the window to be displayed on a scanline, the following conditions must be met:
+                - WY condition was triggered: i.e. at some point in this frame the value of WY was equal to LY (checked at the start of Mode 2 only)
+                - WX condition was triggered: i.e. the current X coordinate being rendered +7 was equal to WX.
+                - Window enable bit in LCDC is set.
+                WY already triggered at start of a row the window enable bit was set, then resetting that bit before the WX conidtion gets triggered on that row yields a nice window glitch pixel.
+        
+    Rendering - Palettes:
+        LCD Monochrome Palettes:
+            FF47 - BGP (BG Palette Data) (R/W) - Non CGB Mode Only
+                Bit 7-6 - Color for index 3
+                Bit 5-4 - Color for index 2
+                Bit 3-2 - Color for index 1
+                Bit 1-0 - Color for index 0
+
+                Value   Color
+                0       White
+                1       Light Gray
+                2       Dark Gray
+                3       Black
+                CGB: palettes are taken from CGB palette memory instead.
+
+            FF48 - OBPO (OBJ Palette 0 Data) (R/W), FF49 - OBP1 (OBJ Palette 1 Data) (R/W) - Non CGB Mode Only
+                Assignes gray shades to the color indexes of the OBJs that use the corresponding palette.
+                Work exactly like BGP, except the lower 2 bits are ignored because color index 0 is transparent for OBJs.
+            
+        LCD Color Palettes (CGB only)
+            to-do
+
+    Rendering - Pixel FIFO:
+        Introduction:
+            FIFO Queue for the pixels (16 Pixels).
+            Two pixel FIFOs: 1 background, 1 OAM (sprite). They are independent from each other.
+                The two FIFOs are mixed only when popping items. Sprite take priority unless transparent (Color 0).
+            Uses Pixel Fetcher so that FIFO has atleast 8 pixels any given time.
+            FIFO is only manipulated only during mode 3 (pixel transfer).
+            4 Properties per FIFO:
+                - Color: a value between 0 and 3.
+                - Palette: on CGB value between 0 and 7. on DMG this only applies to sprites.
+                - Sprite Priority: on CGB this is the OAM index for the sprite and on DMG this doesn't exist.
+                - Background Priority: holds the value of the OBJ-to-BG Priority bit. 
+
+        FIFO - Pixel Fetcher:
+            fetches a row of 8 background or window pixels. Queues them up to be mixed with sprite pixels.
+            It has 5 steps. first 4 steps take 2 dots each and the fith step is attempted every dot until it succeeds. 
+            Order: Get tile, Get tile data low, Get tiel data high, Sleep, Push
+
+            Get-Tile:
+            Determines which background/window tile to fetch pixels from. Default: tilemap @ $9800 (can change that)
+            LCDC.3 enabled and X coord of current scanline not inside window: use tilemap $9C00
+            LCDC.6 enabled and X coord of current scanline inside window: use tilemap $9C00
+            fetcher keeps track of which X and Y coordinate the tile is on:
+                if current tile is window tile: X coord of window tile is used
+                    otherwise use: ((SCX / 8) + fetcher's X coordinate) & $1F.
+                    => fetcherX can be between 0 and 31.
+                if current tile is window tile: Y coord of window tile is used.
+                    otherwise use: (currentScanline + SCY) % 255.
+                    => fetcherY can be between 0 and 159
+
+            use fetcherX and fetcherY to get tile from VRAM. If the PPU blocks access it will return $FF.
+            CGB can access both tile index and attributes in the same clock dot.
+
+            Get Tile Data Low:
+            Check LCDC.4 for ehich tilemap to use.
+            CGB also needs to check which VRAM bank to use and if the tile is flipped vertically.
+            Then retrieve data from VRAM. If the PPU blocks access it will read $FF.
+            Data will be used in the push steps.
+
+            Get Tile Data High:
+            Same as Get Tile Data Low except the tile address is incremented by 1.
+            Data will be used in the push steps.
+            This also pushes a row of background/window pixels to the FIFO. This extra push is not part of the 8 steps. 
+            There are 3 total chances to push pixels.
+
+            Push:
+            Pushes a row of background/window pixels to the FIFO. The 8 pixels use fetcherX and fetcherY.
+            Pixels are only pushed to the background FIFO if it's empty.
+            If the tile is flipped horizontally the pixels will be pushed LSB first, otherwise MSB first.
+
+            Sleep:
+            Do nothing.
+
+            VRAM Access:
+            PPU operation read access to VRAM is blocked and returns $FF when:
+                - LCD turning off.
+                - At scanline 0 on CGB when not in double speed mode.
+                - When switching from mode 3 to mode 0
+                - On CGB when searching OAAM and Index 37 is reached.
+            At various times during PPU operation read access to VRAM is restored:
+                - At scanline 0 on DMG and CGB when in double speed mode
+                - On DMG when searching OAM and index 37 is reached
+                - After switching from mode 2 (oam search) to mode 3 (pixel transfer)
+            NOTE: These conditions are checked only when entering STOP mode and the PPU’s access to VRAM is always restored upon leaving STOP mode.
+
+        Mode 3 Operation:
+            pixel FIFO only operates during mode 3 (pixel transfer). 
+            At the beginning of mode 3: background and OAM FIFOs are cleared.
+
+            The Window:
+            When rendering window: FIFO is cleared and the fetcher is reset to step 1.
+            When WX = 0 and SCX & 7 > 0 => mode 3 is shortened by 1 dot.
+            BUG: When window already started rendering, when WX is changed mid-scanline after window has started rendering and the new value of WX is reached again: pixel of color 0 of lowest priority is pushed onto background FIFO.
+
+            Sprites:
+            following happens for each sprite if: if LCDC.1 = 1 and X-coord of the scanline has a sprite. If this is not met: goes to sprite fetch abortion.
+
+            Fetcher is advanced one step until it's at step 5 or until background FIFO is not empty. Advancing the fetcher one step here lengthens mode 3 by 1 dot. This process may be aborted after the fetcher has advanced a step.
+
+            to-do. 
+
+            Pixel Rendering:
+
+            CGB Pallete Access:
+            to-do.
+
+            Sprite Fetch Abortion:
+            While PPU is fetching object from OAM and LCDC.1 = 0 => Sprite fetching is aborted.
+            Abortion lengthens mode 3 by the amount of dots the previous instruction took plus the residual dots left for the PPU to process.
+            When OAM fetching is aborted a pixel is rendered, the fetcher is advanced one step.
+                => lengthens mode 3 by 1 dot if the current pixel is not 160. if it is, PPU stops processing sprites because they won't be visible.
+
+    Clock Speeds:
+        CPU:  4 MHz
+        RAM:  1 MHz
+        PPU:  4 MHz
+        VRAM: 2 MHz
+        - 70.224 CPU-Cycles per Frame (fps) @ 59.7Hz (for Gameboy output Framerate).
+        - Each CPU-Cycle one PPU-Cycle (one "dot")
+        - Each CPU Insruction is Multiple of 4, as CPU is Memory Bound and Ramspeed is 1/4 of CPU-Speed.
+    
+    CPU Registers and Flags:
+        Registers:
+        16-bit  Hi  Lo  Name/Function           RPG-Maker
+        AF      A   -   Accumulator & Flags     VAR0013
+        BC      B   C   BC                      VAR0014
+        DE      D   E   DE                      VAR0015
+        HL      H   L   HL                      VAR0016
+        SP      -   -   Stack Pointer           VAR0017
+        PC      -   -   Program Counter/Pointer VAR0018
+
+        most registers can be accessed either as one 16-bit register, or as two seperate 8-bit registers.
+
+        The Flags Register (lower 8 bits of AF register)
+        BCD = Binary coded decimal (normal binary encoding)
+        Bit Name    Explanation
+        7   z       Zero flag
+        6   n       Subtraction flag (BCD)
+        5   h       Half Carry flag (BCD)
+        4   c       Carry flag
+
+        Zero flag: 
+        bit is set only if the result is zero. used by conditional jumps.
+
+        The Carry Flag (C, or Cy)
+        Set when:
+        - Result of 8-bit addition is higher than $FF
+        - Result of 16-bit addition is higher than $FFFF
+        - Result of subtraction or comparison is lower than zero.
+        - When rotate/shift operation shifts out a "1" bit.
+        Used by conditional jumps and instructions like ADC, SBC, RL, RLA, etc.
+
+        The BCD Flags (N,H):
+        used by DAA instruction only.
+        N indicates whether the previous instruction has been a subtraction.
+        H indicates carry for the lower 4 bits of the result.
+        C indicates the carry for the upper 4 bits.
+        After adding/substracting two BCD numbers, DAA is used to convert result to BCD format.
+        BCD-Range: $00 to $99.
+        Because only two flags used: DAA is ineffective for 16-bit operations and use for INC/DEC operations has limits.
+    
+    CPU Instruction Set - Abbreveations:
+        256+256 Instructions.
+        Misc/control instructions (red):
+            NOP: Do nothing.
+            STOP: low power standby (VERY low power)
+            HALT: halt until interrupt (low power)
+            PREFIX: used as a prefix for the 256 rotate and shift instructions
+            DI: disable interrupts, IME=0
+            EI: enable interrupts, IME=1
+
+        Jump/calls (orange):
+            JR: relative jump with offset
+            JP: jump to location
+            CALL: function call
+            RET: function return
+            RETI: function return + enable interrupts IME=1
+            RST: call to $00, $08, $10, $18, $20, $28, $30, $38  
+
+        8bit load/store/move (blue):
+            LD: Load
+
+        16bit load/store/move (green):
+            LD: Load
+            POP: pop two bytes off stack into register (increment SP twice)
+            PUSH: push register info onto stack (decrement SP twice)
+
+        8bit arithmetic/logical (yellow):
+            INC: Increment
+            DEC: Decrement
+            DAA: Decimal Adjust A, A is adjusted to be correct BCD.
+            CPL: Complement A
+            SCF: Set Carry Flag
+            CCF: Complement Carry Flag
+            ADD: Addition (n + A)
+            ADC: Add n + Carry flag to A
+            SUB: Subtract (n - A)
+            SBC: Subtract n + Carry flag from A
+            AND: Logical AND n with A, result in A.
+            XOR: Logical XOR
+            OR: Logical OR
+            CP: Compare (A with n)
+
+        16bit arithmetic/logical (pink?):
+            INC: Increment
+            DEC: Decrement
+
+        8bit rotations/shifts and bit (teal):
+            RLCA: Rotate A left. Old bit 7 to Carry flag.
+            RLA: Rotate A left through Carry flag.
+            RRCA: Rotate A right. Old bit 0 to Carry flag.
+            RRA: Rotate A right through carry flag.
+            RLC: Rotate n left. Old bit 7 to Carry Flag
+            RL: Rotate n left through Carry flag.
+            RRC: Rotate n right. Old bit 0 to Carry Flag.
+            RR: Rotate n right through Carry flag.
+            SLA: Shift n left into Carry. LSB of n set to 0.
+            SRA: Shift n right into Carry. MSB doesn't change.
+            SRL: Shift n right into Carry. MSB set to 0.
+            SWAP: Swap upper & lower nibbles of n. (half-bytes)
+
+            BIT: Test bit b in register r.
+            SET: Set bit b in register r.
+            RES: Reset bit b in register r.
+
+
+Doom on RPG Maker 2003?
+    - Would be my 2nd project, that includes 3D!
+
+
+https://rpgmaker.net/tutorials/975/?post=573569 

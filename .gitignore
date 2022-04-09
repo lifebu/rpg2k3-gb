@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+
+# Proprietary Testdata not to be included in the repository
+proprietary/*
