@@ -43,6 +43,7 @@ You can run the generated project with EasyRPG Player. But if you want to run th
 
 ## Sources
 **Indepth information about what was integrated from thirdparty software can be found in the thirdparty/README.md file.**
+
 Tools:
 - [lcf2xml from liblcf](https://github.com/EasyRPG/liblcf): convert RPG Maker Project Files to/from xml.
 - [Easy RPG Player](https://github.com/EasyRPG/Player): Run RPG Maker Projects on many platforms.
