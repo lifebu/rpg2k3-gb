@@ -15,5 +15,5 @@ Files extracted from upstream source:
 
 - Upstream: https://github.com/EasyRPG/liblcf
 - Version: git (bbc37249c303f53f4f83e7e5f7e4ac93b9148962, 2022)
-- License: Apache 2.0
+- License: MIT
 - Fork (submodule): https://github.com/lifebu/liblcf
