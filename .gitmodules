@@ -1,0 +1,3 @@
+[submodule "thirdparty/liblcf"]
+	path = thirdparty/liblcf
+	url = https://github.com/EasyRPG/liblcf
