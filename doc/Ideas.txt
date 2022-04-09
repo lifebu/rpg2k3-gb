@@ -1,6 +1,6 @@
 - paths:
-    /home/burmi/Games/Steam/steamapps/compatdata/362870/pfx/drive_c/users/steamuser/My Documents/RPG Maker 2003/
-    /home/burmi/Games/Steam/steamapps/common/RPG Maker 2003/RTP/
+    steamapps/compatdata/362870/pfx/drive_c/users/steamuser/My Documents/RPG Maker 2003/
+    steamapps/common/RPG Maker 2003/RTP/
 
 - Links:
     - Complete Gameboy Architecture Refference:
@@ -448,6 +448,12 @@ RPG-Maker Custom Toolchain:
     
     - run my compiled binary files in easyRPG => debugging?
     - run in original RPG Maker for sanity check.
+
+    - goal:
+        - this project will compile a tool that you can use to create the RPG Maker Project.
+        - you input a gameboy binary file and it will create a valid RPG Maker 2003 project in a directory.
+        - this project is the gameboy emulator project.
+        - if this project already exists, it will only overwrite the ROM/RAM data from the project.
 
 
 Gameboy Info: 

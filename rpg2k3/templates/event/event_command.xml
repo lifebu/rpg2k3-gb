@@ -1,0 +1,11 @@
+<!--one line of a command (commands in RPG Maker can have multiple lines).-->
+<EventCommand>
+  <!--command function-->
+  <code>10220</code>
+  <!--indentation indicates where this code belongs (~python)-->
+  <indent>1</indent>
+  <!--single string parameter-->
+  <string></string>
+  <!--space separated integer parameter list-->
+  <parameters>0 1 1 0 0 144 0</parameters>
+</EventCommand>

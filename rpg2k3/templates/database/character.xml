@@ -1,0 +1,52 @@
+<!--id in [0001, 2966] (more and it will crash)-->
+<Actor id="0001">
+  <name>Cha0001</name>
+  <title>None</title>
+  <character_name>Actor4</character_name>
+  <character_index>0</character_index>
+  <transparent>F</transparent>
+  <initial_level>1</initial_level>
+  <final_level>99</final_level>
+  <critical_hit>F</critical_hit>
+  <critical_hit_chance>30</critical_hit_chance>
+  <face_name>Actor2</face_name>
+  <face_index>8</face_index>
+  <two_weapon>F</two_weapon>
+  <lock_equipment>F</lock_equipment>
+  <auto_battle>F</auto_battle>
+  <super_guard>F</super_guard>
+  <parameters>
+    <Parameters>
+      <maxhp>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</maxhp>
+      <maxsp>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</maxsp>
+      <attack>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</attack>
+      <defense>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</defense>
+      <spirit>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</spirit>
+      <agility>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</agility>
+    </Parameters>
+  </parameters>
+  <exp_base>1</exp_base>
+  <exp_inflation>1</exp_inflation>
+  <exp_correction>0</exp_correction>
+  <initial_equipment>
+    <Equipment>
+      <!--id = 0 => no equip.-->
+      <weapon_id>0</weapon_id>
+      <shield_id>0</shield_id>
+      <armor_id>0</armor_id>
+      <helmet_id>0</helmet_id>
+      <accessory_id>0</accessory_id>
+    </Equipment>
+  </initial_equipment>
+  <unarmed_animation>1</unarmed_animation>
+  <class_id>0</class_id>
+  <battle_x>264</battle_x>
+  <battle_y>96</battle_y>
+  <battler_animation>1</battler_animation>
+  <skills></skills>
+  <rename_skill>F</rename_skill>
+  <skill_name></skill_name>
+  <state_ranks></state_ranks>
+  <attribute_ranks></attribute_ranks>
+  <battle_commands>1 2 7 3 4 5 -1</battle_commands>
+</Actor>
