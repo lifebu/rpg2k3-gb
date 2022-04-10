@@ -5,7 +5,7 @@ else()
     cmake_policy(VERSION 3.22)
 endif()
 
-project(gb2rpg VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Gameboy rom to map/database rom/ram")
+project(gb2rpg VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Gameboy rom to RPG Maker")
 
 add_executable(gb2rpg gb2rpg.cpp)
 
