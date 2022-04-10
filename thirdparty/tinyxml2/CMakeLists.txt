@@ -5,10 +5,9 @@ else()
     cmake_policy(VERSION 3.22)
 endif()
 
-project(rpg2k3-gb VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Gameboy emulator for RPG Maker 2003")
+project(tinyxml2)
 
-# tools
-add_subdirectory(src/tools/gb2rpg)
+add_library(tinyxml2 tinyxml2.h tinyxml2.cpp)
 
-# thirdparty
-add_subdirectory(thirdparty/tinyxml2)
+# to add include directory when building.
+target_include_directories(tinyxml2 PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>")

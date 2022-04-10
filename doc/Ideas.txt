@@ -439,7 +439,7 @@ RPG-Maker Custom Toolchain:
     
     - CEC: Common Event Compiler.
         - c-code => .xml => common events.
-    - GB2MDBR: Gameboy 2 Map/Database ROM/RAM.
+    - GB2RPG: Gameboy 2 RPG Maker.
         - .gb   => MAP-ROM + MAP-RAM as .xml => mapfile. 
                 => DB-RAM as .xml => databasefile.
     - CRPGENV: C-RPG Maker Environment

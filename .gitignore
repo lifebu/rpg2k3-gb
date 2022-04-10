@@ -1,3 +1,4 @@
+## C++
 # Prerequisites
 *.d
 
@@ -11,7 +12,22 @@
 *.gch
 *.pch
 
+## CMake
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+.cmake
+*.ninja
+build/*
 
-# Proprietary Testdata not to be included in the repository
+## Proprietary Testdata not to be included in the repository
 data/*
 rpg2k3/project/*

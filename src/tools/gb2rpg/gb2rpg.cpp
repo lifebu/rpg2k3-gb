@@ -2,27 +2,28 @@
 #include <fstream>
 #include <cassert>
 #include <iostream>
+#include "thirdparty/tinyxml2/tinyxml2.h"
 
 
-typedef uint8_t byte;
+//typedef uint8_t byte;
 
 // structure of the Gameboy header @ 0x0100
 struct GBHeader {
-    byte entryPoint[4];
-    byte nintendoLogo[48];
+    uint8_t entryPoint[4];
+    uint8_t nintendoLogo[48];
     uint8_t title[11];
     uint8_t manufacturerCode[4];
-    byte cgbFlag;
-    byte newLicenseeCode[2];
-    byte sgbFlag;
-    byte cartridgeType;
-    byte romSize;
-    byte ramSize;
-    byte destinationCode;
-    byte oldLicenseeCode;
-    byte versionNumber;
-    byte headerChecksum;
-    byte globalChecksum[2];
+    uint8_t cgbFlag;
+    uint8_t newLicenseeCode[2];
+    uint8_t sgbFlag;
+    uint8_t cartridgeType;
+    uint8_t romSize;
+    uint8_t ramSize;
+    uint8_t destinationCode;
+    uint8_t oldLicenseeCode;
+    uint8_t versionNumber;
+    uint8_t headerChecksum;
+    uint8_t globalChecksum[2];
 };
 
 // read ram size from Gameboy header in KByte
@@ -54,7 +55,7 @@ uint16_t readRomSize(GBHeader gbHeader) {
 
 int main (int argc, char* argv[]) {
     // parameters
-    std::string filePath = "Tetris.gb";
+    std::string filePath = "data/Tetris.gb";
 
     std::begin(filePath);
 
@@ -82,6 +83,8 @@ int main (int argc, char* argv[]) {
     uint16_t ramSize = readRamSize(gbHeader);
     if (ramSize > 32) std::cout << "Error: Emulator does not support cartridges with more than 32KByte of RAM, this cartridge needs " << ramSize << "KByte." << "\n";
     uint16_t romSize = readRomSize(gbHeader);
+
+    tinyxml2::XMLDocument file;
 
     std::cout << "ram size: " << ramSize << "kB, rom size: " << romSize << "kB\n";
 
