@@ -20,7 +20,7 @@ Gameboy system emulator written in C. Custom Toolchain is used to run emulator i
 #### CEC: Common Event Compiler.
 Compiles C-code of the emulator into a .ldb file of an RPG Maker 2003 project. The database file includes the common events and actual code of the emulator in the format the RPG Maker expects. The code is compiled into .xml format and then lcf2xml is used to compile the .ldb file.
 
-#### GB2MDBR: Gameboy 2 Map/Database ROM/RAM.
+#### GB2RPG: Gameboy 2 RPG Maker.
 To play gameboy software this tool was made to read a gameboy rom (.gb file) and convert it into a format that the RPG Maker 2003 can understand and to be used by the emulator. ROM data from the cartridge is setup in mapfiles (.lmu) and are added to the project map tree (.lmt). RAM data is setup in mapfiles and the project database (.ldb).
 
 #### CRPGENV: C-RPG Maker Environment
