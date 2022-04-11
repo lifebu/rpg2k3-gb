@@ -173,4 +173,6 @@ GB2RPG: Gameboy 2 RPG Maker.
         - copy required data:
             RPG_RT.ini, *.r3proj, ultimate_rt_eb.dll, RPT_RT.exe
     
-    
+- Code structure:
+    - filepaths should be defined in one header file as #define!
+    - to have them globally set!
