@@ -1,0 +1,46 @@
+Use-Time:
+    1st: Create Project
+    - .gb               =(GB2RPG)=> - RPG Maker 2003 Project (rpg2k3/project)
+    - emu .xml code   
+      (rpg2k3/emu)      ==========>
+    - Project files
+      (RPG_RT.exe,...)  ==========>
+
+    2nd: Run Project
+    - compiled project  ==========> - Running Project
+    - custom Easy RPG   
+      (easyrpg/)
+      OR:
+      RPG2k3            ==========>
+
+
+Debug-Time:
+    - Emu C-Code        =========>  - Debug
+    - CRPGENV           =========>
+
+
+Build-Time:
+    1st: Easy RPG Player:
+    - Easy RPG Player-Code  =========>  - Easy RPG Player
+
+    2nd: C Event Compiler:
+    - CEC-Code              =========>  - CEC
+
+    3rd: Emulator:
+    - Emu C-Code            =========>  - static lib (for CRPGENV)
+                            ==(CEC)==>  - emu .xml-Code
+
+    4th: RPG Environment:
+    - CRPGENV-Code          ========>   - CRPGENV
+    - Emu C-Code (static)   ========>
+
+    5th: Gameboy 2 RPG:
+    - GB2RPG-Code           =======>    - GB2RPG
+
+
+Implementation order:
+    GB2RPG
+    CRPGENV + Interface
+        Emulator
+        CEC
+    

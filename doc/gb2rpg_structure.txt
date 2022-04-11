@@ -1,67 +1,71 @@
-Map ROM/RAM Compiler:
-    - GB2RPG: Gameboy 2 RPG Maker.
-        - .gb   => MAP-ROM + MAP-RAM as .xml => mapfile. 
-                => DB-RAM as .xml => databasefile.
+GB2RPG: Gameboy 2 RPG Maker.
+    - .gb   => MAP-ROM + MAP-RAM as .xml => mapfile. 
+            => DB-RAM as .xml => databasefile.
+            => Emu-Code as .xml => databasefile.
+            => creates the entire RPG Maker project.
 
-- using liblcf:
-    https://github.com/EasyRPG/liblcf
+- thirdparty:
+    liblcf
+    tinyxml2
 
-- .gb file =LCF2XML> mapfile.
-MAP-ROM: Events + Pages
-MAP-RAM: Event + Position!
-DMG-ROM: One Event.
 
-- commands i need:
-    - Control Variables:
-    - Conditional Branch:
-    - Label:
-    - Jump to Label
-    - Call Event:
-    - Comment:
+- ROM/RAM Data:
+    MAP-ROM: Events + Pages
+    MAP-RAM: Event + Position!
+    DMG-ROM: One Event.
 
-- Map0001.emu (.xml):
-    - <events>: List of events
-    - <event id="0001">
-        <name>MAP-ROM-001</name>
-        <x>0</x>
-        <y>0</y>
-        <pages>: List of Pages
-    - <EventPage id="0001">
-    - I do not need to change all the other settings 
-        => Can use a template file.
-    - Multi-Line Comment:
-        12410: Start of Comment,
-        22410: other lines of comment.
-    - Conditional Branch:
-        12010: Conditional Branch
-        22010: Else
-        22011: Branch End
-        <parameters>1 5 0 1 0 1</parameters>
-            1: Variable Condition:
-            5: Variable Index:
-            0: Function: (Equal-to)
-            1: Value (You want to compar against)
-            0: Constant value (1 = variable.)
-            1: Do you want else-case?
-    - Control Variables:
-        10220
-        <parameters>0 6 6 0 0 255 0</parameters>
-            255: value to set.
-            6-6: from Var 6 to Var 6.
-    - Call Event:
-        12330
-        <parameters>0 1 0</parameters>
-        0: Type (0 = Common Event, 1 = Map event (const), 2 = Map event (variable))
-        1: CommonEventID
-        0: other param.
-    - Label:
-        12110
-        <parameters>1000</parameters>
-            which label
-    - Jump to Label:
-        12120
-        <parameters>1000</parameters>
-            which label
+- RPG Info:
+    - commands i need:
+        - Control Variables:
+        - Conditional Branch:
+        - Label:
+        - Jump to Label
+        - Call Event:
+        - Comment:
+
+    - Map0001.emu (.xml):
+        - <events>: List of events
+        - <event id="0001">
+            <name>MAP-ROM-001</name>
+            <x>0</x>
+            <y>0</y>
+            <pages>: List of Pages
+        - <EventPage id="0001">
+        - I do not need to change all the other settings 
+            => Can use a template file.
+        - Multi-Line Comment:
+            12410: Start of Comment,
+            22410: other lines of comment.
+        - Conditional Branch:
+            12010: Conditional Branch
+            22010: Else
+            22011: Branch End
+            <parameters>1 5 0 1 0 1</parameters>
+                1: Variable Condition:
+                5: Variable Index:
+                0: Function: (Equal-to)
+                1: Value (You want to compar against)
+                0: Constant value (1 = variable.)
+                1: Do you want else-case?
+        - Control Variables:
+            10220
+            <parameters>0 6 6 0 0 255 0</parameters>
+                255: value to set.
+                6-6: from Var 6 to Var 6.
+        - Call Event:
+            12330
+            <parameters>0 1 0</parameters>
+            0: Type (0 = Common Event, 1 = Map event (const), 2 = Map event (variable))
+            1: CommonEventID
+            0: other param.
+        - Label:
+            12110
+            <parameters>1000</parameters>
+                which label
+        - Jump to Label:
+            12120
+            <parameters>1000</parameters>
+                which label
 
 - sequence:
     - read cartridge header:
@@ -83,39 +87,36 @@ DMG-ROM: One Event.
             Global Checksum:    2 Byte      Binary
         
         - read ROM-Size and RAM-Size.
+        - later: Title (to show in RPG Maker!)
     
     - Create Map File:
-        - how to include another library?
-        - use .xml library to load a template map file with everything setup aside from events.
-            - tinyxml2:
-                https://github.com/leethomason/tinyxml2
+        - load map-template
 
-        - add DMG-ROM:
-            - Read DMG_ROM.bin file.
-            - ROM-Size: 256
-            - create the jump selector
-                - conditional branch on a variable rom_read_index
-                - with jump to Label x (x is the xth byte)
-                            - better code structure:
-                                with these "linear" jump selectors I have an armoticized runtime of 1.000/2 = 500 if-checks
-                                Do A search if(rom_read_index < 500) => search in 0-500
-                                            if(rom_read_index > 500) => search in 500-1000
-                                            if(rom_read_index == 500) => jump to label
-                                        => worst-case log_2(1.000) = 10 if-checks
-                                    - no variable lable index :/
-            - create jump targets:
-                Label x (x is the xth byte)
-                Control Variable rom_read_bytes
-                Jump to label: 1000 (max)
-            - create end:
-                Label 1000
-                call Event 0001
+        - add DMG-ROM Event:
+            => Create my own DMG-ROM in C-Code similar to Emulator C-Code.
+                => good test for emulator.
+                => better from a legal standpoint than to use actual DMG-ROM.
+                => so this event is different to the other events. Actual logic.
+            
+            - use event template.
+            - Read DMG_ROM.cpp file.
+            - use CEC to compile into .xml
+            - create an Event to the map with .xml as code.
             
         - add MAP-ROM Events: (Cartridge-ROM)
+            - read from actual .gb file (input).
+            - use event template.
             - use rom-size:
             - create the jump selector
                 - conditional branch on a variable rom_read_index
                 - with jump to Label x (x is the xth byte)
+                - better code structure:
+                    with these "linear" jump selectors I have an armoticized runtime of 1.000/2 = 500 if-checks
+                    Do A search if(rom_read_index < 500) => search in 0-500
+                                if(rom_read_index > 500) => search in 500-1000
+                                if(rom_read_index == 500) => jump to label
+                            => worst-case log_2(1.000) = 10 if-checks
+                        - no variable lable index :/
             - create jump targets:
                 Label x (x is the xth byte)
                 Control Variable rom_read_bytes
@@ -129,19 +130,47 @@ DMG-ROM: One Event.
 
         - add MAP-RAM Events: (DMG-RAM)
             - 500 by 500 map.
+            - use event template.
             - Add empty events. Only Thing I need is position.
 
         - write output .xml file.
 
         - call LCF2XML to turn into mapfile.
 
+    - Create Maptree File:
+        - I think I don't need to change the template. should work like that.
+        - if I want to support multiple gameboy games and mapfiles later I might need to change it.
+
+        - call LCF2XML to turn into maptreefile.
+
     - Create Database File:
-        - use .xml library to load a template database file with everything setup aside from Characters and Items.
-            - tinyxml2:
-                https://github.com/leethomason/tinyxml2
+        - load database-template.
         
         - add CHARA-RAM:
+            - add items:
+                - use item template.
+                - create 9216 items.
+                - item-id defines which item type it is.
+            
+            - add characters:
+                - use character template.
+                - create 2966 characters.
+
+        - add EMU Code:
+            - load the emu-code .xml (if available)
+            - copy:
+                common events, switches, variables to database.
 
         - write output .xml file.
 
         - call LCF2XML to turn into databasefile.
+    
+    - Create project folder:
+        - folder structure (empty folder):
+            - Title, System2, System, Sound, Picture, Panorama, Music, Movie, Monster, GameOver, Frame, FaceSet, ChipSet, CharSet, BattleWeapon, BattleCharSet, Battle2, Battle, Backdrop
+        - copy compiled data:
+            mapfiles (Map0001.lmu,...), maptree (RPG_RT.lmt), database (RPG_RT.ldb)
+        - copy required data:
+            RPG_RT.ini, *.r3proj, ultimate_rt_eb.dll, RPT_RT.exe
+    
+    

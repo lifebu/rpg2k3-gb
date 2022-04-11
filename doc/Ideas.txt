@@ -437,17 +437,17 @@ RPG-Maker Custom Toolchain:
         - libclf: LCF2XML. Convert RPG Maker data format to XML and vice-versa
             LMU: Map, LMT: Maptree, LDB: Database, LSD: Savegame.
     
-    - CEC: Common Event Compiler.
-        - c-code => .xml => common events.
+    - CEC: C Event Compiler.
+        - c-code => .xml
     - GB2RPG: Gameboy 2 RPG Maker.
         - .gb   => MAP-ROM + MAP-RAM as .xml => mapfile. 
                 => DB-RAM as .xml => databasefile.
+                => Emu-Code as .xml => databasefile.
+                => creates the entire RPG Maker project.
     - CRPGENV: C-RPG Maker Environment
         - c-code can be run outside of RPG Maker so that I can debug it normally without dependencies.
             - Plattform Code that runs my code (kinda like engine).
-    
-    - run my compiled binary files in easyRPG => debugging?
-    - run in original RPG Maker for sanity check.
+        - run in original RPG Maker for sanity check.
 
     - goal:
         - this project will compile a tool that you can use to create the RPG Maker Project.

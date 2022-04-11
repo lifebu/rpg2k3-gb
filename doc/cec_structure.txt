@@ -1,100 +1,109 @@
-Common Event Compiler.
+C Event Compiler.
+    - c-code => .xml
 
-- using liblcf:
-    https://github.com/EasyRPG/liblcf
+- thirdparty:
+    tinyxml2
 
-- c-code => .xml =LCF2XML> common events.
-- .ldb => Database File
-
-- RPG_RT.edb (xml):
-    - <LDB><Database></Database></LDB>
-    - <switches>:
-        <Switch id="0001">
-            <name>init_done</name>
-        </Switch>
-        - every switch up to a set max-number in editor is here, even if it has no name.
-        - id: 0001-9999
-    - <variables>:
-        <Variable id="0001">
-            <name>pic_pox_x</name>
-        </Variable>
-        - every variable up to a set max-number in editor is here, even if it has no name.
-        - id: 0001-9999
-    - <commonevents>:
-        - <CommonEvent id="0001">
-            - name
-            - trigger:
-                - 3 = autorun
-                - 4 = parallel process.
-                - 5 = none
-            - switch_flag: F(alse), T(rue)
-                - condition switch.
-            - switch_id:
-                1 is used if switch_flag == False
-                otherwise id € 1-9999
-            - <event_commands>
-                - list of event_commands
-    
-    - event commands:
-        - it seams an "Event-Command" is just a line :/
-            - So an actual command is multiple "Event-Commands"
-        <code>:
-            A number that represents which command
-        <indent>:
-            1-x: indent level.
-            Kinda like Python: Same indent => same codeblock until lower indent is reached.
-        <string>: 
-            if one of the parameters is a string
-        <parameters>:
-            multiple parameters, which are numbers seperated by " ".
+- RPG Info:
+    - RPG_RT.edb (xml):
+        - <LDB><Database></Database></LDB>
+        - <switches>:
+            <Switch id="0001">
+                <name>init_done</name>
+            </Switch>
+            - every switch up to a set max-number in editor is here, even if it has no name.
+            - id: 0001-9999
+        - <variables>:
+            <Variable id="0001">
+                <name>pic_pox_x</name>
+            </Variable>
+            - every variable up to a set max-number in editor is here, even if it has no name.
+            - id: 0001-9999
+        - <commonevents>:
+            - <CommonEvent id="0001">
+                - name
+                - trigger:
+                    - 3 = autorun
+                    - 4 = parallel process.
+                    - 5 = none
+                - switch_flag: F(alse), T(rue)
+                    - condition switch.
+                - switch_id:
+                    1 is used if switch_flag == False
+                    otherwise id € 1-9999
+                - <event_commands>
+                    - list of event_commands
         
-        => Instead of creating a HUGE LIST of all the commands and how they are structured.
-        => Use emu_example_RPG_RT.edb file and just directly write parser :/ (read/write).
-    
-- commands i need:
-    - Show Text:
-    - Show Choices:
-    - Input Number:
-    - Control Switches:
-    - Control Variables:
-    - Change Item:
-    - Change Party Member:
-    - Change EXP:
-    - Change Parameters:
-    - Change Equipment:
-    - Set Event Location:
-    - Get Event ID:
-    - Show Picture:
-    - Show/Hide Player:
-    - Key Input Processing:
-    - Conditional Branch:
-    - Jump to Label:
-    - Label:
-    - Loop:
-    - Break Loop:
-    - End Event Processing:
-    - Erase Event:
-    - Call Event:
-    - Comment:
-
-- use template file:
-    - includes CHARA-RAM and 
+        - event commands:
+            - it seams an "Event-Command" is just a line :/
+                - So an actual command is multiple "Event-Commands"
+            <code>:
+                A number that represents which command
+            <indent>:
+                1-x: indent level.
+                Kinda like Python: Same indent => same codeblock until lower indent is reached.
+            <string>: 
+                if one of the parameters is a string
+            <parameters>:
+                multiple parameters, which are numbers seperated by " ".
+            
+            => Instead of creating a HUGE LIST of all the commands and how they are structured.
+            => Use emu_example_RPG_RT.edb file and just directly write parser :/ (read/write).
+        
+    - commands i need:
+        - Show Text:
+        - Show Choices:
+        - Input Number:
+        - Control Switches:
+        - Control Variables:
+        - Change Item:
+        - Change Party Member:
+        - Change EXP:
+        - Change Parameters:
+        - Change Equipment:
+        - Set Event Location:
+        - Get Event ID:
+        - Show Picture:
+        - Show/Hide Player:
+        - Key Input Processing:
+        - Conditional Branch:
+        - Jump to Label:
+        - Label:
+        - Loop:
+        - Break Loop:
+        - End Event Processing:
+        - Erase Event:
+        - Call Event:
+        - Comment:
 
 - sequence:
-    - call LCF2XML to turn db-File into xml.
-
-    - load .xml with .xml library:
-        - tinyxml2:
-                https://github.com/leethomason/tinyxml2
-
-    - delete common functions in xml.
-
     - set variable names.
 
     - set switch names.
 
     - compile and write each c-function to common event:
-    
-    - write output .xml file.
 
-    - call LCF2XML to turn into databasefile.
+    - write output .xml file using tinyxml2
+
+
+- Interface:
+    - common RPGMaker2003 Interface exists.
+    - functions that can be 1-to-1 mapped to RPGMaker
+    - go through C-Code from top to bottom and map functions.
+    - more intelligent mapping to basic C keywords (if) to RPGMaker2003 commands (if).
+
+- Questions to answer:
+    - Syntax to define common event and it's code in c.
+        - name, trigger, flags.
+    
+    - Variable names cannot be changed.
+        - They are defined during compile time.
+        - Need clear names for them!
+    
+    - Mapping from RPG Maker Interface to xml.
+        - one command in RPG Maker mapps to multiple commands in code (loc).
+        - Could hardcode mapping in code => messy.
+        - can i provide a mapping file?
+            - .JSON?
+            - used during runtime.
+            - this mapping file provides with template information.

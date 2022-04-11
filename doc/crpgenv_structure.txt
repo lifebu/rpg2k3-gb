@@ -18,7 +18,5 @@ CRPGEnv: C-RPG Maker Environment
         - 2D-Rendering / Blitting (SDL? SIMPLE OpenGL?)
             - showText(), showChoices(), inputNumber(), showPicture(), 
         - keyInputProcessing()
-        - Init: XML:
-            - Read the xml mapfiles to read-out the rom?
-            - and set-up the map-ram?
-            - read out the .db file to know the setup of the chara-ram?
+
+- simple framework!
