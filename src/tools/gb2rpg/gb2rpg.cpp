@@ -8,12 +8,7 @@
 
 int main (int argc, char* argv[]) {
     CLIOptions cli = CLIOptions(argc, argv);
-
-    std::vector<GBFile> f;
-    f.push_back(GBFile("asdf"));
-    // why does copying create a problem? Define Copy Constructor and Move Constructor?
-    // https://stackoverflow.com/questions/64758775/result-type-must-be-constructible-from-value-type-of-input-range-when-trying-t
-    //std::vector<GBFile> g = f;
+    if(cli.printInfo()) return 0;
 
     std::vector<GBFile> gbFiles = GBFile::genGBFiles(cli);
 

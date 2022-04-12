@@ -10,7 +10,11 @@
             "request": "launch",
             // Resolved by CMake Tools:
             "program": "${command:cmake.launchTargetPath}",
-            "args": [],
+            "args": [
+                "-g",
+                "data/Tetris.gb",
+                "data/Donkey\\ Kong\\ Land.gb"
+            ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [
