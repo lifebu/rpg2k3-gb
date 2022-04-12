@@ -36,6 +36,12 @@ public:
     static std::vector<GBFile> genGBFiles(CLIOptions& cli);
 
 private:
+    // read ram size from Gameboy header in KByte
+    uint16_t readRamSize(GBHeader& header);
+    // read rom size from Gameboy header in KByte
+    uint16_t readRomSize(GBHeader& header);
+
     std::ifstream file;
-    GBHeader header;
+    uint16_t ramSize;
+    uint16_t romSize;
 };
