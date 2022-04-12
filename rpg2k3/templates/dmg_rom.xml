@@ -1,0 +1,14 @@
+<event_commands>
+  <EventCommand>
+    <code>12410</code>
+    <indent>1</indent>
+    <string>This is a comment!</string>
+    <parameters></parameters>
+  </EventCommand>
+  <EventCommand>
+    <code>22410</code>
+    <indent>1</indent>
+    <string>Second Line of the Comment!</string>
+    <parameters></parameters>
+  </EventCommand>
+</event_commands>
