@@ -30,4 +30,5 @@ build/*
 
 ## Proprietary Testdata not to be included in the repository
 data/*
+playground/*
 rpg2k3/project/*

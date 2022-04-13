@@ -19,6 +19,7 @@
             - Switch Operations: Set Bools
         - Variables (Int): 5.000 Variables.
             - Range: [-9.999.999,9.999.999] ~ 20Mio values ~ 2^25  (1 sign, 24 data)
+                - 20Mio Values >= 16.777.216_10 = 2^24 = 3 Bytes.
             - Variable Operations:
                 - Single Variable, Variable Range, Variable Reference
                 - Single Variable vs. Variable Reference
@@ -234,7 +235,8 @@
         - Conditional Branch (if-else)
             - Switch, Variable, TImer (1-2)
         - Label + Jump to Label
-            - Label only have numbers.
+            - Label only have numbers (1-1000)
+            - Jump to Label is hardcoded number!
         - Loop (While-True)
             - Use Break Loop.
         - End Event Processing.
@@ -409,7 +411,7 @@ Gameboy & RPG-Maker:
             - otherwise: Can blit pixels directly when FIFO pushes pixel out.
         
 
-    ROM - Data:
+    ROM - Data (<= 8MByte, Multiples of 32KByte):
         - Use Map Events: 8-2048 Event Pages (1-21 Events) each 4kByte (1.366 Vars)
             - Or less and only write one VAR? need to test!
     RAM - Data:
@@ -1210,9 +1212,6 @@ Gameboy Info:
             SET: Set bit b in register r.
             RES: Reset bit b in register r.
 
-
-Doom on RPG Maker 2003?
-    - Would be my 2nd project, that includes 3D!
 
 
 https://rpgmaker.net/tutorials/975/?post=573569 

@@ -18,7 +18,12 @@ Memory compression: ?
     - really needed?
         - can't i directly access individual bits in a Variable?
 
-
+Common Library:
+    - some of the work I need to do in RPG Maker is not directly tied to the actual emulation itself.
+    - e.g. packing/unpacking of the 3 Bytes in one VAR, converting GB Adresses to EventIDs and ByteOffsets.
+    - should create one common library of functions that is compiled like the emulator code.
+    - It uses the same interface as the Emulator uses, so it will be compiled by CEC the same as emulator code.
+    
 
 Init:
     - load ROM Banks 0+1

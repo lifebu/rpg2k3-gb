@@ -107,26 +107,21 @@ GB2RPG: Gameboy 2 RPG Maker.
             - read from actual .gb file (input).
             - use event template.
             - use rom-size:
-            - create the jump selector
-                - conditional branch on a variable rom_read_index
-                - with jump to Label x (x is the xth byte)
-                - better code structure:
-                    with these "linear" jump selectors I have an armoticized runtime of 1.000/2 = 500 if-checks
-                    Do A search if(rom_read_index < 500) => search in 0-500
-                                if(rom_read_index > 500) => search in 500-1000
-                                if(rom_read_index == 500) => jump to label
-                            => worst-case log_2(1.000) = 10 if-checks
-                        - no variable lable index :/
-            - create jump targets:
-                Label x (x is the xth byte)
-                Control Variable rom_read_bytes
-                Jump to label: 1000 (max)
-            - create end:
-                Label 1000
-                call Event 0001
-            
-            - multiple event pages???
-                - 16kB Pages?
+            - code:
+                - Code is binary jump.
+                Header:
+                    VarOffset = ByteOffset / (BYTES_PER_VAR * VARS_PER_READWRITE)
+                    JumpToLabel VARS_PER_EPAGE / 2;
+                Label-Boilerplate:
+                    Label X
+                    if (VarOffset < (X - 1))
+                        JumpToLabel X - (X/2)
+                    if (VarOffset > (X - 1))
+                        JumpToLabel X + (X/2)
+                    READVAR1 = LABELXVALUE1
+                    READVAR2 = LABELXVALUE2
+                    EndEventProcessing
+
 
         - add MAP-RAM Events: (DMG-RAM)
             - 500 by 500 map.
