@@ -89,27 +89,26 @@ std::vector<Map> Map::genMapFiles(std::vector<GBFile>& gbFiles) {
 
 // private
 void Map::generateDMGROM() {
-    // load event template (event/event.xml)
     tinyxml2::XMLDocument eventTemplate;
     eventTemplate.LoadFile((FOLDERS::TEMPLATE_PATH + "event/event.xml").c_str());
-    // load one event-page from template (event/event_page.xml)
+
     tinyxml2::XMLDocument eventPageTemplate;
     eventPageTemplate.LoadFile((FOLDERS::TEMPLATE_PATH + "event/event_page.xml").c_str());
-    // load dmg_rom (event_commands!)
+
     tinyxml2::XMLDocument DMGROM;
     DMGROM.LoadFile((FOLDERS::TEMPLATE_PATH + "dmg_rom.xml").c_str());
     
 
-    // add dmg_rom to event page
-    DeepCopyInsertBackAllSiblings(DMGROM.RootElement(), &eventPageTemplate,
+    // add DMGROM into event-page
+    DeepCloneInsertBackAllSiblings(DMGROM.RootElement(), &eventPageTemplate,
         eventPageTemplate.RootElement()->FirstChildElement("event_commands"));
 
     // insert event-page into event.
-    DeepCopyInsertBack(eventPageTemplate.RootElement(), &eventTemplate, 
+    DeepCloneInsertBack(eventPageTemplate.RootElement(), &eventTemplate, 
         eventTemplate.RootElement()->FirstChildElement("pages"));
 
     // insert DMG Event into map events
-    DeepCopyInsertBack(eventTemplate.RootElement(), eventsDoc, 
+    DeepCloneInsertBack(eventTemplate.RootElement(), eventsDoc, 
         eventsDoc->LastChildElement());
 }
 void Map::generateMapROM(GBFile& gbFile) {
@@ -135,7 +134,7 @@ void Map::generateMapRAM() {
     eventPageTemplate.LoadFile((FOLDERS::TEMPLATE_PATH + "event/event_page.xml").c_str());
 
     // insert event-page into event.
-    DeepCopyInsertBack(eventPageTemplate.RootElement(), &eventTemplate, 
+    DeepCloneInsertBack(eventPageTemplate.RootElement(), &eventTemplate, 
         eventTemplate.RootElement()->FirstChildElement("pages"));
 
     eventTemplate.SaveFile("playground/test.xml");

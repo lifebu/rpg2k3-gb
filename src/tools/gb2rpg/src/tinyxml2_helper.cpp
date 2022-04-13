@@ -5,15 +5,15 @@
 /*
 * if insertPos is nullptr, it will insert the copy as a new child to document.
 */
-void DeepCopyInsertBack(tinyxml2::XMLElement* toCopy, tinyxml2::XMLDocument* doc, tinyxml2::XMLElement* insertPos) {
+void DeepCloneInsertBack(tinyxml2::XMLElement* toCopy, tinyxml2::XMLDocument* doc, tinyxml2::XMLElement* insertPos) {
     auto* copy = toCopy->DeepClone(doc);
     if(insertPos) insertPos->InsertEndChild(copy);
     else doc->InsertEndChild(copy);
 }
 
-void DeepCopyInsertBackAllSiblings(tinyxml2::XMLElement* toCopy, tinyxml2::XMLDocument* doc, tinyxml2::XMLElement* insertPos) {
+void DeepCloneInsertBackAllSiblings(tinyxml2::XMLElement* toCopy, tinyxml2::XMLDocument* doc, tinyxml2::XMLElement* insertPos) {
     while (toCopy) {
-        DeepCopyInsertBack(toCopy, doc, insertPos);
+        DeepCloneInsertBack(toCopy, doc, insertPos);
         toCopy = toCopy->NextSiblingElement();
     }
 }

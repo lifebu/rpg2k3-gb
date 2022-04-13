@@ -4,6 +4,6 @@ namespace tinyxml2 {
     class XMLDocument;
 }
 
-void DeepCopyInsertBack(tinyxml2::XMLElement* toCopy, tinyxml2::XMLDocument* doc, tinyxml2::XMLElement* insertPos);
+void DeepCloneInsertBack(tinyxml2::XMLElement* toCopy, tinyxml2::XMLDocument* doc, tinyxml2::XMLElement* insertPos);
 
-void DeepCopyInsertBackAllSiblings(tinyxml2::XMLElement* toCopy, tinyxml2::XMLDocument* doc, tinyxml2::XMLElement* insertPos);
+void DeepCloneInsertBackAllSiblings(tinyxml2::XMLElement* toCopy, tinyxml2::XMLDocument* doc, tinyxml2::XMLElement* insertPos);
