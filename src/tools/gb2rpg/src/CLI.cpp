@@ -18,10 +18,10 @@ CLIOptions::CLIOptions(int argc, char* argv[])
 bool CLIOptions::printInfo() {
     if(!printVersion && !printHelp && !filePaths.empty()) return false;
     if(printVersion) {
-        cout << CLI::versionString;
+        cout << CLI::VERSION_STRING;
     } 
     if (printHelp || (!printHelp && !printVersion && filePaths.empty())) {
-        cout << CLI::helpString;
+        cout << CLI::HELP_STRING;
         //cout << "GB2RPG - Create RPG Maker 2003 Project Files from Gameboy Rom" << endl;
         //cout << "Usage: gb2rpg [--help/-h] [--version/-v] [-gb/-g] file1 [... fileN]" << endl;
         //cout << "          --help/-h: print help" << endl;

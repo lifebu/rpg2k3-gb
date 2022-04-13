@@ -35,10 +35,11 @@ public:
 
 private:
     void generateMapROM(GBFile& gbFile);
-    void generateMapRAM(int ramSize);
+    void generateMapRAM();
 
     
     tinyxml2::XMLDocument* events;
+    int nextEventID;
 
     inline static int mapTemplateRefCount = 0;
     inline static tinyxml2::XMLDocument* mapTemplate = nullptr;
