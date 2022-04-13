@@ -4,17 +4,15 @@ Does Hardware setup.
 I will load the Nintendo Logo from Cartridge ROM to avoid using copyrighted Material in my codebase.
 https://gbdev.gg8.se/wiki/articles/Gameboy_Bootstrap_ROM
 -->
-<event_commands>
-  <EventCommand>
-    <code>12410</code>
-    <indent>1</indent>
-    <string>This is a comment!</string>
-    <parameters></parameters>
-  </EventCommand>
-  <EventCommand>
-    <code>22410</code>
-    <indent>1</indent>
-    <string>Second Line of the Comment!</string>
-    <parameters></parameters>
-  </EventCommand>
-</event_commands>
+<EventCommand>
+  <code>12410</code>
+  <indent>1</indent>
+  <string>This is a comment!</string>
+  <parameters></parameters>
+</EventCommand>
+<EventCommand>
+  <code>22410</code>
+  <indent>1</indent>
+  <string>Second Line of the Comment!</string>
+  <parameters></parameters>
+</EventCommand>

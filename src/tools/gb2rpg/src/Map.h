@@ -34,11 +34,12 @@ public:
     static std::vector<Map> genMapFiles(std::vector<GBFile>& gbFiles);
 
 private:
+    void generateDMGROM();
     void generateMapROM(GBFile& gbFile);
     void generateMapRAM();
 
     
-    tinyxml2::XMLDocument* events;
+    tinyxml2::XMLDocument* eventsDoc;
     int nextEventID;
     // MAP RAM Events start with this ID.
     int mapRAMID;

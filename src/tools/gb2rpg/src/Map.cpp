@@ -4,6 +4,7 @@
 #include "Globals.h"
 
 #include "thirdparty/tinyxml2/tinyxml2.h"
+#include "tinyxml2_helper.h"
 
 #include <iostream>
 #include <cstdio>
@@ -12,7 +13,7 @@ using namespace std;
 
 // public
 Map::Map(GBFile& gbFile)
-    : events(nullptr), nextEventID(1) {
+    : eventsDoc(nullptr), nextEventID(MEMORYSIZE::MAP_ROM_ID) {
     int numOfMapROMs = ((gbFile.getRomSize() * 1024) / (MEMORYSIZE::MAX_PAGES_PER_EVENT * MEMORYSIZE::BYTES_PER_EPAGE)) + 1;
     mapRAMID = MEMORYSIZE::MAP_ROM_ID + numOfMapROMs;
 
@@ -25,8 +26,8 @@ Map::Map(GBFile& gbFile)
         mapTemplateRefCount++;
     }
 
-    events = new tinyxml2::XMLDocument;
-    
+    eventsDoc = new tinyxml2::XMLDocument;
+    generateDMGROM();
     generateMapROM(gbFile);
     generateMapRAM();
 }
@@ -37,9 +38,9 @@ Map::~Map() {
         mapTemplate = nullptr;
     }
 
-    if(events) {
-        delete events;
-        events = nullptr;
+    if(eventsDoc) {
+        delete eventsDoc;
+        eventsDoc = nullptr;
     }
 }
 
@@ -87,6 +88,30 @@ std::vector<Map> Map::genMapFiles(std::vector<GBFile>& gbFiles) {
 }
 
 // private
+void Map::generateDMGROM() {
+    // load event template (event/event.xml)
+    tinyxml2::XMLDocument eventTemplate;
+    eventTemplate.LoadFile((FOLDERS::TEMPLATE_PATH + "event/event.xml").c_str());
+    // load one event-page from template (event/event_page.xml)
+    tinyxml2::XMLDocument eventPageTemplate;
+    eventPageTemplate.LoadFile((FOLDERS::TEMPLATE_PATH + "event/event_page.xml").c_str());
+    // load dmg_rom (event_commands!)
+    tinyxml2::XMLDocument DMGROM;
+    DMGROM.LoadFile((FOLDERS::TEMPLATE_PATH + "dmg_rom.xml").c_str());
+    
+
+    // add dmg_rom to event page
+    DeepCopyInsertBackAllSiblings(DMGROM.RootElement(), &eventPageTemplate,
+        eventPageTemplate.RootElement()->FirstChildElement("event_commands"));
+
+    // insert event-page into event.
+    DeepCopyInsertBack(eventPageTemplate.RootElement(), &eventTemplate, 
+        eventTemplate.RootElement()->FirstChildElement("pages"));
+
+    // insert DMG Event into map events
+    DeepCopyInsertBack(eventTemplate.RootElement(), eventsDoc, 
+        eventsDoc->LastChildElement());
+}
 void Map::generateMapROM(GBFile& gbFile) {
     // for loop (o to numberofEvents)
         // load event template (event/event.xml)
@@ -103,9 +128,20 @@ void Map::generateMapROM(GBFile& gbFile) {
 }
 void Map::generateMapRAM() {
     // load event template (event/event.xml)
+    tinyxml2::XMLDocument eventTemplate;
+    eventTemplate.LoadFile((FOLDERS::TEMPLATE_PATH + "event/event.xml").c_str());
     // add one event-page from template (event/event_page.xml)
-    // for loop (0 to MEMORYSIZE::NUM_DMG_RAM_EVENTS, increment nextEventID on loop)
+    tinyxml2::XMLDocument eventPageTemplate;
+    eventPageTemplate.LoadFile((FOLDERS::TEMPLATE_PATH + "event/event_page.xml").c_str());
 
+    // insert event-page into event.
+    DeepCopyInsertBack(eventPageTemplate.RootElement(), &eventTemplate, 
+        eventTemplate.RootElement()->FirstChildElement("pages"));
+
+    eventTemplate.SaveFile("playground/test.xml");
+    
+    
+    // for loop (0 to MEMORYSIZE::NUM_DMG_RAM_EVENTS, increment nextEventID on loop)
         // change event ID in loaded template
         // deep copy it into this.events
 }
