@@ -1,0 +1,30 @@
+<!--Comment-->
+<EventCommand>
+  <code>12410</code>
+  <indent>0</indent>
+  <string>Convert Offset from Bytes to Variables</string>
+  <parameters></parameters>
+</EventCommand>
+<!--VarOffset = ByteOffset / (BYTES_PER_VAR * VARS_PER_READWRITE)-->
+<EventCommand>
+  <code>10220</code>
+  <indent>0</indent>
+  <string></string>
+  <!--SINGLE VARINDEX VARINDEX DIV CONSTANT value 0-->
+  <parameters>0 1 1 4 0 6 0</parameters>
+</EventCommand>
+<!--JumpToLabel VARS_PER_EPAGE / 2-->
+<EventCommand>
+  <code>12120</code>
+  <indent>0</indent>
+  <string></string>
+  <!--Label ID-->
+  <parameters>2</parameters>
+</EventCommand>
+<!--Comment-->
+<EventCommand>
+  <code>12410</code>
+  <indent>0</indent>
+  <string></string>
+  <parameters></parameters>
+</EventCommand>
