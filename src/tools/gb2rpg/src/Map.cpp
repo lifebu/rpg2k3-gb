@@ -13,6 +13,9 @@ using namespace std;
 // public
 Map::Map(GBFile& gbFile)
     : events(nullptr), nextEventID(1) {
+    int numOfMapROMs = ((gbFile.getRomSize() * 1024) / (MEMORYSIZE::MAX_PAGES_PER_EVENT * MEMORYSIZE::BYTES_PER_EPAGE)) + 1;
+    mapRAMID = MEMORYSIZE::MAP_ROM_ID + numOfMapROMs;
+
     // load template files and manage refcounts
     if(!mapTemplate) {
         mapTemplate = new tinyxml2::XMLDocument;
@@ -22,17 +25,7 @@ Map::Map(GBFile& gbFile)
         mapTemplateRefCount++;
     }
 
-    if(!dmgTemplate) {
-        dmgTemplate = new tinyxml2::XMLDocument;
-        dmgTemplateRefCount = 1;
-        dmgTemplate->LoadFile((FOLDERS::TEMPLATE_PATH + "dmg_rom.xml").c_str());
-    } else {
-        dmgTemplateRefCount++;
-    }
-
-    // TODO: as map already has <events></events> I do not need to use a template here!
     events = new tinyxml2::XMLDocument;
-    events->LoadFile((FOLDERS::TEMPLATE_PATH + "map/map_events.xml").c_str());
     
     generateMapROM(gbFile);
     generateMapRAM();
@@ -42,11 +35,6 @@ Map::~Map() {
     if (mapTemplateRefCount == 0) {
         delete mapTemplate;
         mapTemplate = nullptr;
-    }
-    dmgTemplateRefCount--;
-    if (dmgTemplateRefCount == 0) {
-        delete dmgTemplate;
-        dmgTemplate = nullptr;
     }
 
     if(events) {
@@ -100,11 +88,24 @@ std::vector<Map> Map::genMapFiles(std::vector<GBFile>& gbFiles) {
 
 // private
 void Map::generateMapROM(GBFile& gbFile) {
-    
+    // for loop (o to numberofEvents)
+        // load event template (event/event.xml)
+        // for loop (o to 100 event pages)
+            // load event-page template (event/event_page).
+            // Fill Event Commands:
+            // 1st: Fill event-page.commands with template map/map_rom_header.xml
+            // 2nd: for loop (o to VARS_PER_EPAGE)
+                // load template map/map_rom_label.xml
+                // change values required
+                // deep copy to event-page.commands
+            // deep copy event-page into event
+        // deep copy event into this.events
 }
 void Map::generateMapRAM() {
-    // load template (event/event.xml)
+    // load event template (event/event.xml)
+    // add one event-page from template (event/event_page.xml)
     // for loop (0 to MEMORYSIZE::NUM_DMG_RAM_EVENTS, increment nextEventID on loop)
-    // change event ID in loaded template
-    // copy it into this.events (DEEP COPY NEEDED!)
+
+        // change event ID in loaded template
+        // deep copy it into this.events
 }

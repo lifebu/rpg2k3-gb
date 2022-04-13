@@ -40,9 +40,9 @@ private:
     
     tinyxml2::XMLDocument* events;
     int nextEventID;
+    // MAP RAM Events start with this ID.
+    int mapRAMID;
 
     inline static int mapTemplateRefCount = 0;
     inline static tinyxml2::XMLDocument* mapTemplate = nullptr;
-    inline static int dmgTemplateRefCount = 0;
-    inline static tinyxml2::XMLDocument* dmgTemplate = nullptr;
 };

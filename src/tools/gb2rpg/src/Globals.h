@@ -28,6 +28,8 @@ namespace MEMORYSIZE {
 
 
     // Map-ROM:
+    // How many pages one Event can have
+    const static int MAX_PAGES_PER_EVENT = 100;
     // Var € [-9.999.999, 9.999.999] = 20Mio_10 >= 16.777.216_10 = 2^24 = 3 Bytes
     const static int BYTES_PER_VAR = 3;
     // GB Ops Read/Write [1,2] Bytes. 
@@ -52,8 +54,4 @@ namespace MEMORYSIZE {
     const static int DMG_EVENT_ID = 1;
     // MAP ROM Events start with 2nd ID.
     const static int MAP_ROM_ID = 2;
-    // TODO: This actually depends on the rom size of the cartridge, so it changes for each map.
-    // MAP RAM Events start with this ID.
-    const static int MAP_RAM_ID = x;
-
 };
