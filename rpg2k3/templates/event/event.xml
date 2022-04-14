@@ -1,6 +1,6 @@
 <!--id in [0001, 9999]-->
 <Event id="0001">
-  <name></name>
+  <name>event</name>
   <!--x in [0, MapSizeX), MapSizeX <= 500-->
   <x>0</x>
   <!--y in [0, MapSizeY), MapSizeY <= 500-->

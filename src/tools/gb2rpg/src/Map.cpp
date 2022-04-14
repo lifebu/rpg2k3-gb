@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <cstdio>
+#include <cassert>
 
 using namespace std;
 
@@ -24,6 +25,7 @@ Map::Map(GBFile& gbFile)
     generateMapROM(gbFile);
     generateMapRAM();
 }
+
 Map::~Map() {
     if(mapDoc) {
         delete mapDoc;
@@ -44,8 +46,10 @@ std::vector<Map> Map::genMapFiles(std::vector<GBFile>& gbFiles) {
     return maps;
 }
 
+
 // private
 void Map::generateDMGROM() {
+    // DMGROM does not need to change EventID, PageID, or Position (0,0)
     tinyxml2::XMLDocument event;
     event.LoadFile((FOLDERS::TEMPLATE_PATH + "event/event.xml").c_str());
 
@@ -56,18 +60,24 @@ void Map::generateDMGROM() {
     DMGROM.LoadFile((FOLDERS::TEMPLATE_PATH + "dmg_rom.xml").c_str());
     
 
-    // add DMGROM into event-page
+    // Add DMGROM into event-page
     DeepCloneInsertBackAllSiblings(DMGROM.RootElement(), &eventPage,
         eventPage.RootElement()->FirstChildElement("event_commands"));
 
-    // insert event-page into event.
+    // Insert event-page into event.
     DeepCloneInsertBack(eventPage.RootElement(), &event, 
         event.RootElement()->FirstChildElement("pages"));
 
-    // insert DMG Event into map
+
+    // Set Event ID, Name and Coordinate
+    std::string name = "DMGROM";
+    setEventIDNameCoord(&event, 1, name, 0, 0);
+
+    // Insert DMG Event into map
     DeepCloneInsertBack(event.RootElement(), mapDoc, 
         mapDoc->FirstChildElement("LMU")->FirstChildElement()->FirstChildElement("events"));
 }
+
 void Map::generateMapROM(GBFile& gbFile) {
     int numOfMapROMs = ((gbFile.getRomSize() * 1024) / (MEMORYSIZE::MAX_PAGES_PER_EVENT * MEMORYSIZE::BYTES_PER_EPAGE)) + 1;
 
@@ -94,15 +104,25 @@ void Map::generateMapROM(GBFile& gbFile) {
                 DeepCloneInsertBackAllSiblings(mapRomLabel.RootElement(), &eventPage, eventPage.RootElement()->FirstChildElement("event_commands"));
             }
 
+            // Set Event Page ID
+            eventPage.RootElement()->SetAttribute("id", generateID(pageID).c_str());
+
             // Insert event-page into event
             DeepCloneInsertBack(eventPage.RootElement(), &event, event.RootElement()->FirstChildElement("pages"));
         }
+
+        // Set Event ID, Name and Coordinate
+        std::string name = string("ROM") + generateID(eventID - MEMORYSIZE::MAP_ROM_ID + 1);
+        int xCoord = (eventID - 1) % RPGMAKER::MAP_SIZE_X;
+        int yCoord = (eventID - 1) / RPGMAKER::MAP_SIZE_Y;
+        setEventIDNameCoord(&event, eventID, name, xCoord, yCoord);
 
         // Insert event into map
         DeepCloneInsertBack(event.RootElement(), mapDoc, 
             mapDoc->FirstChildElement("LMU")->FirstChildElement()->FirstChildElement("events"));
     }
 }
+
 void Map::generateMapRAM() {
     // load event template (event/event.xml)
     tinyxml2::XMLDocument event;
@@ -115,10 +135,36 @@ void Map::generateMapRAM() {
     DeepCloneInsertBack(eventPage.RootElement(), &event, 
         event.RootElement()->FirstChildElement("pages"));
 
-    // insert events with changed id's.
-    for (int i = 0; i < MEMORYSIZE::NUM_DMG_RAM_EVENTS; ++i) {  
-        event.RootElement()->SetAttribute("id", generateID(mapRAMID + i).c_str());
+    // Insert event into map
+    for (int i = 0; i < MEMORYSIZE::NUM_DMG_RAM_EVENTS; ++i) {
+
+        // Set Event ID, Name and Coordinate
+        std::string name = string("RAM") + generateID(i + 1);
+        int eventID = mapRAMID + i;
+        int xCoord = (eventID - 1) % RPGMAKER::MAP_SIZE_X;
+        int yCoord = (eventID - 1) / RPGMAKER::MAP_SIZE_Y;
+        setEventIDNameCoord(&event, eventID, name, xCoord, yCoord);
+
         DeepCloneInsertBack(event.RootElement(), mapDoc, 
             mapDoc->FirstChildElement("LMU")->FirstChildElement()->FirstChildElement("events"));
     }
+}
+
+void Map::setEventIDNameCoord(tinyxml2::XMLDocument* event, int id, std::string& name, int x, int y) {
+    assert(x >= 0 && x < 500);
+    assert(y >= 0 && y < 500);
+
+    // Set Event ID
+    event->RootElement()->SetAttribute("id", generateID(id).c_str());
+
+    // Set Event Name
+    auto* nameElem = event->RootElement()->FirstChildElement("name")->FirstChild()->ToText();
+    nameElem->SetValue((name).c_str());
+
+    // Set Event Coordinates
+    auto* xCoord = event->RootElement()->FirstChildElement("x")->FirstChild();
+    xCoord->SetValue(to_string((id - 1) % RPGMAKER::MAP_SIZE_X).c_str());
+
+    auto* yCoord = event->RootElement()->FirstChildElement("y")->FirstChild();
+    yCoord->SetValue(to_string((id - 1) / RPGMAKER::MAP_SIZE_Y).c_str());
 }

@@ -13,6 +13,11 @@ namespace FOLDERS {
     const static std::string TEMPLATE_PATH = "rpg2k3/templates/";
 };
 
+namespace RPGMAKER {
+    const static int MAP_SIZE_X = 500;
+    const static int MAP_SIZE_Y = 500;
+};
+
 namespace MEMORYSIZE {
     // Gameboy Memory Sizes:
     // (Byte), 8KiB VRAM + 8KiB Work Ram + 160B OAM + 128B I/O + 127B High RAM + 1B Interrupt Register

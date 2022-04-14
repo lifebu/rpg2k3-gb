@@ -40,6 +40,8 @@ private:
     void generateMapROM(GBFile& gbFile);
     void generateMapRAM();
 
+    void setEventIDNameCoord(tinyxml2::XMLDocument* event, int id, std::string& name, int x, int y);
+
     tinyxml2::XMLDocument* mapDoc;
     // MAP RAM Events start with this ID.
     int mapRAMID;
