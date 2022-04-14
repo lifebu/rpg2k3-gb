@@ -23,7 +23,9 @@ public:
     };
     Map& operator=(const Map& other) = delete;
 
-    Map(Map&& other) = delete;
+    Map(Map&& other) {
+        throw;
+    };
     Map& operator=(Map&& other) = delete;
 
     /*
