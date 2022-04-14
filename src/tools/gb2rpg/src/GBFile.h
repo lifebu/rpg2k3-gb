@@ -27,11 +27,13 @@ public:
     GBFile(std::string filePath);
     GBFile(const GBFile&) = default;
     GBFile(GBFile&& other) = default;
+    ~GBFile();
 
     // read ram size from Gameboy header in KByte
     uint16_t getRamSize();
     // read rom size from Gameboy header in KByte
     uint16_t getRomSize();
+    std::ifstream* getFile();
     
     static std::vector<GBFile> genGBFiles(CLIOptions& cli);
 

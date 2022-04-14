@@ -17,20 +17,26 @@ GBFile::GBFile(string path) {
         file.read((char*)&header, sizeof(GBHeader));
         ramSize = readRamSize(header);
         romSize = readRomSize(header);
+
         // files points to the first byte after the header.
-        file.seekg(0x150, std::ios::beg);
+        file.seekg(0, std::ios::beg);
     }
 }
+GBFile::~GBFile() {
+    file.close();
+}
+
 
 
 uint16_t GBFile::getRamSize() {
     return ramSize;
 };
-
-// read rom size from Gameboy header in KByte
 uint16_t GBFile::getRomSize() {
     return romSize;
 };
+std::ifstream* GBFile::getFile() {
+    return &file;
+}
 
 std::vector<GBFile> GBFile::genGBFiles(CLIOptions& cli) {
     auto& filePaths = cli.getFilePaths();
