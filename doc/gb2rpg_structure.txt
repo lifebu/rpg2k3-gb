@@ -6,6 +6,12 @@ GB2RPG: Gameboy 2 RPG Maker.
 
 
 - TODO:
+    - Restructure Map, so that it does not keep eventsDoc in Memory, but the actual map in memory.
+        - Map Instance creates copy from template once.
+        - fill the map with events.
+        - exportXML() only calls SaveFile()
+        => Saves on having all events twice in memory, which is >90% of memory usage.
+        - Old Version eats up ~4.4GB
     - Name Generation for the Events.
     - Events should each have their own starting position.
         => makes it easier to see the events in editor.

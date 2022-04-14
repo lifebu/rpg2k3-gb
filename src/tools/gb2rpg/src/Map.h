@@ -40,11 +40,7 @@ private:
     void generateMapROM(GBFile& gbFile);
     void generateMapRAM();
 
-    
-    tinyxml2::XMLDocument* eventsDoc;
+    tinyxml2::XMLDocument* mapDoc;
     // MAP RAM Events start with this ID.
     int mapRAMID;
-
-    inline static int mapTemplateRefCount = 0;
-    inline static tinyxml2::XMLDocument* mapTemplate = nullptr;
 };
