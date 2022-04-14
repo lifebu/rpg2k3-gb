@@ -45,10 +45,8 @@ Map::~Map() {
 }
 
 void Map::exportXML(std::string filePath) {
-    eventsDoc->SaveFile(filePath.c_str());
     // Load map with template.
     tinyxml2::XMLDocument map;
-    auto* ch = mapTemplate->FirstChild();
     DeepCloneInsertBackAllSiblings(mapTemplate->FirstChild(), &map, nullptr);
 
     // Insert Events:
