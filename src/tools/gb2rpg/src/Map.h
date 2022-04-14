@@ -40,7 +40,6 @@ private:
 
     
     tinyxml2::XMLDocument* eventsDoc;
-    int nextEventID;
     // MAP RAM Events start with this ID.
     int mapRAMID;
 

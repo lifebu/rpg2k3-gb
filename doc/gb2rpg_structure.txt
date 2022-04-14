@@ -4,6 +4,15 @@ GB2RPG: Gameboy 2 RPG Maker.
             => Emu-Code as .xml => databasefile.
             => creates the entire RPG Maker project.
 
+
+- TODO:
+    - Name Generation for the Events.
+    - Events should each have their own starting position.
+        => makes it easier to see the events in editor.
+    - How to handle 2-Byte Read if the ByteOffset is the last Byte of the Event-Page?
+        => 1 Byte Memory Overlap. The last Address of that Page returns the first byte of the next page as the second value.
+        - e.g. first EPage is responsible for Adresses 0-3000_10 Bytes. If I read first EPage @ 3000 ByteOffset It will return that value and second EPage @ 0 ByteOffset the first value it would have returned.
+
 - thirdparty:
     liblcf
     tinyxml2
@@ -110,13 +119,13 @@ GB2RPG: Gameboy 2 RPG Maker.
             - code:
                 - Code is binary jump.
                 Header:
-                    VarOffset = ByteOffset / (BYTES_PER_VAR * VARS_PER_READWRITE)
+                    LabelID = ByteOffset / BYTES_PER_VAR
                     JumpToLabel VARS_PER_EPAGE / 2;
                 Label-Boilerplate:
                     Label X
-                    if (VarOffset < (X - 1))
+                    if (LabelID < (X - 1))
                         JumpToLabel X - (X/2)
-                    if (VarOffset > (X - 1))
+                    if (LabelID > (X - 1))
                         JumpToLabel X + (X/2)
                     READVAR1 = LABELXVALUE1
                     READVAR2 = LABELXVALUE2

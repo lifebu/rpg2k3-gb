@@ -32,3 +32,4 @@ build/*
 data/*
 playground/*
 rpg2k3/project/*
+*.gb
