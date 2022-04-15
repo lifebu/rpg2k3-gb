@@ -6,15 +6,37 @@ GB2RPG: Gameboy 2 RPG Maker.
 
 
 - TODO:
-    - Reduce Time/Memory Usage in MapGeneration.
-        - Pokemon Yellow:
-            - OLD: ~11,4GB
-            - New: ~7GB
-    - Events should each have their own starting position.
-        => makes it easier to see the events in editor.
-    - How to handle 2-Byte Read if the ByteOffset is the last Byte of the Event-Page?
-        => 1 Byte Memory Overlap. The last Address of that Page returns the first byte of the next page as the second value.
-        - e.g. first EPage is responsible for Adresses 0-3000_10 Bytes. If I read first EPage @ 3000 ByteOffset It will return that value and second EPage @ 0 ByteOffset the first value it would have returned.
+    - Features:
+        - GBFILE:
+            - Do not return filestream, but create a function that returns x-Bytes.
+            - Need to get and peak bytes!
+        - Once Map breaks MAPROM generation early by using GBFILE EOF, the last ROM-Page will be incomplete.
+            - It will need less total number of labels.
+            - use: NumOfLabels = (MEMORYSIZE::VARS_PER_EPAGE + 1) for the labelID For-loop.
+            => Querry if GBFile still has enough Bytes left to fill whole page.
+                - if not: NumOfLabels = NumberOfRemainingBytes / 3 + 1.
+
+    - Refactor:
+        - TinyXML2:
+            - Path Traversal:
+                - Input a path string to traverse the xml file.
+            - Constructor, with LoadFile
+            - Add my helper functions to tinyxml2.
+                - as wrapper code.
+        - Global Definitions should be global somewhere in the project.
+        - Write Functions for setting/generating event-commands of different types.
+            - makes map code so much better!
+    
+        - Good way to map Variable names to IDs inside Maker.
+
+    - Problems to Solve:
+        - How to handle reads, that are outside of the ROMSIZE Boundary?
+            - Can only happen if the .gb code has an error and tries to access memory outside ROM-Boundary.
+            - What with 2Byte Reads at the end of ROMSIZE Boundary? First Byte is Valid, but second is not!
+            
+        - How to handle 2-Byte Read if the ByteOffset is the last Byte of the Event-Page?
+            => 1 Byte Memory Overlap. The last Address of that Page returns the first byte of the next page as the second value.
+            - e.g. first EPage is responsible for Adresses 0-3000_10 Bytes. If I read first EPage @ 3000 ByteOffset It will return that value and second EPage @ 0 ByteOffset the first value it would have returned.
 
 - thirdparty:
     liblcf
@@ -45,39 +67,6 @@ GB2RPG: Gameboy 2 RPG Maker.
         - <EventPage id="0001">
         - I do not need to change all the other settings 
             => Can use a template file.
-        - Multi-Line Comment:
-            12410: Start of Comment,
-            22410: other lines of comment.
-        - Conditional Branch:
-            12010: Conditional Branch
-            22010: Else
-            22011: Branch End
-            <parameters>1 5 0 1 0 1</parameters>
-                1: Variable Condition:
-                5: Variable Index:
-                0: Function: (Equal-to)
-                1: Value (You want to compar against)
-                0: Constant value (1 = variable.)
-                1: Do you want else-case?
-        - Control Variables:
-            10220
-            <parameters>0 6 6 0 0 255 0</parameters>
-                255: value to set.
-                6-6: from Var 6 to Var 6.
-        - Call Event:
-            12330
-            <parameters>0 1 0</parameters>
-            0: Type (0 = Common Event, 1 = Map event (const), 2 = Map event (variable))
-            1: CommonEventID
-            0: other param.
-        - Label:
-            12110
-            <parameters>1000</parameters>
-                which label
-        - Jump to Label:
-            12120
-            <parameters>1000</parameters>
-                which label
 
 - sequence:
     - read cartridge header:
@@ -122,14 +111,16 @@ GB2RPG: Gameboy 2 RPG Maker.
             - code:
                 - Code is binary jump.
                 Header:
-                    LabelID = ByteOffset / BYTES_PER_VAR
+                    ByteOffset = ByteOffset / BYTES_PER_VAR
+                    LabelID = ByteOffset
+                    LabelID += 1
                     JumpToLabel VARS_PER_EPAGE / 2;
                 Label-Boilerplate:
                     Label X
-                    if (LabelID < (X - 1))
-                        JumpToLabel X - (X/2)
-                    if (LabelID > (X - 1))
-                        JumpToLabel X + (X/2)
+                    if (LabelID < X)
+                        JumpToLabel X - (min(X, 1.000 - X) / 2)
+                    if (LabelID > X)
+                        JumpToLabel X + (min(X, 1.000 - X) / 2)
                     READVAR1 = LABELXVALUE1
                     READVAR2 = LABELXVALUE2
                     EndEventProcessing

@@ -1,0 +1,81 @@
+- Show Text:
+
+- Show Choices:
+
+- Input Number:
+
+- Control Switches:
+
+- Control Variables:
+    10220
+    <parameters>0 6 6 0 0 255 0</parameters>
+        255: value to set.
+        6-6: from Var 6 to Var 6.
+
+- Change Item:
+
+- Change Party Member:
+
+- Change EXP:
+
+- Change Parameters:
+
+- Change Equipment:
+
+- Set Event Location:
+
+- Get Event ID:
+
+- Show Picture:
+
+- Show/Hide Player:
+
+- Key Input Processing:
+
+- Conditional Branch:
+    12010: Conditional Branch
+    22010: Else
+    22011: Branch End
+    <parameters>TYPE VARID ISCONST RHS COMPARE ELSE</parameters>
+        TYPE: 
+            ?:Switch | 1:Variable | ?:Timer1 | ?:Timer2 | ?:Money | ?:Item | ?:Actor | ?:Event | ?:Vehicle | ?:Trigger | ?:BGM | ?:Other
+        VARID:
+            ID of the Variable
+        ISCONST:
+            0: Use Constant | 1: Use other Variable
+        RHS:
+            Value to compare against, either Variable-ID or constant
+        COMPARE:
+            0: == | 1: >= | 2: <= | 3: > | 4: < | 5: !=
+        ELSE:
+            0:No Else-Case 
+            1:Else-Case
+
+- Jump to Label:
+    12120
+    <parameters>1000</parameters>
+        which label
+
+- Label:
+    12110
+    <parameters>1000</parameters>
+        which label
+
+- Loop:
+
+- Break Loop:
+
+- End Event Processing:
+
+- Erase Event:
+
+- Call Event:
+    12330
+    <parameters>0 1 0</parameters>
+    0: Type (0 = Common Event, 1 = Map event (const), 2 = Map event (variable))
+    1: CommonEventID
+    0: other param.
+
+- Comment:
+    12410: Start of Comment,
+    22410: other lines of comment.
