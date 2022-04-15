@@ -7,8 +7,10 @@
 #include "tinyxml2_helper.h"
 
 #include <iostream>
+#include <sstream>
 #include <cstdio>
 #include <cassert>
+#include <cmath>
 
 using namespace std;
 
@@ -93,14 +95,17 @@ void Map::generateMapROM(GBFile& gbFile) {
             // Fill event-page with map-rom-header commands
             tinyxml2::XMLDocument mapRomHeader;
             mapRomHeader.LoadFile((FOLDERS::TEMPLATE_PATH + "map_rom_header.xml").c_str());
+            setupMapRomHeader(&mapRomHeader);
 
             DeepCloneInsertBackAllSiblings(mapRomHeader.RootElement(), &eventPage, eventPage.RootElement()->FirstChildElement("event_commands"));
 
+            eventPage.SaveFile("playground/event.xml");
 
             // Fill event-page with map-rom-label commands
             tinyxml2::XMLDocument mapRomLabel;
             mapRomLabel.LoadFile((FOLDERS::TEMPLATE_PATH + "map_rom_label.xml").c_str());
-            for(int labelID = 1; labelID < 1001; ++labelID) {
+            for(int labelID = 1; labelID < (MEMORYSIZE::VARS_PER_EPAGE + 1); ++labelID) {
+                setupMapRomLabel(&mapRomLabel, labelID);
                 DeepCloneInsertBackAllSiblings(mapRomLabel.RootElement(), &eventPage, eventPage.RootElement()->FirstChildElement("event_commands"));
             }
 
@@ -150,6 +155,7 @@ void Map::generateMapRAM() {
     }
 }
 
+// Setup and Helper Functions.
 void Map::setEventIDNameCoord(tinyxml2::XMLDocument* event, int id, std::string& name, int x, int y) {
     assert(x >= 0 && x < 500);
     assert(y >= 0 && y < 500);
@@ -167,4 +173,80 @@ void Map::setEventIDNameCoord(tinyxml2::XMLDocument* event, int id, std::string&
 
     auto* yCoord = event->RootElement()->FirstChildElement("y")->FirstChild();
     yCoord->SetValue(to_string((id - 1) / RPGMAKER::MAP_SIZE_Y).c_str());
+}
+
+void Map::changeCommandParameters(tinyxml2::XMLNode* command, std::string parameter) {
+    auto* parameters = command->FirstChildElement("parameters")->FirstChild()->ToText();
+    parameters->SetValue(parameter.c_str());
+}
+
+void Map::setupMapRomHeader(tinyxml2::XMLDocument* mapRomHeader) {
+    // Need to change the boilerplate code (see map_rom_header.xml for details).
+    // ByteOffset = (ByteOffset / BYTES_PER_VAR):
+    auto* command = mapRomHeader->RootElement()->NextSiblingElement("EventCommand");
+    stringstream valuestr;
+    valuestr << "0 " << RPGMAKER::BYTE_OFFSET_ID << " " << RPGMAKER::BYTE_OFFSET_ID << " 4 0 " << to_string(MEMORYSIZE::BYTES_PER_VAR) << " 0";
+    changeCommandParameters(command, valuestr.str());
+
+    // LabelID = ByteOffset
+    command = command->NextSiblingElement("EventCommand");
+    valuestr.str(string());
+    valuestr << "0 " << RPGMAKER::LABEL_ID << " " << RPGMAKER::LABEL_ID << " 0 1 " << RPGMAKER::BYTE_OFFSET_ID << " 0";
+    changeCommandParameters(command, valuestr.str());
+
+    // LabelID += 1:
+    command = command->NextSiblingElement("EventCommand");
+    valuestr.str(string());
+    valuestr << "0 " << RPGMAKER::LABEL_ID << " " << RPGMAKER::LABEL_ID << " 1 0 " << to_string(1) << " 0";
+    changeCommandParameters(command, valuestr.str());
+
+    // JumpToLabel VARS_PER_EPAGE / 2
+    command = command->NextSiblingElement("EventCommand");
+    changeCommandParameters(command, to_string(MEMORYSIZE::VARS_PER_EPAGE / 2));
+}
+
+void Map::setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID) {
+    // Need to change the boilerplate code (see map_rom_label.xml for details).
+    // Label X
+    auto* command = mapRomLabel->RootElement();
+    changeCommandParameters(command, to_string(labelID));
+
+    // IF(LabelID < X)
+    command = command->NextSiblingElement("EventCommand");
+    stringstream valuestr;
+    valuestr << "1 " << RPGMAKER::LABEL_ID << " 0 " << labelID << " 4 0";
+    changeCommandParameters(command, valuestr.str());
+    
+
+    // JumpToLabel X - (min(X, 1.000 - X) / 2)
+    command = command->NextSiblingElement("EventCommand");
+    float minDistance = min(labelID, 1000 - labelID);
+    int newID = labelID - ceil(minDistance/2.0f);
+    changeCommandParameters(command, to_string(newID));
+
+    // IF(LabelID > X)
+    command = command->NextSiblingElement("EventCommand")->NextSiblingElement("EventCommand")->NextSiblingElement("EventCommand");
+    valuestr.str(string());
+    valuestr << "1 " << RPGMAKER::LABEL_ID << " 0 " << labelID << " 3 0";
+    changeCommandParameters(command, valuestr.str());
+
+    // JumpToLabel X + (min(X, 1.000 - X) / 2)
+    command = command->NextSiblingElement("EventCommand");
+    newID = labelID + ceil(minDistance/2.0f);
+    changeCommandParameters(command, to_string(newID));
+
+    // READVAR1 = LABELXVALUE1
+    command = command->NextSiblingElement("EventCommand")->NextSiblingElement("EventCommand")->NextSiblingElement("EventCommand");
+    // For testing!
+    int firstByte = labelID;
+    valuestr.str(string());
+    valuestr << "0 " << RPGMAKER::READ_VAR_1 << " " << RPGMAKER::READ_VAR_1 << " 0 0 " << firstByte << " 0";
+    changeCommandParameters(command, valuestr.str());
+
+    // READVAR2 = LABELXVALUE2
+    command = command->NextSiblingElement("EventCommand");
+    int secondByte = 6789;
+    valuestr.str(string());
+    valuestr << "0 " << RPGMAKER::READ_VAR_2 << " " << RPGMAKER::READ_VAR_2 << " 0 0 " << secondByte << " 0";
+    changeCommandParameters(command, valuestr.str());
 }

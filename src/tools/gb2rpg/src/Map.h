@@ -4,6 +4,7 @@
 class GBFile;
 namespace tinyxml2 {
     class XMLDocument;
+    class XMLNode;
 };
 
 class Map {
@@ -40,7 +41,13 @@ private:
     void generateMapROM(GBFile& gbFile);
     void generateMapRAM();
 
+    // Setup and Helper Functions.
+    // TODO: Some of these helper functions should go into to a more general code-base. e.g. Generation of Command Parameters can be made more general.
     void setEventIDNameCoord(tinyxml2::XMLDocument* event, int id, std::string& name, int x, int y);
+
+    void changeCommandParameters(tinyxml2::XMLNode* command, std::string parameter);
+    void setupMapRomHeader(tinyxml2::XMLDocument* mapRomHeader);
+    void setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID);
 
     tinyxml2::XMLDocument* mapDoc;
     // MAP RAM Events start with this ID.

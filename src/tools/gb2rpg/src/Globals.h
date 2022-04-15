@@ -14,8 +14,16 @@ namespace FOLDERS {
 };
 
 namespace RPGMAKER {
+    // Map
     const static int MAP_SIZE_X = 500;
     const static int MAP_SIZE_Y = 500;
+
+    // TODO: Need a better representation for Variable IDs, but good enough for now.
+    // Variables
+    const static int BYTE_OFFSET_ID = 1;
+    const static int LABEL_ID = 2;
+    const static int READ_VAR_1 = 3;
+    const static int READ_VAR_2 = 4;
 };
 
 namespace MEMORYSIZE {
@@ -44,11 +52,11 @@ namespace MEMORYSIZE {
     // Maximum number of labels possible per event page.
     const static int MAX_LABELS_PER_EPAGE = 1000; 
     // TODO: need to test which VARS_PER_EPAGE gives best performance! 
-    // How many Variables one event page is responsible for. Range: [VARS_PER_READWRITE, MAX_LABELS_PER_EPAGE].
+    // How many Variables one event page is responsible for. Range: [1, MAX_LABELS_PER_EPAGE].
     // Increasing this makes event-page code more complex, requires less event-pages in total.
     // Decreaing this makes event-pages code simpler, but we require more event-pages in total.
-    const static int VARS_PER_EPAGE = 1000;
-    static_assert(VARS_PER_READWRITE <= VARS_PER_EPAGE && VARS_PER_EPAGE <= MAX_LABELS_PER_EPAGE, 
+    const static int VARS_PER_EPAGE = 250;
+    static_assert(1 <= VARS_PER_EPAGE && VARS_PER_EPAGE <= MAX_LABELS_PER_EPAGE, 
     "VARS_PER_EPAGE needs to be in Range [VARS_PER_READWRITE, MAX_LABELS_PER_EPAGE]");
     // How many Bytes one event-page is responsible for. This is needed for converting Gameboy Addresses to EventIDs and Per Event-Page ByteOffsets.
     const static int BYTES_PER_EPAGE = VARS_PER_EPAGE * BYTES_PER_VAR;
