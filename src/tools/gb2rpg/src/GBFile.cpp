@@ -7,7 +7,9 @@
 using namespace std;
 
 // public
-GBFile::GBFile(string path) {
+GBFile::GBFile(string path)
+    : bytesRead(0)  {
+    
     file.open(path, ios::binary);
     if (!file.is_open()) {
         std::cout << "Error, File not found: " << path << "\n"; 
@@ -18,7 +20,6 @@ GBFile::GBFile(string path) {
         ramSize = readRamSize(header);
         romSize = readRomSize(header);
 
-        // files points to the first byte after the header.
         file.seekg(0, std::ios::beg);
     }
 }
@@ -34,8 +35,36 @@ uint16_t GBFile::getRamSize() {
 uint16_t GBFile::getRomSize() {
     return romSize;
 };
-std::ifstream* GBFile::getFile() {
-    return &file;
+
+// peek x Bytes from the gbFile.
+std::vector<uint8_t> GBFile::peekBytes(int numBytes) {
+    auto filePos = file.tellg();
+    std::vector<uint8_t> ret = getBytes(numBytes);
+    // reset filepos and bytesRead
+    file.seekg(filePos);
+    bytesRead -= numBytes;
+
+    return ret;
+}
+// get x Bytes from the gbFile. Advances file pointer.
+std::vector<uint8_t> GBFile::getBytes(int numBytes) {
+    std::vector<uint8_t> ret;
+    ret.reserve(numBytes);
+
+    for(int i = 0; i < numBytes; ++i) {
+        char val;
+        file.read(&val, 1);
+        ret.push_back(val);
+    }
+
+    bytesRead += numBytes;
+    return ret;
+}
+// how many Bytes are left in the file.
+int GBFile::bytesRemaining() {
+    // .gb files have the same size as the original rom.
+    int fileSize = romSize * 1024;
+    return fileSize - bytesRead;
 }
 
 std::vector<GBFile> GBFile::genGBFiles(CLIOptions& cli) {

@@ -33,7 +33,13 @@ public:
     uint16_t getRamSize();
     // read rom size from Gameboy header in KByte
     uint16_t getRomSize();
-    std::ifstream* getFile();
+
+    // peek x Bytes from the gbFile.
+    std::vector<uint8_t> peekBytes(int numBytes);
+    // get x Bytes from the gbFile. Advances file pointer.
+    std::vector<uint8_t> getBytes(int numBytes);
+    // how many Bytes are left in the file.
+    int bytesRemaining();
     
     static std::vector<GBFile> genGBFiles(CLIOptions& cli);
 
@@ -44,6 +50,9 @@ private:
     uint16_t readRomSize(GBHeader& header);
 
     std::ifstream file;
+    uint32_t bytesRead;
+    // in KByte
     uint16_t ramSize;
+    // in KByte
     uint16_t romSize;
 };
