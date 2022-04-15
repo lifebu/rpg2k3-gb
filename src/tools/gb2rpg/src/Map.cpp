@@ -96,11 +96,13 @@ void Map::generateMapROM(GBFile& gbFile) {
             }
 
             // How many Labels does this page need?
+            bool isLastEventPage = false;
             int numLabels;
             if(gbFile.bytesRemaining() >= MEMORYSIZE::VARS_PER_EPAGE * MEMORYSIZE::BYTES_PER_VAR) {
                 numLabels = MEMORYSIZE::VARS_PER_EPAGE;
             } else {
                 // This is the last event-page
+                isLastEventPage = true;
                 numLabels = ceil((float)gbFile.bytesRemaining() / (float)MEMORYSIZE::BYTES_PER_VAR);
             }
 
@@ -125,6 +127,10 @@ void Map::generateMapROM(GBFile& gbFile) {
                 int firstVar = packVariable(gbFile.getBytes(MEMORYSIZE::BYTES_PER_VAR));
                 // Second Variable is overhead for the case that a 2-Byte R/W Op needs the last Byte of the first Var and the next byte.
                 int secondVar = packVariable(gbFile.peekBytes(MEMORYSIZE::BYTES_PER_VAR));
+                if(isLastEventPage && labelID == numLabels) {
+                    // If we are on the last event-page and this is the last Label, the second value should indicate garbadge data, as it contains data after the GBFile.
+                    secondVar = -9999999;
+                }
                 setupMapRomLabel(&mapRomLabel, labelID, numLabels, firstVar, secondVar);
                 DeepCloneInsertBackAllSiblings(mapRomLabel.RootElement(), &eventPage, eventPage.RootElement()->FirstChildElement("event_commands"));
             }
