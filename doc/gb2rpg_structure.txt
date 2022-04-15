@@ -19,6 +19,20 @@ GB2RPG: Gameboy 2 RPG Maker.
                 - value -9.999.999 is never reachable with my BYTES_PER_VAR packing.
                 => Add a comment to header, that talks about that behavior!
 
+        - change high-level structure of tool:
+            - because creating the map files, database files and maptree files and having all of them stored in memory is too much.
+            - structure:
+                1st: Create Map(s)
+                2nd: Save Map Files to .xml
+                3rd: Create Maptree
+                4th: Save Maptree to .xml
+                5th: Create Database
+                6th: Save Database to .xml
+                7th: GenProjectFolder:
+                    - will use the generated .xml files and will use lcf2xml.
+                    - then it will create the folder structure and move the files around.
+                    - maybe map/maptree/db are already in the correct RPG Maker folder?
+                    - just needs to convert with lcf2xml and delete .xml files.
                     
 
     - Refactor:

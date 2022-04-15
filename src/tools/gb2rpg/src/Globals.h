@@ -34,7 +34,7 @@ namespace MEMORYSIZE {
     // TODO: which BYTES_PER_VAR values is best?
     // BYTES_PER_VAR € [1,3], because:
     // Var € [-9.999.999, 9.999.999] = 20Mio_10 >= 16.777.216_10 = 2^24 = 3 Bytes
-    const static int BYTES_PER_VAR = 1;
+    const static int BYTES_PER_VAR = 3;
     static_assert(1 <= BYTES_PER_VAR && BYTES_PER_VAR <= 3, 
     "BYTES_PER_VAR needs to be in Range [1, 3]");
     // GB Ops Read/Write [1,2] Bytes. 
@@ -47,7 +47,7 @@ namespace MEMORYSIZE {
     // How many Variables one event page is responsible for. Range: [1, MAX_LABELS_PER_EPAGE].
     // Increasing this makes event-page code more complex, requires less event-pages in total.
     // Decreaing this makes event-pages code simpler, but we require more event-pages in total.
-    const static int VARS_PER_EPAGE = 250;
+    const static int VARS_PER_EPAGE = 1000;
     static_assert(1 <= VARS_PER_EPAGE && VARS_PER_EPAGE <= MAX_LABELS_PER_EPAGE, 
     "VARS_PER_EPAGE needs to be in Range [VARS_PER_READWRITE, MAX_LABELS_PER_EPAGE]");
     // How many Bytes one event-page is responsible for. This is needed for converting Gameboy Addresses to EventIDs and Per Event-Page ByteOffsets.

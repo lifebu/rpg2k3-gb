@@ -37,7 +37,7 @@ Map::~Map() {
 }
 
 void Map::exportXML(std::string filePath) {
-    mapDoc->SaveFile(filePath.c_str());
+    mapDoc->SaveFile(filePath.c_str(), true);
 }
 
 std::vector<Map> Map::genMapFiles(std::vector<GBFile>& gbFiles) {
@@ -101,7 +101,7 @@ void Map::generateMapROM(GBFile& gbFile) {
                 numLabels = MEMORYSIZE::VARS_PER_EPAGE;
             } else {
                 // This is the last event-page
-                numLabels = gbFile.bytesRemaining() / MEMORYSIZE::BYTES_PER_VAR;
+                numLabels = ceil((float)gbFile.bytesRemaining() / (float)MEMORYSIZE::BYTES_PER_VAR);
             }
 
             // Load event-page
