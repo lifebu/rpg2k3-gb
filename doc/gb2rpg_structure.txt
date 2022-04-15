@@ -7,18 +7,6 @@ GB2RPG: Gameboy 2 RPG Maker.
 
 - TODO:
     - Features:
-        - ROM-Event-Pages:
-            - The first and last Conditional Branch makes no sense and would be an error case.
-            - either the code just does nothing or I report an error (how to do that in RPG Maker 2003?)
-            - doing nothing:
-                - first LabelID: 
-                    - replace "JumpToLabel X - (min(X, 1.000 - X) / 2)" with "EndEventProcessing"
-                - last LableID: 
-                    - replace "JumpToLabel X + (min(X, 1.000 - X) / 2)" with "EndEventProcessing"
-            - write garbage value:
-                - value -9.999.999 is never reachable with my BYTES_PER_VAR packing.
-                => Add a comment to header, that talks about that behavior!
-
         - change high-level structure of tool:
             - because creating the map files, database files and maptree files and having all of them stored in memory is too much.
             - structure:
@@ -45,17 +33,18 @@ GB2RPG: Gameboy 2 RPG Maker.
         - Global Definitions should be global somewhere in the project.
         - Write Functions for setting/generating event-commands of different types.
             - makes map code so much better!
+            - Libraries of Functionality that allows me to manipulate event-commands.
+            - should work ontop on the tinyxml2 library and changes I do to that.
     
         - Good way to map Variable names to IDs inside Maker.
+
+    
 
     - Problems to Solve:
         - How to handle reads, that are outside of the ROMSIZE Boundary?
             - Can only happen if the .gb code has an error and tries to access memory outside ROM-Boundary.
             - What with 2Byte Reads at the end of ROMSIZE Boundary? First Byte is Valid, but second is not!
-            
-        - How to handle 2-Byte Read if the ByteOffset is the last Byte of the Event-Page?
-            => 1 Byte Memory Overlap. The last Address of that Page returns the first byte of the next page as the second value.
-            - e.g. first EPage is responsible for Adresses 0-3000_10 Bytes. If I read first EPage @ 3000 ByteOffset It will return that value and second EPage @ 0 ByteOffset the first value it would have returned.
+
 
 - thirdparty:
     liblcf

@@ -118,13 +118,14 @@ void Map::generateMapROM(GBFile& gbFile) {
             eventPage.SaveFile("playground/event.xml");
 
             // Fill event-page with map-rom-label commands
-            tinyxml2::XMLDocument mapRomLabel;
-            mapRomLabel.LoadFile((FOLDERS::TEMPLATE_PATH + "map_rom_label.xml").c_str());
             for(int labelID = 1; labelID < (numLabels + 1); ++labelID) {
+                tinyxml2::XMLDocument mapRomLabel;
+                mapRomLabel.LoadFile((FOLDERS::TEMPLATE_PATH + "map_rom_label.xml").c_str());
+
                 int firstVar = packVariable(gbFile.getBytes(MEMORYSIZE::BYTES_PER_VAR));
                 // Second Variable is overhead for the case that a 2-Byte R/W Op needs the last Byte of the first Var and the next byte.
                 int secondVar = packVariable(gbFile.peekBytes(MEMORYSIZE::BYTES_PER_VAR));
-                setupMapRomLabel(&mapRomLabel, labelID, firstVar, secondVar);
+                setupMapRomLabel(&mapRomLabel, labelID, numLabels, firstVar, secondVar);
                 DeepCloneInsertBackAllSiblings(mapRomLabel.RootElement(), &eventPage, eventPage.RootElement()->FirstChildElement("event_commands"));
             }
 
@@ -224,7 +225,7 @@ void Map::setupMapRomHeader(tinyxml2::XMLDocument* mapRomHeader, int numLabels) 
     changeCommandParameters(command, to_string(numLabels / 2));
 }
 
-void Map::setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID, int firstVar, int secondVar) {
+void Map::setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID, int numLabels, int firstVar, int secondVar) {
     // Need to change the boilerplate code (see map_rom_label.xml for details).
     // Label X
     auto* command = mapRomLabel->RootElement();
@@ -240,8 +241,15 @@ void Map::setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID, int 
     // JumpToLabel X - (min(X, 1.000 - X) / 2)
     command = command->NextSiblingElement("EventCommand");
     float minDistance = min(labelID, 1000 - labelID);
-    int newID = labelID - ceil(minDistance/2.0f);
-    changeCommandParameters(command, to_string(newID));
+    if(labelID == 1) {
+        // The first MapRomLabel does not need to jump here, instead change the command to EndEventProcessing
+        command->FirstChildElement("code")->FirstChild()->SetValue("12310");
+        changeCommandParameters(command, "");
+    } else {
+        int newID = labelID - ceil(minDistance/2.0f);
+        changeCommandParameters(command, to_string(newID));
+    }
+
 
     // IF(LabelID > X)
     command = command->NextSiblingElement("EventCommand")->NextSiblingElement("EventCommand")->NextSiblingElement("EventCommand");
@@ -251,8 +259,14 @@ void Map::setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID, int 
 
     // JumpToLabel X + (min(X, 1.000 - X) / 2)
     command = command->NextSiblingElement("EventCommand");
-    newID = labelID + ceil(minDistance/2.0f);
-    changeCommandParameters(command, to_string(newID));
+    if(labelID == numLabels) {
+        // The last MapRomLabel does not need to jump here, instead change the command to EndEventProcessing.
+        command->FirstChildElement("code")->FirstChild()->SetValue("12310");
+        changeCommandParameters(command, "");
+    } else {
+        int newID = labelID + ceil(minDistance/2.0f);
+        changeCommandParameters(command, to_string(newID));
+    }
 
     // READVAR1 = LABELXVALUE1
     command = command->NextSiblingElement("EventCommand")->NextSiblingElement("EventCommand")->NextSiblingElement("EventCommand");

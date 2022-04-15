@@ -34,7 +34,7 @@ namespace MEMORYSIZE {
     // TODO: which BYTES_PER_VAR values is best?
     // BYTES_PER_VAR € [1,3], because:
     // Var € [-9.999.999, 9.999.999] = 20Mio_10 >= 16.777.216_10 = 2^24 = 3 Bytes
-    const static int BYTES_PER_VAR = 3;
+    const static int BYTES_PER_VAR = 1;
     static_assert(1 <= BYTES_PER_VAR && BYTES_PER_VAR <= 3, 
     "BYTES_PER_VAR needs to be in Range [1, 3]");
     // GB Ops Read/Write [1,2] Bytes. 
@@ -64,6 +64,9 @@ namespace MEMORYSIZE {
 namespace RPGMAKER {
     // If I use the Value Bias.
     const static bool USE_RPG_VALUE_BIAS = false;
+    // Check if disabling the value_bias creates an overflow:
+    static_assert(USE_RPG_VALUE_BIAS == false && MEMORYSIZE::BYTES_PER_VAR < 3, 
+    "USE_RPG_VALUE_BIAS is disabled, but when using 3 Bytes per Var, the Bias is needed to avoid overflow in RPG Maker.");
     // int32_t to RPG Maker Value Bias. I want a symmetrical value range in RPG Maker. 
     // e.g. MEMORYSIZE::BYTES_PER_VAR = 3 =>
     // 2^24 = ceil((16.777.216) / 2) = 8.388.608 => RPG Maker: [-8.338.608, 8.338.607]
