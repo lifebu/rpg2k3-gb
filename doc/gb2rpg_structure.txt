@@ -7,13 +7,19 @@ GB2RPG: Gameboy 2 RPG Maker.
 
 - TODO:
     - Features:
-        - Once Map breaks MAPROM generation early by using GBFILE EOF, the last ROM-Page will be incomplete.
-            - Might Have a case where ROM_SIZE % (VARS_PER_EPAGE * 3) == 0
-                => Then I don't add another EPage, as the ROM has already been added.
-            - It will need less total number of labels.
-            - use: NumOfLabels = (MEMORYSIZE::VARS_PER_EPAGE + 1) for the labelID For-loop.
-            => Querry if GBFile still has enough Bytes left to fill whole page.
-                - if not: NumOfLabels = NumberOfRemainingBytes / 3 + 1.
+        - ROM-Event-Pages:
+            - The first and last Conditional Branch makes no sense and would be an error case.
+            - either the code just does nothing or I report an error (how to do that in RPG Maker 2003?)
+            - doing nothing:
+                - first LabelID: 
+                    - replace "JumpToLabel X - (min(X, 1.000 - X) / 2)" with "EndEventProcessing"
+                - last LableID: 
+                    - replace "JumpToLabel X + (min(X, 1.000 - X) / 2)" with "EndEventProcessing"
+            - write garbage value:
+                - value -9.999.999 is never reachable with my BYTES_PER_VAR packing.
+                => Add a comment to header, that talks about that behavior!
+
+                    
 
     - Refactor:
         - TinyXML2:
@@ -113,7 +119,7 @@ GB2RPG: Gameboy 2 RPG Maker.
                     ByteOffset = ByteOffset / BYTES_PER_VAR
                     LabelID = ByteOffset
                     LabelID += 1
-                    JumpToLabel VARS_PER_EPAGE / 2;
+                    JumpToLabel numLabels / 2;
                 Label-Boilerplate:
                     Label X
                     if (LabelID < X)

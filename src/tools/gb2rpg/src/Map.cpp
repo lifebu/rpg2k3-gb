@@ -88,15 +88,30 @@ void Map::generateMapROM(GBFile& gbFile) {
     for(int eventID = MEMORYSIZE::MAP_ROM_ID; eventID < MEMORYSIZE::MAP_ROM_ID + numOfMapROMs; ++eventID) {
         tinyxml2::XMLDocument event;
         event.LoadFile((FOLDERS::TEMPLATE_PATH + "event/event.xml").c_str());
-        // TODO NEED EARLY BREAK IF WE HAVE ENOUGH ROM DATA (Can do that with EOF for gbFile).
-        for (int pageID = 1; pageID < 101; ++pageID) {
+
+        for (int pageID = 1; pageID <= MEMORYSIZE::MAX_PAGES_PER_EVENT; ++pageID) {
+            if(gbFile.bytesRemaining() <= 0) {
+                // The last event-page had all Bytes we needed
+                break;
+            }
+
+            // How many Labels does this page need?
+            int numLabels;
+            if(gbFile.bytesRemaining() >= MEMORYSIZE::VARS_PER_EPAGE * MEMORYSIZE::BYTES_PER_VAR) {
+                numLabels = MEMORYSIZE::VARS_PER_EPAGE;
+            } else {
+                // This is the last event-page
+                numLabels = gbFile.bytesRemaining() / MEMORYSIZE::BYTES_PER_VAR;
+            }
+
+            // Load event-page
             tinyxml2::XMLDocument eventPage;
             eventPage.LoadFile((FOLDERS::TEMPLATE_PATH + "event/event_page.xml").c_str());
 
             // Fill event-page with map-rom-header commands
             tinyxml2::XMLDocument mapRomHeader;
             mapRomHeader.LoadFile((FOLDERS::TEMPLATE_PATH + "map_rom_header.xml").c_str());
-            setupMapRomHeader(&mapRomHeader);
+            setupMapRomHeader(&mapRomHeader, numLabels);
 
             DeepCloneInsertBackAllSiblings(mapRomHeader.RootElement(), &eventPage, eventPage.RootElement()->FirstChildElement("event_commands"));
 
@@ -105,8 +120,11 @@ void Map::generateMapROM(GBFile& gbFile) {
             // Fill event-page with map-rom-label commands
             tinyxml2::XMLDocument mapRomLabel;
             mapRomLabel.LoadFile((FOLDERS::TEMPLATE_PATH + "map_rom_label.xml").c_str());
-            for(int labelID = 1; labelID < (MEMORYSIZE::VARS_PER_EPAGE + 1); ++labelID) {
-                setupMapRomLabel(&mapRomLabel, labelID, labelID, -1);
+            for(int labelID = 1; labelID < (numLabels + 1); ++labelID) {
+                int firstVar = packVariable(gbFile.getBytes(MEMORYSIZE::BYTES_PER_VAR));
+                // Second Variable is overhead for the case that a 2-Byte R/W Op needs the last Byte of the first Var and the next byte.
+                int secondVar = packVariable(gbFile.peekBytes(MEMORYSIZE::BYTES_PER_VAR));
+                setupMapRomLabel(&mapRomLabel, labelID, firstVar, secondVar);
                 DeepCloneInsertBackAllSiblings(mapRomLabel.RootElement(), &eventPage, eventPage.RootElement()->FirstChildElement("event_commands"));
             }
 
@@ -181,7 +199,7 @@ void Map::changeCommandParameters(tinyxml2::XMLNode* command, std::string parame
     parameters->SetValue(parameter.c_str());
 }
 
-void Map::setupMapRomHeader(tinyxml2::XMLDocument* mapRomHeader) {
+void Map::setupMapRomHeader(tinyxml2::XMLDocument* mapRomHeader, int numLabels) {
     // Need to change the boilerplate code (see map_rom_header.xml for details).
     // ByteOffset = (ByteOffset / BYTES_PER_VAR):
     auto* command = mapRomHeader->RootElement()->NextSiblingElement("EventCommand");
@@ -201,9 +219,9 @@ void Map::setupMapRomHeader(tinyxml2::XMLDocument* mapRomHeader) {
     valuestr << "0 " << RPGMAKER::LABEL_ID << " " << RPGMAKER::LABEL_ID << " 1 0 " << to_string(1) << " 0";
     changeCommandParameters(command, valuestr.str());
 
-    // JumpToLabel VARS_PER_EPAGE / 2
+    // JumpToLabel numLabels / 2
     command = command->NextSiblingElement("EventCommand");
-    changeCommandParameters(command, to_string(MEMORYSIZE::VARS_PER_EPAGE / 2));
+    changeCommandParameters(command, to_string(numLabels / 2));
 }
 
 void Map::setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID, int firstVar, int secondVar) {

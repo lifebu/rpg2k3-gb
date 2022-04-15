@@ -52,6 +52,12 @@ std::vector<uint8_t> GBFile::getBytes(int numBytes) {
     ret.reserve(numBytes);
 
     for(int i = 0; i < numBytes; ++i) {
+        if(file.eof()) {
+            // return 0-Bytes
+            ret.push_back(0);
+            continue;
+        }
+
         char val;
         file.read(&val, 1);
         ret.push_back(val);

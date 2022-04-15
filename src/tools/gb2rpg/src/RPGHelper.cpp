@@ -10,11 +10,16 @@ int32_t packVariable(std::vector<uint8_t> bytes) {
     for(int i = 0; i < bytes.size(); ++i) {
         var += bytes.at(i) << (i * 8);
     }
-    return var - RPGMAKER::RPG_VALUE_BIAS;
+    if (RPGMAKER::USE_RPG_VALUE_BIAS) 
+        var -= RPGMAKER::RPG_VALUE_BIAS;
+    
+    return var;
 };
 
 std::vector<uint8_t> unpackVariable(int32_t var) {
-    var += RPGMAKER::RPG_VALUE_BIAS;
+    if (RPGMAKER::USE_RPG_VALUE_BIAS)
+        var += RPGMAKER::RPG_VALUE_BIAS;
+    
     std::vector<uint8_t> bytes;
     for(int i = 0; i < MEMORYSIZE::BYTES_PER_VAR; ++i) {
         // all 8 Bits are 1.
@@ -23,6 +28,6 @@ std::vector<uint8_t> unpackVariable(int32_t var) {
         var = var >> 8;
         bytes.push_back(byte);
     }
-
+    assert(bytes.size() == MEMORYSIZE::BYTES_PER_VAR);
     return bytes;
 };

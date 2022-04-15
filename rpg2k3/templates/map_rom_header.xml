@@ -29,7 +29,7 @@
   <!--SINGLE VARINDEX VARINDEX DIV CONSTANT value 0-->
   <parameters>0 2 2 1 0 1 0</parameters>
 </EventCommand>
-<!--JumpToLabel VARS_PER_EPAGE / 2-->
+<!--JumpToLabel numLabels / 2-->
 <EventCommand>
   <code>12120</code>
   <indent>0</indent>

@@ -1,4 +1,5 @@
 #include <string>
+#include <cmath>
 
 namespace CLI {
     const static std::string VERSION_STRING = "0.1\n";
@@ -11,23 +12,6 @@ namespace CLI {
 
 namespace FOLDERS {
     const static std::string TEMPLATE_PATH = "rpg2k3/templates/";
-};
-
-namespace RPGMAKER {
-    // int32_t to RPG Maker Value Bias. I want a symmetrical value range in RPG Maker. 
-    // 2^24 = ceil((16.777.216 - 1) / 2) = 8.388.608 => RPG Maker: [-8.338.608, 8.338.607]
-    const static uint32_t RPG_VALUE_BIAS = 8388608;
-
-    // Map
-    const static int MAP_SIZE_X = 500;
-    const static int MAP_SIZE_Y = 500;
-
-    // TODO: Need a better representation for Variable IDs, but good enough for now.
-    // Variables
-    const static int BYTE_OFFSET_ID = 1;
-    const static int LABEL_ID = 2;
-    const static int READ_VAR_1 = 3;
-    const static int READ_VAR_2 = 4;
 };
 
 namespace MEMORYSIZE {
@@ -47,8 +31,12 @@ namespace MEMORYSIZE {
     // Map-ROM:
     // How many pages one Event can have
     const static int MAX_PAGES_PER_EVENT = 100;
+    // TODO: which BYTES_PER_VAR values is best?
+    // BYTES_PER_VAR € [1,3], because:
     // Var € [-9.999.999, 9.999.999] = 20Mio_10 >= 16.777.216_10 = 2^24 = 3 Bytes
-    const static int BYTES_PER_VAR = 3;
+    const static int BYTES_PER_VAR = 1;
+    static_assert(1 <= BYTES_PER_VAR && BYTES_PER_VAR <= 3, 
+    "BYTES_PER_VAR needs to be in Range [1, 3]");
     // GB Ops Read/Write [1,2] Bytes. 
     // If address falls onto last byte of one Var, I need the next Var. 
     // Therefore always return 2 Vars (6 Byte).
@@ -71,4 +59,24 @@ namespace MEMORYSIZE {
     const static int DMG_EVENT_ID = 1;
     // MAP ROM Events start with 2nd ID.
     const static int MAP_ROM_ID = 2;
+};
+
+namespace RPGMAKER {
+    // If I use the Value Bias.
+    const static bool USE_RPG_VALUE_BIAS = false;
+    // int32_t to RPG Maker Value Bias. I want a symmetrical value range in RPG Maker. 
+    // e.g. MEMORYSIZE::BYTES_PER_VAR = 3 =>
+    // 2^24 = ceil((16.777.216) / 2) = 8.388.608 => RPG Maker: [-8.338.608, 8.338.607]
+    const static uint32_t RPG_VALUE_BIAS = pow(2, MEMORYSIZE::BYTES_PER_VAR*8) / 2;
+
+    // Map
+    const static int MAP_SIZE_X = 500;
+    const static int MAP_SIZE_Y = 500;
+
+    // TODO: Need a better representation for Variable IDs, but good enough for now.
+    // Variables
+    const static int BYTE_OFFSET_ID = 1;
+    const static int LABEL_ID = 2;
+    const static int READ_VAR_1 = 3;
+    const static int READ_VAR_2 = 4;
 };

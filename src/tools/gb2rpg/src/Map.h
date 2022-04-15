@@ -46,7 +46,7 @@ private:
     void setEventIDNameCoord(tinyxml2::XMLDocument* event, int id, std::string& name, int x, int y);
 
     void changeCommandParameters(tinyxml2::XMLNode* command, std::string parameter);
-    void setupMapRomHeader(tinyxml2::XMLDocument* mapRomHeader);
+    void setupMapRomHeader(tinyxml2::XMLDocument* mapRomHeader, int numLabels);
     void setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID, int firstVar, int secondVar);
 
     tinyxml2::XMLDocument* mapDoc;
