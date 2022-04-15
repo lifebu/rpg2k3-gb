@@ -240,7 +240,7 @@ void Map::setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID, int 
 
     // JumpToLabel X - (min(X, 1.000 - X) / 2)
     command = command->NextSiblingElement("EventCommand");
-    float minDistance = min(labelID, 1000 - labelID);
+    float minDistance = min(labelID, numLabels - labelID);
     if(labelID == 1) {
         // The first MapRomLabel does not need to jump here, instead change the command to EndEventProcessing
         command->FirstChildElement("code")->FirstChild()->SetValue("12310");
