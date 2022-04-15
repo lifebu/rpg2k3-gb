@@ -7,10 +7,9 @@ GB2RPG: Gameboy 2 RPG Maker.
 
 - TODO:
     - Features:
-        - GBFILE:
-            - Do not return filestream, but create a function that returns x-Bytes.
-            - Need to get and peak bytes!
         - Once Map breaks MAPROM generation early by using GBFILE EOF, the last ROM-Page will be incomplete.
+            - Might Have a case where ROM_SIZE % (VARS_PER_EPAGE * 3) == 0
+                => Then I don't add another EPage, as the ROM has already been added.
             - It will need less total number of labels.
             - use: NumOfLabels = (MEMORYSIZE::VARS_PER_EPAGE + 1) for the labelID For-loop.
             => Querry if GBFile still has enough Bytes left to fill whole page.

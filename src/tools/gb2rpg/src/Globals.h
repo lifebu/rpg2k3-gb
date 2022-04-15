@@ -14,6 +14,10 @@ namespace FOLDERS {
 };
 
 namespace RPGMAKER {
+    // int32_t to RPG Maker Value Bias. I want a symmetrical value range in RPG Maker. 
+    // 2^24 = ceil((16.777.216 - 1) / 2) = 8.388.608 => RPG Maker: [-8.338.608, 8.338.607]
+    const static uint32_t RPG_VALUE_BIAS = 8388608;
+
     // Map
     const static int MAP_SIZE_X = 500;
     const static int MAP_SIZE_Y = 500;

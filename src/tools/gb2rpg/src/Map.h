@@ -47,7 +47,7 @@ private:
 
     void changeCommandParameters(tinyxml2::XMLNode* command, std::string parameter);
     void setupMapRomHeader(tinyxml2::XMLDocument* mapRomHeader);
-    void setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID);
+    void setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID, int firstVar, int secondVar);
 
     tinyxml2::XMLDocument* mapDoc;
     // MAP RAM Events start with this ID.

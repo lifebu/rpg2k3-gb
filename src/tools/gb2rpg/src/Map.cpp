@@ -5,6 +5,7 @@
 
 #include "thirdparty/tinyxml2/tinyxml2.h"
 #include "tinyxml2_helper.h"
+#include "RPGHelper.h"
 
 #include <iostream>
 #include <sstream>
@@ -105,7 +106,7 @@ void Map::generateMapROM(GBFile& gbFile) {
             tinyxml2::XMLDocument mapRomLabel;
             mapRomLabel.LoadFile((FOLDERS::TEMPLATE_PATH + "map_rom_label.xml").c_str());
             for(int labelID = 1; labelID < (MEMORYSIZE::VARS_PER_EPAGE + 1); ++labelID) {
-                setupMapRomLabel(&mapRomLabel, labelID);
+                setupMapRomLabel(&mapRomLabel, labelID, labelID, -1);
                 DeepCloneInsertBackAllSiblings(mapRomLabel.RootElement(), &eventPage, eventPage.RootElement()->FirstChildElement("event_commands"));
             }
 
@@ -205,7 +206,7 @@ void Map::setupMapRomHeader(tinyxml2::XMLDocument* mapRomHeader) {
     changeCommandParameters(command, to_string(MEMORYSIZE::VARS_PER_EPAGE / 2));
 }
 
-void Map::setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID) {
+void Map::setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID, int firstVar, int secondVar) {
     // Need to change the boilerplate code (see map_rom_label.xml for details).
     // Label X
     auto* command = mapRomLabel->RootElement();
@@ -238,15 +239,13 @@ void Map::setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID) {
     // READVAR1 = LABELXVALUE1
     command = command->NextSiblingElement("EventCommand")->NextSiblingElement("EventCommand")->NextSiblingElement("EventCommand");
     // For testing!
-    int firstByte = labelID;
     valuestr.str(string());
-    valuestr << "0 " << RPGMAKER::READ_VAR_1 << " " << RPGMAKER::READ_VAR_1 << " 0 0 " << firstByte << " 0";
+    valuestr << "0 " << RPGMAKER::READ_VAR_1 << " " << RPGMAKER::READ_VAR_1 << " 0 0 " << firstVar << " 0";
     changeCommandParameters(command, valuestr.str());
 
     // READVAR2 = LABELXVALUE2
     command = command->NextSiblingElement("EventCommand");
-    int secondByte = 6789;
     valuestr.str(string());
-    valuestr << "0 " << RPGMAKER::READ_VAR_2 << " " << RPGMAKER::READ_VAR_2 << " 0 0 " << secondByte << " 0";
+    valuestr << "0 " << RPGMAKER::READ_VAR_2 << " " << RPGMAKER::READ_VAR_2 << " 0 0 " << secondVar << " 0";
     changeCommandParameters(command, valuestr.str());
 }
