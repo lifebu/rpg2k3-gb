@@ -33,22 +33,19 @@ GB2RPG: Gameboy 2 RPG Maker.
                 - Can use * as wildcards.
                     - TraverseElements("EventCommand/*/EventCommand")
                     => Will search the first eventcommand, then skip undefined amount of elements and then stop in the next eventcommand.
-            - Constructor, with LoadFile
             - Add my helper functions to tinyxml2.
                 DeepCloneInsertBackAllSiblings to XMLDocument.
                 DeepCloneInsertBack to XMLDocument.
                 - as wrapper code (?)
-            - Different SetValue() functions for different types?
-                - 
         
         - Globals:
             - Class Definition Globals:
                 - Stuff like CLI and can get get added to CLI class at is only relevat there.
                 - DMG_EVENT_ID and MAP_ROM_ID are also class specific globals add them to class definition!
             - Folders:
-                - Add more folders, for every template I use.
-                => call that namespace TEMPLATES.
-                => Makes Code in Map easier to read.
+                !- Add more folders, for every template I use.
+                !=> call that namespace TEMPLATES.
+                !=> Makes Code in Map easier to read.
                 - Add a namespace for export filepaths!
                     EXPORTS.
                 - in Filepaths.h
@@ -62,17 +59,17 @@ GB2RPG: Gameboy 2 RPG Maker.
         
         - Write Functions for setting/generating event-commands of different types.
             - set/copy/generate ...
-            !- setCommandParameters
-                => takes XMLElement* and Argument list.
-                - Argument list are the list of commands, that will be converted into a string using string stream internally.
-                - makes outside code better.
+            - setCommandParams
+                !- GENERAL Function. (element and argument list)
+                ALSO:
+                    - Create other functions that build on top of that which have types for the parameters.
+                    - setConditionalBranchParams etc.
+                    - also need Typedefs (enums?) for the paramters, so that I do not punch in magic numbers.
             - setEventIDNameCoord
-            - makes map code so much better!
             - Libraries of Functionality that allows me to manipulate event-commands.
             - should work ontop on the tinyxml2 library and changes I do to that.
 
-        - 
-    
+
         - Good way to map Variable names to IDs inside Maker.
 
     

@@ -39,13 +39,14 @@ private:
     void generateMapROM(GBFile& gbFile, int numOfMapROMs);
     void generateMapRAM();
 
-    // Setup and Helper Functions.
-    // TODO: Some of these helper functions should go into to a more general code-base. e.g. Generation of Command Parameters can be made more general.
-    void setEventIDNameCoord(tinyxml2::XMLDocument* event, int id, std::string& name, int x, int y);
-
-    void changeCommandParameters(tinyxml2::XMLNode* command, std::string parameter);
+    // Helper functions
+    int calcNumOfLabels(GBFile& gbFile);
+    bool isLastEventPage(GBFile& gbFile);
     void setupMapRomHeader(tinyxml2::XMLDocument* mapRomHeader, int numLabels);
     void setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID, int numLabels, int firstVar, int secondVar);
+
+    // TODO: Temporary:
+    void setEventIDNameCoord(tinyxml2::XMLDocument* event, int id, std::string& name, int x, int y);
 
     tinyxml2::XMLDocument* mapDoc;
     // MAP RAM Events start with this ID.
