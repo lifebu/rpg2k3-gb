@@ -28,11 +28,8 @@ namespace TEMPLATES {
 };
 
 namespace EXPORTS {
-    namespace {
-        const static std::string PROJECT_PATH = "rpg2k3/project/";
-    };
     // Map
-    const static std::string MAP_BASE = "Map";
+    const static std::string MAP_BASE = "rpg2k3/project/Map";
     const static std::string MAP_TYPE = ".emu";
 };
 

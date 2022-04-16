@@ -27,12 +27,7 @@ public:
     };
     Map& operator=(Map&& other) = delete;
 
-    /*
-    * Export to .xml file for the map at the full filepath.
-    */
-    void exportXML(std::string filePath);
-
-    static std::vector<Map> genMapFiles(std::vector<GBFile>& gbFiles);
+    static int genMapFiles(std::vector<GBFile>& gbFiles);
 
 private:
     void generateDMGROM();

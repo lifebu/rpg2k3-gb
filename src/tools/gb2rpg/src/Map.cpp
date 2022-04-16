@@ -36,17 +36,15 @@ Map::~Map() {
     }
 }
 
-void Map::exportXML(std::string filePath) {
-    mapDoc->SaveFile(filePath.c_str(), true);
-}
-
-std::vector<Map> Map::genMapFiles(std::vector<GBFile>& gbFiles) {
-    std::vector<Map> maps;
-    maps.reserve(gbFiles.size());
-    for(auto& gb : gbFiles) {
-        maps.emplace_back(gb);
+int Map::genMapFiles(std::vector<GBFile>& gbFiles) {
+    for(int i = 0; i < gbFiles.size(); ++i) {
+        Map map = Map(gbFiles.at(i));
+        
+        string filePath = EXPORTS::MAP_BASE + generateID(i + 1) + EXPORTS::MAP_TYPE;
+        map.mapDoc->SaveFile(filePath.c_str(), true);
     }
-    return maps;
+
+    return gbFiles.size();
 }
 
 

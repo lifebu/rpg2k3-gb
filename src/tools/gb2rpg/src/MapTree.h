@@ -4,8 +4,9 @@ class Map;
 
 class MapTree {
 public:
-    MapTree(std::vector<Map>& maps);
+    MapTree(int numOfMaps);
 
+    static void genMapTree(int numOfMaps);
 private:
 
 };

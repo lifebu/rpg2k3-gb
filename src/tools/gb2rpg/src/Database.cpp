@@ -5,3 +5,7 @@
 Database::Database(std::vector<GBFile>& gbFiles) {
 
 }
+
+void Database::genDatabase(std::vector<GBFile>& gbFiles) {
+
+}

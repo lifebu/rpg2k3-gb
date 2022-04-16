@@ -2,6 +2,10 @@
 
 #include "Map.h"
 
-MapTree::MapTree(std::vector<Map>& maps) {
+MapTree::MapTree(int numOfMaps) {
+
+}
+
+void MapTree::genMapTree(int numOfMaps) {
 
 }
