@@ -3,6 +3,7 @@
 #include "CLI.h"
 
 #include <iostream>
+#include <cassert>
 
 using namespace std;
 
@@ -36,36 +37,32 @@ uint16_t GBFile::getRomSize() {
     return romSize;
 };
 
-// peek x Bytes from the gbFile.
+// peek x Bytes from the gbFile. Does not advance file pointer.
 std::vector<uint8_t> GBFile::peekBytes(int numBytes) {
     auto filePos = file.tellg();
+
     std::vector<uint8_t> ret = getBytes(numBytes);
+
     // reset filepos and bytesRead
     file.seekg(filePos);
     bytesRead -= numBytes;
-
     return ret;
 }
+
 // get x Bytes from the gbFile. Advances file pointer.
 std::vector<uint8_t> GBFile::getBytes(int numBytes) {
     std::vector<uint8_t> ret;
     ret.reserve(numBytes);
 
-    for(int i = 0; i < numBytes; ++i) {
-        if(file.eof()) {
-            // return 0-Bytes
-            ret.push_back(0);
-            continue;
-        }
-
-        char val;
-        file.read(&val, 1);
-        ret.push_back(val);
-    }
+    char val[numBytes] = {};
+    // If numBytes > remainingBytes => The last bytes in the array will be untouched => equal to zero.
+    file.read(val, numBytes);
+    ret.insert(ret.end(), val, val + numBytes);
 
     bytesRead += numBytes;
     return ret;
 }
+
 // how many Bytes are left in the file.
 int GBFile::bytesRemaining() {
     // .gb files have the same size as the original rom.
@@ -90,7 +87,8 @@ uint16_t GBFile::readRamSize(GBHeader& header) {
     if (header.ramSize == 0x03) return 32;
     if (header.ramSize == 0x04) return 128;
     if (header.ramSize == 0x05) return 64;
-    static_assert(true, "Unknown GameBoy Header Ram Size");
+    // Unknown GameBoy Header Ram Size
+    assert(false);
     return 0;
 }
 // read rom size from Gameboy header in KByte
@@ -104,6 +102,7 @@ uint16_t GBFile::readRomSize(GBHeader& header) {
     if (header.romSize == 0x06) return 2048;
     if (header.romSize == 0x07) return 4096;
     if (header.romSize == 0x08) return 8192;
-    static_assert(true, "Unknown GameBoy Header Rom Size");
+    // Unknown GameBoy Header Rom Size
+    assert(false);
     return 0;
 }
