@@ -71,13 +71,6 @@ namespace MEMORYSIZE {
     "VARS_PER_EPAGE needs to be in Range [VARS_PER_READWRITE, MAX_LABELS_PER_EPAGE]");
     // How many Bytes one event-page is responsible for. This is needed for converting Gameboy Addresses to EventIDs and Per Event-Page ByteOffsets.
     const static int BYTES_PER_EPAGE = VARS_PER_EPAGE * BYTES_PER_VAR;
-
-
-    // Map-Event Offsets:
-    // DMG Event has always the first ID.
-    const static int DMG_EVENT_ID = 1;
-    // MAP ROM Events start with 2nd ID.
-    const static int MAP_ROM_ID = 2;
 };
 
 namespace RPGMAKER {
@@ -94,9 +87,9 @@ namespace RPGMAKER {
     // Map
     const static int MAP_SIZE_X = 500;
     const static int MAP_SIZE_Y = 500;
+};
 
-    // TODO: Need a better representation for Variable IDs, but good enough for now.
-    // Variables
+namespace VARMAPPING {
     const static int BYTE_OFFSET_ID = 1;
     const static int LABEL_ID = 2;
     const static int READ_VAR_1 = 3;

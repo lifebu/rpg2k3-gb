@@ -16,11 +16,17 @@
 
 using namespace std;
 
+// Map-Event Offsets:
+// DMG Event has always the first ID.
+const static int DMG_EVENT_ID = 1;
+// MAP ROM Events start with 2nd ID.
+const static int MAP_ROM_ID = 2;
+
 // public
 Map::Map(GBFile& gbFile)
     : mapDoc(nullptr) {
     int numOfMapROMs = ((gbFile.getRomSize() * 1024) / (MEMORYSIZE::MAX_PAGES_PER_EVENT * MEMORYSIZE::BYTES_PER_EPAGE)) + 1;
-    mapRAMID = MEMORYSIZE::MAP_ROM_ID + numOfMapROMs;
+    mapRAMID = MAP_ROM_ID + numOfMapROMs;
 
     mapDoc = new tinyxml2::XMLDocument(TEMPLATES::MAP);
 
@@ -66,7 +72,7 @@ void Map::generateDMGROM() {
 
     // Set Event ID, Name and Coordinate
     std::string name = "DMGROM";
-    setEventIDNameCoord(&event, 1, name, 0, 0);
+    setEventIDNameCoord(&event, DMG_EVENT_ID, name, 0, 0);
 
     // Insert DMG Event into map
     DeepCloneInsertBack(event.RootElement(), mapDoc, 
@@ -75,7 +81,7 @@ void Map::generateDMGROM() {
 
 void Map::generateMapROM(GBFile& gbFile, int numOfMapROMs) {
     // create all necessary ROM Events
-    for(int eventID = MEMORYSIZE::MAP_ROM_ID; eventID < MEMORYSIZE::MAP_ROM_ID + numOfMapROMs; ++eventID) {
+    for(int eventID = MAP_ROM_ID; eventID < MAP_ROM_ID + numOfMapROMs; ++eventID) {
         tinyxml2::XMLDocument event(TEMPLATES::EVENT);
         // creating all necessary event pages.
         for (int pageID = 1; pageID <= MEMORYSIZE::MAX_PAGES_PER_EVENT; ++pageID) {
@@ -115,7 +121,7 @@ void Map::generateMapROM(GBFile& gbFile, int numOfMapROMs) {
         }
 
         // Set Event ID, Name and Coordinate
-        std::string name = string("ROM") + generateID(eventID - MEMORYSIZE::MAP_ROM_ID + 1);
+        std::string name = string("ROM") + generateID(eventID - MAP_ROM_ID + 1);
         int xCoord = (eventID - 1) % RPGMAKER::MAP_SIZE_X;
         int yCoord = (eventID - 1) / RPGMAKER::MAP_SIZE_Y;
         setEventIDNameCoord(&event, eventID, name, xCoord, yCoord);
@@ -218,15 +224,15 @@ void Map::setupMapRomHeader(tinyxml2::XMLDocument* mapRomHeader, int numLabels) 
     // Need to change the boilerplate code (see map_rom_header.xml for details).
     // ByteOffset = (ByteOffset / BYTES_PER_VAR):
     auto* command = mapRomHeader->RootElement()->NextSiblingElement("EventCommand");
-    setCommandParameters(command, 7, 0, RPGMAKER::BYTE_OFFSET_ID, RPGMAKER::BYTE_OFFSET_ID, 4, 0, MEMORYSIZE::BYTES_PER_VAR, 0);
+    setCommandParameters(command, 7, 0, VARMAPPING::BYTE_OFFSET_ID, VARMAPPING::BYTE_OFFSET_ID, 4, 0, MEMORYSIZE::BYTES_PER_VAR, 0);
 
     // LabelID = ByteOffset
     command = command->NextSiblingElement("EventCommand");
-    setCommandParameters(command, 7, 0, RPGMAKER::LABEL_ID, RPGMAKER::LABEL_ID, 0, 1, RPGMAKER::BYTE_OFFSET_ID, 0);
+    setCommandParameters(command, 7, 0, VARMAPPING::LABEL_ID, VARMAPPING::LABEL_ID, 0, 1, VARMAPPING::BYTE_OFFSET_ID, 0);
 
     // LabelID += 1:
     command = command->NextSiblingElement("EventCommand");
-    setCommandParameters(command, 7, 0, RPGMAKER::LABEL_ID, RPGMAKER::LABEL_ID, 1, 0, 1, 0);
+    setCommandParameters(command, 7, 0, VARMAPPING::LABEL_ID, VARMAPPING::LABEL_ID, 1, 0, 1, 0);
 
     // JumpToLabel numLabels / 2
     command = command->NextSiblingElement("EventCommand");
@@ -241,7 +247,7 @@ void Map::setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID, int 
 
     // IF(LabelID < X)
     command = command->NextSiblingElement("EventCommand");
-    setCommandParameters(command, 6, 1, RPGMAKER::LABEL_ID, 0, labelID, 4, 0);
+    setCommandParameters(command, 6, 1, VARMAPPING::LABEL_ID, 0, labelID, 4, 0);
     
     // JumpToLabel X - (min(X, 1.000 - X) / 2)
     command = command->NextSiblingElement("EventCommand");
@@ -257,7 +263,7 @@ void Map::setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID, int 
 
     // IF(LabelID > X)
     command = command->NextSiblingElement("EventCommand")->NextSiblingElement("EventCommand")->NextSiblingElement("EventCommand");
-    setCommandParameters(command, 6, 1, RPGMAKER::LABEL_ID, 0, labelID, 3, 0);
+    setCommandParameters(command, 6, 1, VARMAPPING::LABEL_ID, 0, labelID, 3, 0);
 
     // JumpToLabel X + (min(X, 1.000 - X) / 2)
     command = command->NextSiblingElement("EventCommand");
@@ -272,9 +278,9 @@ void Map::setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID, int 
 
     // READVAR1 = LABELXVALUE1
     command = command->NextSiblingElement("EventCommand")->NextSiblingElement("EventCommand")->NextSiblingElement("EventCommand");
-    setCommandParameters(command, 7, 0, RPGMAKER::READ_VAR_1, RPGMAKER::READ_VAR_1, 0, 0, firstVar, 0);
+    setCommandParameters(command, 7, 0, VARMAPPING::READ_VAR_1, VARMAPPING::READ_VAR_1, 0, 0, firstVar, 0);
 
     // READVAR2 = LABELXVALUE2
     command = command->NextSiblingElement("EventCommand");
-    setCommandParameters(command, 7, 0, RPGMAKER::READ_VAR_2, RPGMAKER::READ_VAR_2, 0, 0, secondVar, 0);
+    setCommandParameters(command, 7, 0, VARMAPPING::READ_VAR_2, VARMAPPING::READ_VAR_2, 0, 0, secondVar, 0);
 }
