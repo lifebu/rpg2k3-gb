@@ -10,40 +10,74 @@ GB2RPG: Gameboy 2 RPG Maker.
         - change high-level structure of tool:
             - because creating the map files, database files and maptree files and having all of them stored in memory is too much.
             - structure:
-                1st: Create Map(s)
-                2nd: Save Map Files to .xml
-                3rd: Create Maptree
-                4th: Save Maptree to .xml
-                5th: Create Database
-                6th: Save Database to .xml
-                7th: GenProjectFolder:
-                    - will use the generated .xml files and will use lcf2xml.
-                    - then it will create the folder structure and move the files around.
-                    - maybe map/maptree/db are already in the correct RPG Maker folder?
-                    - just needs to convert with lcf2xml and delete .xml files.
+                1st: Create Maps:
+                    - Create one Map in Memory.
+                    - Save that map as .xml (exportXML).
+                    - GoTo next map (change genMapFiles).
+                2nd: Create Maptree
+                    - Create Maptree in Memory.
+                    - Save Maptree to .xml (exportXML).
+                3rd: Create Database:
+                    - Create Dabase in Memory.
+                    - Save Database to .xml (exportXML).
+                4th: GenProjectFolder: (rename: GenerateProject())
+                    - lcf2xml => generate Binaries.
+                    - delete .xml files.
+                    - create files/folders necessary for project.
                     
 
     - Refactor:
         - TinyXML2:
             - Path Traversal:
                 - Input a path string to traverse the xml file.
+                - Can use * as wildcards.
+                    - TraverseElements("EventCommand/*/EventCommand")
+                    => Will search the first eventcommand, then skip undefined amount of elements and then stop in the next eventcommand.
             - Constructor, with LoadFile
             - Add my helper functions to tinyxml2.
-                - as wrapper code.
-        - Global Definitions should be global somewhere in the project.
+                DeepCloneInsertBackAllSiblings to XMLDocument.
+                DeepCloneInsertBack to XMLDocument.
+                - as wrapper code (?)
+            - Different SetValue() functions for different types?
+                - 
+        
+        - Globals:
+            - Class Definition Globals:
+                - Stuff like CLI and can get get added to CLI class at is only relevat there.
+                - DMG_EVENT_ID and MAP_ROM_ID are also class specific globals add them to class definition!
+            - Folders:
+                - Add more folders, for every template I use.
+                => call that namespace TEMPLATES.
+                => Makes Code in Map easier to read.
+                - Add a namespace for export filepaths!
+                    EXPORTS.
+                - in Filepaths.h
+            - Project overarching globals:
+                - RPG-Maker & GameBoy Definitions should be added to one src/core/globals.h (with CMAkeList!).
+                - MEMORYSIZE add that to RPG Maker? Where does it fit?
+                - RPGHelper should go into project globals.
+                    => RPGHelper => Utility.
+                - namespace for VARIABLEMAPPING
+
+        
         - Write Functions for setting/generating event-commands of different types.
+            - set/copy/generate ...
+            !- setCommandParameters
+                => takes XMLElement* and Argument list.
+                - Argument list are the list of commands, that will be converted into a string using string stream internally.
+                - makes outside code better.
+            - setEventIDNameCoord
             - makes map code so much better!
             - Libraries of Functionality that allows me to manipulate event-commands.
             - should work ontop on the tinyxml2 library and changes I do to that.
+
+        - 
     
         - Good way to map Variable names to IDs inside Maker.
 
     
 
-    - Problems to Solve:
-        - How to handle reads, that are outside of the ROMSIZE Boundary?
-            - Can only happen if the .gb code has an error and tries to access memory outside ROM-Boundary.
-            - What with 2Byte Reads at the end of ROMSIZE Boundary? First Byte is Valid, but second is not!
+    
 
 
 - thirdparty:

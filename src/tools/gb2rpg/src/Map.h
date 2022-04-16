@@ -17,8 +17,6 @@ public:
     // could make this non-copyable but moveable, makes semantic sense.
     //  - could save gbFile to recreate event on copy 
     //  - shallow copy on event => BUT this requires other to be non-const. 
-
-    // tinyxml2::XMLDocument is non copyable => therefore map cannot be! (also semantic)
     Map(const Map& other) {
         throw;
     };
@@ -38,7 +36,7 @@ public:
 
 private:
     void generateDMGROM();
-    void generateMapROM(GBFile& gbFile);
+    void generateMapROM(GBFile& gbFile, int numOfMapROMs);
     void generateMapRAM();
 
     // Setup and Helper Functions.

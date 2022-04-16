@@ -22,11 +22,6 @@ bool CLIOptions::printInfo() {
     } 
     if (printHelp || (!printHelp && !printVersion && filePaths.empty())) {
         cout << CLI::HELP_STRING;
-        //cout << "GB2RPG - Create RPG Maker 2003 Project Files from Gameboy Rom" << endl;
-        //cout << "Usage: gb2rpg [--help/-h] [--version/-v] [-gb/-g] file1 [... fileN]" << endl;
-        //cout << "          --help/-h: print help" << endl;
-        //cout << "          --version/-v: print version information" << endl;
-        //cout << "          --gb/-g: list of Gameboy roms to load" << endl;
     }
 
     return true;
@@ -39,7 +34,7 @@ std::vector<std::string>& CLIOptions::getFilePaths() {
 /*
 * Returns index of the last parameter that still belongs to the argument which starts at start.
 */
-int findParameterRange(int argc, char* argv[], int start) {
+int CLIOptions::findParameterRange(int argc, char* argv[], int start) {
     int i = start + 1;
     for(; i < argc; ++i) {
         string nextArgument = argv[i];
@@ -54,25 +49,28 @@ int findParameterRange(int argc, char* argv[], int start) {
 /*
 * sanitizes command line inputs for paths
 */
-void pathSanitize(string& path) {
+void CLIOptions::sanitizePath(string& path) {
     path.erase(remove(path.begin(), path.end(), '\\'), path.end());
 }
 
 void CLIOptions::parseArguments(int argc, char* argv[]) {
-    // first argument always program path and name.
+    // first argument always program path and name, so igore it.
     for (int i = 1; i < argc; ++i) {
         string argument = argv[i];
         if (argument == "-v" || argument == "--version") {
             printVersion = true;
+        
         } else if (argument == "-h" || argument == "--help") {
             printHelp = true;
+        
         } else if (argument == "-g" || argument == "--gb") {
             int last = findParameterRange(argc, argv, i);
             int numParams = last - i;
             filePaths.reserve(numParams);
+
             for (int param = i + 1; param <= last; ++param) {
                 string path = string(argv[param]);
-                pathSanitize(path);
+                sanitizePath(path);
                 filePaths.push_back(path);
             }
         }

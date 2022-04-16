@@ -25,7 +25,7 @@ Map::Map(GBFile& gbFile)
     mapDoc->LoadFile((FOLDERS::TEMPLATE_PATH + "map/map.xml").c_str());
 
     generateDMGROM();
-    generateMapROM(gbFile);
+    generateMapROM(gbFile, numOfMapROMs);
     generateMapRAM();
 }
 
@@ -52,7 +52,6 @@ std::vector<Map> Map::genMapFiles(std::vector<GBFile>& gbFiles) {
 
 // private
 void Map::generateDMGROM() {
-    // DMGROM does not need to change EventID, PageID, or Position (0,0)
     tinyxml2::XMLDocument event;
     event.LoadFile((FOLDERS::TEMPLATE_PATH + "event/event.xml").c_str());
 
@@ -81,9 +80,7 @@ void Map::generateDMGROM() {
         mapDoc->FirstChildElement("LMU")->FirstChildElement()->FirstChildElement("events"));
 }
 
-void Map::generateMapROM(GBFile& gbFile) {
-    int numOfMapROMs = ((gbFile.getRomSize() * 1024) / (MEMORYSIZE::MAX_PAGES_PER_EVENT * MEMORYSIZE::BYTES_PER_EPAGE)) + 1;
-
+void Map::generateMapROM(GBFile& gbFile, int numOfMapROMs) {
     // create all necessary ROM Events
     for(int eventID = MEMORYSIZE::MAP_ROM_ID; eventID < MEMORYSIZE::MAP_ROM_ID + numOfMapROMs; ++eventID) {
         tinyxml2::XMLDocument event;
@@ -97,10 +94,11 @@ void Map::generateMapROM(GBFile& gbFile) {
 
             // How many Labels does this page need?
             bool isLastEventPage = false;
-            int numLabels;
-            if(gbFile.bytesRemaining() >= MEMORYSIZE::VARS_PER_EPAGE * MEMORYSIZE::BYTES_PER_VAR) {
-                numLabels = MEMORYSIZE::VARS_PER_EPAGE;
-            } else {
+            int numLabels = MEMORYSIZE::VARS_PER_EPAGE;
+            if (gbFile.bytesRemaining() == MEMORYSIZE::VARS_PER_EPAGE * MEMORYSIZE::BYTES_PER_VAR) {
+                isLastEventPage = true;
+            }
+            else if(gbFile.bytesRemaining() < MEMORYSIZE::VARS_PER_EPAGE * MEMORYSIZE::BYTES_PER_VAR) {
                 // This is the last event-page
                 isLastEventPage = true;
                 numLabels = ceil((float)gbFile.bytesRemaining() / (float)MEMORYSIZE::BYTES_PER_VAR);
@@ -117,18 +115,15 @@ void Map::generateMapROM(GBFile& gbFile) {
 
             DeepCloneInsertBackAllSiblings(mapRomHeader.RootElement(), &eventPage, eventPage.RootElement()->FirstChildElement("event_commands"));
 
-            eventPage.SaveFile("playground/event.xml");
-
             // Fill event-page with map-rom-label commands
             for(int labelID = 1; labelID < (numLabels + 1); ++labelID) {
                 tinyxml2::XMLDocument mapRomLabel;
                 mapRomLabel.LoadFile((FOLDERS::TEMPLATE_PATH + "map_rom_label.xml").c_str());
 
                 int firstVar = packVariable(gbFile.getBytes(MEMORYSIZE::BYTES_PER_VAR));
-                // Second Variable is overhead for the case that a 2-Byte R/W Op needs the last Byte of the first Var and the next byte.
                 int secondVar = packVariable(gbFile.peekBytes(MEMORYSIZE::BYTES_PER_VAR));
                 if(isLastEventPage && labelID == numLabels) {
-                    // If we are on the last event-page and this is the last Label, the second value should indicate garbadge data, as it contains data after the GBFile.
+                    // Second variable should indicate garbage value, as it contains data after the GBFile. 
                     secondVar = -9999999;
                 }
                 setupMapRomLabel(&mapRomLabel, labelID, numLabels, firstVar, secondVar);
@@ -183,8 +178,8 @@ void Map::generateMapRAM() {
 
 // Setup and Helper Functions.
 void Map::setEventIDNameCoord(tinyxml2::XMLDocument* event, int id, std::string& name, int x, int y) {
-    assert(x >= 0 && x < 500);
-    assert(y >= 0 && y < 500);
+    assert(x >= 0 && x < RPGMAKER::MAP_SIZE_X);
+    assert(y >= 0 && y < RPGMAKER::MAP_SIZE_Y);
 
     // Set Event ID
     event->RootElement()->SetAttribute("id", generateID(id).c_str());

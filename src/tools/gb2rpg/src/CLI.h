@@ -10,6 +10,8 @@ public:
     std::vector<std::string>& getFilePaths();
 
 private:
+    int findParameterRange(int argc, char* argv[], int start);
+    void sanitizePath(std::string& path);
     void parseArguments(int argc, char* argv[]);
 
     std::vector<std::string> filePaths;
