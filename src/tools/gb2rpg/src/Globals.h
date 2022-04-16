@@ -1,15 +1,6 @@
 #include <string>
 #include <cmath>
 
-namespace CLI {
-    const static std::string VERSION_STRING = "0.1\n";
-    const static std::string HELP_STRING = "GB2RPG - Create RPG Maker 2003 Project Files from Gameboy Rom\n" 
-                                    "Usage: gb2rpg [--help/-h] [--version/-v] [-gb/-g] file1 [... fileN]\n"
-                                    "          --help/-h: print help\n"
-                                    "          --version/-v: print version information\n"
-                                    "          --gb/-g: list of Gameboy roms to load\n";
-};
-
 namespace TEMPLATES {
     // TODO: Can I do static_asserts to ensure that the files exist?
     // database

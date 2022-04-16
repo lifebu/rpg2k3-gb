@@ -7,10 +7,10 @@
 
 
 int main (int argc, char* argv[]) {
-    // TODO: Two things need to change:
-    // 1st: Only one .gb file is allowed for now.
+    // TODO: need to change:
     // 2nd: to reduce memory usage only one .xml file is being generated at one time. after maps are generated, they need to be saved to .xml before starting generation on maptrees, for example.
     CLIOptions cli = CLIOptions(argc, argv);
+    if(cli.printErrors()) return 0;
     if(cli.printInfo()) return 0;
 
     std::vector<GBFile> gbFiles = GBFile::genGBFiles(cli);

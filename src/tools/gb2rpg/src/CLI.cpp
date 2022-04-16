@@ -1,11 +1,17 @@
 #include "CLI.h"
 
-#include "Globals.h"
-
 #include <iostream>
 #include <algorithm>
 
 using namespace std;
+
+const static std::string VERSION_STRING = "0.1\n";
+const static std::string HELP_STRING =  "GB2RPG - Create RPG Maker 2003 Project Files from Gameboy Rom\n" 
+                                        "Usage: gb2rpg [--help/-h] [--version/-v] [-gb/-g] file1 [... fileN]\n"
+                                        "          --help/-h: print help\n"
+                                        "          --version/-v: print version information\n"
+                                        "          --gb/-g: list of Gameboy roms to load\n";
+const static std::string ERR_TO_MANY_GB_FILES = "For memory reasons, GB2RPG currently can only support the generation of one mapfile at a time.\n";
 
 CLIOptions::CLIOptions(int argc, char* argv[])
     : printVersion(false), printHelp(false), filePaths() {
@@ -18,13 +24,21 @@ CLIOptions::CLIOptions(int argc, char* argv[])
 bool CLIOptions::printInfo() {
     if(!printVersion && !printHelp && !filePaths.empty()) return false;
     if(printVersion) {
-        cout << CLI::VERSION_STRING;
+        cout << VERSION_STRING;
     } 
     if (printHelp || (!printHelp && !printVersion && filePaths.empty())) {
-        cout << CLI::HELP_STRING;
+        cout << HELP_STRING;
     }
 
     return true;
+}
+bool CLIOptions::printErrors() {
+    if(filePaths.size() > 1) {
+        // for Memory Reasons we only support one .gb file right now.
+        cout << ERR_TO_MANY_GB_FILES;
+        return true;
+    }
+    return false;
 }
 
 std::vector<std::string>& CLIOptions::getFilePaths() {

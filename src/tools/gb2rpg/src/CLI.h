@@ -1,11 +1,12 @@
-#include<vector>
-#include<string>
+#include <vector>
+#include <string>
 
 class CLIOptions {
 public:
     CLIOptions(int argc, char* argv[]);
 
     bool printInfo();
+    bool printErrors();
 
     std::vector<std::string>& getFilePaths();
 

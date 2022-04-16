@@ -4,7 +4,7 @@
   <maps>
     <!--special root-map of the tree (folder)-->
    <MapInfo id="0000">
-    <name>Untitled</name>
+    <name>Gameboy Emulator</name>
     <parent_map>0</parent_map>
     <indentation>0</indentation>
     <type>0</type>

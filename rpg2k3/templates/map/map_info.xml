@@ -1,5 +1,6 @@
 <!--This are the map properties found by right-clicking on a map.-->
 <MapInfo id="0001">
+  <!--Would be neat to set the Mapname to the rom file name. -->
   <name>MAP0001</name>
   <parent_map>0</parent_map>
   <indentation>1</indentation>
