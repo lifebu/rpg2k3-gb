@@ -21,16 +21,3 @@ void DeepCloneInsertBackAllSiblings(tinyxml2::XMLNode* toCopy, tinyxml2::XMLDocu
         toCopy = toCopy->NextSiblingElement();
     }
 }
-
-string generateID(int id) {
-    assert(id > 0 && id < 10000);
-    string str;
-    // Add leading zeroes.
-    if (id < 1000) str += "0";
-    if (id < 100) str += "0";
-    if (id < 10) str += "0";
-
-    str += to_string(id);
-
-    return str;
-}

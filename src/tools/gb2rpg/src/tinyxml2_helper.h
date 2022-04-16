@@ -9,5 +9,3 @@ namespace tinyxml2 {
 void DeepCloneInsertBack(tinyxml2::XMLNode* toCopy, tinyxml2::XMLDocument* doc, tinyxml2::XMLElement* insertPos);
 
 void DeepCloneInsertBackAllSiblings(tinyxml2::XMLNode* toCopy, tinyxml2::XMLDocument* doc, tinyxml2::XMLElement* insertPos);
-
-std::string generateID(int id);

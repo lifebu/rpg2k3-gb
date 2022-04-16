@@ -4,6 +4,7 @@
 
 #include <cassert>
 
+
 int32_t packVariable(std::vector<uint8_t> bytes) {
     assert(bytes.size() == MEMORYSIZE::BYTES_PER_VAR);
     int32_t var = 0;
@@ -31,3 +32,16 @@ std::vector<uint8_t> unpackVariable(int32_t var) {
     assert(bytes.size() == MEMORYSIZE::BYTES_PER_VAR);
     return bytes;
 };
+
+std::string generateID(int id) {
+    assert(id > 0 && id < 10000);
+    std::string str;
+    // Add leading zeroes.
+    if (id < 1000) str += "0";
+    if (id < 100) str += "0";
+    if (id < 10) str += "0";
+
+    str += std::to_string(id);
+
+    return str;
+}
