@@ -21,8 +21,7 @@ Map::Map(GBFile& gbFile)
     int numOfMapROMs = ((gbFile.getRomSize() * 1024) / (MEMORYSIZE::MAX_PAGES_PER_EVENT * MEMORYSIZE::BYTES_PER_EPAGE)) + 1;
     mapRAMID = MEMORYSIZE::MAP_ROM_ID + numOfMapROMs;
 
-    mapDoc = new tinyxml2::XMLDocument;
-    mapDoc->LoadFile((FOLDERS::TEMPLATE_PATH + "map/map.xml").c_str());
+    mapDoc = new tinyxml2::XMLDocument((FOLDERS::TEMPLATE_PATH + "map/map.xml").c_str());
 
     generateDMGROM();
     generateMapROM(gbFile, numOfMapROMs);
@@ -52,14 +51,9 @@ std::vector<Map> Map::genMapFiles(std::vector<GBFile>& gbFiles) {
 
 // private
 void Map::generateDMGROM() {
-    tinyxml2::XMLDocument event;
-    event.LoadFile((FOLDERS::TEMPLATE_PATH + "event/event.xml").c_str());
-
-    tinyxml2::XMLDocument eventPage;
-    eventPage.LoadFile((FOLDERS::TEMPLATE_PATH + "event/event_page.xml").c_str());
-
-    tinyxml2::XMLDocument DMGROM;
-    DMGROM.LoadFile((FOLDERS::TEMPLATE_PATH + "dmg_rom.xml").c_str());
+    tinyxml2::XMLDocument event((FOLDERS::TEMPLATE_PATH + "event/event.xml").c_str());
+    tinyxml2::XMLDocument eventPage((FOLDERS::TEMPLATE_PATH + "event/event_page.xml").c_str());
+    tinyxml2::XMLDocument DMGROM((FOLDERS::TEMPLATE_PATH + "event/event_page.xml").c_str());
     
 
     // Add DMGROM into event-page
@@ -83,8 +77,7 @@ void Map::generateDMGROM() {
 void Map::generateMapROM(GBFile& gbFile, int numOfMapROMs) {
     // create all necessary ROM Events
     for(int eventID = MEMORYSIZE::MAP_ROM_ID; eventID < MEMORYSIZE::MAP_ROM_ID + numOfMapROMs; ++eventID) {
-        tinyxml2::XMLDocument event;
-        event.LoadFile((FOLDERS::TEMPLATE_PATH + "event/event.xml").c_str());
+        tinyxml2::XMLDocument event((FOLDERS::TEMPLATE_PATH + "event/event.xml").c_str());
 
         for (int pageID = 1; pageID <= MEMORYSIZE::MAX_PAGES_PER_EVENT; ++pageID) {
             if(gbFile.bytesRemaining() <= 0) {
@@ -105,20 +98,17 @@ void Map::generateMapROM(GBFile& gbFile, int numOfMapROMs) {
             }
 
             // Load event-page
-            tinyxml2::XMLDocument eventPage;
-            eventPage.LoadFile((FOLDERS::TEMPLATE_PATH + "event/event_page.xml").c_str());
+            tinyxml2::XMLDocument eventPage((FOLDERS::TEMPLATE_PATH + "event/event_page.xml").c_str());
 
             // Fill event-page with map-rom-header commands
-            tinyxml2::XMLDocument mapRomHeader;
-            mapRomHeader.LoadFile((FOLDERS::TEMPLATE_PATH + "map_rom_header.xml").c_str());
+            tinyxml2::XMLDocument mapRomHeader((FOLDERS::TEMPLATE_PATH + "map_rom_header.xml").c_str());
             setupMapRomHeader(&mapRomHeader, numLabels);
 
             DeepCloneInsertBackAllSiblings(mapRomHeader.RootElement(), &eventPage, eventPage.RootElement()->FirstChildElement("event_commands"));
 
             // Fill event-page with map-rom-label commands
             for(int labelID = 1; labelID < (numLabels + 1); ++labelID) {
-                tinyxml2::XMLDocument mapRomLabel;
-                mapRomLabel.LoadFile((FOLDERS::TEMPLATE_PATH + "map_rom_label.xml").c_str());
+                tinyxml2::XMLDocument mapRomLabel((FOLDERS::TEMPLATE_PATH + "map_rom_label.xml").c_str());
 
                 int firstVar = packVariable(gbFile.getBytes(MEMORYSIZE::BYTES_PER_VAR));
                 int secondVar = packVariable(gbFile.peekBytes(MEMORYSIZE::BYTES_PER_VAR));
@@ -151,11 +141,9 @@ void Map::generateMapROM(GBFile& gbFile, int numOfMapROMs) {
 
 void Map::generateMapRAM() {
     // load event template (event/event.xml)
-    tinyxml2::XMLDocument event;
-    event.LoadFile((FOLDERS::TEMPLATE_PATH + "event/event.xml").c_str());
+    tinyxml2::XMLDocument event((FOLDERS::TEMPLATE_PATH + "event/event.xml").c_str());
     // add one event-page from template (event/event_page.xml)
-    tinyxml2::XMLDocument eventPage;
-    eventPage.LoadFile((FOLDERS::TEMPLATE_PATH + "event/event_page.xml").c_str());
+    tinyxml2::XMLDocument eventPage((FOLDERS::TEMPLATE_PATH + "event/event_page.xml").c_str());
 
     // insert event-page into event.
     DeepCloneInsertBack(eventPage.RootElement(), &event, 

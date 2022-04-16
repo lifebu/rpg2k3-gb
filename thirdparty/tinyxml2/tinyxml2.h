@@ -1726,6 +1726,11 @@ class TINYXML2_LIB XMLDocument : public XMLNode
 public:
     /// constructor
     XMLDocument( bool processEntities = true, Whitespace whitespaceMode = PRESERVE_WHITESPACE );
+    // - EDIT START -
+
+    XMLDocument( const char* filename );
+    
+    // - EDIT END -
     ~XMLDocument();
 
     virtual XMLDocument* ToDocument()				{

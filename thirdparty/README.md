@@ -1,4 +1,5 @@
 # Third party libraries
+Potential changes to thirdparty source code is marked with `// - EDIT START -` and `// - EDIT END -` comment.
 
 ## tinyxml2
 

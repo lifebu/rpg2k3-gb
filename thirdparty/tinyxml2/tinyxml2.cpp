@@ -2169,6 +2169,15 @@ XMLDocument::XMLDocument( bool processEntities, Whitespace whitespaceMode ) :
     _document = this;
 }
 
+// - EDIT START -
+
+XMLDocument::XMLDocument( const char* filename ) :
+    XMLDocument()
+{
+    LoadFile(filename);
+}
+
+// - EDIT END -
 
 XMLDocument::~XMLDocument()
 {
