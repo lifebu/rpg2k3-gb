@@ -7,6 +7,9 @@ endif()
 
 project(rpg2k3-gb VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Gameboy emulator for RPG Maker 2003")
 
+# core
+add_subdirectory(src/core)
+
 # tools
 add_subdirectory(src/tools/gb2rpg)
 

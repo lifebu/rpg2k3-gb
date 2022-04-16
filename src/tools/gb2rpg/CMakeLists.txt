@@ -7,15 +7,17 @@ endif()
 
 project(gb2rpg VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Gameboy rom to RPG Maker")
 
+set(gp2rpg_headers
+    src/CLI.h src/Database.h src/GBFile.h src/Map.h src/Globals.h
+    src/MapTree.h src/ProjectGenerator.h src/tinyxml2_helper.h src/RPGHelper.h)
+
 set(gp2rpg_source
     src/CLI.cpp src/Database.cpp src/GBFile.cpp src/Map.cpp
     src/MapTree.cpp src/ProjectGenerator.cpp src/tinyxml2_helper.cpp src/RPGHelper.cpp) 
 
-set(gp2rpg_headers
-    src/CLI.h src/Database.h src/GBFile.h src/Map.h
-    src/MapTree.h src/ProjectGenerator.h src/tinyxml2_helper.h src/RPGHelper.h)
-
 add_executable(gb2rpg gb2rpg.cpp ${gp2rpg_source} ${gp2rpg_headers})
+
+target_include_directories(gb2rpg PRIVATE core_headers)
 
 target_include_directories(gb2rpg PRIVATE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>")
 

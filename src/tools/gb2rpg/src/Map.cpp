@@ -6,6 +6,9 @@
 #include "thirdparty/tinyxml2/tinyxml2.h"
 #include "tinyxml2_helper.h"
 #include "RPGHelper.h"
+#include "src/core/VarMapping.h"
+#include "src/core/MemorySizes.h"
+#include "src/core/RPGMaker.h"
 
 #include <iostream>
 #include <sstream>
@@ -25,7 +28,7 @@ const static int MAP_ROM_ID = 2;
 // public
 Map::Map(GBFile& gbFile)
     : mapDoc(nullptr) {
-    int numOfMapROMs = ((gbFile.getRomSize() * 1024) / (MEMORYSIZE::MAX_PAGES_PER_EVENT * MEMORYSIZE::BYTES_PER_EPAGE)) + 1;
+    int numOfMapROMs = ((gbFile.getRomSize() * 1024) / (MEMORYSIZES::MAX_PAGES_PER_EVENT * MEMORYSIZES::BYTES_PER_EPAGE)) + 1;
     mapRAMID = MAP_ROM_ID + numOfMapROMs;
 
     mapDoc = new tinyxml2::XMLDocument(TEMPLATES::MAP);
@@ -84,7 +87,7 @@ void Map::generateMapROM(GBFile& gbFile, int numOfMapROMs) {
     for(int eventID = MAP_ROM_ID; eventID < MAP_ROM_ID + numOfMapROMs; ++eventID) {
         tinyxml2::XMLDocument event(TEMPLATES::EVENT);
         // creating all necessary event pages.
-        for (int pageID = 1; pageID <= MEMORYSIZE::MAX_PAGES_PER_EVENT; ++pageID) {
+        for (int pageID = 1; pageID <= MEMORYSIZES::MAX_PAGES_PER_EVENT; ++pageID) {
             if(gbFile.bytesRemaining() <= 0) {
                 // The last event-page had all Bytes we needed
                 break;
@@ -106,8 +109,8 @@ void Map::generateMapROM(GBFile& gbFile, int numOfMapROMs) {
             for(int labelID = 1; labelID < (numLabels + 1); ++labelID) {
                 tinyxml2::XMLDocument mapRomLabel(TEMPLATES::MAP_ROM_LABEL);
 
-                int firstVar = packVariable(gbFile.getBytes(MEMORYSIZE::BYTES_PER_VAR));
-                int secondVar = packVariable(gbFile.peekBytes(MEMORYSIZE::BYTES_PER_VAR));
+                int firstVar = packVariable(gbFile.getBytes(MEMORYSIZES::BYTES_PER_VAR));
+                int secondVar = packVariable(gbFile.peekBytes(MEMORYSIZES::BYTES_PER_VAR));
                 if(lastEventPage && labelID == numLabels) {
                     // Second variable should indicate garbage value, as it contains data after the GBFile. 
                     secondVar = -9999999;
@@ -140,7 +143,7 @@ void Map::generateMapRAM() {
     DeepCloneInsertBack(eventPage.RootElement(), &event, 
         event.RootElement()->FirstChildElement("pages"));
 
-    for (int i = 0; i < MEMORYSIZE::NUM_DMG_RAM_EVENTS; ++i) {
+    for (int i = 0; i < MEMORYSIZES::NUM_DMG_RAM_EVENTS; ++i) {
 
         // Set Event ID, Name and Coordinate
         std::string name = string("RAM") + generateID(i + 1);
@@ -200,21 +203,21 @@ void setCommandType(tinyxml2::XMLNode* command, int newType) {
 // Helper functions
 int Map::calcNumOfLabels(GBFile& gbFile) {
     bool isLastEventPage = false;
-    int numLabels = MEMORYSIZE::VARS_PER_EPAGE;
-    if (gbFile.bytesRemaining() == MEMORYSIZE::VARS_PER_EPAGE * MEMORYSIZE::BYTES_PER_VAR) {
+    int numLabels = MEMORYSIZES::VARS_PER_EPAGE;
+    if (gbFile.bytesRemaining() == MEMORYSIZES::VARS_PER_EPAGE * MEMORYSIZES::BYTES_PER_VAR) {
         isLastEventPage = true;
     }
-    else if(gbFile.bytesRemaining() < MEMORYSIZE::VARS_PER_EPAGE * MEMORYSIZE::BYTES_PER_VAR) {
+    else if(gbFile.bytesRemaining() < MEMORYSIZES::VARS_PER_EPAGE * MEMORYSIZES::BYTES_PER_VAR) {
         // This is the last event-page
         isLastEventPage = true;
-        numLabels = ceil((float)gbFile.bytesRemaining() / (float)MEMORYSIZE::BYTES_PER_VAR);
+        numLabels = ceil((float)gbFile.bytesRemaining() / (float)MEMORYSIZES::BYTES_PER_VAR);
     }
     return numLabels;
 }
 
 bool Map::isLastEventPage(GBFile& gbFile) {
     bool isLastEventPage = false;
-    if (gbFile.bytesRemaining() <= MEMORYSIZE::VARS_PER_EPAGE * MEMORYSIZE::BYTES_PER_VAR) {
+    if (gbFile.bytesRemaining() <= MEMORYSIZES::VARS_PER_EPAGE * MEMORYSIZES::BYTES_PER_VAR) {
         isLastEventPage = true;
     }
     return isLastEventPage;
@@ -224,7 +227,7 @@ void Map::setupMapRomHeader(tinyxml2::XMLDocument* mapRomHeader, int numLabels) 
     // Need to change the boilerplate code (see map_rom_header.xml for details).
     // ByteOffset = (ByteOffset / BYTES_PER_VAR):
     auto* command = mapRomHeader->RootElement()->NextSiblingElement("EventCommand");
-    setCommandParameters(command, 7, 0, VARMAPPING::BYTE_OFFSET_ID, VARMAPPING::BYTE_OFFSET_ID, 4, 0, MEMORYSIZE::BYTES_PER_VAR, 0);
+    setCommandParameters(command, 7, 0, VARMAPPING::BYTE_OFFSET_ID, VARMAPPING::BYTE_OFFSET_ID, 4, 0, MEMORYSIZES::BYTES_PER_VAR, 0);
 
     // LabelID = ByteOffset
     command = command->NextSiblingElement("EventCommand");

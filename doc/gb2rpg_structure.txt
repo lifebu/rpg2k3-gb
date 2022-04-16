@@ -38,21 +38,8 @@ GB2RPG: Gameboy 2 RPG Maker.
                 DeepCloneInsertBack to XMLDocument.
                 - as wrapper code (?)
         
-        - Globals:
-            - Folders:
-                !- Add more folders, for every template I use.
-                !=> call that namespace TEMPLATES.
-                !=> Makes Code in Map easier to read.
-                !- Add a namespace for export filepaths!
-                    EXPORTS.
-                - in Filepaths.h
-            - Project overarching globals:
-                - RPG-Maker & GameBoy Definitions should be added to one src/core/globals.h (with CMAkeList!).
-                - MEMORYSIZE add that to RPG Maker? Where does it fit?
-                - RPGHelper should go into project globals.
+        - RPGHelper should go into project globals.
                     => RPGHelper => Utility.
-                !- namespace for VARIABLEMAPPING
-
         
         - Write Functions for setting/generating event-commands of different types.
             - set/copy/generate ...

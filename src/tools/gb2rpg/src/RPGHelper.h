@@ -1,3 +1,5 @@
+#pragma once
+
 // TODO THIS FILE NEEDS A BETTER PLACE!
 #include<vector>
 #include<cstdint>
