@@ -833,6 +833,34 @@ public:
         return const_cast<XMLElement*>(const_cast<const XMLNode*>(this)->NextSiblingElement( name ) );
     }
 
+    // - EDIT START -
+
+
+    /** Traverse document similar to paths.
+        Syntax for traversal functions:
+            '/': FirstChild()
+            '\': LastChild()
+            '.\': PreviousSibling()
+            './': NextSibling()
+            '..': Parent()
+        Example:
+        './/' expands to NextSibling()->FirstChild()
+    */
+    XMLNode* Traverse(const char* path);
+    /** Traverse document similar to paths. Can use element names for traversal.
+        Syntax for traversal functions:
+            '/name': FirstChild(name)
+            '\name': LastChild()
+            '.\name': PreviousSibling()
+            './name': NextSibling()
+            '..': Parent()
+        Example:
+        './a./b' expands to NextSiblingElement(a)->NextSiblingElement(b)
+    */
+    XMLElement* TraverseElement(const char* path);
+
+    // - EDIT END -
+
     /**
     	Add a child node as the last (right) child.
 		If the child node is already part of the document,
@@ -1941,6 +1969,31 @@ public:
 		NOTE: that the 'target' must be non-null.
 	*/
 	void DeepCopy(XMLDocument* target) const;
+
+    // - EDIT START -
+
+    /**
+       Make a copy of the first child of this document
+       and all their children
+       to insert it at a specific position.
+     
+       Target needs to be a valid XMLDocument.
+       The copy will be inserted as the end child of 'insertParent'.
+       If 'insertParent' is null, this node will be copied to the root of the target.
+     */
+    void DeepCloneInsertBack(tinyxml2::XMLDocument* target, tinyxml2::XMLNode* insertParent);
+    /**
+       Make a copy of all children of this document 
+       and all their children 
+       to insert it at a specific position.
+     
+       Target needs to be a valid XMLDocument.
+       The copies will be inserted as the end child of 'insertParent'.
+       If 'insertParent' is null, this node will be copied to the root of the target.
+     */
+    void DeepCloneInsertBackSiblings(tinyxml2::XMLDocument* target, tinyxml2::XMLNode* insertParent);
+
+    // - EDIT END -
 
 	// internal
     char* Identify( char* p, XMLNode** node );

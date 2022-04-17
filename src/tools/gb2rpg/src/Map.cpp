@@ -64,18 +64,17 @@ void Map::generateDMGROM() {
     
 
     // Add DMGROM into event-page
-    DMGROM.RootElement()->DeepCloneInsertBackSiblings(&eventPage, eventPage.RootElement()->FirstChildElement("event_commands"));
+    DMGROM.DeepCloneInsertBackSiblings(&eventPage, eventPage.TraverseElement("//event_commands"));
 
     // Insert event-page into event.
-    eventPage.RootElement()->DeepCloneInsertBack(&event, event.RootElement()->FirstChildElement("pages"));
-
+    eventPage.DeepCloneInsertBack(&event, event.TraverseElement("//pages"));
 
     // Set Event ID, Name and Coordinate
     std::string name = "DMGROM";
     setEventIDNameCoord(&event, DMG_EVENT_ID, name, 0, 0);
 
     // Insert DMG Event into map
-    event.RootElement()->DeepCloneInsertBack(mapDoc, mapDoc->FirstChildElement("LMU")->FirstChildElement()->FirstChildElement("events"));
+    event.DeepCloneInsertBack(mapDoc, mapDoc->TraverseElement("/LMU//events"));
 }
 
 void Map::generateMapROM(GBFile& gbFile, int numOfMapROMs) {
@@ -99,7 +98,7 @@ void Map::generateMapROM(GBFile& gbFile, int numOfMapROMs) {
             // 2nd: Fill event-page with map-rom-header commands
             tinyxml2::XMLDocument mapRomHeader(TEMPLATES::MAP_ROM_HEADER);
             setupMapRomHeader(&mapRomHeader, numLabels);
-            mapRomHeader.RootElement()->DeepCloneInsertBackSiblings(&eventPage, eventPage.RootElement()->FirstChildElement("event_commands"));
+            mapRomHeader.DeepCloneInsertBackSiblings(&eventPage, eventPage.TraverseElement("//event_commands"));
 
             // 3rd: Fill event-page with map-rom-label commands
             for(int labelID = 1; labelID < (numLabels + 1); ++labelID) {
@@ -112,11 +111,11 @@ void Map::generateMapROM(GBFile& gbFile, int numOfMapROMs) {
                     secondVar = -9999999;
                 }
                 setupMapRomLabel(&mapRomLabel, labelID, numLabels, firstVar, secondVar);
-                mapRomLabel.RootElement()->DeepCloneInsertBackSiblings(&eventPage, eventPage.RootElement()->FirstChildElement("event_commands"));
+                mapRomLabel.DeepCloneInsertBackSiblings(&eventPage, eventPage.TraverseElement("//event_commands"));
             }
 
             // 5th: Insert event-page into event
-            eventPage.RootElement()->DeepCloneInsertBack(&event, event.RootElement()->FirstChildElement("pages"));
+            eventPage.DeepCloneInsertBack(&event, event.TraverseElement("//pages"));
         }
 
         // Set Event ID, Name and Coordinate
@@ -126,7 +125,7 @@ void Map::generateMapROM(GBFile& gbFile, int numOfMapROMs) {
         setEventIDNameCoord(&event, eventID, name, xCoord, yCoord);
 
         // Insert event into map
-        event.RootElement()->DeepCloneInsertBack(mapDoc, mapDoc->FirstChildElement("LMU")->FirstChildElement()->FirstChildElement("events"));
+        event.DeepCloneInsertBack(mapDoc, mapDoc->TraverseElement("/LMU//events"));
     }
 }
 
@@ -135,7 +134,7 @@ void Map::generateMapRAM() {
     tinyxml2::XMLDocument eventPage(TEMPLATES::EVENT_PAGE);
 
     // insert event-page into event.
-    eventPage.RootElement()->DeepCloneInsertBack(&event, event.RootElement()->FirstChildElement("pages"));
+    eventPage.DeepCloneInsertBack(&event, event.TraverseElement("//pages"));
 
     for (int i = 0; i < MEMORYSIZES::NUM_DMG_RAM_EVENTS; ++i) {
 
@@ -147,7 +146,7 @@ void Map::generateMapRAM() {
         setEventIDNameCoord(&event, eventID, name, xCoord, yCoord);
 
         // Insert event into map
-        event.RootElement()->DeepCloneInsertBack(mapDoc, mapDoc->FirstChildElement("LMU")->FirstChildElement()->FirstChildElement("events"));
+        event.DeepCloneInsertBack(mapDoc, mapDoc->TraverseElement("/LMU//events"));
     }
 }
 
@@ -160,14 +159,14 @@ void Map::setEventIDNameCoord(tinyxml2::XMLDocument* event, int id, std::string&
     event->RootElement()->SetAttribute("id", generateID(id).c_str());
 
     // Set Event Name
-    auto* nameElem = event->RootElement()->FirstChildElement("name")->FirstChild()->ToText();
+    auto* nameElem = event->TraverseElement("//name")->FirstChild();
     nameElem->SetValue((name).c_str());
 
     // Set Event Coordinates
-    auto* xCoord = event->RootElement()->FirstChildElement("x")->FirstChild();
+    auto* xCoord = event->TraverseElement("//x")->FirstChild();
     xCoord->SetValue(to_string((id - 1) % RPGMAKER::MAP_SIZE_X).c_str());
 
-    auto* yCoord = event->RootElement()->FirstChildElement("y")->FirstChild();
+    auto* yCoord = event->TraverseElement("//y")->FirstChild();
     yCoord->SetValue(to_string((id - 1) / RPGMAKER::MAP_SIZE_Y).c_str());
 }
 
@@ -184,7 +183,7 @@ void setCommandParameters(tinyxml2::XMLNode* command, int numParam, ...) {
     }
     va_end(args);
 
-    auto* parameters = command->FirstChildElement("parameters")->FirstChild()->ToText();
+    auto* parameters = command->TraverseElement("/parameters")->FirstChild()->ToText();
     parameters->SetValue(sstr.str().c_str());
 }
 
@@ -219,19 +218,19 @@ bool Map::isLastEventPage(GBFile& gbFile) {
 void Map::setupMapRomHeader(tinyxml2::XMLDocument* mapRomHeader, int numLabels) {
     // Need to change the boilerplate code (see map_rom_header.xml for details).
     // ByteOffset = (ByteOffset / BYTES_PER_VAR):
-    auto* command = mapRomHeader->RootElement()->NextSiblingElement("EventCommand");
+    auto* command = mapRomHeader->RootElement()->TraverseElement("./EventCommand");
     setCommandParameters(command, 7, 0, VARMAPPING::BYTE_OFFSET_ID, VARMAPPING::BYTE_OFFSET_ID, 4, 0, MEMORYSIZES::BYTES_PER_VAR, 0);
 
     // LabelID = ByteOffset
-    command = command->NextSiblingElement("EventCommand");
+    command = command->TraverseElement("./EventCommand");
     setCommandParameters(command, 7, 0, VARMAPPING::LABEL_ID, VARMAPPING::LABEL_ID, 0, 1, VARMAPPING::BYTE_OFFSET_ID, 0);
 
     // LabelID += 1:
-    command = command->NextSiblingElement("EventCommand");
+    command = command->TraverseElement("./EventCommand");
     setCommandParameters(command, 7, 0, VARMAPPING::LABEL_ID, VARMAPPING::LABEL_ID, 1, 0, 1, 0);
 
     // JumpToLabel numLabels / 2
-    command = command->NextSiblingElement("EventCommand");
+    command = command->TraverseElement("./EventCommand");
     setCommandParameters(command, 1, numLabels / 2);
 }
 
@@ -242,11 +241,11 @@ void Map::setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID, int 
     setCommandParameters(command, 1, labelID);
 
     // IF(LabelID < X)
-    command = command->NextSiblingElement("EventCommand");
+    command = command->TraverseElement("./EventCommand");
     setCommandParameters(command, 6, 1, VARMAPPING::LABEL_ID, 0, labelID, 4, 0);
     
     // JumpToLabel X - (min(X, 1.000 - X) / 2)
-    command = command->NextSiblingElement("EventCommand");
+    command = command->TraverseElement("./EventCommand");
     float minDistance = min(labelID, numLabels - labelID);
     if(labelID == 1) {
         // The first MapRomLabel does not need to jump here, instead change the command to EndEventProcessing
@@ -258,11 +257,11 @@ void Map::setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID, int 
     }
 
     // IF(LabelID > X)
-    command = command->NextSiblingElement("EventCommand")->NextSiblingElement("EventCommand")->NextSiblingElement("EventCommand");
+    command = command->TraverseElement("./EventCommand./EventCommand./EventCommand");
     setCommandParameters(command, 6, 1, VARMAPPING::LABEL_ID, 0, labelID, 3, 0);
 
     // JumpToLabel X + (min(X, 1.000 - X) / 2)
-    command = command->NextSiblingElement("EventCommand");
+    command = command->TraverseElement("./EventCommand");
     if(labelID == numLabels) {
         // The last MapRomLabel does not need to jump here, instead change the command to EndEventProcessing.
         setCommandType(command, 12310);
@@ -273,10 +272,10 @@ void Map::setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID, int 
     }
 
     // READVAR1 = LABELXVALUE1
-    command = command->NextSiblingElement("EventCommand")->NextSiblingElement("EventCommand")->NextSiblingElement("EventCommand");
+    command = command->TraverseElement("./EventCommand./EventCommand./EventCommand");
     setCommandParameters(command, 7, 0, VARMAPPING::READ_VAR_1, VARMAPPING::READ_VAR_1, 0, 0, firstVar, 0);
 
     // READVAR2 = LABELXVALUE2
-    command = command->NextSiblingElement("EventCommand");
+    command = command->TraverseElement("./EventCommand");
     setCommandParameters(command, 7, 0, VARMAPPING::READ_VAR_2, VARMAPPING::READ_VAR_2, 0, 0, secondVar, 0);
 }

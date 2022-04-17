@@ -6,25 +6,6 @@ GB2RPG: Gameboy 2 RPG Maker.
 
 
 - TODO:
-    - Features:
-        - change high-level structure of tool:
-            - because creating the map files, database files and maptree files and having all of them stored in memory is too much.
-            - structure:
-                1st: Create Maps:
-                    - Create one Map in Memory.
-                    - Save that map as .xml (exportXML).
-                    - GoTo next map (change genMapFiles).
-                2nd: Create Maptree
-                    - Create Maptree in Memory.
-                    - Save Maptree to .xml (exportXML).
-                3rd: Create Database:
-                    - Create Dabase in Memory.
-                    - Save Database to .xml (exportXML).
-                4th: GenProjectFolder: (rename: GenerateProject())
-                    - lcf2xml => generate Binaries.
-                    - delete .xml files.
-                    - create files/folders necessary for project.
-                    
     - Memory Leak?:
             //TODO: calling DeepClone/ShallowClone creates a leak somehow (?)
             /*
@@ -44,14 +25,7 @@ GB2RPG: Gameboy 2 RPG Maker.
             int b = 10;
             */
     
-    - Refactor:
-        - TinyXML2:
-            - Path Traversal:
-                - Input a path string to traverse the xml file.
-                - Can use * as wildcards.
-                    - TraverseElements("EventCommand/*/EventCommand")
-                    => Will search the first eventcommand, then skip undefined amount of elements and then stop in the next eventcommand.
-               
+    - Refactor:               
         - Write Functions for setting/generating event-commands of different types.
             - set/copy/generate ...
             - setCommandParams

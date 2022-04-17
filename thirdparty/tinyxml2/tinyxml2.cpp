@@ -1050,6 +1050,120 @@ const XMLElement* XMLNode::NextSiblingElement( const char* name ) const
     return 0;
 }
 
+// - EDIT START -
+
+enum TraverseCmd 
+{
+    FIRST_CHILD = 0,
+    LAST_CHILD = 1,
+    PREVIOUS_SIBLING = 2,
+    NEXT_SIBLING = 3,
+    PARENT = 4,
+    NONE = 5
+};
+TraverseCmd findCommandSequence(const char* pos, const char* end, int& o_commandWidth) 
+{
+    const char* nextPos = pos + 1;
+    o_commandWidth = 1;
+
+    switch (*pos)
+    {
+        case '/':  return FIRST_CHILD;
+        case '\\': return LAST_CHILD;
+        case '.': 
+            if (nextPos >= end) return NONE;
+
+            // two character command
+            o_commandWidth = 2;
+            switch(*nextPos)
+            {
+                case '\\': return PREVIOUS_SIBLING;
+                case '/':  return NEXT_SIBLING;
+                case '.':  return PARENT;
+            }
+    }
+    return NONE;
+}
+
+XMLNode* XMLNode::Traverse(const char* path) 
+{
+    XMLNode* elem = this;
+
+    const char* pos = path;
+    size_t length = strlen(path);
+    const char* end = path + length;
+
+    while(pos < end && elem != nullptr) 
+    {
+        int cmdWidth = 0;
+        switch(findCommandSequence(pos, end, cmdWidth))
+        {
+            case FIRST_CHILD: elem = elem->FirstChild(); break;
+            case LAST_CHILD: elem = elem->LastChild(); break;
+            case PREVIOUS_SIBLING: elem = elem->PreviousSibling(); break;
+            case NEXT_SIBLING: elem = elem->NextSibling(); break;
+            case PARENT: elem = elem->Parent(); break;
+            case NONE: return elem;
+        }
+        pos += cmdWidth;
+    }
+    
+    return elem;
+}
+
+char* copyElementName(const char* pos, const char* end)
+{
+    // Get the length of the name substring
+    int length = 0;
+    for(const char* curr = pos; curr < end; ++curr) {
+        // these will signify the next command!
+        if( *curr == '/' || *curr == '\\' || *curr == '.') break;
+        length++;
+    }
+    if(length == 0) return nullptr;
+
+    // create copy of the name.
+    char* name = new char[length + 1];
+    memcpy(name, pos, length);
+    name[length] = 0;
+
+    return name;
+}
+
+
+XMLElement* XMLNode::TraverseElement(const char* path)
+{
+    XMLNode* elem = this;
+
+    const char* pos = path;
+    const char* end = path + strlen(path);
+
+    while(pos < end && elem != nullptr) 
+    {
+        int cmdWidth = 0;
+        TraverseCmd cmd = findCommandSequence(pos, end, cmdWidth);
+        char* name = copyElementName(pos + cmdWidth, end);
+
+        switch(findCommandSequence(pos, end, cmdWidth))
+        {
+            case FIRST_CHILD: elem = elem->FirstChildElement(name); break;
+            case LAST_CHILD: elem = elem->LastChildElement(name); break;
+            case PREVIOUS_SIBLING: elem = elem->PreviousSiblingElement(name); break;
+            case NEXT_SIBLING: elem = elem->NextSiblingElement(name); break;
+            case PARENT: elem = elem->Parent()->ToElement(); break;
+            case NONE: return elem->ToElement();
+        }
+        pos += cmdWidth;
+        if(name) pos += strlen(name);
+        delete name;
+    }
+
+    if(!elem) return nullptr;
+    return elem->ToElement();
+}
+
+// - EDIT END -
+
 
 const XMLElement* XMLNode::PreviousSiblingElement( const char* name ) const
 {
@@ -2268,6 +2382,30 @@ void XMLDocument::DeepCopy(XMLDocument* target) const
 		target->InsertEndChild(node->DeepClone(target));
 	}
 }
+
+// - EDIT START -
+
+void XMLDocument::DeepCloneInsertBack(tinyxml2::XMLDocument* target, tinyxml2::XMLNode* insertParent)
+{
+    TIXMLASSERT(target);
+    if(!target) return;
+
+    auto* copy = this->FirstChildElement()->DeepClone(target);
+    if(insertParent) insertParent->InsertEndChild(copy);
+    else target->InsertEndChild(copy);
+}
+
+void XMLDocument::DeepCloneInsertBackSiblings(tinyxml2::XMLDocument* target, tinyxml2::XMLNode* insertParent)
+{
+    tinyxml2::XMLNode* toCopy = this->FirstChildElement();
+    while (toCopy) 
+    {
+        toCopy->DeepCloneInsertBack(target, insertParent);
+        toCopy = toCopy->NextSibling();
+    }
+}
+
+// - EDIT END -
 
 XMLElement* XMLDocument::NewElement( const char* name )
 {
