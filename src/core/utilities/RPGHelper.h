@@ -1,11 +1,14 @@
-#include "RPGHelper.h"
+#pragma once
 
-#include "Globals.h"
+// TODO would be nice to have this in a .cpp file, but then core needs to be compiled as a library like tinyxml, do I want that?
+#include<vector>
+#include<cstdint>
+#include<string>
+#include<cassert>
+
 #include "src/core/VarMapping.h"
 #include "src/core/MemorySizes.h"
 #include "src/core/RPGMaker.h"
-
-#include <cassert>
 
 
 int32_t packVariable(std::vector<uint8_t> bytes) {

@@ -37,10 +37,7 @@ GB2RPG: Gameboy 2 RPG Maker.
                 DeepCloneInsertBackAllSiblings to XMLDocument.
                 DeepCloneInsertBack to XMLDocument.
                 - as wrapper code (?)
-        
-        - RPGHelper should go into project globals.
-                    => RPGHelper => Utility.
-        
+               
         - Write Functions for setting/generating event-commands of different types.
             - set/copy/generate ...
             - setCommandParams
@@ -52,9 +49,6 @@ GB2RPG: Gameboy 2 RPG Maker.
             - setEventIDNameCoord
             - Libraries of Functionality that allows me to manipulate event-commands.
             - should work ontop on the tinyxml2 library and changes I do to that.
-
-
-        - Good way to map Variable names to IDs inside Maker.
 
     
 

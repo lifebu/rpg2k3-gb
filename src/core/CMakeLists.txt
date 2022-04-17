@@ -5,5 +5,5 @@ else()
     cmake_policy(VERSION 3.22)
 endif()
 
-set(core_headers MemorySizes.h RPGMaker.h VarMapping.h)
 
+set(core_headers MemorySizes.h RPGMaker.h VarMapping.h RPGHelper.h)
