@@ -899,6 +899,29 @@ public:
 	*/
 	XMLNode* DeepClone( XMLDocument* target ) const;
 
+    // - EDIT START -
+    /**
+       Make a copy of this node and all its children
+       to insert it at a specific position.
+     
+       Target needs to be a valid XMLDocument.
+       The copy will be inserted as the end child of 'insertParent'.
+       If 'insertParent' is null, this node will be copied to the root of the target.
+     */
+    void DeepCloneInsertBack(tinyxml2::XMLDocument* target, tinyxml2::XMLNode* insertParent);
+    /**
+       Make a copy of this node and all its children 
+       and all of his siblings and their children 
+       to insert it at a specific position.
+     
+       Target needs to be a valid XMLDocument.
+       The copies will be inserted as the end child of 'insertParent'.
+       If 'insertParent' is null, this node will be copied to the root of the target.
+     */
+    void DeepCloneInsertBackSiblings(tinyxml2::XMLDocument* target, tinyxml2::XMLNode* insertParent);
+
+    // - EDIT END -
+
     /**
     	Test if 2 nodes are the same, but don't test children.
     	The 2 nodes do not need to be in the same Document.

@@ -845,6 +845,30 @@ XMLNode* XMLNode::DeepClone(XMLDocument* target) const
 	return clone;
 }
 
+// - EDIT START -
+
+void XMLNode::DeepCloneInsertBack(tinyxml2::XMLDocument* target, tinyxml2::XMLNode* insertParent)
+{
+    TIXMLASSERT(target);
+    if(!target) return;
+
+    auto* copy = DeepClone(target);
+    if(insertParent) insertParent->InsertEndChild(copy);
+    else target->InsertEndChild(copy);
+}
+
+void XMLNode::DeepCloneInsertBackSiblings(tinyxml2::XMLDocument* target, tinyxml2::XMLNode* insertParent)
+{
+    tinyxml2::XMLNode* toCopy = this;
+    while (toCopy) 
+    {
+        toCopy->DeepCloneInsertBack(target, insertParent);
+        toCopy = toCopy->NextSibling();
+    }
+}
+
+// - EDIT END -
+
 void XMLNode::DeleteChildren()
 {
     while( _firstChild ) {

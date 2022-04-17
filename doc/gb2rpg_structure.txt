@@ -25,7 +25,25 @@ GB2RPG: Gameboy 2 RPG Maker.
                     - delete .xml files.
                     - create files/folders necessary for project.
                     
+    - Memory Leak?:
+            //TODO: calling DeepClone/ShallowClone creates a leak somehow (?)
+            /*
+            // Total: 180kB
+            int a = 10;
+            {
+                tinyxml2::XMLDocument map;
+                map.LoadFile(TEMPLATES::MAP);
+                tinyxml2::XMLDocument t;
 
+                // Total 2.716kB
+
+                // Creates 2.656, New Total: 5.372kB
+                auto* copy = map.RootElement()->DeepClone(&t);
+            }
+            // Total: 240kB, 60kByte Leaked: 
+            int b = 10;
+            */
+    
     - Refactor:
         - TinyXML2:
             - Path Traversal:
@@ -33,10 +51,6 @@ GB2RPG: Gameboy 2 RPG Maker.
                 - Can use * as wildcards.
                     - TraverseElements("EventCommand/*/EventCommand")
                     => Will search the first eventcommand, then skip undefined amount of elements and then stop in the next eventcommand.
-            - Add my helper functions to tinyxml2.
-                DeepCloneInsertBackAllSiblings to XMLDocument.
-                DeepCloneInsertBack to XMLDocument.
-                - as wrapper code (?)
                
         - Write Functions for setting/generating event-commands of different types.
             - set/copy/generate ...

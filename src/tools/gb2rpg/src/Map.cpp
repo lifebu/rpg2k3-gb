@@ -4,7 +4,6 @@
 #include "Globals.h"
 
 #include "thirdparty/tinyxml2/tinyxml2.h"
-#include "tinyxml2_helper.h"
 #include "src/core/utilities/RPGHelper.h"
 #include "src/core/VarMapping.h"
 #include "src/core/MemorySizes.h"
@@ -65,12 +64,10 @@ void Map::generateDMGROM() {
     
 
     // Add DMGROM into event-page
-    DeepCloneInsertBackAllSiblings(DMGROM.RootElement(), &eventPage,
-        eventPage.RootElement()->FirstChildElement("event_commands"));
+    DMGROM.RootElement()->DeepCloneInsertBackSiblings(&eventPage, eventPage.RootElement()->FirstChildElement("event_commands"));
 
     // Insert event-page into event.
-    DeepCloneInsertBack(eventPage.RootElement(), &event, 
-        event.RootElement()->FirstChildElement("pages"));
+    eventPage.RootElement()->DeepCloneInsertBack(&event, event.RootElement()->FirstChildElement("pages"));
 
 
     // Set Event ID, Name and Coordinate
@@ -78,8 +75,7 @@ void Map::generateDMGROM() {
     setEventIDNameCoord(&event, DMG_EVENT_ID, name, 0, 0);
 
     // Insert DMG Event into map
-    DeepCloneInsertBack(event.RootElement(), mapDoc, 
-        mapDoc->FirstChildElement("LMU")->FirstChildElement()->FirstChildElement("events"));
+    event.RootElement()->DeepCloneInsertBack(mapDoc, mapDoc->FirstChildElement("LMU")->FirstChildElement()->FirstChildElement("events"));
 }
 
 void Map::generateMapROM(GBFile& gbFile, int numOfMapROMs) {
@@ -103,7 +99,7 @@ void Map::generateMapROM(GBFile& gbFile, int numOfMapROMs) {
             // 2nd: Fill event-page with map-rom-header commands
             tinyxml2::XMLDocument mapRomHeader(TEMPLATES::MAP_ROM_HEADER);
             setupMapRomHeader(&mapRomHeader, numLabels);
-            DeepCloneInsertBackAllSiblings(mapRomHeader.RootElement(), &eventPage, eventPage.RootElement()->FirstChildElement("event_commands"));
+            mapRomHeader.RootElement()->DeepCloneInsertBackSiblings(&eventPage, eventPage.RootElement()->FirstChildElement("event_commands"));
 
             // 3rd: Fill event-page with map-rom-label commands
             for(int labelID = 1; labelID < (numLabels + 1); ++labelID) {
@@ -116,11 +112,11 @@ void Map::generateMapROM(GBFile& gbFile, int numOfMapROMs) {
                     secondVar = -9999999;
                 }
                 setupMapRomLabel(&mapRomLabel, labelID, numLabels, firstVar, secondVar);
-                DeepCloneInsertBackAllSiblings(mapRomLabel.RootElement(), &eventPage, eventPage.RootElement()->FirstChildElement("event_commands"));
+                mapRomLabel.RootElement()->DeepCloneInsertBackSiblings(&eventPage, eventPage.RootElement()->FirstChildElement("event_commands"));
             }
 
             // 5th: Insert event-page into event
-            DeepCloneInsertBack(eventPage.RootElement(), &event, event.RootElement()->FirstChildElement("pages"));
+            eventPage.RootElement()->DeepCloneInsertBack(&event, event.RootElement()->FirstChildElement("pages"));
         }
 
         // Set Event ID, Name and Coordinate
@@ -130,8 +126,7 @@ void Map::generateMapROM(GBFile& gbFile, int numOfMapROMs) {
         setEventIDNameCoord(&event, eventID, name, xCoord, yCoord);
 
         // Insert event into map
-        DeepCloneInsertBack(event.RootElement(), mapDoc, 
-            mapDoc->FirstChildElement("LMU")->FirstChildElement()->FirstChildElement("events"));
+        event.RootElement()->DeepCloneInsertBack(mapDoc, mapDoc->FirstChildElement("LMU")->FirstChildElement()->FirstChildElement("events"));
     }
 }
 
@@ -140,8 +135,7 @@ void Map::generateMapRAM() {
     tinyxml2::XMLDocument eventPage(TEMPLATES::EVENT_PAGE);
 
     // insert event-page into event.
-    DeepCloneInsertBack(eventPage.RootElement(), &event, 
-        event.RootElement()->FirstChildElement("pages"));
+    eventPage.RootElement()->DeepCloneInsertBack(&event, event.RootElement()->FirstChildElement("pages"));
 
     for (int i = 0; i < MEMORYSIZES::NUM_DMG_RAM_EVENTS; ++i) {
 
@@ -153,8 +147,7 @@ void Map::generateMapRAM() {
         setEventIDNameCoord(&event, eventID, name, xCoord, yCoord);
 
         // Insert event into map
-        DeepCloneInsertBack(event.RootElement(), mapDoc, 
-            mapDoc->FirstChildElement("LMU")->FirstChildElement()->FirstChildElement("events"));
+        event.RootElement()->DeepCloneInsertBack(mapDoc, mapDoc->FirstChildElement("LMU")->FirstChildElement()->FirstChildElement("events"));
     }
 }
 
