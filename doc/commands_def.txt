@@ -1,24 +1,226 @@
 - Show Text:
+    10110: first line of show text.
+    20110: other lines in the same show text.
+    Special Characters:
+        - \\: Displays the character "\".
+        - \c[n]: Text displayed after this will be displayed in the nth color (where n is a number from 0~19).
+        - \s[n]: Sets the message display speed within a range of 1~20. The default is 1, and the greater the number, the slower the display (n is a number).
+        - \n[n]: Displays the name of the nth actor (n is a number). Supports nested variable references (e.g. "\n[\v[123]]"). Use "\n[0]" to show the name of the first party member.
+        - \v[n]: Displays the number in the nth variable (n is a number).
+        - \$: Displays the amount of money in possession in an additional window.
+        - \!: Temporarily halts text display. When a key is pressed, the next part of the message is displayed.
+        - \.: Delays the display of the next part of the text by 1/4 of a second.
+        - \|: Delays the display of the next part of the text by 1 second.
+        - \> "text" \<: Instantly displays the text between “\>” and “\<”.
+        - \^: Closes the message window without waiting for a keypress.
+        - \_: Displays half the size of a space.
+        - $: Special Characters: Special ASCII Symbols.
 
 - Show Choices:
+    10140: Start of Choices.
+        <string>: Choice name, comma seperated:
+            One, Two, Three, Four
+        <parameters>: CHOICE_ID
+            CHOICE_ID: 
+                € [0, 3]. Up to 4 choices.
+                4 = When-Cancel Branch.
+    
+    20140: One choice case
+        - The following logic for the case is indented.
+        
+        <string>: Name of choice.
+            One, Two, Three, Four
+        <parameters>: ON_CANCEL
+            ON_CANCEL:
+                0: Disallow
+                1-4: Choice 1-4
+                5: Use own branch.
+    
+    20141: Branch End:
+        - End of choice selection logic.
 
 - Input Number:
+    10150
+    <parameters>: DIGIT_NUM VARID
+        DIGIT_NUM € [1,7]:
+            How many digits the number should have.
+            
+        VARID:
+            In which Variable to store the number.
 
 - Control Switches:
+    10210
+    <parameters>: TYPE STARTID ENDID OPERATION
+        TYPE:
+            0 = Single Switch
+            1 = Batch of Switches
+            2 = Variable as Index into Switches.
+        STARTID/ENDID:
+            Starting/Ending ID of Switches to change.
+            Are the same for single switches.
+            Can also be a VARID as an index into switches.
+        OPERATION:
+            0 = Turn ON
+            1 = Turn OFF
+            2 = TOGGLE ON/OFF
 
 - Control Variables:
     10220
-    <parameters>0 6 6 0 0 255 0</parameters>
-        255: value to set.
-        6-6: from Var 6 to Var 6.
+    <parameters>VARTYPE STARTID ENDID OPERATION OPERAND VALUE1 VALUE2
+        VARTYPE:
+            0 = Single Variable
+            1 = Batch of Variables
+            2 = other Variable as Index.
+        STARTID/ENDID:
+            Starting/Ending ID of Variables to change.
+            Are the same for single Variables.
+            Can also be a VARID as Index into Variables.
+        OPERATION:
+            0 = Set
+            1 = Add
+            2 = Sub
+            3 = Mul
+            4 = Div
+            5 = Mod
+        OPERAND:
+            0 = Constant
+            1 = Variable
+            2 = Variable ID
+            3 = Random: 
+                Range defined by [VALUE1, VALUE2]
+            4 = Item
+                VALUE1: ItemID
+                VALUE2: 
+                    0 = In Inventory
+                    1 = Equipped
+            5 = Player
+                VALUE1: PlayerID
+                VALUE2: 
+                    0 = Level
+                    1 = Experience
+                    2 = HP
+                    3 = MP
+                    4 = Maximum HP
+                    5 = Maximum MP
+                    6 = Attack
+                    7 = Defense
+                    8 = Mind
+                    9 = Agility
+                    10 = Weapon ID
+                    11 = Shield ID
+                    12 = Body ID
+                    13 = Head ID
+                    14 = Accessory ID
+            6 = Event
+                VALUE1:
+                    1 - 10.000 = Event ID
+                    10.001 = Player
+                    10.002 = Boat
+                    10.003 = Ship
+                    10.004 = Airship
+                    10.005 = This Event
+                VALUE2:
+                    0 = Map ID
+                    1 = X-Coord
+                    2 = Y-Coord
+                    3 = Direction
+                    4 = Screen X
+                    5 = Screen Y
+            7 = Other
+                VALUE1:
+                    0 = Money
+                    1 = Timer 1 Remaining Time
+                    2 = Party Size
+                    3 = Save Count
+                    4 = Battle Count
+                    5 = Win Count
+                    6 = Loss Count
+                    7 = Escape Count
+                    8 = MIDI Play Location (Tick)
+                    9 = Timer 2 Remaining Time
+                VALUE2 = 0
+
+        VALUE1/VALUE2:
+            Define Value to set.
+            If Operand needs only one the second is 0.
 
 - Change Item:
+    10320
+    <parameters> OPERATION ITEM VALUE1 OPERAND ?
+        OPERATION:
+            0 = Increase
+            1 = Decrease
+        ITEM:
+            0 = Fixed Item ID
+            1 = Variable Item ID
+        VALUE1:
+            Either fixed Item ID, or Variable that indexes into item ID.
+        OPERAND:
+            0 = Constant
+            1 = Variable
+        VALUE2:
+            Either constant value, or Variable value.
 
 - Change Party Member:
+    10330
+    <parameters>OPERATION ACTOR VALUE
+        OPERATION: 
+            0 = Add
+            1 = Remove
+        ACTOR:
+            0 = Fixed ID
+            1 = Variable ID
+        VALUE:
+            Either Fixed actor ID, or Variable that indexes into actor ID.
 
 - Change EXP:
+    10410
+    <parameters>ACTOR VALUE1 OPERATION OPERAND VALUE2 LVLUP
+        ACTOR:
+            0 = Entire Party
+            1 = Fixed ID
+            2 = Variable ID
+        VALUE1:
+            ACTOR = 0 => VALUE1 = 0
+            Otherwise fixed ActorID, or Variable that indexes into actor ID.
+        OPERATION:
+            0 = Increase
+            1 = Decrease
+        OPERAND:
+            0 = Constant
+            1 = Variable
+        VALUE2:
+            Constant operand or Variable value.
+        LVLUP:
+            0 = Don't show level up message.
+            1 = Show level up message
 
 - Change Parameters:
+    10430
+    <parameters>ACTOR VALUE1 OPERATION PARAMETER OPERAND VALUE2
+        ACTOR:
+            0 = Entire Party
+            1 = Fixed ID
+            2 = Variable ID
+        VALUE1:
+            ACTOR = 0 => VALUE1 = 0
+            Otherwise fixed ActorID, or Variable that indexes into actor ID.
+        OPERATION:
+            0 = Increase
+            1 = Decrease
+        PARAMETER:
+            0 = Maximum HP
+            1 = Maximum MP
+            2 = Attack
+            3 = Defense
+            4 = Mind
+            5 = Agility
+        OPERAND:
+            0 = Constant
+            1 = Variable
+        VALUE2:
+            Constant operand or Variable value.
+
 
 - Change Equipment:
 
@@ -29,6 +231,11 @@
 - Show Picture:
 
 - Show/Hide Player:
+    11310
+    <parameters>: TRANSPARENT
+        TRANSPARENT:
+            0 = Player is Transparent
+            1 = Player is Visible
 
 - Key Input Processing:
 
@@ -36,7 +243,7 @@
     12010: Conditional Branch
     22010: Else
     22011: Branch End
-    <parameters>TYPE VARID ISCONST RHS COMPARE ELSE</parameters>
+    <parameters>: TYPE VARID ISCONST RHS COMPARE ELSE
         TYPE: 
             ?:Switch | 1:Variable | ?:Timer1 | ?:Timer2 | ?:Money | ?:Item | ?:Actor | ?:Event | ?:Vehicle | ?:Trigger | ?:BGM | ?:Other
         VARID:
@@ -53,29 +260,49 @@
 
 - Jump to Label:
     12120
-    <parameters>1000</parameters>
-        which label
+    <parameters>LABELID
+        LABELID:
+            which label
 
 - Label:
     12110
-    <parameters>1000</parameters>
-        which label
+    <parameters>LABELID
+        LABELID:
+            which label
 
 - Loop:
+    12210: Start of Loop
+    22210: Repeat Loop (goto Start of Loop).
+    - Loop Body is indented
 
 - Break Loop:
+    12220
 
 - End Event Processing:
+    12310
 
 - Erase Event:
+    12320
 
 - Call Event:
     12330
-    <parameters>0 1 0</parameters>
-    0: Type (0 = Common Event, 1 = Map event (const), 2 = Map event (variable))
-    1: CommonEventID
-    0: other param.
+    <parameters>TYPE EVENT PAGE
+        TYPE: 
+            0 = Common Event
+            1 = Map Event (const)
+            2 = Map event (variable)
+        EVENT:
+            Event ID.
+            Either a Common Event, Constant Value, or ID from a Variable.
+        PAGE:
+            Page ID of the event.
+            Either fixed or VariableID
 
 - Comment:
-    12410: Start of Comment,
-    22410: other lines of comment.
+    12410: first line of comment.
+    22410: other lines in the same comment.
+    <string>:
+        comment.
+
+- None:
+    10
