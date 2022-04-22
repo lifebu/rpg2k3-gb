@@ -221,15 +221,175 @@
         VALUE2:
             Constant operand or Variable value.
 
-
 - Change Equipment:
+    10450
+    <parameters>: ACTOR VALUE1 OPERATION ITEM VALUE2 
+        ACTOR:
+            0 = Entire Party
+            1 = Fixed ID
+            2 = Variable ID
+        VALUE1:
+            ACTOR = 0 => VALUE1 = 0
+            Otherwise fixed ActorID, or Variable that indexes into actor ID.
+        OPERATION:
+            0 = change Equipment
+            1 = remove Equipment
+        ITEM:
+            IF OPERATION = 0:
+            0 = Fixed ID
+            1 = Variable ID
+            IF OPERATION = 1:
+            0 = Unequip Weapon
+            1 = Unequip Shield
+            2 = Unequip Body
+            3 = Unequip Head
+            4 = Unequip Accessory
+            5 = Unequip All
+        VALUE2:
+            fixed ItemID, or Variable that indexes into ItemID.
 
 - Set Event Location:
+    10860
+    <parameters>: EVENTID LOCATION VALUE1 VALUE2 DIRECTION
+        EVENTID:
+            10005: This Event
+            [0, 10.000]: Event ID
+        LOCATION:  
+            0 = Constant
+            1 = Variables (X and Y)
+        VALUE1/VALUE2:
+            - Position on Map: VALUE1: X, VALUE2: Y
+            - Or Variable IDs: VALUE1: X-ID, VALUE2: Y-ID
+        DIRECTION:
+            0 = Retain
+            1 = Up
+            2 = Right
+            3 = Down
+            4 = Left
 
 - Get Event ID:
-
+    10920
+    <parameters>: LOCATION POSX POSY STORE
+        LOCATION:
+            0 = Constant
+            1 = Variables
+        POSX/POSY:
+            LOCATION = 0: Constant Values
+            LOCATION = 1: Position stored in Variables.
+        STORE:
+            Where to store the ID
+        
 - Show Picture:
+    11110
+    <string>: filename
+    <parameters>: 
+        PICTURE_ID POSTYPE POSX POSY MAPSCROLL ZOOMVAL TRANSPARENTVAL TRANSPARENTCOLOR RED GREEN
+        BLUE SAT EFFECTTYPE EFFECTVAL WH1 WH2 WH3 IDTYPE REPLACEX REPLACEVAR
+        ZOOMTYPE TRANSPARENTTYPE SPRITEX SPRITEY SPRITEDISPLAY SPRITEVAL ANIMLOOP MLAYER BLAYER ERASEAFFECT
+        PICTURE_ID:
+            Either a constant, or the Variable, where the value is used as an ID.
+        POSTYPE:
+            0 = Use Constant value
+            1 = Use Variables.
+        POSX/POSY:
+            X/Y Position of the Picture.
+            Either constant value or variable id.
+        MAPSCROLL: 
+            Whether to Scroll the Map (1 = Yes)
+        ZOOMVAL:
+            Value of Zoom either constant percent, or VariableID.
+        TRANSPARENTVAL:
+            how transparent the picture should be
+            Either a percentage or an Variable Index.
+        TRANSPARENTCOLOR:
+            Use Transparent Color.
+            0 = No
+            1 = Yes
+        RED/GREEN/BLUE/SAT:
+            Red, Green, Blue and Saturation values (0-200)
+            100 = Default (100%)
+        EFFECTTYPE:
+            0 = No Special Effect
+            1 = Rotation
+            2 = Sine Wave
+        EFFECTVAL:
+            IF Rotation:
+                € [-10, 10]
+            IF Sinewave:
+                € [1, 10]
+        WH1:
+            Unknown effect, use 0
+        WH2:
+            Unknown effect, use 0
+        WH3:
+            Unknown effect, use 0
+        IDTYPE:
+            0 = use Constant number for Picture ID.
+            1 = use Variable for Picture ID.
+        REPLACEX:
+            0 = If not using replacement.
+            How many characters to replace from the picture name.
+            (starting from last character).
+        REPLACEVAR:
+            Variable ID which stores the numbers that are replacing the last x characters from filename.
+        ZOOMTYPE:
+            0 = Constant Value
+            1 = Variable ID
 
+        TRANSPARENTTYPE:
+            0 = Constant Value
+            1 = Variable ID
+        SPRITEX/SPRITEY:
+            0 = When not using Spritesheets
+            Tells Number of Sprites in Image for Horizontal and Vertical
+        SPRITEDISPLAY:
+            0 = Constant Sprite ID
+            1 = Variable Sprite ID
+            2 = Animated Sprite.
+        SPRITEVAL:
+            IF SPRITEDISPLAY = Constant:
+                Which Sprite to display, index starts at 1.
+            IF SPRITEDISPLAY = Variable:
+                Variable ID
+            IF SPRITEDISPLAY = Animated:
+                Animation Speed (in 1/60th sec.)
+        ANIMLOOP:
+            IF SPRITEDISPLAY != Animated:
+                = 0
+            IF SPRITEDISPLAY = Animated:
+                0 = Loop Animation
+                1 = Play once.
+        MLAYER:
+            Where to show the picture on maplayer.
+            0 = When disabling 'On Map'
+            1 = Above Parallax background
+            2 = Above Tileset Below Player 
+            3 = Above events Below Player
+            4 = Above events same level as Player
+            5 = Above tileset above player
+            6 = Above events above player
+            7 = Above Weather Effects
+            8 = Above Animations
+            9 = Above Message Window.
+            10 = Above Timers (highest)
+        BLAYER:
+            Where to show the picture on Battle layer
+            0 = When Disabling 'During Battle'
+            1 = Above Ground
+            2 = Above Battlers and Animations
+            3 = Above Weather effects
+            4 = Above windows and actor status
+            5 = Above timers (highest)
+        ERASEAFFECT:
+            changes when changing Erase-On and Affected-By settings.
+            These are actual bitvalues, e.g. 65 = 64 + 1 = Shake & MapChange
+            0 = Everything off.
+            1 = Map Change
+            2 = Battle End
+            16 = Tint
+            32 = Flash
+            64 = Shake
+            
 - Show/Hide Player:
     11310
     <parameters>: TRANSPARENT
@@ -238,6 +398,49 @@
             1 = Player is Visible
 
 - Key Input Processing:
+    11610
+    <parameters>: STORAGE WAIT ? SELECT CANCEL NUMBER SYMBOL TIMESTORE COUNTTIME SHIFT DIR_DOWN DIR_LEFT DIR_RIGHT DIR_UP
+        STORAGE:
+            In which Variable to store the key that is being pressed.
+        WAIT:
+            0 = Do not wait for Key Input
+            1 = Wait for Key Input
+        ?:
+            Unknown let it be 1.
+        SELECT:
+            0 = No check
+            1 = Check for Selection key (writes 5)
+        CANCEL:
+            0 = No check
+            1 = Check for Cancel key (writes 6)
+        NUMBER:
+            0 = No check
+            1 = Check for Number keys (writes 10-19)
+        SYMBOL:
+            0 = No Check
+            1 = Check for Symbol keys (writes 20-24)
+        TIMESTORE:
+            IF WAIT = 1 && COUNTTIME = 1:
+                Where to store time until key is pressed.
+        COUNTTIME:
+            IF WAIT = 1:
+                COUNTTIME = 0: Do not count time until key is pressed
+                COUNTTIME = 1: count time until key is pressed.
+        SHIFT:
+            0 = No check
+            1 = Check for Shift key (writes 7)
+        DIR_DOWN:
+            0 = No check
+            1 = Check for Direction key down (writes 1)
+        DIR_LEFT:
+            0 = No check
+            1 = Check for Direction key left (writes 2)
+        DIR_RIGHT:
+            0 = No check
+            1 = Check for Direction key right (writes 3)
+        DIR_UP:
+            0 = No check
+            1 = Check for Direction key up (writes 4)
 
 - Conditional Branch:
     12010: Conditional Branch
