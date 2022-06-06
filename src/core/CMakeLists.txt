@@ -6,4 +6,10 @@ else()
 endif()
 
 
-set(core_headers MemorySizes.h RPGMaker.h VarMapping.h RPGHelper.h)
+
+
+
+set(core_headers MemorySizes.h RPGMaker.h VarMapping.h utilities/RPGHelper.h templates/Event.h)
+set(core_source templates/Event.cpp)
+
+

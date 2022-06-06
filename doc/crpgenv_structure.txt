@@ -10,6 +10,42 @@ CRPGEnv: C-RPG Maker Environment
     - It could also defines the variables and switches with their names. (?)
         - My C-Code should set the names (?)
 
+- Interface:
+    - RPG Maker Commands:
+        Debug & Menu:
+            Show Text:
+                - could redirect to cout.
+            Show Choices:
+            Input Number:
+        CHARA RAM:
+            Change Item
+            Change Party Member
+            Change EXP
+            Change Parameters
+            Change Equipment:
+        Events:
+            Set Event Location
+            Get Event ID
+            Erase Event
+            Call Event
+            End Event Processing
+            Comment
+        Rendering:
+            Show Picture
+            Show/Hide Player
+        Input:
+            Key Input Processing
+    
+    - Code Constructs:
+        Control Switches = Bool operations
+        Control Variables = int operations
+        Conditional Branch = IF-Else
+        JumpToLabel/Label = Goto
+        Loop/Break Loop = Any kind of loop
+
+    - Other RPG Maker Related Functions:
+        Setting Name of Variables/Switches.
+
 - The Header is implemented in a Runner
     - Some functions just change the state of the environment.
         - changeExp(), setEventLocation()
@@ -19,4 +55,5 @@ CRPGEnv: C-RPG Maker Environment
             - showText(), showChoices(), inputNumber(), showPicture(), 
         - keyInputProcessing()
 
-- simple framework!
+- Can use SFML to create the basic graphic/window layer.
+    https://www.sfml-dev.org

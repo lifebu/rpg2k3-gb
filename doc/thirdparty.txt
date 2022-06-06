@@ -1,0 +1,13 @@
+tinyxml2:
+    Traverse-Syntax:
+        FirstChild(): "/"
+        LastChild(): "\"
+        PreviousSibling(): ".\"
+        NextSibling(): "./"
+        Parent(): ".."
+        FirstChildElement(): "/name"
+        LastChildElement(): "\name"
+        PreviousSiblingElement(): ".\name"
+        NextSiblingElement(): "./name"
+        Wildcard (Elements): "*"
+        

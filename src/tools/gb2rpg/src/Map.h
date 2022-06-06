@@ -6,7 +6,6 @@
 class GBFile;
 namespace tinyxml2 {
     class XMLDocument;
-    class XMLNode;
 };
 
 class Map {

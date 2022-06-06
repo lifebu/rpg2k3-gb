@@ -66,6 +66,9 @@ void Map::generateDMGROM() {
     // Add DMGROM into event-page
     DMGROM.DeepCloneInsertBackSiblings(&eventPage, eventPage.TraverseElement("//event_commands"));
 
+    // Set Event Page ID
+    eventPage.RootElement()->SetAttribute("id", generateID(1).c_str());
+
     // Insert event-page into event.
     eventPage.DeepCloneInsertBack(&event, event.TraverseElement("//pages"));
 
@@ -92,15 +95,13 @@ void Map::generateMapROM(GBFile& gbFile, int numOfMapROMs) {
             int numLabels = calcNumOfLabels(gbFile);
             bool lastEventPage = isLastEventPage(gbFile);
 
-            // 1st: Set Event Page ID
-            eventPage.RootElement()->SetAttribute("id", generateID(pageID).c_str());
-
-            // 2nd: Fill event-page with map-rom-header commands
+    
+            // 1st: Fill event-page with map-rom-header commands
             tinyxml2::XMLDocument mapRomHeader(TEMPLATES::MAP_ROM_HEADER);
             setupMapRomHeader(&mapRomHeader, numLabels);
             mapRomHeader.DeepCloneInsertBackSiblings(&eventPage, eventPage.TraverseElement("//event_commands"));
 
-            // 3rd: Fill event-page with map-rom-label commands
+            // 2nd: Fill event-page with map-rom-label commands
             for(int labelID = 1; labelID < (numLabels + 1); ++labelID) {
                 tinyxml2::XMLDocument mapRomLabel(TEMPLATES::MAP_ROM_LABEL);
 
@@ -113,6 +114,9 @@ void Map::generateMapROM(GBFile& gbFile, int numOfMapROMs) {
                 setupMapRomLabel(&mapRomLabel, labelID, numLabels, firstVar, secondVar);
                 mapRomLabel.DeepCloneInsertBackSiblings(&eventPage, eventPage.TraverseElement("//event_commands"));
             }
+
+            // 3rd: Set Event Page ID
+            eventPage.RootElement()->SetAttribute("id", generateID(pageID).c_str());
 
             // 5th: Insert event-page into event
             eventPage.DeepCloneInsertBack(&event, event.TraverseElement("//pages"));

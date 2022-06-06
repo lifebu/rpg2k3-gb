@@ -27,6 +27,7 @@ GB2RPG: Gameboy 2 RPG Maker.
     
     - Refactor:               
         - Write Functions for setting/generating event-commands of different types.
+            - 
             - set/copy/generate ...
             - setCommandParams
                 !- GENERAL Function. (element and argument list)
@@ -38,7 +39,21 @@ GB2RPG: Gameboy 2 RPG Maker.
             - Libraries of Functionality that allows me to manipulate event-commands.
             - should work ontop on the tinyxml2 library and changes I do to that.
 
-    
+        - Event-Generation and Manipulation can be made more general.
+            - Map::generateDMGROM(), generateMapRAM() and generateMapROM() are structurely very similar:
+                - generate code for event-page
+                - insert code in event-page
+                - setEventPageID()
+                - insert event-page into event
+                - setEventIDNameCoord()
+                - insert event into map.
+            - could be more generalized.
+                - maybe not one function but certain sub-functions?
+            - But I do not know yet how compiler will need to work and how it uses it.
+            - Event-Manipulation is similar for Map and Compiler.
+        
+        - Map should focus more on what to change in the templates than how to string the templates together.
+            - By Adding more High-Level functions for manipulation Map could be made more independent of tinyxml2.
 
     
 
