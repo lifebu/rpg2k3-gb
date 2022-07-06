@@ -1,6 +1,7 @@
 #pragma once
 
-// TODO would be nice to have this in a .cpp file, but then core needs to be compiled as a library like tinyxml, do I want that?
+// TODO would be nice to have this in a .cpp file, but then core needs to be compiled as a library like tinyxml.
+// TODO If this is not a .h and .cpp and I include the .h multiple times I get compiler errors (Like Map.h and MapTree.h).
 #include<vector>
 #include<cstdint>
 #include<string>

@@ -19,7 +19,7 @@ int main (int argc, char* argv[]) {
 
     int numOfMaps = Map::genMapFiles(gbFiles);
 
-    MapTree::genMapTree(numOfMaps);
+    MapTree::genMapTree(gbFiles);
 
     Database::genDatabase(gbFiles);
 

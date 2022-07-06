@@ -11,10 +11,8 @@ gb2RPG: Gameboy 2 RPG Maker.
 
 - TODO:
     - Next Steps:
-        - Generating Maptree.
-        - Generating Database.
-        - Generating Project Folders.
-
+- Generating Maptree.
+    - RPGHelper.h => multiple Definitions problem. Maybe becaus it does not have a .cpp?
 
     - Memory Leak?:
             //TODO: calling DeepClone/ShallowClone creates a leak somehow (?)

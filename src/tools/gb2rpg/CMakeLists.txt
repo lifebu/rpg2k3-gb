@@ -10,12 +10,12 @@ project(gb2rpg VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Gameboy rom to RPG Maker
 
 
 set(gp2rpg_headers
-    src/CLI.h src/Database.h src/GBFile.h src/Map.h src/Globals.h
-    src/MapTree.h src/ProjectGenerator.h)
+    src/CLI.h src/Database.h src/GBFile.h src/Map.h src/MapTree.h 
+     src/ProjectGenerator.h src/Globals.h)
 
 set(gp2rpg_source
-    src/CLI.cpp src/Database.cpp src/GBFile.cpp src/Map.cpp
-    src/MapTree.cpp src/ProjectGenerator.cpp) 
+    src/CLI.cpp src/Database.cpp src/GBFile.cpp src/Map.cpp src/MapTree.cpp
+     src/ProjectGenerator.cpp) 
 
 add_executable(gb2rpg gb2rpg.cpp ${gp2rpg_source} ${gp2rpg_headers})
 

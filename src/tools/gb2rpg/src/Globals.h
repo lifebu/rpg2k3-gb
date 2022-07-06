@@ -31,4 +31,7 @@ namespace EXPORTS {
     // Map
     const static std::string MAP_BASE = "rpg2k3/project/Map";
     const static std::string MAP_TYPE = ".emu";
+
+    // Maptree
+    const static std::string MAP_TREE = "rpg2k3/project/RPG_RT.emt";
 };
