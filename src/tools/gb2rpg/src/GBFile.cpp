@@ -7,50 +7,6 @@
 #include <cassert>
 
 
-const static std::string ERR_TO_MUCH_RAM = "Only games that need a maximum of 32kByte of Cartridge RAM are supported: ";
-const static std::string ERR_NO_COLOR_SUPPORT = "Games that can run on both the Gameboy and Gameboy Color are not supported: ";
-const static std::string ERR_NO_COLOR_EXCLUSIVE = "Games that exclusively run on the Gameboy Color are not supported: ";
-
-// GBFileGenerator
-GBFileGenerator::GBFileGenerator() 
-    : error(false)
-{}
-
-std::vector<GBFile> GBFileGenerator::genGBFiles(CLIOptions& cli) {
-    auto& filePaths = cli.getFilePaths();
-    std::vector<GBFile> gbFiles;
-    for(auto& path : filePaths) {
-        GBFile file = GBFile(path);
-        if (!file.isValid()) {
-            error = true;
-            continue;
-        }
-
-        if (file.getRamSize() > MEMORYSIZES::MAX_CARTRIDGE_RAM) {
-            std::cout << ERR_TO_MUCH_RAM << path << std::endl;
-            error = true;
-        }
-
-        if (file.getGameboySupportLevel() == GBFile::COLOR_SUPPORT) {
-            std::cout << ERR_NO_COLOR_SUPPORT << path << std::endl;
-            error = true;
-        }
-
-        if (file.getGameboySupportLevel() == GBFile::COLOR_ONLY) {
-            std::cout << ERR_NO_COLOR_EXCLUSIVE << path << std::endl;
-            error = true;
-        }
-
-
-        gbFiles.emplace_back(std::move(file));
-    }
-    return gbFiles;
-}
-
-bool GBFileGenerator::hadErrors() {
-    return error;
-}
-
 // GBFile
 // public
 GBFile::GBFile(std::string path)
@@ -87,6 +43,10 @@ uint16_t GBFile::getRomSize() {
 
 GBFile::GBSupport GBFile::getGameboySupportLevel() {
    return supportLevel; 
+}
+
+std::string GBFile::getTitle() {
+    return title;
 }
 
 // peek x Bytes from the gbFile. Does not advance file pointer.
@@ -163,4 +123,53 @@ void GBFile::readHeader(GBHeader& header) {
     else if (header.cgbFlag == 0xC0) supportLevel = COLOR_ONLY;
     // Unknown GameBoy Header Rom Size
     else assert(false);
+
+    // Read Gameboy Title. 
+    title.append((const char*)header.title);
+}
+
+
+// GBFileGenerator
+const static std::string ERR_TO_MUCH_RAM = "Only games that need a maximum of 32kByte of Cartridge RAM are supported: ";
+const static std::string ERR_NO_COLOR_SUPPORT = "Games that can run on both the Gameboy and Gameboy Color are not supported: ";
+const static std::string ERR_NO_COLOR_EXCLUSIVE = "Games that exclusively run on the Gameboy Color are not supported: ";
+
+// publlic
+GBFileGenerator::GBFileGenerator() 
+    : error(false)
+{}
+
+std::vector<GBFile> GBFileGenerator::genGBFiles(CLIOptions& cli) {
+    auto& filePaths = cli.getFilePaths();
+    std::vector<GBFile> gbFiles;
+    for(auto& path : filePaths) {
+        GBFile file = GBFile(path);
+        if (!file.isValid()) {
+            error = true;
+            continue;
+        }
+
+        if (file.getRamSize() > MEMORYSIZES::MAX_CARTRIDGE_RAM) {
+            std::cout << ERR_TO_MUCH_RAM << path << std::endl;
+            error = true;
+        }
+
+        if (file.getGameboySupportLevel() == GBFile::COLOR_SUPPORT) {
+            std::cout << ERR_NO_COLOR_SUPPORT << path << std::endl;
+            error = true;
+        }
+
+        if (file.getGameboySupportLevel() == GBFile::COLOR_ONLY) {
+            std::cout << ERR_NO_COLOR_EXCLUSIVE << path << std::endl;
+            error = true;
+        }
+
+
+        gbFiles.emplace_back(std::move(file));
+    }
+    return gbFiles;
+}
+
+bool GBFileGenerator::hadErrors() {
+    return error;
 }

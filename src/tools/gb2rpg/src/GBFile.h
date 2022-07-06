@@ -46,6 +46,10 @@ public:
     uint16_t getRomSize();
     // which Gameboy revisions this rom supports.
     GBSupport getGameboySupportLevel();
+    // read title from Gameboy header
+    std::string getTitle();
+
+
 
     // peek x Bytes from the gbFile.
     std::vector<uint8_t> peekBytes(int numBytes);
@@ -68,6 +72,8 @@ private:
     uint16_t ramSize;
     // in KByte
     uint16_t romSize;
+    // name of the game (read from the header)
+    std::string title;
 
     bool valid;
 };
