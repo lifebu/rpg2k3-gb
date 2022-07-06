@@ -5,9 +5,6 @@
 
 #include "thirdparty/tinyxml2/tinyxml2.h"
 #include "src/core/utilities/RPGHelper.h"
-#include "src/core/VarMapping.h"
-#include "src/core/MemorySizes.h"
-#include "src/core/RPGMaker.h"
 
 #include <iostream>
 #include <sstream>
