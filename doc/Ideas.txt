@@ -1,8 +1,8 @@
-- paths:
+Paths:
     steamapps/compatdata/362870/pfx/drive_c/users/steamuser/My Documents/RPG Maker 2003/
     steamapps/common/RPG Maker 2003/RTP/
 
-- Links:
+Links:
     - Complete Gameboy Architecture Refference:
     https://gekkio.fi/files/gb-docs/gbctr.pdf
     - Gameboy OpCodes
@@ -13,7 +13,7 @@
     https://gbdev.io/pandocs/Memory_Map.html
 
 
-- Programming Language Functionality:
+RPG Maker: Programming Language Functionality:
     Data:
         - Switches (Bool): 5.000 Switches.
             - Switch Operations: Set Bools
@@ -250,6 +250,8 @@
                 - Event/Page Number stored in Variable.
     
     Events/Functions:
+        - Events have a call stack. If an event A calls B. And B is finished (either end event processing or reaching end of code), it will return to A.
+
         - Map Events: 
             - Each Map can be 500x500 big 
             => 1.000 Map Events.
@@ -429,32 +431,6 @@ Gameboy & RPG-Maker:
             - I only support up to 32kByte Cartridge-RAM!!!!
             - use CHARA, using EXP + STATS (2.596 CHARA)
             - As this is saved in savegames => support savegames in emulators!
-
-
-RPG-Maker Custom Toolchain:
-    - EasyRPG Project: Interpreter for RPGMaker 2003!
-        - Player: Play games.
-        - Editor: Game editor.
-        - libclf: LCF2XML. Convert RPG Maker data format to XML and vice-versa
-            LMU: Map, LMT: Maptree, LDB: Database, LSD: Savegame.
-    
-    - CEC: C Event Compiler.
-        - c-code => .xml
-    - GB2RPG: Gameboy 2 RPG Maker.
-        - .gb   => MAP-ROM + MAP-RAM as .xml => mapfile. 
-                => DB-RAM as .xml => databasefile.
-                => Emu-Code as .xml => databasefile.
-                => creates the entire RPG Maker project.
-    - CRPGENV: C-RPG Maker Environment
-        - c-code can be run outside of RPG Maker so that I can debug it normally without dependencies.
-            - Plattform Code that runs my code (kinda like engine).
-        - run in original RPG Maker for sanity check.
-
-    - goal:
-        - this project will compile a tool that you can use to create the RPG Maker Project.
-        - you input a gameboy binary file and it will create a valid RPG Maker 2003 project in a directory.
-        - this project is the gameboy emulator project.
-        - if this project already exists, it will only overwrite the ROM/RAM data from the project.
 
 
 Gameboy Info: 

@@ -1,0 +1,10 @@
+rpg2k3-gb: Main CLI
+    - list of tools to run easily to create everything you need.
+
+Options:
+    1) Create C++ Project
+    2) Runn C++ Project
+    3) Create EasyRPG Project
+    4) Run EasyRPG Project
+    5) Create RPG Maker 2003 Project
+    6) Run RPG Maker 2003 Project

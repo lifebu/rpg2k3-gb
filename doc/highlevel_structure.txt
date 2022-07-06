@@ -1,46 +1,83 @@
 Use-Time:
-    1st: Create Project
-    - .gb               =(GB2RPG)=> - RPG Maker 2003 Project (rpg2k3/project)
-    - emu .xml code   
-      (rpg2k3/emu)      ==========>
-    - Project files
-      (RPG_RT.exe,...)  ==========>
-
-    2nd: Run Project
-    - compiled project  ==========> - Running Project
-    - custom Easy RPG   
-      (easyrpg/)
-      OR:
-      RPG2k3            ==========>
-
-
-Debug-Time:
-    - Emu C-Code        =========>  - Debug
-    - CRPGENV           =========>
-
+  Main-Tool (gb2rpg.exe) that has simple CLI.
+  1) Create C++ Project:
+    - Create Map.emu (XML) from use specified .gb File (input).
+    - Create RPG_RT.emt (XML, Maptree).
+    - Create RPG_RT.edb (XML).
+    => Into one output folder.
+  
+  2) Run C++ Project:
+    - Run the CppRPGEnv.
+  
+  3) Create EasyRPG Project:
+    - Create Map.emu (XML) from use specified .gb File (input).
+    - Create RPG_RT.emt (XML, Maptree).
+    - Create RPG_RT.edb (XML) using emulator code (XML).
+    - Other things needed for an EasyRPG Project Structure?
+    
+  4) Run EasyRPG Project: 
+    - Using the created project!
+  
+  5) Create RPG Maker 2003 Project:
+    - Requires some RPG Maker 2003 project files (RPG_RT.exe,...).
+    - Create Map.emu (XML) from use specified .gb File (input).
+    - Create RPG_RT.emt (XML, Maptree).
+    - Create RPG_RT.edb (XML) using emulator code (XML). 
+  
+  6) Run RPG Maker 2003 Project:
+    - calling RPG_RT.exe
 
 Build-Time:
-    1st: Easy RPG Player:
-    - Easy RPG Player-Code  =========>  - Easy RPG Player
+  1) Build C++ environment:
+    - Compile emu C++ code into static library.
+    - Compile SFML into static libraries.
+    - Compile CppRPGEnv into executable (using Emu Code).
+  
+  2) Build CppEC compiler:
+  
+  3) Compile emulator C++ code:
+    - Into .xml format to be used for EasyRPG and RPG Maker Projects.
+  
+  4) Compile gb2rpg:
+  
+  5) Compile lcf2xml:
 
-    2nd: C Event Compiler:
-    - CEC-Code              =========>  - CEC
+  6) Compile EasyRPG Player:
 
-    3rd: Emulator:
-    - Emu C-Code            =========>  - static lib (for CRPGENV)
-                            ==(CEC)==>  - emu .xml-Code
+  7) Compile rpg2k3-gb:
+    - Main CLI for project.
+  
+Debug-Time:
+  1) Debug in C++ Runtime.
 
-    4th: RPG Environment:
-    - CRPGENV-Code          ========>   - CRPGENV
-    - Emu C-Code (static)   ========>
+  2) Debug in Easy RPG.
 
-    5th: Gameboy 2 RPG:
-    - GB2RPG-Code           =======>    - GB2RPG
+
+Tools:
+  - rpg2k3-gb: main CLI
+    - list of tools to run easily to create everything you need.
+
+  - gb2RPG: 
+    - creates map from .gb file.
+    - creates maptree.
+    - creates database.
+      - can additionally specify common event file (my code).
+    - generate the project folder structure.
+      - output C++ Project.
+      - output EasyRPG Project.
+      - output RPG Maker 2003 Project.
+  
+  - CppEC: C++ Event Compiler
+    - Compile C++ code to common events.
+  
+  - CppRPGEnv: C++ RPG Maker Environment
+    - C++ Runtime that mimicks the RPG Maker API and uses SFML.
 
 
 Implementation order:
-    GB2RPG
-    CRPGENV + Interface
-        Emulator
-        CEC
+  GB2RPG.
+
+  CRPGENV + Interface
+      Emulator
+      CEC
     

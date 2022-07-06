@@ -1,5 +1,5 @@
-C Event Compiler.
-    - c-code => .xml
+CppEC: C++ Event Compiler.
+    - c++-code => .xml
 
 - thirdparty:
     tinyxml2

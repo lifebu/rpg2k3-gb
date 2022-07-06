@@ -1,14 +1,17 @@
-CRPGEnv: C-RPG Maker Environment
-    - c-code can be run outside of RPG Maker so that I can debug it normally without dependencies.
+CppRPGEnv: C++-RPG Maker Environment
+    - C++-code can be run outside of RPG Maker so that I can debug it normally without dependencies.
         - Plattform Code that runs my code (kinda like engine).
 
+- C++ Emulator Code is treated as the CommonEvents for the Runtime Environment.
+    - Compile as .lib file.
 
-- My C-Code that implements the actual emulator uses a header file (RPGDef.h)
+
+- My C++-Code that implements the actual emulator uses a header file (RPGDef.h)
     => THIS IS AN API / INTERFACE.
     - This header declares the functions of the RPG Maker code that I use.
         - Like changeEXP(), setEventLocation().
     - It could also defines the variables and switches with their names. (?)
-        - My C-Code should set the names (?)
+        - My C++-Code should set the names (?)
 
 - Interface:
     - RPG Maker Commands:

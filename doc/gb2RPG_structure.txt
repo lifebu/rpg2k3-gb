@@ -1,8 +1,12 @@
-GB2RPG: Gameboy 2 RPG Maker.
-    - .gb   => MAP-ROM + MAP-RAM as .xml => mapfile. 
-            => DB-RAM as .xml => databasefile.
-            => Emu-Code as .xml => databasefile.
-            => creates the entire RPG Maker project.
+gb2RPG: Gameboy 2 RPG Maker.
+    - creates map from .gb file.
+    - creates maptree.
+    - creates database.
+      - can additionally specify common event file (my code).
+    - generate the project folder structure.
+      - output C++ Project.
+      - output EasyRPG Project.
+      - output RPG Maker 2003 Project.
 
 
 - TODO:
@@ -25,7 +29,16 @@ GB2RPG: Gameboy 2 RPG Maker.
             int b = 10;
             */
     
-    - Refactor:               
+    - Refactor:  
+        - Define an output style with CLI.
+            - additional option -o
+                -o easy_rpg
+                -o rpg_maker_2k3
+                -o cpp_rpg_env
+            
+            - needs this option to work!
+            
+
         - Write Functions for setting/generating event-commands of different types.
             - 
             - set/copy/generate ...
