@@ -58,16 +58,7 @@ gb2RPG: Gameboy 2 RPG Maker.
 
         - do not use "using namespace std;" !!!
 
-        - Should find a cleaner way for printing errors and printing the info CLI-info string in main.
-
-        - Define an output style with CLI.
-            - additional option -o
-                -o easy_rpg
-                -o rpg_maker_2k3
-                -o cpp_rpg_env
-            
-            - needs this option to work!
-            
+        - Should find a cleaner way for printing errors and printing the info CLI-info string in main.           
 
         - Write Functions for setting/generating event-commands of different types.
             - 

@@ -12,9 +12,9 @@
             "program": "${command:cmake.launchTargetPath}",
             "args": [
                 "-g",
-                "playground/Tetris.gb"
-                //"playground/Donkey\\ Kong\\ Land.gb"
-                //"playground/Pokemon\\ Red.gb"
+                "playground/Tetris.gb",
+                "-o",
+                "cpp_rpg_env"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

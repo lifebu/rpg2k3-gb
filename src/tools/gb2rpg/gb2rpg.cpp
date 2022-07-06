@@ -23,7 +23,7 @@ int main (int argc, char* argv[]) {
 
     Database::genDatabase(gbFiles);
 
-    genProjectFolder(numOfMaps);
+    genProjectFolder(numOfMaps, cli);
 
     return 0;
 }
