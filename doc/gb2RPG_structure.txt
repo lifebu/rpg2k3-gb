@@ -10,6 +10,12 @@ gb2RPG: Gameboy 2 RPG Maker.
 
 
 - TODO:
+    - Next Steps:
+        - Generating Maptree.
+        - Generating Database.
+        - Generating Project Folders.
+
+
     - Memory Leak?:
             //TODO: calling DeepClone/ShallowClone creates a leak somehow (?)
             /*
@@ -29,7 +35,31 @@ gb2RPG: Gameboy 2 RPG Maker.
             int b = 10;
             */
     
-    - Refactor:  
+
+    - Performance:
+        - 2 MByte Cartidge: 16GB RAM, 2m20s, 1.6GB XML File.
+        - less memory usage:
+            - can use https://libexpat.github.io/
+                https://github.com/libexpat/libexpat
+                this is what lcf2xml uses. 
+                - stream-oriented XML parser.
+                - good if files are too large to fit into RAM.
+            - lcf2xml only requires 600mb of memory in comparison to tinyxml2's 16GB!
+            - lcf2xml only takes 44 seconds in comparison to my 2m20s (but it's task might be simpler!).
+        
+        - I could multithread parts of the map generation as it can take a long time.
+            - Generating the Mapfile for Pokemon Red takes 2m20s for a 2 mByte Cartridge. 
+            - Each Thread is responsible for multiple Event pages (when reading cartridge).
+            - Even with Tetris (32 kByte) and 3.000Bytes/Page I could have ~11 Threads in parallel!.
+
+
+    - Refactor:
+        - could use a way to show the percentage done.
+
+        - do not use "using namespace std;" !!!
+
+        - Should find a cleaner way for printing errors and printing the info CLI-info string in main.
+
         - Define an output style with CLI.
             - additional option -o
                 -o easy_rpg
@@ -37,14 +67,6 @@ gb2RPG: Gameboy 2 RPG Maker.
                 -o cpp_rpg_env
             
             - needs this option to work!
-        
-        - GBFile should check that the ROM supports the classic Gameboy (DMG). 
-            - Gameboy Color only games cannot run.
-            - need to return an error!
-
-        - I can only support up to 32kByte of RAM.
-            - GBFile generation should create an error.
-
             
 
         - Write Functions for setting/generating event-commands of different types.

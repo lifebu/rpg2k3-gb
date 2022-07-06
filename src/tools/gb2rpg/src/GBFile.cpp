@@ -1,41 +1,94 @@
 #include "GBFile.h"
 
 #include "CLI.h"
+#include "src/core/MemorySizes.h"
 
 #include <iostream>
 #include <cassert>
 
 using namespace std;
 
+const static std::string ERR_TO_MUCH_RAM = "Only games that need a maximum of 32kByte of Cartridge RAM are supported: ";
+const static std::string ERR_NO_COLOR_SUPPORT = "Games that can run on both the Gameboy and Gameboy Color are not supported: ";
+const static std::string ERR_NO_COLOR_EXCLUSIVE = "Games that exclusively run on the Gameboy Color are not supported: ";
+
+// GBFileGenerator
+GBFileGenerator::GBFileGenerator() 
+    : error(false)
+{}
+
+std::vector<GBFile> GBFileGenerator::genGBFiles(CLIOptions& cli) {
+    auto& filePaths = cli.getFilePaths();
+    std::vector<GBFile> gbFiles;
+    for(auto& path : filePaths) {
+        GBFile file = GBFile(path);
+        if (!file.isValid()) {
+            error = true;
+            continue;
+        }
+
+        if (file.getRamSize() > MEMORYSIZES::MAX_CARTRIDGE_RAM) {
+            std::cout << ERR_TO_MUCH_RAM << path << std::endl;
+            error = true;
+        }
+
+        if (file.getGameboySupportLevel() == GBFile::COLOR_SUPPORT) {
+            std::cout << ERR_NO_COLOR_SUPPORT << path << std::endl;
+            error = true;
+        }
+
+        if (file.getGameboySupportLevel() == GBFile::COLOR_ONLY) {
+            std::cout << ERR_NO_COLOR_EXCLUSIVE << path << std::endl;
+            error = true;
+        }
+
+
+        gbFiles.emplace_back(std::move(file));
+    }
+    return gbFiles;
+}
+
+bool GBFileGenerator::hadErrors() {
+    return error;
+}
+
+// GBFile
 // public
 GBFile::GBFile(string path)
-    : bytesRead(0)  {
+    : bytesRead(0), supportLevel(GAMEBOY_ONLY), valid(false)  {
     
     file.open(path, ios::binary);
     if (!file.is_open()) {
         std::cout << "Error, File not found: " << path << "\n"; 
     } else {
-        file.seekg(0x100, std::ios::beg);
+        valid = true;
         GBHeader header;
+        file.seekg(0x100, std::ios::beg);
         file.read((char*)&header, sizeof(GBHeader));
-        ramSize = readRamSize(header);
-        romSize = readRomSize(header);
-
+        readHeader(header);
         file.seekg(0, std::ios::beg);
     }
 }
+
 GBFile::~GBFile() {
     file.close();
 }
 
-
+bool GBFile::isValid() {
+    return valid;
+}
 
 uint16_t GBFile::getRamSize() {
     return ramSize;
-};
+}
+
 uint16_t GBFile::getRomSize() {
     return romSize;
-};
+}
+
+GBFile::GBSupport GBFile::getGameboySupportLevel() {
+   return supportLevel; 
+}
 
 // peek x Bytes from the gbFile. Does not advance file pointer.
 std::vector<uint8_t> GBFile::peekBytes(int numBytes) {
@@ -80,29 +133,35 @@ std::vector<GBFile> GBFile::genGBFiles(CLIOptions& cli) {
 }
 
 // private
-// read ram size from Gameboy header in KByte
-uint16_t GBFile::readRamSize(GBHeader& header) {
-    if (header.ramSize == 0x00) return 0;
-    if (header.ramSize == 0x02) return 8;
-    if (header.ramSize == 0x03) return 32;
-    if (header.ramSize == 0x04) return 128;
-    if (header.ramSize == 0x05) return 64;
+// read data from the Gameboy header.
+void GBFile::readHeader(GBHeader& header) {
+    // Read ram size
+    if (header.ramSize == 0x00) ramSize = 0;
+    else if (header.ramSize == 0x02) ramSize = 8;
+    else if (header.ramSize == 0x03) ramSize = 32;
+    else if (header.ramSize == 0x04) ramSize = 128;
+    else if (header.ramSize == 0x05) ramSize = 64;
     // Unknown GameBoy Header Ram Size
-    assert(false);
-    return 0;
-}
-// read rom size from Gameboy header in KByte
-uint16_t GBFile::readRomSize(GBHeader& header) {
-    if (header.romSize == 0x00) return 32;
-    if (header.romSize == 0x01) return 64;
-    if (header.romSize == 0x02) return 128;
-    if (header.romSize == 0x03) return 256;
-    if (header.romSize == 0x04) return 512;
-    if (header.romSize == 0x05) return 1024;
-    if (header.romSize == 0x06) return 2048;
-    if (header.romSize == 0x07) return 4096;
-    if (header.romSize == 0x08) return 8192;
+    else assert(false);
+    
+    // Read rom size
+    // TODO: could probably improve this by using romSize = 32 * (header.romSize + 1);
+    if (header.romSize == 0x00) romSize = 32;
+    else if (header.romSize == 0x01) romSize = 64;
+    else if (header.romSize == 0x02) romSize = 128;
+    else if (header.romSize == 0x03) romSize = 256;
+    else if (header.romSize == 0x04) romSize = 512;
+    else if (header.romSize == 0x05) romSize = 1024;
+    else if (header.romSize == 0x06) romSize = 2048;
+    else if (header.romSize == 0x07) romSize = 4096;
+    else if (header.romSize == 0x08) romSize = 8192;
     // Unknown GameBoy Header Rom Size
-    assert(false);
-    return 0;
+    else assert(false);
+    
+    // Read GameBoy support level
+    if (header.cgbFlag == 0x00) supportLevel = GAMEBOY_ONLY;
+    else if (header.cgbFlag == 0x80) supportLevel = COLOR_SUPPORT;
+    else if (header.cgbFlag == 0xC0) supportLevel = COLOR_ONLY;
+    // Unknown GameBoy Header Rom Size
+    else assert(false);
 }

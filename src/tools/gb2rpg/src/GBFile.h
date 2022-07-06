@@ -6,6 +6,7 @@
 
 class CLIOptions;
 
+// This represents a single Gameboy file usually in the .gb or .gbc format.
 class GBFile {
     struct GBHeader {
         uint8_t entryPoint[4];
@@ -26,15 +27,25 @@ class GBFile {
     };
 
 public:
+    enum GBSupport {
+        GAMEBOY_ONLY,
+        COLOR_SUPPORT,
+        COLOR_ONLY
+    };
+
     GBFile(std::string filePath);
     GBFile(const GBFile&) = default;
     GBFile(GBFile&& other) = default;
     ~GBFile();
 
+    // is this a valid Gameboy File?
+    bool isValid();
     // read ram size from Gameboy header in KByte
     uint16_t getRamSize();
     // read rom size from Gameboy header in KByte
     uint16_t getRomSize();
+    // which Gameboy revisions this rom supports.
+    GBSupport getGameboySupportLevel();
 
     // peek x Bytes from the gbFile.
     std::vector<uint8_t> peekBytes(int numBytes);
@@ -46,15 +57,28 @@ public:
     static std::vector<GBFile> genGBFiles(CLIOptions& cli);
 
 private:
-    // read ram size from Gameboy header in KByte
-    uint16_t readRamSize(GBHeader& header);
-    // read rom size from Gameboy header in KByte
-    uint16_t readRomSize(GBHeader& header);
+    // read data from the Gameboy header.
+    void readHeader(GBHeader& header);
 
     std::ifstream file;
     uint32_t bytesRead;
+
+    GBSupport supportLevel;
     // in KByte
     uint16_t ramSize;
     // in KByte
     uint16_t romSize;
+
+    bool valid;
+};
+
+// Class that can generate multiple GB files from the options provided by the command line.
+class GBFileGenerator {
+public:
+    GBFileGenerator();
+
+    std::vector<GBFile> genGBFiles(CLIOptions& cli);
+    bool hadErrors();
+private:
+    bool error;
 };
