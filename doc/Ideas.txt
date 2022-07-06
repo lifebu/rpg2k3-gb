@@ -1,5 +1,5 @@
 Paths:
-    steamapps/compatdata/362870/pfx/drive_c/users/steamuser/My Documents/RPG Maker 2003/
+    steamapps/compatdata/362870/pfx/drive_c/busers/steamuser/My Documents/RPG Maker 2003/
     steamapps/common/RPG Maker 2003/RTP/
 
 Links:
