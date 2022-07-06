@@ -2,8 +2,6 @@
 
 #include <vector>
 
-class Map;
-class MapTree;
-class Database;
+class CLIOptions;
 
-void genProjectFolder(int numOfMaps);
+void genProjectFolder(int numOfMaps, CLIOptions& cli);
