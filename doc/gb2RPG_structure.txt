@@ -56,8 +56,6 @@ gb2RPG: Gameboy 2 RPG Maker.
     - Refactor:
         - could use a way to show the percentage done.
 
-        - do not use "using namespace std;" !!!
-
         - Should find a cleaner way for printing errors and printing the info CLI-info string in main.           
 
         - Write Functions for setting/generating event-commands of different types.

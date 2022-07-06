@@ -16,7 +16,7 @@
 #include <cmath>
 #include <cstdarg>
 
-using namespace std;
+
 
 // Map-Event Offsets:
 // DMG Event has always the first ID.
@@ -48,7 +48,7 @@ int Map::genMapFiles(std::vector<GBFile>& gbFiles) {
     for(int i = 0; i < gbFiles.size(); ++i) {
         Map map = Map(gbFiles.at(i));
         
-        string filePath = EXPORTS::MAP_BASE + generateID(i + 1) + EXPORTS::MAP_TYPE;
+        std::string filePath = EXPORTS::MAP_BASE + generateID(i + 1) + EXPORTS::MAP_TYPE;
         map.mapDoc->SaveFile(filePath.c_str(), true);
     }
 
@@ -123,7 +123,7 @@ void Map::generateMapROM(GBFile& gbFile, int numOfMapROMs) {
         }
 
         // Set Event ID, Name and Coordinate
-        std::string name = string("ROM") + generateID(eventID - MAP_ROM_ID + 1);
+        std::string name = std::string("ROM") + generateID(eventID - MAP_ROM_ID + 1);
         int xCoord = (eventID - 1) % RPGMAKER::MAP_SIZE_X;
         int yCoord = (eventID - 1) / RPGMAKER::MAP_SIZE_Y;
         setEventIDNameCoord(&event, eventID, name, xCoord, yCoord);
@@ -143,7 +143,7 @@ void Map::generateMapRAM() {
     for (int i = 0; i < MEMORYSIZES::NUM_DMG_RAM_EVENTS; ++i) {
 
         // Set Event ID, Name and Coordinate
-        std::string name = string("RAM") + generateID(i + 1);
+        std::string name = std::string("RAM") + generateID(i + 1);
         int eventID = mapRAMID + i;
         int xCoord = (eventID - 1) % RPGMAKER::MAP_SIZE_X;
         int yCoord = (eventID - 1) / RPGMAKER::MAP_SIZE_Y;
@@ -168,16 +168,16 @@ void Map::setEventIDNameCoord(tinyxml2::XMLDocument* event, int id, std::string&
 
     // Set Event Coordinates
     auto* xCoord = event->TraverseElement("//x")->FirstChild();
-    xCoord->SetValue(to_string((id - 1) % RPGMAKER::MAP_SIZE_X).c_str());
+    xCoord->SetValue(std::to_string((id - 1) % RPGMAKER::MAP_SIZE_X).c_str());
 
     auto* yCoord = event->TraverseElement("//y")->FirstChild();
-    yCoord->SetValue(to_string((id - 1) / RPGMAKER::MAP_SIZE_Y).c_str());
+    yCoord->SetValue(std::to_string((id - 1) / RPGMAKER::MAP_SIZE_Y).c_str());
 }
 
 // TODO: This should exist in a different general project. And have wrapper functions around them (with fixed variable size) that allow named parameters which makes this problem easier. And to not have magic numbers I need enums/typedeffs for each command type!
 void setCommandParameters(tinyxml2::XMLNode* command, int numParam, ...) {
     va_list args;
-    stringstream sstr;
+    std::stringstream sstr;
     va_start(args, numParam);
     for(int i = 0; i < numParam; ++i ) {
         sstr << va_arg(args, int);
@@ -193,7 +193,7 @@ void setCommandParameters(tinyxml2::XMLNode* command, int numParam, ...) {
 
 void setCommandType(tinyxml2::XMLNode* command, int newType) {
     auto* code = command->FirstChildElement("code")->FirstChild();
-    code->SetValue(to_string(newType).c_str());
+    code->SetValue(std::to_string(newType).c_str());
 }
 
 // Helper functions
@@ -250,7 +250,7 @@ void Map::setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID, int 
     
     // JumpToLabel X - (min(X, 1.000 - X) / 2)
     command = command->TraverseElement("./EventCommand");
-    float minDistance = min(labelID, numLabels - labelID);
+    float minDistance = std::min(labelID, numLabels - labelID);
     if(labelID == 1) {
         // The first MapRomLabel does not need to jump here, instead change the command to EndEventProcessing
         setCommandType(command, 12310);

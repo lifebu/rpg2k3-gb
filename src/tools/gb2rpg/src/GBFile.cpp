@@ -6,7 +6,6 @@
 #include <iostream>
 #include <cassert>
 
-using namespace std;
 
 const static std::string ERR_TO_MUCH_RAM = "Only games that need a maximum of 32kByte of Cartridge RAM are supported: ";
 const static std::string ERR_NO_COLOR_SUPPORT = "Games that can run on both the Gameboy and Gameboy Color are not supported: ";
@@ -54,10 +53,10 @@ bool GBFileGenerator::hadErrors() {
 
 // GBFile
 // public
-GBFile::GBFile(string path)
+GBFile::GBFile(std::string path)
     : bytesRead(0), supportLevel(GAMEBOY_ONLY), valid(false)  {
     
-    file.open(path, ios::binary);
+    file.open(path, std::ios::binary);
     if (!file.is_open()) {
         std::cout << "Error, File not found: " << path << "\n"; 
     } else {

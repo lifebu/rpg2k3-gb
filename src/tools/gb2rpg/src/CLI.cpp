@@ -3,8 +3,6 @@
 #include <iostream>
 #include <algorithm>
 
-using namespace std;
-
 const static std::string VERSION_STRING = "0.1\n";
 const static std::string HELP_STRING =  "GB2RPG - Create RPG Maker 2003 Project Files from Gameboy Rom\n" 
                                         "Usage: gb2rpg [--help/-h] [--version/-v] [-gb/-g] file1 [... fileN] [-o: cpp_rpg_env/easy_rpg/rpg_maker_2k3]\n"
@@ -31,10 +29,10 @@ CLIOptions::CLIOptions(int argc, char* argv[])
 bool CLIOptions::printInfo() {
     if(!printVersion && !printHelp && !filePaths.empty()) return false;
     if(printVersion) {
-        cout << VERSION_STRING;
+        std::cout << VERSION_STRING;
     } 
     if (printHelp || (!printHelp && !printVersion && filePaths.empty())) {
-        cout << HELP_STRING;
+        std::cout << HELP_STRING;
     }
 
     return true;
@@ -42,12 +40,12 @@ bool CLIOptions::printInfo() {
 bool CLIOptions::printErrors() {
     if(filePaths.size() > 1) {
         // for Memory Reasons we only support one .gb file right now.
-        cout << ERR_TO_MANY_GB_FILES;
+        std::cout << ERR_TO_MANY_GB_FILES;
         return true;
     }
 
     if(projectType == INVALID) {
-        cout << ERR_INVALID_PROJECT_TYPE;
+        std::cout << ERR_INVALID_PROJECT_TYPE;
         return true;
     }
 
@@ -68,9 +66,9 @@ CLIOptions::ProjectType CLIOptions::getProjectType() {
 int CLIOptions::findParameterRange(int argc, char* argv[], int start) {
     int i = start + 1;
     for(; i < argc; ++i) {
-        string nextArgument = argv[i];
-        if (nextArgument.find("-") != string::npos 
-            || nextArgument.find("--") != string::npos) {
+        std::string nextArgument = argv[i];
+        if (nextArgument.find("-") != std::string::npos 
+            || nextArgument.find("--") != std::string::npos) {
             break;
         }
     }
@@ -80,14 +78,14 @@ int CLIOptions::findParameterRange(int argc, char* argv[], int start) {
 /*
 * sanitizes command line inputs for paths
 */
-void CLIOptions::sanitizePath(string& path) {
+void CLIOptions::sanitizePath(std::string& path) {
     path.erase(remove(path.begin(), path.end(), '\\'), path.end());
 }
 
 void CLIOptions::parseArguments(int argc, char* argv[]) {
     // first argument always program path and name, so igore it.
     for (int i = 1; i < argc; ++i) {
-        string argument = argv[i];
+        std::string argument = argv[i];
         if (argument == "-v" || argument == "--version") {
             printVersion = true;
         
@@ -100,13 +98,13 @@ void CLIOptions::parseArguments(int argc, char* argv[]) {
             filePaths.reserve(numParams);
 
             for (int param = i + 1; param <= last; ++param) {
-                string path = string(argv[param]);
+                std::string path = std::string(argv[param]);
                 sanitizePath(path);
                 filePaths.push_back(path);
             }
         
         } else if (argument == "-o") {
-            string parameter = argv[i + 1];
+            std::string parameter = argv[i + 1];
             // TODO: Maybe there is a more elegent solution than this?
             if (parameter.find("cpp_rpg_env") != std::string::npos) {
                 projectType = CPP_RPG_ENV;
