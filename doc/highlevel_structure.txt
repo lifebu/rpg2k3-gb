@@ -52,7 +52,6 @@ Debug-Time:
 
   2) Debug in Easy RPG.
 
-
 Tools:
   - rpg2k3-gb: main CLI
     - list of tools to run easily to create everything you need.
@@ -73,11 +72,13 @@ Tools:
   - CppRPGEnv: C++ RPG Maker Environment
     - C++ Runtime that mimicks the RPG Maker API and uses SFML.
 
+Required RPG Maker Files:
+  - RPG_RT.exe, RPG_RT.ini, *.r3proj, ultimate_rt_eb.dll.
+
 
 Implementation order:
   GB2RPG.
-
-  CRPGENV + Interface
-      Emulator
-      CEC
-    
+  CppRPGEnv + Interface
+  GB Emulator in C++
+  Main CLI.
+  CppEC

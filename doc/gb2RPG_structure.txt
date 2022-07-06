@@ -37,6 +37,14 @@ gb2RPG: Gameboy 2 RPG Maker.
                 -o cpp_rpg_env
             
             - needs this option to work!
+        
+        - GBFile should check that the ROM supports the classic Gameboy (DMG). 
+            - Gameboy Color only games cannot run.
+            - need to return an error!
+
+        - I can only support up to 32kByte of RAM.
+            - GBFile generation should create an error.
+
             
 
         - Write Functions for setting/generating event-commands of different types.
