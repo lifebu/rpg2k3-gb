@@ -19,16 +19,15 @@ Gameboy Emulator written in C++ for RPGMaker 2003 with custom toolchain to allow
 Gameboy system emulator written in C++. Custom toolchain is used to run the emulator in unmodified RPG Maker 2003 Software. To allow debugging and implementation in stages, other projects are needed. First a tool is used to load a Gameboy ROM and convert it into a special XML format. It can also generate files for running the emulator in a special RPGMaker-like runtime written in C++, an EasyRPG project, or an RPG Maker 2003 project. The Code for the actual emulator is compiled into XML by using a simple and custom C++ compiler. All of this can be controlled from a cental and easy to use Commandline interface (CLI).
 
 ## Current State
-The only tool currently being worked on is GB2RPG. It loads the Gameboy file and can read each byte from it. Additionally the map file and maptree generation works.
-**Warning: The generation of the XML file is currently very inefficient and stores the entire file in Memory and can take up to 2 minutes. Therefore the tool can need up to 16GB RAM. This will be fixed soon.**
-This software is still very early in development.
+The only tool currently being worked on is GB2RPG. It loads the Gameboy file and can read each byte from it. Additionally the map file and maptree generation works. This software is still very early in development.
+
+**Warning: The generation of the XML file is currently very inefficient and stores the entire file in Memory. Therefore the tool can need up to 16GB RAM for a 2MB ROM file. This will be fixed soon.**
 
 The other tools needed will be worked on in the following order:
 - CppRPGEnv: To allow C++ code to be written against a RPG Maker like interface.
 - Gameboy Emulator: Write the actual emulator using the interface given by CppRPGEnv.
 - Main CLI (rpg2k3-gb): To allow ease of use of the entire toolset to generate a project and test the emulator.
 - CppEC: To compile the emulator code into the xml format to start testing using EasyRPG first then the actual RPG Maker second.
-
 
 
 ## Technologies Used
