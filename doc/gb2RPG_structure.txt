@@ -11,11 +11,7 @@ gb2RPG: Gameboy 2 RPG Maker.
 
 - TODO:
     - Next Steps:           
-        - Generating Project Folders.
-            - Cpp RPG Enviroment:
-                project/
-                    .xml versions of the files.
-           
+        - Generating Project Folders.  
             - RPG Maker 2003 / Easy RPG Player:
                 project/rpg2k3
                     => lcf2xml to create binary files.
