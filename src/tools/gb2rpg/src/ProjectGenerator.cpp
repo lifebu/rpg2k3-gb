@@ -1,12 +1,10 @@
 #include "ProjectGenerator.h"
 
-#include "Map.h"
-#include "MapTree.h"
-#include "Database.h"
-#include "CLI.h"
+#include "GBFile.h"
 
 #include <string>
 
-void genProjectFolder(int numOfMaps, CLIOptions& cli) {
+
+void ProjectGenerator::genProjectFolder(std::vector<GBFile>& gbFiles) {
     
 }

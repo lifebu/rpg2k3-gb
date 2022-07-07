@@ -2,6 +2,9 @@
 
 #include <vector>
 
-class CLIOptions;
+class GBFile;
 
-void genProjectFolder(int numOfMaps, CLIOptions& cli);
+class ProjectGenerator {
+public:
+    static void genProjectFolder(std::vector<GBFile>& gbFiles);
+};

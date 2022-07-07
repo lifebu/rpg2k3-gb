@@ -28,7 +28,7 @@ public:
     };
     Map& operator=(Map&& other) = delete;
 
-    static int genMapFiles(std::vector<GBFile>& gbFiles);
+    static void genMapFiles(std::vector<GBFile>& gbFiles);
 
 private:
     void generateDMGROM();
