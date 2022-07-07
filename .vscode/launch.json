@@ -14,8 +14,6 @@
                 "-g",
                 "playground/Tetris.gb",
                 //"playground/Pokemon\\ Red.gb",
-                "-o",
-                "cpp_rpg_env"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

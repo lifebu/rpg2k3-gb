@@ -1,28 +1,21 @@
 Use-Time:
   Main-Tool (gb2rpg.exe) that has simple CLI.
-  1) Create C++ Project:
-    - Create Map.emu (XML) from use specified .gb File (input).
-    - Create RPG_RT.emt (XML, Maptree).
-    - Create RPG_RT.edb (XML).
-    => Into one output folder.
-  
-  2) Run C++ Project:
-    - Run the CppRPGEnv.
-  
-   
-  3) Create RPG Maker 2003 / EasyRPG Project:
+  1) Create RPG Maker Project:
     - Requires some RPG Maker 2003 project files (RPG_RT.exe,...).
     - Create Map.emu (XML) from use specified .gb File (input).
     - Create RPG_RT.emt (XML, Maptree).
-    - Create RPG_RT.edb (XML) using emulator code (XML). 
-  
-  4) Run RPG Maker 2003 Project:
-    - calling RPG_RT.exe
+    - Create RPG_RT.edb (XML).
+    - Use lcf2xml to convert these to lcf format in the project/rpg2k3 folder.
+    => Put these Files into "project/"
 
-  5) Run EasyRPG Project: 
-    - calling EasyRPG.exe
-  
-  - could also combine the project generation into a single step. Will generate an rpg2k3, easy rpg and an C++ project.
+  2) Run C++ Project:
+    - Run the CppRPGEnv.
+    
+  3) Run RPG Maker 2003 Project:
+    - calling RPG_RT.exe "project/rpg2k3"
+
+  4) Run EasyRPG Project: 
+    - calling EasyRPG.exe in "project/rpg2k3"
 
 Build-Time:
   1) Build C++ environment:
