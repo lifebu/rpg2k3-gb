@@ -13,10 +13,15 @@ gb2RPG: Gameboy 2 RPG Maker.
     - Next Steps:           
         - Generating Project Folders.
             - Cpp RPG Enviroment:
-
-            - Easy RPG Player:
-            
-            - RPG Maker 2003:
+                project/
+                    .xml versions of the files.
+           
+            - RPG Maker 2003 / Easy RPG Player:
+                project/rpg2k3
+                    => lcf2xml to create binary files.
+                
+                create folders for the project:
+                    Backdrop, Battle, Battle2, BattleCharSet, BattleWeapon, CharSet, ChipSet, FaceSet, Frame, GameOver, Monster, Movie, Music, Panorama, Picture, Sound, System, System2, Title
 
 
     - Memory Leak?:
@@ -49,6 +54,10 @@ gb2RPG: Gameboy 2 RPG Maker.
                 - good if files are too large to fit into RAM.
             - lcf2xml only requires 600mb of memory in comparison to tinyxml2's 16GB!
             - lcf2xml only takes 44 seconds in comparison to my 2m20s (but it's task might be simpler!).
+
+            - or: directly work on the binary file.
+                - 1.6GB of XML (MAP.emu for 2MB ROM) equals 95,4MB of Binary format (.lmu).
+                - Can I find a comprehensive RPG Maker file structure reference?
         
         - I could multithread parts of the map generation as it can take a long time.
             - Generating the Mapfile for Pokemon Red takes 2m20s for a 2 mByte Cartridge. 

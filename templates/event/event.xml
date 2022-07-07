@@ -1,0 +1,11 @@
+<!--id in [0001, 9999]-->
+<Event id="0001">
+  <name>event</name>
+  <!--x in [0, MapSizeX), MapSizeX <= 500-->
+  <x>0</x>
+  <!--y in [0, MapSizeY), MapSizeY <= 500-->
+  <y>0</y>
+  <!--event pages-->
+  <pages>
+  </pages>
+</Event>

@@ -9,24 +9,18 @@ Use-Time:
   2) Run C++ Project:
     - Run the CppRPGEnv.
   
-  3) Create EasyRPG Project:
-    - Create Map.emu (XML) from use specified .gb File (input).
-    - Create RPG_RT.emt (XML, Maptree).
-    - Create RPG_RT.edb (XML) using emulator code (XML).
-    - Other things needed for an EasyRPG Project Structure?
-    
-  4) Run EasyRPG Project: 
-    - Using the created project!
-  
-  5) Create RPG Maker 2003 Project:
+   
+  3) Create RPG Maker 2003 / EasyRPG Project:
     - Requires some RPG Maker 2003 project files (RPG_RT.exe,...).
     - Create Map.emu (XML) from use specified .gb File (input).
     - Create RPG_RT.emt (XML, Maptree).
     - Create RPG_RT.edb (XML) using emulator code (XML). 
   
-  6) Run RPG Maker 2003 Project:
+  4) Run RPG Maker 2003 Project:
     - calling RPG_RT.exe
 
+  5) Run EasyRPG Project: 
+    - calling EasyRPG.exe
   
   - could also combine the project generation into a single step. Will generate an rpg2k3, easy rpg and an C++ project.
 
