@@ -39,6 +39,16 @@ namespace MEMORYSIZES {
     // How many Bytes one event-page is responsible for. This is needed for converting Gameboy Addresses to EventIDs and Per Event-Page ByteOffsets.
     const static int BYTES_PER_EPAGE = VARS_PER_EPAGE * BYTES_PER_VAR;
 
+
     // CHARA-RAM:
-    
+    // Number of items per type (used as data).
+    const static int NUM_OF_WEAPONS = 2048;
+    const static int NUM_OF_SHIELDS = 2048;
+    const static int NUM_OF_BODY = 2048;
+    const static int NUM_OF_HEAD = 2048;
+    const static int NUM_OF_ACCESSORY = 1024;
+    const static int TOTAL_USED_ITEMS = NUM_OF_WEAPONS + NUM_OF_SHIELDS + NUM_OF_BODY + NUM_OF_HEAD + NUM_OF_ACCESSORY;
+    const static int MAX_NUM_ITEMS = 10000;
+
+    static_assert(TOTAL_USED_ITEMS <= MAX_NUM_ITEMS);
 };

@@ -6,17 +6,15 @@
 #include "thirdparty/tinyxml2/tinyxml2.h"
 #include "src/core/utilities/RPGHelper.h"
 
-#include <cassert>
 
 void MapTree::genMapTree(std::vector<GBFile>& gbFiles) {
     tinyxml2::XMLDocument mapTreeDoc(TEMPLATES::MAP_TREE);
+    tinyxml2::XMLDocument mapInfo(TEMPLATES::MAP_INFO);
 
     // the map tree needs a ordered list of the map ids.
     std::string treeOrderString = "0 ";
 
     for (int id = 1; id <= gbFiles.size(); ++id) {
-        tinyxml2::XMLDocument mapInfo(TEMPLATES::MAP_INFO);
-
         // Set Map ID
         mapInfo.RootElement()->SetAttribute("id", generateID(id).c_str());
 
@@ -38,5 +36,5 @@ void MapTree::genMapTree(std::vector<GBFile>& gbFiles) {
     treeOrderName->SetValue(treeOrderString.c_str());
 
 
-    mapTreeDoc.SaveFile(EXPORTS::MAP_TREE.c_str(), false);
+    mapTreeDoc.SaveFile(EXPORTS::MAP_TREE, true);
 }

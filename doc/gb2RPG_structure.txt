@@ -10,22 +10,7 @@ gb2RPG: Gameboy 2 RPG Maker.
 
 
 - TODO:
-    - Next Steps:
-        - Generating Database.
-            - load database file
-            - add switches and variables:
-                - need to add them I presume and not set the Name right now.
-                - all 5k variables and 5k switches.
-            
-            - add items for CHARA RAM:
-                - WeaponIDs (2048 total), ShieldIDs (2048 total), BodyIDs (2048 total), HeadIDs (2048 total), AccessoryIDs (1024 total)
-                - Item Names?
-            
-            - add characters for CHARA RAM:
-                - total of 2966 characters.
-                - change name of character.
-                - but otherwise just use the template.
-            
+    - Next Steps:           
         - Generating Project Folders.
             - Cpp RPG Enviroment:
 

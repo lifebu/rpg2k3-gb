@@ -2,13 +2,19 @@
 
 #include <vector>
 
-class GBFile;
+namespace tinyxml2 {
+    class XMLDocument;
+};
 
 class Database {
 public:
-    Database(std::vector<GBFile>& gbFiles);
+    Database() = delete;
 
-    static void genDatabase(std::vector<GBFile>& gbFiles);
+    static void genDatabase();
+
 private:
-
+    static void genSwitches(tinyxml2::XMLDocument& databaseDoc);
+    static void genVariables(tinyxml2::XMLDocument& databaseDoc);
+    static void genItems(tinyxml2::XMLDocument& databaseDoc);
+    static void genCharacters(tinyxml2::XMLDocument& databaseDoc);
 };

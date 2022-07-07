@@ -7,7 +7,7 @@ class GBFile;
 
 class MapTree {
 public:
+    MapTree() = delete;
+
     static void genMapTree(std::vector<GBFile>& gbFiles);
-private:
-    MapTree();
 };

@@ -18,8 +18,10 @@ namespace TEMPLATES {
 
     // map
     const static char* MAP = "rpg2k3/templates/map/map.xml";
-    const static char* MAP_INFO = "rpg2k3/templates/map/map_info.xml";
+
+    // map tree
     const static char* MAP_TREE = "rpg2k3/templates/map/map_tree.xml";
+    const static char* MAP_INFO = "rpg2k3/templates/map/map_info.xml";
 
     // general
     const static char* DMG_ROM = "rpg2k3/templates/dmg_rom.xml";
@@ -29,9 +31,12 @@ namespace TEMPLATES {
 
 namespace EXPORTS {
     // Map
-    const static std::string MAP_BASE = "rpg2k3/project/Map";
-    const static std::string MAP_TYPE = ".emu";
+    const static char* MAP_BASE = "rpg2k3/project/Map";
+    const static char* MAP_TYPE = ".emu";
 
     // Maptree
-    const static std::string MAP_TREE = "rpg2k3/project/RPG_RT.emt";
+    const static char* MAP_TREE = "rpg2k3/project/RPG_RT.emt";
+
+    // Database
+    const static char* DATABASE = "rpg2k3/project/RPG_RT.edb";
 };

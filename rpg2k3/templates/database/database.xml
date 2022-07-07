@@ -2,56 +2,6 @@
 <LDB>
  <Database>
   <actors>
-   <Actor id="0001">
-    <name>Cha0001</name>
-    <title>None</title>
-    <character_name>Actor4</character_name>
-    <character_index>0</character_index>
-    <transparent>F</transparent>
-    <initial_level>1</initial_level>
-    <final_level>99</final_level>
-    <critical_hit>F</critical_hit>
-    <critical_hit_chance>30</critical_hit_chance>
-    <face_name>Actor2</face_name>
-    <face_index>8</face_index>
-    <two_weapon>F</two_weapon>
-    <lock_equipment>F</lock_equipment>
-    <auto_battle>F</auto_battle>
-    <super_guard>F</super_guard>
-    <parameters>
-     <Parameters>
-      <maxhp>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</maxhp>
-      <maxsp>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</maxsp>
-      <attack>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</attack>
-      <defense>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</defense>
-      <spirit>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</spirit>
-      <agility>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</agility>
-     </Parameters>
-    </parameters>
-    <exp_base>1</exp_base>
-    <exp_inflation>1</exp_inflation>
-    <exp_correction>0</exp_correction>
-    <initial_equipment>
-     <Equipment>
-      <weapon_id>0</weapon_id>
-      <shield_id>44</shield_id>
-      <armor_id>55</armor_id>
-      <helmet_id>67</helmet_id>
-      <accessory_id>0</accessory_id>
-     </Equipment>
-    </initial_equipment>
-    <unarmed_animation>1</unarmed_animation>
-    <class_id>0</class_id>
-    <battle_x>264</battle_x>
-    <battle_y>96</battle_y>
-    <battler_animation>1</battler_animation>
-    <skills></skills>
-    <rename_skill>F</rename_skill>
-    <skill_name></skill_name>
-    <state_ranks></state_ranks>
-    <attribute_ranks></attribute_ranks>
-    <battle_commands>1 2 7 3 4 5 -1</battle_commands>
-   </Actor>
   </actors>
   <skills>
    <Skill id="0001">
@@ -523,89 +473,6 @@
    </Skill>
   </skills>
   <items>
-   <Item id="0001">
-    <name>Ite0001</name>
-    <description></description>
-    <type>1</type>
-    <price>1</price>
-    <uses>1</uses>
-    <atk_points1>0</atk_points1>
-    <def_points1>0</def_points1>
-    <spi_points1>0</spi_points1>
-    <agi_points1>0</agi_points1>
-    <two_handed>F</two_handed>
-    <sp_cost>0</sp_cost>
-    <hit>0</hit>
-    <critical_hit>0</critical_hit>
-    <animation_id>1</animation_id>
-    <preemptive>F</preemptive>
-    <dual_attack>F</dual_attack>
-    <attack_all>F</attack_all>
-    <ignore_evasion>F</ignore_evasion>
-    <prevent_critical>F</prevent_critical>
-    <raise_evasion>F</raise_evasion>
-    <half_sp_cost>F</half_sp_cost>
-    <no_terrain_damage>F</no_terrain_damage>
-    <cursed>F</cursed>
-    <entire_party>F</entire_party>
-    <recover_hp_rate>0</recover_hp_rate>
-    <recover_hp>0</recover_hp>
-    <recover_sp_rate>0</recover_sp_rate>
-    <recover_sp>0</recover_sp>
-    <occasion_field1>F</occasion_field1>
-    <ko_only>F</ko_only>
-    <max_hp_points>0</max_hp_points>
-    <max_sp_points>0</max_sp_points>
-    <atk_points2>0</atk_points2>
-    <def_points2>0</def_points2>
-    <spi_points2>0</spi_points2>
-    <agi_points2>0</agi_points2>
-    <using_message>0</using_message>
-    <skill_id>1</skill_id>
-    <switch_id>1</switch_id>
-    <occasion_field2>T</occasion_field2>
-    <occasion_battle>F</occasion_battle>
-    <actor_set></actor_set>
-    <state_set></state_set>
-    <attribute_set></attribute_set>
-    <state_chance>0</state_chance>
-    <reverse_state_effect>F</reverse_state_effect>
-    <weapon_animation>-1</weapon_animation>
-    <animation_data>
-     <BattlerAnimationItemSkill id="0001">
-      <unknown02>0</unknown02>
-      <type>0</type>
-      <weapon_animation_id>0</weapon_animation_id>
-      <movement>0</movement>
-      <after_image>0</after_image>
-      <attacks>0</attacks>
-      <ranged>F</ranged>
-      <ranged_animation_id>0</ranged_animation_id>
-      <ranged_speed>0</ranged_speed>
-      <battle_animation_id>1</battle_animation_id>
-      <pose>3</pose>
-     </BattlerAnimationItemSkill>
-     <BattlerAnimationItemSkill id="0002">
-      <unknown02>0</unknown02>
-      <type>0</type>
-      <weapon_animation_id>0</weapon_animation_id>
-      <movement>0</movement>
-      <after_image>0</after_image>
-      <attacks>0</attacks>
-      <ranged>F</ranged>
-      <ranged_animation_id>0</ranged_animation_id>
-      <ranged_speed>0</ranged_speed>
-      <battle_animation_id>1</battle_animation_id>
-      <pose>3</pose>
-     </BattlerAnimationItemSkill>
-    </animation_data>
-    <use_skill>F</use_skill>
-    <class_set></class_set>
-    <ranged_trajectory>0</ranged_trajectory>
-    <ranged_target>0</ranged_target>
-    <easyrpg_using_message>default_message</easyrpg_using_message>
-    <easyrpg_max_count>-1</easyrpg_max_count>
-   </Item>
   </items>
   <enemies>
    <Enemy id="0001">
@@ -1240,14 +1107,8 @@
    </System>
   </system>
   <switches>
-   <Switch id="0001">
-    <name></name>
-   </Switch>
   </switches>
   <variables>
-   <Variable id="0001">
-    <name></name>
-   </Variable>
   </variables>
   <commonevents>
    <CommonEvent id="0001">

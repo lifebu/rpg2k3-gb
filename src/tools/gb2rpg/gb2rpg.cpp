@@ -11,7 +11,7 @@ int main (int argc, char* argv[]) {
     CLIOptions cli = CLIOptions(argc, argv);
     if(cli.printErrors()) return 0;
     if(cli.printInfo()) return 0;
-
+    
     GBFileGenerator gbGen;
     std::vector<GBFile> gbFiles = gbGen.genGBFiles(cli);
     if(gbGen.hadErrors()) return 0;
@@ -19,8 +19,8 @@ int main (int argc, char* argv[]) {
     int numOfMaps = Map::genMapFiles(gbFiles);
 
     MapTree::genMapTree(gbFiles);
-
-    Database::genDatabase(gbFiles);
+    
+    Database::genDatabase();
 
     genProjectFolder(numOfMaps, cli);
 
