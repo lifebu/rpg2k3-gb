@@ -2,6 +2,7 @@
 
 // TODO would be nice to have this in a .cpp file, but then core needs to be compiled as a library like tinyxml.
 // TODO If this is not a .h and .cpp and I include the .h multiple times I get compiler errors (Like Map.h and MapTree.h).
+// TODO: Inline fixes it, but it is not a gread solution.
 #include<vector>
 #include<cstdint>
 #include<string>
@@ -12,7 +13,7 @@
 #include "src/core/RPGMaker.h"
 
 
-int32_t packVariable(std::vector<uint8_t> bytes) {
+inline int32_t packVariable(std::vector<uint8_t> bytes) {
     assert(bytes.size() == MEMORYSIZES::BYTES_PER_VAR);
     int32_t var = 0;
     for(int i = 0; i < bytes.size(); ++i) {
@@ -24,7 +25,7 @@ int32_t packVariable(std::vector<uint8_t> bytes) {
     return var;
 };
 
-std::vector<uint8_t> unpackVariable(int32_t var) {
+inline std::vector<uint8_t> unpackVariable(int32_t var) {
     if (RPGMAKER::USE_RPG_VALUE_BIAS)
         var += RPGMAKER::RPG_VALUE_BIAS;
     
@@ -40,7 +41,7 @@ std::vector<uint8_t> unpackVariable(int32_t var) {
     return bytes;
 };
 
-std::string generateID(int id) {
+inline std::string generateID(int id) {
     assert(id > 0 && id < 10000);
     std::string str;
     // Add leading zeroes.

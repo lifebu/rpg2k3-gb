@@ -46,7 +46,7 @@
     <!--This is the player starting position-->
     <party_map_id>1</party_map_id>
     <party_x>0</party_x>
-    <party_y>0</party_y>
+    <party_y>20</party_y>
     <boat_map_id>0</boat_map_id>
     <boat_x>0</boat_x>
     <boat_y>0</boat_y>

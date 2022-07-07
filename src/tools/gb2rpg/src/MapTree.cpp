@@ -4,6 +4,7 @@
 #include "Globals.h"
 
 #include "thirdparty/tinyxml2/tinyxml2.h"
+#include "src/core/utilities/RPGHelper.h"
 
 #include <cassert>
 
@@ -17,8 +18,7 @@ void MapTree::genMapTree(std::vector<GBFile>& gbFiles) {
         tinyxml2::XMLDocument mapInfo(TEMPLATES::MAP_INFO);
 
         // Set Map ID
-        // TODO: multiple definitions of generateID() when I include RPGHelper.h?
-        //mapInfo.RootElement()->SetAttribute("id", generateID(id).c_str());
+        mapInfo.RootElement()->SetAttribute("id", generateID(id).c_str());
 
         // Append the map ID to the treeOrder.
         std::string emptySpace;

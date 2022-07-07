@@ -19,7 +19,8 @@ Gameboy Emulator written in C++ for RPGMaker 2003 with custom toolchain to allow
 Gameboy system emulator written in C++. Custom toolchain is used to run the emulator in unmodified RPG Maker 2003 Software. To allow debugging and implementation in stages, other projects are needed. First a tool is used to load a Gameboy ROM and convert it into a special XML format. It can also generate files for running the emulator in a special RPGMaker-like runtime written in C++, an EasyRPG project, or an RPG Maker 2003 project. The Code for the actual emulator is compiled into XML by using a simple and custom C++ compiler. All of this can be controlled from a cental and easy to use Commandline interface (CLI).
 
 ## Current State
-The only tool currently being worked on is GB2RPG. It loads the Gameboy file and can read each byte from it. Additionally the map file generation works.
+The only tool currently being worked on is GB2RPG. It loads the Gameboy file and can read each byte from it. Additionally the map file and maptree generation works.
+**Warning: The generation of the XML file is currently very inefficient and stores the entire file in Memory and can take up to 2 minutes. Therefore the tool can need up to 16GB RAM. This will be fixed soon.**
 This software is still very early in development.
 
 The other tools needed will be worked on in the following order:

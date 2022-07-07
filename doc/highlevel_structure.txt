@@ -27,6 +27,9 @@ Use-Time:
   6) Run RPG Maker 2003 Project:
     - calling RPG_RT.exe
 
+  
+  - could also combine the project generation into a single step. Will generate an rpg2k3, easy rpg and an C++ project.
+
 Build-Time:
   1) Build C++ environment:
     - Compile emu C++ code into static library.

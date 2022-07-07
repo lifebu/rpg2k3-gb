@@ -16,7 +16,6 @@ int main (int argc, char* argv[]) {
     std::vector<GBFile> gbFiles = gbGen.genGBFiles(cli);
     if(gbGen.hadErrors()) return 0;
 
-
     int numOfMaps = Map::genMapFiles(gbFiles);
 
     MapTree::genMapTree(gbFiles);
