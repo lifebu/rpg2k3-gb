@@ -37,6 +37,8 @@ The other tools needed will be worked on in the following order:
 - SFML: To create the simple RPG Maker runtime.
 
 ## How To Run
+This project requires original RPG Maker 2003 project files that cannot be shared for legal reasons. You can acquire the RPG Maker 2003 from [Steam](https://store.steampowered.com/app/362870/RPG_Maker_2003/). Create a new project called "Gameboy_Emulator". Copy the following files into the `templates/project` folder: `Gameboy_Emulator.r3proj`, `RPG_RT.exe`, `RPG_RT.ini`, `ultimate_rt_eb.dll`.
+
 The project uses CMake to compile and create all the software and tools necessary. 
 
 ## Illustrations
