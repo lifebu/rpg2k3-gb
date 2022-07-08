@@ -18,6 +18,8 @@ void ProjectGenerator::cleanProjectFolder() {
     try {
         fs::remove_all(PROJECT::PROJECT_DIR);  
         fs::create_directories(PROJECT::RPG_PROJECT_DIR);
+        fs::copy("lcf2xml", PROJECT::RPG_PROJECT_DIR);
+        fs::copy("easyrpg-player", PROJECT::RPG_PROJECT_DIR);
 
     } catch (fs::filesystem_error err) {
         std::cout << err.what() << std::endl;
@@ -32,7 +34,6 @@ void ProjectGenerator::genProjectFolder(std::vector<GBFile>& gbFiles) {
 // private
 void ProjectGenerator::createProjectData(std::vector<GBFile>& gbFiles) {
     // create the binary files
-    // TODO: DO not rely that the system has lcf2xml installed. Build it myself using CMake.
     auto currentPath = fs::current_path();
     fs::current_path(PROJECT::RPG_PROJECT_DIR);
 
@@ -44,7 +45,7 @@ void ProjectGenerator::createProjectData(std::vector<GBFile>& gbFiles) {
         ret = system(mapFile.c_str());
     }
     if(ret) std::cout << ERR_LCF;
-    
+
     fs::current_path(currentPath);
     
 
@@ -58,8 +59,6 @@ void ProjectGenerator::createProjectData(std::vector<GBFile>& gbFiles) {
     } catch(fs::filesystem_error err) {
         std::cout << err.what() << std::endl;
     }
-
-    // TODO: copy easyrpg executable into the project folder (need to build custom version myself).
 }
 
 void ProjectGenerator::genFolders() {
