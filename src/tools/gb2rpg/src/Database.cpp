@@ -15,6 +15,7 @@ void Database::genDatabase() {
     genVariables(databaseDoc);
     genItems(databaseDoc);
     genCharacters(databaseDoc);
+    genCommonEvents(databaseDoc);
 
     std::string filePath = PROJECT::PROJECT_DIR + EXPORTS::DATABASE_FILE;
     databaseDoc.SaveFile(filePath.c_str(), false);
@@ -105,4 +106,8 @@ void Database::genCharacters(tinyxml2::XMLDocument& databaseDoc) {
 
         charDoc.DeepCloneInsertBack(&databaseDoc, databaseDoc.TraverseElement("/LDB/Database/actors"));
     }
+}
+
+void Database::genCommonEvents(tinyxml2::XMLDocument& databaseDoc) {
+    // TODO: Implement the Common Events that will come out of the compiler!
 }

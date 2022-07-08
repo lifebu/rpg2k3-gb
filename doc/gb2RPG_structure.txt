@@ -11,6 +11,7 @@ gb2RPG: Gameboy 2 RPG Maker.
 
 - TODO:
     - Next Steps:
+        - Implement the Insertion of the Common Events into the Database.
         - Need to provide the EasyRPG/RTP replacement.
             - Just copy it into the project?
             - EasyRPG/RTP does not work correctly.

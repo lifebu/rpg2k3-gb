@@ -17,4 +17,5 @@ private:
     static void genVariables(tinyxml2::XMLDocument& databaseDoc);
     static void genItems(tinyxml2::XMLDocument& databaseDoc);
     static void genCharacters(tinyxml2::XMLDocument& databaseDoc);
+    static void genCommonEvents(tinyxml2::XMLDocument& databaseDoc);
 };
