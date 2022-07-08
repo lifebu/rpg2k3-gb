@@ -49,6 +49,40 @@ CppRPGEnv: C++-RPG Maker Environment
     - Other RPG Maker Related Functions:
         Setting Name of Variables/Switches.
 
+- Runtime Tasks:
+    - Call Common Events:
+        - list of Common Events, that are Parallel Processes.
+        - Call each of them once per frame.
+    
+    - Framerate Control:
+        - 60fps.
+        - Common Event can reduce framerate.
+    
+    - Rendering:
+        - Resolution:
+            4:3, 
+        - Show Text:
+            - Textbox: 30% of Bottom Screen, Blue.
+            - 4 lines of text can fit.
+        - Show Choices:
+            - 4 possible Inputs to choose from. Same Textbox
+            - just 4 lines of Text to select from.
+        - Input Number:
+            - x number of digits.
+            - basically like a pad lock.
+        - Show Picture:
+            - Basically just a sprite!.
+        - Show/Hide Player (Ignore!).#
+    
+    - Key Input:
+        - Basically just a few keyboard keys you can use.
+    
+    - Data:
+        - Load Maptree file (tinyxml2). So you know where the player starts.
+        - Load Mapfile.
+        - Load Database.
+        - All of them need classes/functions for the specific parts.
+
 - The Header is implemented in a Runner
     - Some functions just change the state of the environment.
         - changeExp(), setEventLocation()
