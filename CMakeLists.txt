@@ -15,3 +15,5 @@ add_subdirectory(src/tools/gb2rpg)
 
 # thirdparty
 add_subdirectory(thirdparty/tinyxml2)
+add_subdirectory(thirdparty/liblcf)
+file(COPY "build/thirdparty/liblcf/lcf2xml" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/src/tools/gb2rpg/gp2rpg")
