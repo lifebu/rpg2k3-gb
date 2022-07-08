@@ -37,3 +37,7 @@ templates/project/RPG_RT.ini
 templates/project/ultimate_rt_eb.dll
 project/*
 *.gb
+
+## completed build files in the main folder
+easyrpg-player
+lcf2xml

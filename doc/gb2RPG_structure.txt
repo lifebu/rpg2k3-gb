@@ -10,7 +10,11 @@ gb2RPG: Gameboy 2 RPG Maker.
 
 
 - TODO:
-    - Next Steps:           
+    - Next Steps:
+        - Need to provide the EasyRPG/RTP replacement.
+            - Just copy it into the project?
+            - EasyRPG/RTP does not work correctly.
+            - It does use different names for the RTP.   
         - Generating Project Folders.  
             - Build lcf2xml myself and use that.
             - Build EasyRPG Player myself and copy that into project folder.
