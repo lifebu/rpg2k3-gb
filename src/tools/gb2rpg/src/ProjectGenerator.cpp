@@ -1,51 +1,74 @@
 #include "ProjectGenerator.h"
 
 #include "GBFile.h"
+#include "Globals.h"
 
+#include "src/core/utilities/RPGHelper.h"
+
+#include <iostream>
 #include <string>
 #include <filesystem>
 
+namespace fs = std::filesystem;
+
+const static std::string ERR_LCF = "Could not create one of the binary files using lcf2xml, do 3 files exist in the project/ folder?\n";
+
 // public
+void ProjectGenerator::cleanProjectFolder() {
+    try {
+        fs::remove_all(PROJECT::PROJECT_DIR);  
+        fs::create_directories(PROJECT::RPG_PROJECT_DIR);
+
+    } catch (fs::filesystem_error err) {
+        std::cout << err.what() << std::endl;
+    }
+}
+
 void ProjectGenerator::genProjectFolder(std::vector<GBFile>& gbFiles) {
-    createProjectData();
+    createProjectData(gbFiles);
     genFolders();
 }
 
 // private
-void ProjectGenerator::createProjectData() {
-    // call lcf2xml in the project/rpg2k3 folder with the .xml files in project/
+void ProjectGenerator::createProjectData(std::vector<GBFile>& gbFiles) {
+    // create the binary files
+    // TODO: DO not rely that the system has lcf2xml installed. Build it myself using CMake.
+    auto currentPath = fs::current_path();
+    fs::current_path(PROJECT::RPG_PROJECT_DIR);
+
+    int ret;
+    ret = system(std::string("lcf2xml ../" + EXPORTS::DATABASE_FILE).c_str());
+    ret = system(std::string("lcf2xml ../" + EXPORTS::MAPTREE_FILE).c_str());
+    for(int mapID = 1; mapID <= gbFiles.size(); ++mapID) {
+        std::string mapFile = "lcf2xml ../" + EXPORTS::MAP_FILE_BASE + generateID(mapID) + EXPORTS::MAP_FILE_TYPE;
+        ret = system(mapFile.c_str());
+    }
+    if(ret) std::cout << ERR_LCF;
+    
+    fs::current_path(currentPath);
+    
+
 
     // copy proprietary data from templates/project to project/rpg2k3
-    // TODO: should probably do something with the errors, but that's okay for now (could use exceptions here!)
-    std::error_code err;
-    std::filesystem::copy("templates/project/Gameboy_Emulator.r3proj", "project/rpg2k3/Gameboy_Emulator.r3proj", err);
-    std::filesystem::copy("templates/project/RPG_RT.exe", "project/rpg2k3/RPG_RT.exe", err);
-    std::filesystem::copy("templates/project/RPG_RT.ini", "project/rpg2k3/RPG_RT.ini", err);
-    std::filesystem::copy("templates/project/ultimate_rt_eb.dll", "project/rpg2k3/ultimate_rt_eb.dll", err);
+    try {
+        for (auto& rpgFile : PROJECT::RPGMAKER_FILES) {
+            fs::copy(PROJECT::TEMPLATE_DIR + rpgFile, PROJECT::RPG_PROJECT_DIR + rpgFile);
+        }
+    
+    } catch(fs::filesystem_error err) {
+        std::cout << err.what() << std::endl;
+    }
 
-    // TODO: copy easyrpg executable into the project folder
+    // TODO: copy easyrpg executable into the project folder (need to build custom version myself).
 }
 
 void ProjectGenerator::genFolders() {
-    // TODO: should probably do something with the errors, but that's okay for now (could use exceptions here!)
-    std::error_code err;
-    std::filesystem::create_directories("project/rpg2k3/Backdrop", err);
-    std::filesystem::create_directories("project/rpg2k3/Battle", err);
-    std::filesystem::create_directories("project/rpg2k3/Battle2", err);
-    std::filesystem::create_directories("project/rpg2k3/BattleCharSet", err);
-    std::filesystem::create_directories("project/rpg2k3/BattleWeapon", err);
-    std::filesystem::create_directories("project/rpg2k3/CharSet", err);
-    std::filesystem::create_directories("project/rpg2k3/ChipSet", err);
-    std::filesystem::create_directories("project/rpg2k3/FaceSet", err);
-    std::filesystem::create_directories("project/rpg2k3/Frame", err);
-    std::filesystem::create_directories("project/rpg2k3/GameOver", err);
-    std::filesystem::create_directories("project/rpg2k3/Monster", err);
-    std::filesystem::create_directories("project/rpg2k3/Movie", err);
-    std::filesystem::create_directories("project/rpg2k3/Music", err);
-    std::filesystem::create_directories("project/rpg2k3/Panorama", err);
-    std::filesystem::create_directories("project/rpg2k3/Picture", err);
-    std::filesystem::create_directories("project/rpg2k3/Sound", err);
-    std::filesystem::create_directories("project/rpg2k3/System", err);
-    std::filesystem::create_directories("project/rpg2k3/System2", err);
-    std::filesystem::create_directories("project/rpg2k3/Title", err);
+    try {
+        for (auto& dir : PROJECT::DIRECTORIES) {
+            fs::create_directories(dir);
+        }
+    
+    } catch(fs::filesystem_error err) {
+        std::cout << err.what() << std::endl;
+    }
 }

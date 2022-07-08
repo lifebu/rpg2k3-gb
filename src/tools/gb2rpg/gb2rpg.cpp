@@ -6,11 +6,10 @@
 #include "src/ProjectGenerator.h"
 
 #include <filesystem>
+#include <iostream>
 
 int main (int argc, char* argv[]) {
-    // create necessary directories
-    std::error_code err;
-    std::filesystem::create_directories("project/rpg2k3", err);
+    ProjectGenerator::cleanProjectFolder();    
 
     // TODO: Should find a cleaner way for printing errors and printing the info CLI-info string in main.
     CLIOptions cli = CLIOptions(argc, argv);

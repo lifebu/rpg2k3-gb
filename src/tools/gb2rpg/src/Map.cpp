@@ -45,7 +45,7 @@ void Map::genMapFiles(std::vector<GBFile>& gbFiles) {
     for(int i = 0; i < gbFiles.size(); ++i) {
         Map map = Map(gbFiles.at(i));
         
-        std::string filePath = EXPORTS::MAP_BASE + generateID(i + 1) + EXPORTS::MAP_TYPE;
+        std::string filePath = PROJECT::PROJECT_DIR + EXPORTS::MAP_FILE_BASE + generateID(i + 1) + EXPORTS::MAP_FILE_TYPE;
         map.mapDoc->SaveFile(filePath.c_str(), true);
     }
 }

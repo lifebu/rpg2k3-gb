@@ -16,7 +16,8 @@ void Database::genDatabase() {
     genItems(databaseDoc);
     genCharacters(databaseDoc);
 
-    databaseDoc.SaveFile(EXPORTS::DATABASE, false);
+    std::string filePath = PROJECT::PROJECT_DIR + EXPORTS::DATABASE_FILE;
+    databaseDoc.SaveFile(filePath.c_str(), false);
 }
 
 void Database::genSwitches(tinyxml2::XMLDocument& databaseDoc) {

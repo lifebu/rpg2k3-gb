@@ -35,6 +35,6 @@ void MapTree::genMapTree(std::vector<GBFile>& gbFiles) {
     auto* treeOrderName = mapTreeDoc.TraverseElement("/LMT/TreeMap/tree_order")->FirstChild()->ToText();
     treeOrderName->SetValue(treeOrderString.c_str());
 
-
-    mapTreeDoc.SaveFile(EXPORTS::MAP_TREE, true);
+    std::string filePath = PROJECT::PROJECT_DIR + EXPORTS::MAPTREE_FILE;
+    mapTreeDoc.SaveFile(filePath.c_str(), true);
 }

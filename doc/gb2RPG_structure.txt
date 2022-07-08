@@ -12,12 +12,8 @@ gb2RPG: Gameboy 2 RPG Maker.
 - TODO:
     - Next Steps:           
         - Generating Project Folders.  
-            - RPG Maker 2003 / Easy RPG Player:
-                project/rpg2k3
-                    => lcf2xml to create binary files.
-                
-                create folders for the project:
-                    Backdrop, Battle, Battle2, BattleCharSet, BattleWeapon, CharSet, ChipSet, FaceSet, Frame, GameOver, Monster, Movie, Music, Panorama, Picture, Sound, System, System2, Title
+            - Build lcf2xml myself and use that.
+            - Build EasyRPG Player myself and copy that into project folder.
 
 
     - Memory Leak?:
@@ -43,22 +39,31 @@ gb2RPG: Gameboy 2 RPG Maker.
     - Performance:
         - 2 MByte Cartidge: 16GB RAM, 2m20s, 1.6GB XML File.
         - less memory usage:
-            - can use https://libexpat.github.io/
-                https://github.com/libexpat/libexpat
-                this is what lcf2xml uses. 
-                - stream-oriented XML parser.
-                - good if files are too large to fit into RAM.
-            - lcf2xml only requires 600mb of memory in comparison to tinyxml2's 16GB!
-            - lcf2xml only takes 44 seconds in comparison to my 2m20s (but it's task might be simpler!).
+            - shortterm solution:
+                - can use https://libexpat.github.io/
+                    https://github.com/libexpat/libexpat
+                    this is what lcf2xml uses. 
+                    - stream-oriented XML parser.
+                    - good if files are too large to fit into RAM.
+                - lcf2xml only requires 600mb of memory in comparison to tinyxml2's 16GB!
+                - lcf2xml only takes 44 seconds in comparison to my 2m20s (but it's task might be simpler!).
 
-            - or: directly work on the binary file.
-                - 1.6GB of XML (MAP.emu for 2MB ROM) equals 95,4MB of Binary format (.lmu).
-                - Can I find a comprehensive RPG Maker file structure reference?
+            - longterm solution:
+                - directly work on the binary file.
+                    - 1.6GB of XML (MAP.emu for 2MB ROM) equals 95,4MB of Binary format (.lmu).
+                    - Can I find a comprehensive RPG Maker file structure reference?
+                    - Even the CPP Project could use the binary files, If I create my own library, or use certain elements from easyRPG.
         
         - I could multithread parts of the map generation as it can take a long time.
             - Generating the Mapfile for Pokemon Red takes 2m20s for a 2 mByte Cartridge. 
             - Each Thread is responsible for multiple Event pages (when reading cartridge).
             - Even with Tetris (32 kByte) and 3.000Bytes/Page I could have ~11 Threads in parallel!.
+        
+        => Binary File + Multithreading:
+            - Do not need to stitch together or stream the XML file.
+            - Binary file are at max 100mb => keep it just in memory.
+            - Have a list of std::vector<EventPage>. Each thread fills one of those vectors.
+            - Then just write the binary file for each event.
 
 
     - Refactor:
