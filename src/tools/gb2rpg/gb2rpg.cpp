@@ -23,7 +23,7 @@ int main (int argc, char* argv[]) {
     
     Database::genDatabase();
 
-    ProjectGenerator::genProjectFolder(gbFiles);
+    ProjectGenerator::genProjectFolder(gbFiles.size());
 
     return 0;
 }

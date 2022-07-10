@@ -2,14 +2,12 @@
 
 #include <vector>
 
-class GBFile;
-
 class ProjectGenerator {
 public:
     static void cleanProjectFolder();
-    static void genProjectFolder(std::vector<GBFile>& gbFiles);
+    static void genProjectFolder(int numOfMaps);
 
 private:
-    static void createProjectData(std::vector<GBFile>& gbFiles);
+    static void createProjectData(int numOfMaps);
     static void genFolders();
 };

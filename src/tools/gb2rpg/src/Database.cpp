@@ -9,8 +9,8 @@
 #include <iostream>
 #include <fstream>
 
-const static std::string WARN_NO_SWITCH_NAMES = "Info: Could not find a name file for switches, using default names instead\n";
-const static std::string WARN_NO_VAR_NAMES = "Info: Could not find a name file for variables, using default names instead\n";
+const static std::string WARN_NO_SWITCH_NAMES = "Info: Could not find a name file for switches 'project/switch_names.txt', using default names instead\n";
+const static std::string WARN_NO_VAR_NAMES = "Info: Could not find a name file for variables 'project/var_names.txt', using default names instead\n";
 
 // public
 void Database::genDatabase() {

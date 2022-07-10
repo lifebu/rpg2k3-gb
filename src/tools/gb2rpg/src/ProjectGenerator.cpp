@@ -1,6 +1,5 @@
 #include "ProjectGenerator.h"
 
-#include "GBFile.h"
 #include "Globals.h"
 
 #include "src/core/utilities/RPGHelper.h"
@@ -25,13 +24,13 @@ void ProjectGenerator::cleanProjectFolder() {
     }
 }
 
-void ProjectGenerator::genProjectFolder(std::vector<GBFile>& gbFiles) {
-    createProjectData(gbFiles);
+void ProjectGenerator::genProjectFolder(int numOfMaps) {
+    createProjectData(numOfMaps);
     genFolders();
 }
 
 // private
-void ProjectGenerator::createProjectData(std::vector<GBFile>& gbFiles) {
+void ProjectGenerator::createProjectData(int numOfMaps) {
     // create the binary files
     auto currentPath = fs::current_path();
     fs::current_path(PROJECT::RPG_PROJECT_DIR);
@@ -39,7 +38,7 @@ void ProjectGenerator::createProjectData(std::vector<GBFile>& gbFiles) {
     int ret;
     ret = system(std::string("./../../lcf2xml ../" + EXPORTS::DATABASE_FILE).c_str());
     ret = system(std::string("./../../lcf2xml ../" + EXPORTS::MAPTREE_FILE).c_str());
-    for(int mapID = 1; mapID <= gbFiles.size(); ++mapID) {
+    for(int mapID = 1; mapID <= numOfMaps; ++mapID) {
         std::string mapFile = "./../../lcf2xml ../" + EXPORTS::MAP_FILE_BASE + generateID(mapID) + EXPORTS::MAP_FILE_TYPE;
         ret = system(mapFile.c_str());
     }
