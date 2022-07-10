@@ -16,6 +16,8 @@ const static std::string WARN_NO_COMMON_EVENTS = "Info: Could not find 'project/
 // public
 void Database::genDatabase() {
     tinyxml2::XMLDocument databaseDoc(TEMPLATES::DATABASE);
+
+    std::cout << "Generating database: RPG_RT.edb\n";
     
     genSwitches(databaseDoc);
     genVariables(databaseDoc);

@@ -6,10 +6,14 @@
 #include "thirdparty/tinyxml2/tinyxml2.h"
 #include "src/core/utilities/RPGHelper.h"
 
+#include <iostream>
+
 
 void MapTree::genMapTree(std::vector<GBFile>& gbFiles) {
     tinyxml2::XMLDocument mapTreeDoc(TEMPLATES::MAP_TREE);
     tinyxml2::XMLDocument mapInfo(TEMPLATES::MAP_INFO);
+
+    std::cout << "Generating map tree: RPG_RT.emt\n";
 
     // the map tree needs a ordered list of the map ids.
     std::string treeOrderString = "0 ";

@@ -15,14 +15,7 @@ gb2RPG: Gameboy 2 RPG Maker.
         - EasyRPG/RTP does not work correctly.
         - It does use different names for the RTP.
         - Change base templates to use Local files not RTP? Can I use RTP myself?
-    
-    - could use a way to show the percentage done.
-        - Percentage Done: use std::cout.
-        - can have 1/x stages with percentage bar.
-        - could just print it in main: std::cout << "1/5: Cleaning project folder.";
-            - But that does not seem very clean.
-            - should be something that is invisible in main.
-    
+       
     - Implement more Robust Error Checks.
 
     - Unit tests:

@@ -14,6 +14,7 @@ const static std::string ERR_LCF = "Could not create one of the binary files usi
 
 // public
 void ProjectGenerator::cleanProjectFolder() {
+    std::cout << "Cleaning/Creating project folder: project/rpg2k3\n";
     try {
         fs::remove_all(PROJECT::RPG_PROJECT_DIR);  
         fs::create_directories(PROJECT::RPG_PROJECT_DIR);
@@ -25,6 +26,7 @@ void ProjectGenerator::cleanProjectFolder() {
 }
 
 void ProjectGenerator::genProjectFolder(int numOfMaps) {
+    std::cout << "Creating project folder: project/rpg2k3\n";
     createProjectData(numOfMaps);
     genFolders();
 }

@@ -42,10 +42,15 @@ Map::~Map() {
 }
 
 void Map::genMapFiles(std::vector<GBFile>& gbFiles) {
+    std::cout << "Generating Map Files.\n";
     for(int i = 0; i < gbFiles.size(); ++i) {
+        std::string fileName = EXPORTS::MAP_FILE_BASE + generateID(i + 1) + EXPORTS::MAP_FILE_TYPE;
+        std::string filePath = PROJECT::PROJECT_DIR + fileName;
+
+        std::cout << "Generating Map: " << fileName << "\n";
         Map map = Map(gbFiles.at(i));
         
-        std::string filePath = PROJECT::PROJECT_DIR + EXPORTS::MAP_FILE_BASE + generateID(i + 1) + EXPORTS::MAP_FILE_TYPE;
+        
         map.mapDoc->SaveFile(filePath.c_str(), true);
     }
 }
