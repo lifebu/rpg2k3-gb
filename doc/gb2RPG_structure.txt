@@ -10,8 +10,6 @@ gb2RPG: Gameboy 2 RPG Maker.
 
 
 - TODO:
-    - Game does not run anymore (crashes) in RPG Maker 2003, why?
-
     - Need to provide the EasyRPG/RTP replacement.
         - Just copy it into the project?
         - EasyRPG/RTP does not work correctly.

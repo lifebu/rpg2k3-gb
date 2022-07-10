@@ -25,8 +25,8 @@ namespace RPGMAKER {
     const static int MAX_NUM_SWITCHES = 10000;
     const static int MAX_NUM_VARIABLES = 10000;
     const static int MAX_NUM_ITEMS = 10000;
-    // Testing showed, that the RPG Maker will crash with more than 2966 characters.
-    const static int MAX_NUM_CHARS = 2966;
+    // Testing showed, that the RPG Maker will crash with more than 2910 characters.
+    const static int MAX_NUM_CHARS = 2910;
 
     // Items
     const static int WEAPON_ID = 1;

@@ -34,7 +34,7 @@ RPG Maker: Programming Language Functionality:
                         - Other/This Event/s:
                             - Map ID, X/Y Coord, Facing, Screen-Relative X/Y
         - Possible ROM Data Locations:
-            - Map Events: Create Functions that set Variable Values.
+            - Map Events: Create Functions that set Variable Values (up to 2.8GByte ROM).
                 => Call Event (ID + Page)
                 => One ROM Event, that sets like 1.000 Variables to specific values => ROM
                 - Different Pages for different ROM-Banks! (99 Banks)
@@ -42,6 +42,7 @@ RPG Maker: Programming Language Functionality:
                     => 1.366 Vars => 4.096 Bytes/Page (1/4 ROM-Bank) => 8 Pages => 1 Event
                 - 8.388.608 Byte ROM 
                     => 1.366 Vars => 4.096 Bytes/Page (1/4 ROM-Bank) => 2048 Pages => 21 Events
+
                 
                 - To Reduce on wasted data being writing (4KB), an only one Byte being read.
                     => Write to one variable which byte you want. 0-8 MByte. 8MByte ~ 8 Million. Fits into one variable.
@@ -55,17 +56,17 @@ RPG Maker: Programming Language Functionality:
                         - The event would have roughly 8 Million if else.
                     - Less Variables needed, but need alot of if-else.
                         => what is faster???
-        
+
         - Possible RAM Data Locations:
             Need 16.800 - 48.800 Byte of RAM! ~ 48kByte
-            - 5.000 Variables. (15.000 Bytes)
+            - 10.000 Variables. (30.000 Bytes)
                 - Full-Byte Encoding:
                     => [0, 19.999.998]_10 >= 16.777.215_10 = FF FF FF_16 => 3 Byte.
                     => 15.000 Byte
                 - Full-Bit Encoding:
                     => [0, 19.999.998]_10 >= 16.777.215_10 = 2^24 => 24 Bit => 3 Bytes. :/
-            - 5.000 Switches. (625 Bytes)
-                => 625 Byte.
+            - 10.000 Switches. (1.250 Bytes)
+                => 1.250 Byte.
             - Player Location: (1 Byte?)
                 - Get: Map_ID, X-Coord, Y-Coord.
                 - Set (Move to): Map_ID, X-Coord, Y-Coord.
@@ -110,8 +111,8 @@ RPG Maker: Programming Language Functionality:
                     - On Loading a new Map => all of the events reset!
                 - Other stuff:
                     - Get Event ID (from location).
-            - Player: (57.466 Bytes)
-                For each Player Character 1-2966: (more than that and it will crash!)
+            - Player: (56.381 Bytes)
+                For each Player Character 1-2910: (more than that and it will crash!)
                     - Can GET, Not SET (just INC/DEC)
                         - Can use GET+INC to set it!
                         - Experience (0-9.999.999):
@@ -134,7 +135,7 @@ RPG Maker: Programming Language Functionality:
                             => 4 * 11-Bits + 1 * 10-Bits = 54 Bits
                     
                     => Per Player: 23(EXP) + 78(CHARDATA) "+ 54(ITEMIDS)" = 101-155 Bits
-                    => Total 299.566 - 459.730 Bits ~ 37.445 - 57.466 Bytes
+                    => Total 293.910 - 451.050 Bits ~ 36.738 - 56.381 Bytes
 
                     => 32kByte = 262.144 Bit / (23+78) Bit = 2.596 Chars needed
             - Savegames: 
@@ -142,7 +143,7 @@ RPG Maker: Programming Language Functionality:
                 - Savegame for 2966 Chars in DB is larger then 3 Chars in DB.
                 => Savegame saves EVERY Character => Can use them to create Battery Backed save in RAM!
             
-            Total: <= 101.837 Byte ~ 99kByte
+            Total: ~ 116.377 Byte ~ 113kByte
             
     Debugging:
         If you Create a textbox in a parallel process every time, you can use that to advance a frame! 
