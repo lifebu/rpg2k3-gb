@@ -8,10 +8,8 @@
 int main (int argc, char* argv[]) {
     ProjectGenerator::cleanProjectFolder();    
 
-    // TODO: Should find a cleaner way for printing errors and printing the info CLI-info string in main.
     CLIOptions cli = CLIOptions(argc, argv);
-    if(cli.printErrors()) return 0;
-    if(cli.printInfo()) return 0;
+    if(cli.shouldEnd()) return 0;
     
     GBFileGenerator gbGen;
     std::vector<GBFile> gbFiles = gbGen.genGBFiles(cli);

@@ -7,8 +7,7 @@ class CLIOptions {
 public:
     CLIOptions(int argc, char* argv[]);
 
-    bool printInfo();
-    bool printErrors();
+    bool shouldEnd();
 
     std::vector<std::string>& getFilePaths();
 
@@ -19,6 +18,7 @@ private:
 
     bool printVersion;
     bool printHelp;
+    bool error;
 
     std::vector<std::string> filePaths;
 };

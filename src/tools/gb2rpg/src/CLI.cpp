@@ -16,30 +16,17 @@ const static std::string ERR_TO_MANY_GB_FILES = "For memory reasons, GB2RPG curr
 CLIOptions::CLIOptions(int argc, char* argv[])
     : printVersion(false), printHelp(false), filePaths() {
     parseArguments(argc, argv);
+
+    if(filePaths.size() > 1) {std::cout << ERR_TO_MANY_GB_FILES; error = true;}
+    if(printVersion) std::cout << VERSION_STRING;
+    if(printHelp || (!printHelp && !printVersion && filePaths.empty())) std::cout << HELP_STRING;
+
 }
 
-/*
-* true = help or version mode.
-*/
-bool CLIOptions::printInfo() {
-    if(!printVersion && !printHelp && !filePaths.empty()) return false;
-    if(printVersion) {
-        std::cout << VERSION_STRING;
-    } 
-    if (printHelp || (!printHelp && !printVersion && filePaths.empty())) {
-        std::cout << HELP_STRING;
-    }
 
-    return true;
-}
-bool CLIOptions::printErrors() {
-    if(filePaths.size() > 1) {
-        // for Memory Reasons we only support one .gb file right now.
-        std::cout << ERR_TO_MANY_GB_FILES;
-        return true;
-    }
-
-    return false;
+bool CLIOptions::shouldEnd() {
+    if(printVersion || printHelp || filePaths.empty()) return true;
+    return error;
 }
 
 std::vector<std::string>& CLIOptions::getFilePaths() {
@@ -69,7 +56,7 @@ void CLIOptions::sanitizePath(std::string& path) {
 }
 
 void CLIOptions::parseArguments(int argc, char* argv[]) {
-    // first argument always program path and name, so igore it.
+    // first argument always program path and name, so ignore it.
     for (int i = 1; i < argc; ++i) {
         std::string argument = argv[i];
         if (argument == "-v" || argument == "--version") {

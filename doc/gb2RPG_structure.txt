@@ -23,7 +23,6 @@ gb2RPG: Gameboy 2 RPG Maker.
             - But that does not seem very clean.
             - should be something that is invisible in main.
     
-    - Should find a cleaner way for printing errors and printing the info CLI-info string in main.   
     - Implement more Robust Error Checks.
 
     - Unit tests:
