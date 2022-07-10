@@ -1,5 +1,7 @@
 #include <iostream>
 
+// TODO: Completly rework this. Not a priority right now!
+
 enum State {
     MAIN_MENU,
     CREATE_PROJECT

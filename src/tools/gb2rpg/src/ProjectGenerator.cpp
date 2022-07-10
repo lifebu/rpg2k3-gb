@@ -16,7 +16,7 @@ const static std::string ERR_LCF = "Could not create one of the binary files usi
 // public
 void ProjectGenerator::cleanProjectFolder() {
     try {
-        fs::remove_all(PROJECT::PROJECT_DIR);  
+        fs::remove_all(PROJECT::RPG_PROJECT_DIR);  
         fs::create_directories(PROJECT::RPG_PROJECT_DIR);
         fs::copy("lcf2xml", PROJECT::RPG_PROJECT_DIR);
         fs::copy("easyrpg-player", PROJECT::RPG_PROJECT_DIR);

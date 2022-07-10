@@ -48,6 +48,10 @@ namespace PROJECT {
     const static std::string PROJECT_DIR = "project/";
     const static std::string RPG_PROJECT_DIR = "project/rpg2k3/";
 
+    // Input files giving the switches and variables names.
+    const static std::string VAR_NAMES = "var_names.txt";
+    const static std::string SWITCH_NAMES = "switch_names.txt";
+
     // Proprietary RPG Maker Files
     const static std::string RPGMAKER_FILES[] = {
         "Gameboy_Emulator.r3proj",

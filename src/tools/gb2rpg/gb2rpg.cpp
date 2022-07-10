@@ -5,9 +5,6 @@
 #include "src/Database.h"
 #include "src/ProjectGenerator.h"
 
-#include <filesystem>
-#include <iostream>
-
 int main (int argc, char* argv[]) {
     ProjectGenerator::cleanProjectFolder();    
 

@@ -6,6 +6,11 @@
 #include "src/core/utilities/RPGHelper.h"
 
 #include <tuple>
+#include <iostream>
+#include <fstream>
+
+const static std::string WARN_NO_SWITCH_NAMES = "Info: Could not find a name file for switches, using default names instead\n";
+const static std::string WARN_NO_VAR_NAMES = "Info: Could not find a name file for variables, using default names instead\n";
 
 // public
 void Database::genDatabase() {
@@ -21,15 +26,22 @@ void Database::genDatabase() {
     databaseDoc.SaveFile(filePath.c_str(), false);
 }
 
+
 void Database::genSwitches(tinyxml2::XMLDocument& databaseDoc) {
     tinyxml2::XMLDocument switchDoc(TEMPLATES::SWITCH);
+    std::ifstream nameFile;
+    nameFile.open(PROJECT::PROJECT_DIR + PROJECT::SWITCH_NAMES);
+    if(!nameFile.is_open()) std::cout << WARN_NO_SWITCH_NAMES;
 
     for(int id = 1; id < RPGMAKER::MAX_NUM_SWITCHES; ++id) {
         switchDoc.RootElement()->SetAttribute("id", generateID(id).c_str());
 
-        // TODO: Names are placeholder right now, later it would make sense that you can supply names to make the RPG Maker code more readable.
-        auto* name = switchDoc.TraverseElement("/Switch/name")->FirstChild()->ToText();
-        name->SetValue(std::string("SW" + generateID(id)).c_str());
+        // Either use a file that supplies names for switches and variables if it exists, otherwise create default names.
+        std::string name = "SW" + generateID(id);
+        if(nameFile.is_open()) nameFile >> name;
+
+        auto* nameElem = switchDoc.TraverseElement("/Switch/name")->FirstChild()->ToText();
+        nameElem->SetValue(name.c_str());
 
         switchDoc.DeepCloneInsertBack(&databaseDoc, databaseDoc.TraverseElement("/LDB/Database/switches"));
     }
@@ -37,13 +49,19 @@ void Database::genSwitches(tinyxml2::XMLDocument& databaseDoc) {
 
 void Database::genVariables(tinyxml2::XMLDocument& databaseDoc) {
     tinyxml2::XMLDocument variableDoc(TEMPLATES::VARIABLE);
+    std::ifstream nameFile;
+    nameFile.open(PROJECT::PROJECT_DIR + PROJECT::VAR_NAMES);
+    if(!nameFile.is_open()) std::cout << WARN_NO_VAR_NAMES;
 
     for(int id = 1; id < RPGMAKER::MAX_NUM_VARIABLES; ++id) {
         variableDoc.RootElement()->SetAttribute("id", generateID(id).c_str());
 
-        // TODO: Names are placeholder right now, later it would make sense that you can supply names to make the RPG Maker code more readable.
-        auto* name = variableDoc.TraverseElement("/Variable/name")->FirstChild()->ToText();
-        name->SetValue(std::string("VAR" + generateID(id)).c_str());
+        // Either use a file that supplies names for switches and variables if it exists, otherwise create default names.
+        std::string name = "VAR" + generateID(id);
+        if(nameFile.is_open()) nameFile >> name;
+
+        auto* nameElem = variableDoc.TraverseElement("/Variable/name")->FirstChild()->ToText();
+        nameElem->SetValue(std::string("VAR" + generateID(id)).c_str());
 
         variableDoc.DeepCloneInsertBack(&databaseDoc, databaseDoc.TraverseElement("/LDB/Database/variables"));
     }
