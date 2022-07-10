@@ -52,6 +52,9 @@ namespace PROJECT {
     const static std::string VAR_NAMES = "var_names.txt";
     const static std::string SWITCH_NAMES = "switch_names.txt";
 
+    // Commonevent File that will come from the compiler.
+    const static std::string COMMON_EVENTS = "common_events.xml";
+
     // Proprietary RPG Maker Files
     const static std::string RPGMAKER_FILES[] = {
         "Gameboy_Emulator.r3proj",

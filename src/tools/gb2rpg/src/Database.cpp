@@ -9,8 +9,9 @@
 #include <iostream>
 #include <fstream>
 
-const static std::string WARN_NO_SWITCH_NAMES = "Info: Could not find a name file for switches 'project/switch_names.txt', using default names instead\n";
-const static std::string WARN_NO_VAR_NAMES = "Info: Could not find a name file for variables 'project/var_names.txt', using default names instead\n";
+const static std::string WARN_NO_SWITCH_NAMES = "Info: Could not find 'project/switch_names.txt'. Using default names for switches instead.\n";
+const static std::string WARN_NO_VAR_NAMES = "Info: Could not find 'project/var_names.txt'. Using default names for variables instead.\n";
+const static std::string WARN_NO_COMMON_EVENTS = "Info: Could not find 'project/common_events.xml'. Skipping common events.\n";
 
 // public
 void Database::genDatabase() {
@@ -127,5 +128,12 @@ void Database::genCharacters(tinyxml2::XMLDocument& databaseDoc) {
 }
 
 void Database::genCommonEvents(tinyxml2::XMLDocument& databaseDoc) {
-    // TODO: Implement the Common Events that will come out of the compiler!
+    tinyxml2::XMLDocument commonEvents((PROJECT::PROJECT_DIR + PROJECT::COMMON_EVENTS).c_str());
+    if(commonEvents.ErrorID() == tinyxml2::XML_ERROR_FILE_NOT_FOUND)
+        std::cout << WARN_NO_COMMON_EVENTS;
+    
+    if(!commonEvents.Error()) {
+
+        commonEvents.DeepCloneInsertBackSiblings(&databaseDoc, databaseDoc.TraverseElement("/LDB/Database/commonevents"));
+    }
 }

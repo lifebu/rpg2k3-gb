@@ -10,17 +10,14 @@ gb2RPG: Gameboy 2 RPG Maker.
 
 
 - TODO:
-    - Implement the Insertion of the Common Events into the Database.
-   
+    - Game does not run anymore (crashes) in RPG Maker 2003, why?
+
     - Need to provide the EasyRPG/RTP replacement.
         - Just copy it into the project?
         - EasyRPG/RTP does not work correctly.
         - It does use different names for the RTP.
         - Change base templates to use Local files not RTP? Can I use RTP myself?
     
-    - use bgFiles.size() not give entire array when only the size is really needed.
-        => less dependencies.
-
     - could use a way to show the percentage done.
         - Percentage Done: use std::cout.
         - can have 1/x stages with percentage bar.

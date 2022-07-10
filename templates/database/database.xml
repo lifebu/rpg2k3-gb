@@ -1107,17 +1107,13 @@
    </System>
   </system>
   <switches>
+  
   </switches>
   <variables>
+
   </variables>
   <commonevents>
-   <CommonEvent id="0001">
-    <name></name>
-    <trigger>4</trigger>
-    <switch_flag>F</switch_flag>
-    <switch_id>1</switch_id>
-    <event_commands></event_commands>
-   </CommonEvent>
+
   </commonevents>
   <version>0</version>
   <battlecommands>

@@ -1,5 +1,12 @@
 CppEC: C++ Event Compiler.
     - c++-code => .xml
+    - output:
+        - project/common_events.xml:
+            => list of common events.
+        - project/switch_names.txt:
+            - Each Line is one switch id, list the name of them.
+        - project/var_names.txt:
+            - Each Line is one variable id, list the name of them.
 
 - thirdparty:
     tinyxml2
