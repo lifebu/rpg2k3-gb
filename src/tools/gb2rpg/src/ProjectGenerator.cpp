@@ -18,7 +18,6 @@ void ProjectGenerator::cleanProjectFolder() {
     try {
         fs::remove_all(PROJECT::RPG_PROJECT_DIR);  
         fs::create_directories(PROJECT::RPG_PROJECT_DIR);
-        fs::copy("lcf2xml", PROJECT::RPG_PROJECT_DIR);
         fs::copy("easyrpg-player", PROJECT::RPG_PROJECT_DIR);
 
     } catch (fs::filesystem_error err) {
@@ -38,10 +37,10 @@ void ProjectGenerator::createProjectData(std::vector<GBFile>& gbFiles) {
     fs::current_path(PROJECT::RPG_PROJECT_DIR);
 
     int ret;
-    ret = system(std::string("lcf2xml ../" + EXPORTS::DATABASE_FILE).c_str());
-    ret = system(std::string("lcf2xml ../" + EXPORTS::MAPTREE_FILE).c_str());
+    ret = system(std::string("./../../lcf2xml ../" + EXPORTS::DATABASE_FILE).c_str());
+    ret = system(std::string("./../../lcf2xml ../" + EXPORTS::MAPTREE_FILE).c_str());
     for(int mapID = 1; mapID <= gbFiles.size(); ++mapID) {
-        std::string mapFile = "lcf2xml ../" + EXPORTS::MAP_FILE_BASE + generateID(mapID) + EXPORTS::MAP_FILE_TYPE;
+        std::string mapFile = "./../../lcf2xml ../" + EXPORTS::MAP_FILE_BASE + generateID(mapID) + EXPORTS::MAP_FILE_TYPE;
         ret = system(mapFile.c_str());
     }
     if(ret) std::cout << ERR_LCF;
