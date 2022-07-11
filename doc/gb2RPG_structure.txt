@@ -23,6 +23,19 @@ gb2RPG: Gameboy 2 RPG Maker.
         - Integrate Unit tests into CMake!
 
     - Abstract away the actual Library I'm using to load/save and manipulate the RPGMaker Files (also needed later for Compiler).
+        - Two Modes (e.g. for Database):
+            - Load from a File and then have an in Memory representation only. Changes only effect in Memory data (for Runtime).
+                - FILE_MODE::IN_MEMORY
+            - Load from a File and changes will be written back to the file. (For Compiler and Project generation).
+                - FILE_MODE::SYNC_WITH_FILE
+                - Will write it back on Destruction (RAII).
+                - Do not create own data files. (like vectors). Always read/write from the In-Memory file.
+            
+        - Don't have to load everything from the file.
+        - Only data that I actually need.
+        
+        - These should be non-copyable, only moveable.
+
         - More High-Level File changes.
         - Can then silently change out tinyxml2 for other library.
         - Also: Makes Generator Code more readable. Has to focus more on what you need to generate and not how to manipulate the underlying file.
