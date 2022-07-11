@@ -6,6 +6,7 @@
 #include <iostream>
 #include <cassert>
 
+using namespace gb2rpg;
 
 // GBFile
 // public
@@ -82,7 +83,7 @@ int GBFile::bytesRemaining() {
     return fileSize - bytesRead;
 }
 
-std::vector<GBFile> GBFile::genGBFiles(CLIOptions& cli) {
+std::vector<GBFile> GBFile::genGBFiles(gb2rpg::CLIOptions& cli) {
     auto& filePaths = cli.getFilePaths();
     std::vector<GBFile> gbFiles;
     for(auto path : filePaths) {
@@ -139,7 +140,7 @@ GBFileGenerator::GBFileGenerator()
     : error(false)
 {}
 
-std::vector<GBFile> GBFileGenerator::genGBFiles(CLIOptions& cli) {
+std::vector<GBFile> GBFileGenerator::genGBFiles(gb2rpg::CLIOptions& cli) {
     auto& filePaths = cli.getFilePaths();
     std::vector<GBFile> gbFiles;
     for(auto& path : filePaths) {

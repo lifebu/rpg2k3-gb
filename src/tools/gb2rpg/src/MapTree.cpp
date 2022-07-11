@@ -8,6 +8,7 @@
 
 #include <iostream>
 
+using namespace gb2rpg;
 
 void MapTree::genMapTree(std::vector<GBFile>& gbFiles) {
     tinyxml2::XMLDocument mapTreeDoc(TEMPLATES::MAP_TREE);

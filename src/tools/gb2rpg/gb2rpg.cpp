@@ -6,22 +6,22 @@
 #include "src/ProjectGenerator.h"
 
 int main (int argc, char* argv[]) {
-    ProjectGenerator::cleanProjectFolder();    
+    gb2rpg::ProjectGenerator::cleanProjectFolder();    
 
-    CLIOptions cli = CLIOptions(argc, argv);
+    gb2rpg::CLIOptions cli = gb2rpg::CLIOptions(argc, argv);
     if(cli.shouldEnd()) return 0;
     
-    GBFileGenerator gbGen;
-    std::vector<GBFile> gbFiles = gbGen.genGBFiles(cli);
+    gb2rpg::GBFileGenerator gbGen;
+    std::vector<gb2rpg::GBFile> gbFiles = gbGen.genGBFiles(cli);
     if(gbGen.hadErrors()) return 0;
     
-    Map::genMapFiles(gbFiles);
+    gb2rpg::Map::genMapFiles(gbFiles);
     
-    MapTree::genMapTree(gbFiles);
+    gb2rpg::MapTree::genMapTree(gbFiles);
     
-    Database::genDatabase();
+    gb2rpg::Database::genDatabase();
 
-    ProjectGenerator::genProjectFolder(gbFiles.size());
+    gb2rpg::ProjectGenerator::genProjectFolder(gbFiles.size());
 
     return 0;
 }

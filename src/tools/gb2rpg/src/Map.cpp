@@ -13,7 +13,7 @@
 #include <cmath>
 #include <cstdarg>
 
-
+using namespace gb2rpg;
 
 // Map-Event Offsets:
 // DMG Event has always the first ID.

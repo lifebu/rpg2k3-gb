@@ -9,6 +9,7 @@
 #include <filesystem>
 
 namespace fs = std::filesystem;
+using namespace gb2rpg;
 
 const static std::string ERR_LCF = "Could not create one of the binary files using lcf2xml, do 3 files exist in the project/ folder?\n";
 

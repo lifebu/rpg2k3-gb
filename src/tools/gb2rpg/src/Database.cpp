@@ -9,6 +9,8 @@
 #include <iostream>
 #include <fstream>
 
+using namespace gb2rpg;
+
 const static std::string WARN_NO_SWITCH_NAMES = "Info: Could not find 'project/switch_names.txt'. Using default names for switches instead.\n";
 const static std::string WARN_NO_VAR_NAMES = "Info: Could not find 'project/var_names.txt'. Using default names for variables instead.\n";
 const static std::string WARN_NO_COMMON_EVENTS = "Info: Could not find 'project/common_events.xml'. Skipping common events.\n";

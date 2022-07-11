@@ -3,6 +3,8 @@
 #include <iostream>
 #include <algorithm>
 
+using namespace gb2rpg;
+
 const static std::string VERSION_STRING = "0.1\n";
 const static std::string HELP_STRING =  "GB2RPG - Create RPG Maker 2003 Project Files from Gameboy Rom\n" 
                                         "Usage: gb2rpg [--help/-h] [--version/-v] [-gb/-g] file1 [... fileN]\n"
