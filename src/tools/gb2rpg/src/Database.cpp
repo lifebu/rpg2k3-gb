@@ -4,6 +4,7 @@
 
 #include "thirdparty/tinyxml2/tinyxml2.h"
 #include "src/core/utilities/RPGHelper.h"
+#include "src/core/lcf/Switch.h"
 
 #include <tuple>
 #include <iostream>

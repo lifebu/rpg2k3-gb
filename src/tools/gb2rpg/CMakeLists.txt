@@ -22,10 +22,9 @@ add_executable(gb2rpg gb2rpg.cpp ${gp2rpg_source} ${gp2rpg_headers})
 
 
 target_include_directories(gb2rpg PRIVATE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>")
+target_include_directories(gb2rpg PRIVATE ${CMAKE_SOURCE_DIR})
 
-
-
+target_link_libraries(gb2rpg PRIVATE core)
 target_link_libraries(gb2rpg PRIVATE tinyxml2)
 
-include_directories(${CMAKE_SOURCE_DIR})
 target_compile_features(gb2rpg PUBLIC cxx_std_17)

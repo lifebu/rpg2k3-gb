@@ -7,7 +7,7 @@
 namespace lcf {
 
 // public
-Switch::Switch(std::string name, uint16_t id, bool value = false) {
+Switch::Switch(std::string name, uint16_t id, bool value) {
     setName(name);
     setID(id);
     setValue(value);

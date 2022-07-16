@@ -10,9 +10,6 @@ project(rpg2k3-gb VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Gameboy emulator for 
 # core
 add_subdirectory(src/core)
 
-# rpg_files
-add_subdirectory(src/core/lcf)
-
 # tools
 add_subdirectory(src/tools/gb2rpg)
 

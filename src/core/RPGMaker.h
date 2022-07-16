@@ -3,6 +3,8 @@
 #include "MemorySizes.h"
 
 #include <cstdint>
+#include <cmath>
+#include <string>
 
 namespace RPGMAKER {
     // Values
@@ -14,7 +16,7 @@ namespace RPGMAKER {
     // int32_t to RPG Maker Value Bias. I want a symmetrical value range in RPG Maker. 
     // e.g. MEMORYSIZE::BYTES_PER_VAR = 3 =>
     // 2^24 = ceil((16.777.216) / 2) = 8.388.608 => RPG Maker: [-8.338.608, 8.338.607]
-    const static uint32_t RPG_VALUE_BIAS = pow(2, MEMORYSIZES::BYTES_PER_VAR*8) / 2;
+    const static uint32_t RPG_VALUE_BIAS = std::pow(2, MEMORYSIZES::BYTES_PER_VAR*8) / 2;
 
     // Map
     const static int MAP_SIZE_X = 500;
