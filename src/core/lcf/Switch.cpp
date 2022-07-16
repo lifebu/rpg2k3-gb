@@ -1,80 +1,41 @@
 #include "Switch.h"
 
-#include "src/core/utilities/RPGHelper.h"
-#include "thirdparty/tinyxml2/tinyxml2.h"
+#include <cassert>
 
+#include "src/core/utilities/RPGHelper.h"
+
+namespace lcf {
 
 // public
-Switch::Switch(std::string fileName, FILE_MODE fileMode) :
-    fileName(fileName) {
-    
-    file = new tinyxml2::XMLDocument(fileName);
-
-    if(fileMode == IN_MEMORY) {
-        // Read out file and close it.
-        auto* nameElem = file.TraverseElement("/Switch/name")->FirstChild()->ToText();
-        name =  nameElem.Value();
-        id = file.RootElement()->UnsignedAttribute("id");
-        value = 0;
-
-        file.Clear();
-        delete file;
-    }
-}
-
-Switch::~Switch() {
-    if(fileMode == SYNC_WITH_FILE) {
-        file.SaveFile(fileName, true);
-        delete file;
-    }
+Switch::Switch(std::string name, uint16_t id, bool value = false) {
+    setName(name);
+    setID(id);
+    setValue(value);
 }
 
 std::string Switch::getName() {
-    if(fileMode == IN_MEMORY) {
-        return name;
-
-    } else if (fileMode == SYNC_WITH_FILE) {
-        auto* nameElem = file.TraverseElement("/Switch/name")->FirstChild()->ToText();
-        return nameElem.Value();
-
-    }
+    return name;
 }
 
 void Switch::setName(std::string val) {
-    if(fileMode == IN_MEMORY) {
-        name = val;
-
-    } else if (fileMode == SYNC_WITH_FILE) {
-        auto* nameElem = file.TraverseElement("/Switch/name")->FirstChild()->ToText();
-        nameElem->SetValue(val.c_str());
-
-    }
+    name = val;
 }
 
 uint16_t Switch::getID() {
-    if(fileMode == IN_MEMORY) {
-        return id;
-
-    } else if (fileMode == SYNC_WITH_FILE) {
-        return file.RootElement()->UnsignedAttribute("id");
-
-    }
+    return id;
 }
 
 void Switch::setID(uint16_t val) {
-    if(fileMode == IN_MEMORY) {
-        id = val;
-
-    } else if (fileMode == SYNC_WITH_FILE) {
-        file.RootElement()->SetAttribute("id", generateID(id).c_str());
-
-    }
+    assert(1 <= val < RPGMAKER::MAX_NUM_SWITCHES);
+    id = val;
 }
 
-int32_t Switch::getValue() {
+bool Switch::getValue() {
     return value;
 }
 
-void Switch::setValue(int32_t val) {
-    value = val
+void Switch::setValue(bool val) {
+    value = val;
 }
+
+};

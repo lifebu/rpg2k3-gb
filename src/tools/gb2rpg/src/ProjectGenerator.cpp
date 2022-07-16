@@ -39,10 +39,14 @@ void ProjectGenerator::createProjectData(int numOfMaps) {
     fs::current_path(PROJECT::RPG_PROJECT_DIR);
 
     int ret;
+    std::cout << "Converting database to: RPG_RT.ldb\n";
     ret = system(std::string("./../../lcf2xml ../" + EXPORTS::DATABASE_FILE).c_str());
+    std::cout << "Converting map tree to: RPG_RT.lmt\n";
     ret = system(std::string("./../../lcf2xml ../" + EXPORTS::MAPTREE_FILE).c_str());
     for(int mapID = 1; mapID <= numOfMaps; ++mapID) {
-        std::string mapFile = "./../../lcf2xml ../" + EXPORTS::MAP_FILE_BASE + generateID(mapID) + EXPORTS::MAP_FILE_TYPE;
+        std::string mapName = EXPORTS::MAP_FILE_BASE + generateID(mapID) + EXPORTS::MAP_FILE_TYPE;
+        std::cout << "Converting map to: " << mapName << std::endl;
+        std::string mapFile = "./../../lcf2xml ../" + mapName;
         ret = system(mapFile.c_str());
     }
     if(ret) std::cout << ERR_LCF;

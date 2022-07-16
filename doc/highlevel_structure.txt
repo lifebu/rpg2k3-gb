@@ -1,3 +1,9 @@
+Learnings:
+  - Build Tool: CMake.
+  - Multithreading Practice (Compiler & Project generation).
+  - Other C++ Tools: Static Code Analysis and Linting, Format, Unit Test Integration (CMake + Catch2).
+  - Data-oriented Design.
+
 Use-Time:
   Main-Tool (gb2rpg.exe) that has simple CLI.
   1) Create RPG Maker Project:

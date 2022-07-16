@@ -23,22 +23,37 @@ gb2RPG: Gameboy 2 RPG Maker.
         - Integrate Unit tests into CMake!
 
     - Abstract away the actual Library I'm using to load/save and manipulate the RPGMaker Files (also needed later for Compiler).
-        - Two Modes (e.g. for Database):
-            - Load from a File and then have an in Memory representation only. Changes only effect in Memory data (for Runtime).
-                - FILE_MODE::IN_MEMORY
-            - Load from a File and changes will be written back to the file. (For Compiler and Project generation).
-                - FILE_MODE::SYNC_WITH_FILE
-                - Will write it back on Destruction (RAII).
-                - Do not create own data files. (like vectors). Always read/write from the In-Memory file.
+        - Serialization:
+            Import:
+                - Load all necessary data from the file and place it into a in-memory representation and close the file. 
+                - Not all data is needed for what I want to manipulate, only parse that.
+            Export:
+                - Save all the data from the class into the file. 
+                - Load the template for the data.
+                - Replace data with members from class.
+                - Save template again.
+                - Basically the export here does similiar thing to Map generation.
             
-        - Don't have to load everything from the file.
-        - Only data that I actually need.
-        
-        - These should be non-copyable, only moveable.
+            - For each Data member (Switch.h) have a Serializer (SwitchSerializer.h)
+            - Having Import/Export in own .h file means there is only One places that know of the actual file library and type (XML, or binary) for each data type.
+            - Not every file needs a Import and Export function. Some only need import!
 
+        - Data (Switch.h, Event.h):
+            - ONLY: an in-Memory representation of ONLY the data I need to change for my software.
+            - e.g. Map: only have the list of events, the rest is never touched.
+            - These should be non-copyable, only moveable.
+
+        
         - More High-Level File changes.
         - Can then silently change out tinyxml2 for other library.
         - Also: Makes Generator Code more readable. Has to focus more on what you need to generate and not how to manipulate the underlying file.
+
+        - To-DO:
+            - Do I need the getters/setters everywhere?
+            - - Do I want a thirdparty to be able to construct a fresh switch on it's own?
+                - Because they have constructor?
+                - Make it private?
+            - Variable is basically the same as Switch, Can I combine them?
 
         - Write Functions for setting/generating event-commands of different types.
             - 
@@ -91,6 +106,7 @@ gb2RPG: Gameboy 2 RPG Maker.
     - Performance:
         - 2 MByte Cartidge: 16GB RAM, 2m20s, 1.6GB XML File.
         - Loading the 1.6GB XML file takes up 14.1GB RAM and When Creating it I use up over 16GB!
+        - Resulting Binary File is: 95,4 MByte.
 
         - less memory usage:
             - shortterm solution:

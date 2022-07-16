@@ -1,80 +1,36 @@
 #include "Variable.h"
 
-#include "src/core/utilities/RPGHelper.h"
-#include "thirdparty/tinyxml2/tinyxml2.h"
 
+namespace lcf {
 
 // public
-Variable::Variable(std::string fileName, FILE_MODE fileMode) :
-    fileName(fileName) {
-    
-    file = new tinyxml2::XMLDocument(fileName);
+Variable::Variable(std::string name, uint16_t id, int32_t value = 0) :
+    name(name), id(id), value(value) {
 
-    if(fileMode == IN_MEMORY) {
-        // Read out file and close it.
-        auto* nameElem = file.TraverseElement("/Switch/name")->FirstChild()->ToText();
-        name =  nameElem.Value();
-        id = file.RootElement()->UnsignedAttribute("id");
-        value = 0;
-
-        file.Clear();
-        delete file;
-    }
-}
-
-Variable::~Variable() {
-    if(fileMode == SYNC_WITH_FILE) {
-        file.SaveFile(fileName, true);
-        delete file;
-    }
 }
 
 std::string Variable::getName() {
-    if(fileMode == IN_MEMORY) {
-        return name;
-
-    } else if (fileMode == SYNC_WITH_FILE) {
-        auto* nameElem = file.TraverseElement("/Switch/name")->FirstChild()->ToText();
-        return nameElem.Value();
-
-    }
+    return name;
 }
 
 void Variable::setName(std::string val) {
-    if(fileMode == IN_MEMORY) {
-        name = val;
-
-    } else if (fileMode == SYNC_WITH_FILE) {
-        auto* nameElem = file.TraverseElement("/Switch/name")->FirstChild()->ToText();
-        nameElem->SetValue(val.c_str());
-
-    }
+    name = val;
 }
 
 uint16_t Variable::getID() {
-    if(fileMode == IN_MEMORY) {
-        return id;
-
-    } else if (fileMode == SYNC_WITH_FILE) {
-        return file.RootElement()->UnsignedAttribute("id");
-
-    }
+    return id;
 }
 
 void Variable::setID(uint16_t val) {
-    if(fileMode == IN_MEMORY) {
-        id = val;
-
-    } else if (fileMode == SYNC_WITH_FILE) {
-        file.RootElement()->SetAttribute("id", generateID(id).c_str());
-
-    }
+    id = val;
 }
 
-bool Variable::getValue() {
+int32_t Variable::getValue() {
     return value;
 }
 
-void Variable::setValue(bool val) {
-    value = val
+void Variable::setValue(int32_t val) {
+    value = val;
 }
+
+};

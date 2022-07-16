@@ -29,11 +29,33 @@ CommonEvent::~CommonEvent() {
     }
 }
 
-std::string CommonEvent::getName();
-void CommonEvent::setName(std::string val);
+std::string CommonEvent::getName() {
+    if(fileMode == IN_MEMORY) {
+        return name;
 
-bool CommonEvent::getUseConditionSwitch();
-void CommonEvent::setUseConditionSwitch(bool val);
+    } else if (fileMode == SYNC_WITH_FILE) {
+        auto* nameElem = file.TraverseElement("/Switch/name")->FirstChild()->ToText();
+        return nameElem.Value();
+
+    }
+}
+void CommonEvent::setName(std::string val) {
+    if(fileMode == IN_MEMORY) {
+        name = val;
+
+    } else if (fileMode == SYNC_WITH_FILE) {
+        auto* nameElem = file.TraverseElement("/Switch/name")->FirstChild()->ToText();
+        nameElem->SetValue(val.c_str());
+
+    }
+}
+
+bool CommonEvent::getUseConditionSwitch() {
+
+}
+void CommonEvent::setUseConditionSwitch(bool val) {
+
+}
 
 uint16_t CommonEvent::getConditionSwitchID() {
     
