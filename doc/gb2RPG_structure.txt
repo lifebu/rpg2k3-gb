@@ -24,6 +24,9 @@ gb2RPG: Gameboy 2 RPG Maker.
         - Using Catch2.
         - Integrate Unit tests into CMake!
 
+    - Create the "FromFile()" Functions later!
+        => Can really test them by generating the file (ToFile) and then loading them again (FromFile)!
+
     - Abstract away the actual Library I'm using to load/save and manipulate the RPGMaker Files (also needed later for Compiler).
         - Serialization:
             Import:
@@ -88,6 +91,8 @@ gb2RPG: Gameboy 2 RPG Maker.
             - Do I want move, copy? for adding elements?
 
             - Delete the TEMPLATES in Globals.h for gb2rpg once the serializers are all correctly implemented.
+
+            - REALLY not good that some of the TOFile Versions return tinyxml2::XMLDocument. THis means other parts of the code see that there is tinyxml2 (even though only that it exists, nobody should use it).
 
             - Do I need the getters/setters everywhere?
             - Do I want a thirdparty to be able to construct a fresh switch on it's own?

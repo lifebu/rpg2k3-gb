@@ -1,10 +1,11 @@
 #pragma once
 
-// TODO: Better includes with having "core" as an include (CMake File!)
-#include "../lcf/Switch.h"
+#include "src/core/lcf/Switch.h"
 
 #include <string>
+#include <memory>
 
+namespace tinyxml2 {class XMLDocument; };
 
 namespace lcf {
 
@@ -13,6 +14,7 @@ public:
     SwitchSerializer() = delete;
 
     static Switch FromFile(std::string fileName);
+    static std::unique_ptr<tinyxml2::XMLDocument> ToFile(Switch& elem);
 };
 
 };

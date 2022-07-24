@@ -7,18 +7,10 @@
 namespace lcf {
 
 // public
-Switch::Switch(std::string name, uint16_t id, bool value) {
-    setName(name);
+Switch::Switch(uint16_t id, std::string name, bool value) {
     setID(id);
+    setName(name);
     setValue(value);
-}
-
-std::string Switch::getName() {
-    return name;
-}
-
-void Switch::setName(std::string val) {
-    name = val;
 }
 
 uint16_t Switch::getID() {
@@ -28,6 +20,14 @@ uint16_t Switch::getID() {
 void Switch::setID(uint16_t val) {
     assert(1 <= val < RPGMAKER::MAX_NUM_SWITCHES);
     id = val;
+}
+
+std::string Switch::getName() {
+    return name;
+}
+
+void Switch::setName(std::string val) {
+    name = val;
 }
 
 bool Switch::getValue() {
