@@ -1,9 +1,11 @@
 #pragma once
 
-// TODO: Better includes with having "core" as an include (CMake File!)
-#include "../lcf/Variable.h"
+#include "src/core/lcf/Variable.h"
 
 #include <string>
+#include <memory>
+
+namespace tinyxml2 {class XMLDocument; };
 
 
 namespace lcf {
@@ -13,6 +15,7 @@ public:
     VariableSerializer() = delete;
 
     static Variable FromFile(std::string fileName);
+    static std::unique_ptr<tinyxml2::XMLDocument> ToFile(Variable& elem);
 };
 
 };

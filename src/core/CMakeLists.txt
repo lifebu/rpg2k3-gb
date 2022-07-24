@@ -7,19 +7,23 @@ endif()
 
 set(lcf_headers 
     lcf/Switch.h 
+    lcf/Variable.h
     lcf/MapInfo.h
     lcf/MapTree.h)
 set(lcf_source 
-    lcf/Switch.cpp 
+    lcf/Switch.cpp
+    lcf/Variable.cpp
     lcf/MapInfo.cpp
     lcf/MapTree.cpp)
 
 set(serializer_headers 
     lcf_serializers/SwitchSerializer.h 
+    lcf_serializers/VariableSerializer.h 
     lcf_serializers/MapInfoSerializer.h
     lcf_serializers/MapTreeSerializer.h)
 set(serializer_source 
-    lcf_serializers/SwitchSerializer.cpp 
+    lcf_serializers/SwitchSerializer.cpp
+    lcf_serializers/VariableSerializer.cpp 
     lcf_serializers/MapInfoSerializer.cpp
     lcf_serializers/MapTreeSerializer.cpp)
 

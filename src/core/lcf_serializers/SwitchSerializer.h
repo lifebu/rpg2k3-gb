@@ -7,6 +7,7 @@
 
 namespace tinyxml2 {class XMLDocument; };
 
+
 namespace lcf {
 
 class SwitchSerializer {

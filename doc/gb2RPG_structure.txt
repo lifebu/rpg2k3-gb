@@ -18,6 +18,11 @@ gb2RPG: Gameboy 2 RPG Maker.
        
     - Implement more Robust Error Checks.
 
+    - Better includes in core:
+        #include "src/core/lcf/Switch.h"
+        =>
+        #include "core/lcf/Switch.h"
+
     - RPGHelper.h needs a RPGHelper.cpp to not do inlining!
 
     - Unit tests:

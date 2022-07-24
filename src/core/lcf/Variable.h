@@ -8,7 +8,7 @@ namespace lcf {
 
 class Variable {
 public:
-    Variable(std::string name, uint16_t id, int32_t value = 0);
+    Variable(uint16_t id, std::string name, int32_t value = 0);
 
     std::string getName();
     void setName(std::string val);

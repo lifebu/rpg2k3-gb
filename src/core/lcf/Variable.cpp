@@ -1,12 +1,16 @@
 #include "Variable.h"
 
+#include <cassert>
+
+#include "src/core/utilities/RPGHelper.h"
 
 namespace lcf {
 
 // public
-Variable::Variable(std::string name, uint16_t id, int32_t value = 0) :
-    name(name), id(id), value(value) {
-
+Variable::Variable(uint16_t id, std::string name, int32_t value) {
+    setID(id);
+    setName(name);
+    setValue(value);
 }
 
 std::string Variable::getName() {
@@ -22,6 +26,7 @@ uint16_t Variable::getID() {
 }
 
 void Variable::setID(uint16_t val) {
+    assert(1 <= val < RPGMAKER::MAX_NUM_SWITCHES);
     id = val;
 }
 
