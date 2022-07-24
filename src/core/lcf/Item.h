@@ -1,11 +1,9 @@
 #pragma once
 
-#include "Filemode.h"
-
 #include <string>
-#include <vector>
 
-namespace tinyxml2 { class XMLDocument; }
+
+namespace lcf {
 
 enum ItemType {
     WEAPON = 1,
@@ -17,19 +15,21 @@ enum ItemType {
 
 class Item {
 public:
-    Item(std::string fileName, FILE_MODE fileMode);
-    Item(const Item& other) = delete;
-    Item(Item&& other) = delete;
-    ~Item();
-    
-    Item& operator=(const Item& other) = delete;
-    Item& operator=(Item&& other) = delete;
+    Item(uint16_t id, std::string name, ItemType type);
+
+    uint16_t getID();
+    void setID(uint16_t val);
+
+    std::string getName();
+    void setName(std::string val);
+
+    ItemType getType();
+    void setType(ItemType val);
 
 private:
-    tinyxml2::XMLDocument* file;
-    std::string fileName;
-
     uint16_t id;
     std::string name;
     ItemType type;
+};
+
 };
