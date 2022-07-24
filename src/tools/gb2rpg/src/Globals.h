@@ -1,11 +1,10 @@
 #include <string>
-#include <cmath>
 
 #include "src/core/utilities/RPGHelper.h"
 
 namespace gb2rpg {
+    // TODO: These should go once the serializers are all correctly implemented.
     namespace TEMPLATES {
-        // TODO: Can I do static_asserts to ensure that the files exist?
         // database
         const static char* CHARACTER = "templates/database/character.xml";
         const static char* COMMON_EVENT = "templates/database/common_event.xml";

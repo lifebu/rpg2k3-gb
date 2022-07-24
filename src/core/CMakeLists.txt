@@ -5,11 +5,23 @@ else()
     cmake_policy(VERSION 3.22)
 endif()
 
-set(lcf_headers lcf/Switch.h)
-set(lcf_source lcf/Switch.cpp)
+set(lcf_headers 
+    lcf/Switch.h 
+    lcf/MapInfo.h
+    lcf/MapTree.h)
+set(lcf_source 
+    lcf/Switch.cpp 
+    lcf/MapInfo.cpp
+    lcf/MapTree.cpp)
 
-set(serializer_headers lcf_serializers/SwitchSerializer.h)
-set(serializer_source lcf_serializers/SwitchSerializer.cpp)
+set(serializer_headers 
+    lcf_serializers/SwitchSerializer.h 
+    lcf_serializers/MapInfoSerializer.h
+    lcf_serializers/MapTreeSerializer.h)
+set(serializer_source 
+    lcf_serializers/SwitchSerializer.cpp 
+    lcf_serializers/MapInfoSerializer.cpp
+    lcf_serializers/MapTreeSerializer.cpp)
 
 set(utility_headers utilities/RPGHelper.h)
 
@@ -24,7 +36,7 @@ add_library(core
     ${lcf_source} ${serializer_source})
 
 target_include_directories(core PRIVATE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>")
-include_directories(${CMAKE_SOURCE_DIR})
+target_include_directories(core PRIVATE ${CMAKE_SOURCE_DIR})
 
 target_link_libraries(core PRIVATE tinyxml2)
 

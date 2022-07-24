@@ -18,6 +18,8 @@ gb2RPG: Gameboy 2 RPG Maker.
        
     - Implement more Robust Error Checks.
 
+    - RPGHelper.h needs a RPGHelper.cpp to not do inlining!
+
     - Unit tests:
         - Using Catch2.
         - Integrate Unit tests into CMake!
@@ -49,11 +51,53 @@ gb2RPG: Gameboy 2 RPG Maker.
         - Also: Makes Generator Code more readable. Has to focus more on what you need to generate and not how to manipulate the underlying file.
 
         - To-DO:
+            - Order:
+                MapTree:
+                    - MapInfo + Serializer.
+                    - MapTree + Serializer.
+                Map:
+                    - Event + Serializer.
+                    - EventPage + Serializer.
+                    - EventCommand + Serializer.
+                Database:
+                    - Switch + Serializer.
+                    - Variable + Serializer.
+                    - Character + Serializer.
+                    - Item + Serializer.
+                    - CommonEvent + Serializer.
+                    - Database + Serializer.
+            
+            - toFile()/FromFile():
+                - PROBLEM: I want higher level files to just use the lower level "toFile()" function. to generate the file.
+                - How to reuse implementation of partial files.
+                - So that MapTree does not have to re-implement the file generation for MapInfo. It can just iterate over each map and call toFile() for each mapInfo it needs to create!
+                - Have two versions: one that allows you to specify a file via a filepath and one that allows you to have a file already open?
+            
+            
+            - When adding certain elements (like addMapInfo()) have two versions:
+                - 1: needs instance of mapInfo to be added. (move and copy)
+                - 2: one that takes parameter subset. for mapInfo: only name. ID's should be automatically managed in the mapTree. Makes usage code easier.
+                    - Can do that for variables, switches, events, event pages etc.
+
+            - Write the usage code first (MapTree.cpp generator, environment, compiler (later!)).
+            - usage: 
+                - Generators: do not use import serializer for file generators. construct only in memoery first (default constructor) then use exporter to create the file.
+                makes code easier
+                - Environment: Basically only needs to use the importers once.
+
+            - Do I want move, copy? for adding elements?
+
+            - Delete the TEMPLATES in Globals.h for gb2rpg once the serializers are all correctly implemented.
+
             - Do I need the getters/setters everywhere?
-            - - Do I want a thirdparty to be able to construct a fresh switch on it's own?
+            - Do I want a thirdparty to be able to construct a fresh switch on it's own?
                 - Because they have constructor?
                 - Make it private?
             - Variable is basically the same as Switch, Can I combine them?
+            - should the serializers be the only way to instantiate a data class like Switch?
+                - If not make constructor private and use friend class.
+            
+            - Can I try to not use friend class?
 
         - Write Functions for setting/generating event-commands of different types.
             - 
@@ -69,6 +113,7 @@ gb2RPG: Gameboy 2 RPG Maker.
             - should work ontop on the tinyxml2 library and changes I do to that.
 
         - Event-Generation and Manipulation can be made more general.
+            - factory pattern???
             - Map::generateDMGROM(), generateMapRAM() and generateMapROM() are structurely very similar:
                 - generate code for event-page
                 - insert code in event-page
