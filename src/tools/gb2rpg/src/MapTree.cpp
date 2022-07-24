@@ -5,9 +5,6 @@
 
 #include "src/core/lcf/MapTree.h"
 #include "src/core/lcf_serializers/MapTreeSerializer.h"
-#include "thirdparty/tinyxml2/tinyxml2.h"
-
-#include <iostream>
 
 using namespace gb2rpg;
 
