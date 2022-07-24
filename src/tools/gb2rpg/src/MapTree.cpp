@@ -3,7 +3,6 @@
 #include "GBFile.h"
 #include "Globals.h"
 
-#include "src/core/lcf/MapTree.h"
 #include "src/core/lcf_serializers/MapTreeSerializer.h"
 
 using namespace gb2rpg;

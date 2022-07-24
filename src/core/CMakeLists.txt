@@ -9,12 +9,14 @@ set(lcf_headers
     lcf/Switch.h 
     lcf/Variable.h
     lcf/Item.h
+    lcf/Character.h
     lcf/MapInfo.h
     lcf/MapTree.h)
 set(lcf_source 
     lcf/Switch.cpp
     lcf/Variable.cpp
     lcf/Item.cpp
+    lcf/Character.cpp
     lcf/MapInfo.cpp
     lcf/MapTree.cpp)
 
@@ -22,12 +24,14 @@ set(serializer_headers
     lcf_serializers/SwitchSerializer.h 
     lcf_serializers/VariableSerializer.h 
     lcf_serializers/ItemSerializer.h 
+    lcf_serializers/CharacterSerializer.h 
     lcf_serializers/MapInfoSerializer.h
     lcf_serializers/MapTreeSerializer.h)
 set(serializer_source 
     lcf_serializers/SwitchSerializer.cpp
     lcf_serializers/VariableSerializer.cpp 
     lcf_serializers/ItemSerializer.cpp
+    lcf_serializers/CharacterSerializer.cpp
     lcf_serializers/MapInfoSerializer.cpp
     lcf_serializers/MapTreeSerializer.cpp)
 

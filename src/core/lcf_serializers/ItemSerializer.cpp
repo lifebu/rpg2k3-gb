@@ -56,7 +56,7 @@ uint16_t constexpr getLocalID(int id) {
 
 
 std::unique_ptr<tinyxml2::XMLDocument> ItemSerializer::ToFile(Item& elem) {
-    auto itemTempl = std::make_unique<tinyxml2::XMLDocument>(TEMPLATES::SWITCH);
+    auto itemTempl = std::make_unique<tinyxml2::XMLDocument>(TEMPLATES::ITEM);
 
     // Set switch ID
     itemTempl->RootElement()->SetAttribute("id", generateID(elem.getID()).c_str());

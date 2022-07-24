@@ -1,27 +1,21 @@
 #pragma once
 
-#include "Filemode.h"
-
 #include <string>
-#include <vector>
 
-namespace tinyxml2 { class XMLDocument; }
 
+namespace lcf {
 
 class Character {
 public:
-    Character(std::string fileName, FILE_MODE fileMode);
-    Character(const Character& other) = delete;
-    Character(Character&& other) = delete;
-    ~Character();
-    
-    Character& operator=(const Character& other) = delete;
-    Character& operator=(Character&& other) = delete;
+    Character(uint16_t id, std::string name);
+
+    uint16_t getID();
+    void setID(uint16_t val);
+
+    std::string getName();
+    void setName(std::string val);
 
 private:
-    tinyxml2::XMLDocument* file;
-    std::string fileName;
-
     uint16_t id;
     std::string name;
 
@@ -40,4 +34,6 @@ private:
     uint16_t BodyID;
     uint16_t HeadID;
     uint16_t AccessoryID;
+};
+
 };

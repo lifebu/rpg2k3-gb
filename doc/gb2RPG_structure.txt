@@ -109,6 +109,10 @@ gb2RPG: Gameboy 2 RPG Maker.
             
             - Can I try to not use friend class?
 
+            - the serializers and data classes are all very similar, can I make the code better by reducing copy-pasta?
+                - Base-class?
+                - creates way to many files.
+
         - Write Functions for setting/generating event-commands of different types.
             - 
             - set/copy/generate ...
