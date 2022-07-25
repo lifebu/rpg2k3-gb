@@ -10,6 +10,8 @@ set(lcf_headers
     lcf/Variable.h
     lcf/Item.h
     lcf/Character.h
+    lcf/CommonEvent.h
+    lcf/EventCommand.h
     lcf/MapInfo.h
     lcf/MapTree.h)
 set(lcf_source 
@@ -17,6 +19,8 @@ set(lcf_source
     lcf/Variable.cpp
     lcf/Item.cpp
     lcf/Character.cpp
+    lcf/CommonEvent.cpp
+    lcf/EventCommand.cpp
     lcf/MapInfo.cpp
     lcf/MapTree.cpp)
 
@@ -25,6 +29,8 @@ set(serializer_headers
     lcf_serializers/VariableSerializer.h 
     lcf_serializers/ItemSerializer.h 
     lcf_serializers/CharacterSerializer.h 
+    lcf_serializers/CommonEventSerializer.h
+    lcf_serializers/EventCommandSerializer.h
     lcf_serializers/MapInfoSerializer.h
     lcf_serializers/MapTreeSerializer.h)
 set(serializer_source 
@@ -32,6 +38,8 @@ set(serializer_source
     lcf_serializers/VariableSerializer.cpp 
     lcf_serializers/ItemSerializer.cpp
     lcf_serializers/CharacterSerializer.cpp
+    lcf_serializers/CommonEventSerializer.cpp
+    lcf_serializers/EventCommandSerializer.cpp
     lcf_serializers/MapInfoSerializer.cpp
     lcf_serializers/MapTreeSerializer.cpp)
 

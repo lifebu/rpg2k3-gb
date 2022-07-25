@@ -112,6 +112,8 @@ gb2RPG: Gameboy 2 RPG Maker.
             - the serializers and data classes are all very similar, can I make the code better by reducing copy-pasta?
                 - Base-class?
                 - creates way to many files.
+            
+            - generateParamString (EventCommandSerializer) and generateTreeOrderString (MapTreeSerializer) are basically the same.
 
         - Write Functions for setting/generating event-commands of different types.
             - 

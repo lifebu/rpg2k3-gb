@@ -32,6 +32,7 @@ MapTree MapTreeSerializer::FromFile(std::string fileName) {
     return MapTree(0);
 }
 
+// TODO: This could be generalized as generateTreeOrderString is the same.
 std::string generateTreeOrderString(int numOfMaps) {
     std::string treeOrderString = "0 ";
     for (int id = 1; id <= numOfMaps; ++id) {

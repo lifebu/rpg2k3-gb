@@ -1,40 +1,42 @@
 #pragma once
 
-#include "Filemode.h"
-
 #include <string>
 #include <vector>
 
-namespace tinyxml2 { class XMLDocument; }
+
+namespace lcf {
+
+enum TriggerType {
+    AUTORUN = 3,
+    PARALLEL_PROCESS = 4,
+    NONE = 5
+};
+
 class EventCommand;
 
 class CommonEvent {
+    // TODO: Not that nice!
+    friend class CommonEventSerializer;
+
 public:
-    CommonEvent(std::string fileName, FILE_MODE fileMode);
-    CommonEvent(const CommonEvent& other) = delete;
-    CommonEvent(CommonEvent&& other) = delete;
-    ~CommonEvent();
-    
-    CommonEvent& operator=(const CommonEvent& other) = delete;
-    CommonEvent& operator=(CommonEvent&& other) = delete;
+    CommonEvent(uint16_t id, std::string name, TriggerType trigger);
+
+    uint16_t getID();
+    void setID(uint16_t val);
 
     std::string getName();
     void setName(std::string val);
 
-    bool getUseConditionSwitch();
-    void setUseConditionSwitch(bool val);
+    TriggerType getTriggerType();
+    void setTriggerType(TriggerType val);
 
-    uint16_t getConditionSwitchID();
-    void setConditionSwitchID(uint16_t val);
-
-    void addEventCommand(EventCommand& eventCommand);
+    void addEventCommand(EventCommand&& eventCommand);
 
 private:
-    tinyxml2::XMLDocument* file;
-    std::string fileName;
-
+    uint16_t id;
     std::string name;
-    bool useConditionSwitch;
-    uint16_t conditionSwitchID;
+    TriggerType trigger;
     std::vector<EventCommand> eventCommands;
+};
+
 };

@@ -8,6 +8,7 @@
 namespace lcf {
 
 class MapTree {
+    // TODO: Not that nice!
     friend class MapTreeSerializer;
 
 public:

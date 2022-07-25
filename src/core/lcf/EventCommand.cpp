@@ -4,23 +4,12 @@
 #include "thirdparty/tinyxml2/tinyxml2.h"
 
 
+namespace lcf {
+
 // public
-EventCommand::EventCommand(std::string fileName, FILE_MODE fileMode) :
-    fileName(fileName) {
-    
-    file = new tinyxml2::XMLDocument(fileName);
-
-    if(fileMode == IN_MEMORY) {
-        // Read out file and close it.
-
-        file.Clear();
-        delete file;
-    }
+EventCommand::EventCommand(CommandType type, uint8_t indentation, std::string stringParam, std::vector<int32_t> parameters) :
+    type(type), indentation(indentation), stringParam(stringParam), parameters(parameters) {
+    // TODO: use getters/setters for checks?
 }
 
-EventCommand::~EventCommand() {
-    if(fileMode == SYNC_WITH_FILE) {
-        file.SaveFile(fileName, true);
-        delete file;
-    }
-}
+};
