@@ -20,7 +20,7 @@ uint16_t CommonEvent::getID() {
 }
 
 void CommonEvent::setID(uint16_t val) {
-    assert(1 <= val < RPGMAKER::MAX_NUM_SWITCHES);
+    assert(1 <= val < RPGMAKER::MAX_ID);
     id = val;
 }
 

@@ -26,7 +26,7 @@ uint16_t Variable::getID() {
 }
 
 void Variable::setID(uint16_t val) {
-    assert(1 <= val < RPGMAKER::MAX_NUM_SWITCHES);
+    assert(1 <= val < RPGMAKER::MAX_NUM_VARIABLES);
     id = val;
 }
 

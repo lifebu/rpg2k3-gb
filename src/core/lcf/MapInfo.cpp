@@ -17,7 +17,7 @@ uint16_t MapInfo::getID() {
 }
 
 void MapInfo::setID(uint16_t val) {
-    assert(1 <= val < RPGMAKER::MAX_NUM_SWITCHES);
+    assert(1 <= val < RPGMAKER::MAX_ID);
     id = val;
 }
 

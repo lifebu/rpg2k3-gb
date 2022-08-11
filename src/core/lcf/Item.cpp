@@ -18,7 +18,7 @@ uint16_t Item::getID() {
 }
 
 void Item::setID(uint16_t val) {
-    assert(1 <= val < RPGMAKER::MAX_NUM_SWITCHES);
+    assert(1 <= val < RPGMAKER::MAX_NUM_ITEMS);
     id = val;
 }
 

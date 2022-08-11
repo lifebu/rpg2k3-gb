@@ -9,6 +9,7 @@
 namespace RPGMAKER {
     // Ids:
     const static int MIN_ID = 1;
+    const static int MAX_ID = 9999;
 
     // Values
     // If I use the Value Bias.

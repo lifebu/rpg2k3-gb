@@ -17,7 +17,7 @@ uint16_t Character::getID() {
 }
 
 void Character::setID(uint16_t val) {
-    assert(1 <= val < RPGMAKER::MAX_NUM_SWITCHES);
+    assert(1 <= val < RPGMAKER::MAX_NUM_CHARS);
     id = val;
 }
 
