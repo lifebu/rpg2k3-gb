@@ -199,6 +199,10 @@ gb2RPG: Gameboy 2 RPG Maker.
         - Resulting Binary File is: 95,4 MByte.
 
         - less memory usage:
+            - quick solution:
+                - I set BYTES_PER_VAR to 3 to reduce it from 16GB to 6GB and a 550MB .xml files instead of 1.6GB.
+                - More like a workaround for now.
+
             - shortterm solution:
                 - can use https://libexpat.github.io/
                     https://github.com/libexpat/libexpat
