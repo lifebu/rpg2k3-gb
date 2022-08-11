@@ -5,7 +5,7 @@
   <!--indentation indicates where this code belongs (~python)-->
   <indent>1</indent>
   <!--single string parameter-->
-  <string></string>
+  <string>a</string>
   <!--space separated integer parameter list-->
   <parameters>0 1 1 0 0 144 0</parameters>
 </EventCommand>

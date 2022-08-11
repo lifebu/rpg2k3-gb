@@ -15,6 +15,15 @@ CommonEvent::CommonEvent(uint16_t id, std::string name, TriggerType trigger) {
     setTriggerType(trigger);
 }
 
+uint16_t CommonEvent::getID() {
+    return id;
+}
+
+void CommonEvent::setID(uint16_t val) {
+    assert(1 <= val < RPGMAKER::MAX_NUM_SWITCHES);
+    id = val;
+}
+
 std::string CommonEvent::getName() {
     return name;
 }

@@ -7,6 +7,9 @@
 #include <string>
 
 namespace RPGMAKER {
+    // Ids:
+    const static int MIN_ID = 1;
+
     // Values
     // If I use the Value Bias.
     const static bool USE_RPG_VALUE_BIAS = false;

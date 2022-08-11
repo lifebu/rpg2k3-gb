@@ -1,7 +1,5 @@
 #include "MapTree.h"
 
-#include <cassert>
-
 #include "src/core/utilities/RPGHelper.h"
 
 namespace lcf {
@@ -12,8 +10,7 @@ MapTree::MapTree(int numMaps) {
 }
 
 void MapTree::addMapInfo(std::string mapName) {
-    uint16_t nextID = 1 + mapInfos.size();
-    mapInfos.emplace_back(MapInfo(nextID, mapName));
+    mapInfos.emplace_back(getNextID(mapInfos.size()), mapName);
 }
 
 };

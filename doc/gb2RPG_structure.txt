@@ -25,6 +25,8 @@ gb2RPG: Gameboy 2 RPG Maker.
 
     - RPGHelper.h needs a RPGHelper.cpp to not do inlining!
 
+    - Once I'm done with the refactor do additional passes for code quality for example moving instead of copying (use my Short-Version.yml: Coding Task Checklist ).
+
     - Unit tests:
         - Using Catch2.
         - Integrate Unit tests into CMake!
@@ -100,6 +102,13 @@ gb2RPG: Gameboy 2 RPG Maker.
             - REALLY not good that some of the TOFile Versions return tinyxml2::XMLDocument. THis means other parts of the code see that there is tinyxml2 (even though only that it exists, nobody should use it).
 
             - Do I need the getters/setters everywhere?
+                - Delete them and only have them where it is needed.
+                - Think about what is actually mutable.
+                - Database is actually runtime immutable.
+                - No getters are needed when using friend classes for the serializers (and have less of that).
+                - ONly thing that is mutable are character data (CharaRam), switch/variable values and map events (positions).
+                - Look at C++ style getters/setters (overriding operator() etc.)
+
             - Do I want a thirdparty to be able to construct a fresh switch on it's own?
                 - Because they have constructor?
                 - Make it private?
@@ -114,6 +123,24 @@ gb2RPG: Gameboy 2 RPG Maker.
                 - creates way to many files.
             
             - generateParamString (EventCommandSerializer) and generateTreeOrderString (MapTreeSerializer) are basically the same.
+
+            - Only have db serializer public in a header (the only thing I need is toFile/FromFile for that).
+            - The rest (item, switch, char, common event etc.) is private in the db serializer.
+            - Makes less files and makes the tinyxml2 forward decleration in the internal types (switch) Hidden.
+        
+            - Most of the Datatypes are not shared. For example switch, variables, characters, items and common events are only used by the Database file => Can add the class declarations in Database.h and not in so many header files.
+                - The only thing that is actually shared is a eventcommand.
+                - If the definition is inside of the Database class can switches etc. just be POD types instead of classes? (No need for getters/Setters).
+            
+
+            - Expose less of the inner working of the Database class (getter/setter) and think more about how it will actually be used.
+            
+            - MapTree.cpp and Database.cpp:
+                uint16_t nextID = RPGMAKER::MIN_ID + switches.size();
+                Bad code should be wrapped up in a "generate next ID" function (helper function).
+
+            - Database.cpp:
+                - Need a way to add multiple common events from a file into the database. This Needs CommonEventSerializer.FromFile(); But How Do I distinguish between loading a file with a single common event and a file with multiple common events? FromFile() for multiple common events is part of database serializer?            
 
         - Write Functions for setting/generating event-commands of different types.
             - 
@@ -142,7 +169,9 @@ gb2RPG: Gameboy 2 RPG Maker.
             - But I do not know yet how compiler will need to work and how it uses it.
             - Event-Manipulation is similar for Map and Compiler.
     
-        
+    - RPGHelper:
+        - The functions should be in a namespace.
+        - Need a better place for all the functions.
 
     - Memory Leak?:
             //TODO: calling DeepClone/ShallowClone creates a leak somehow (?)

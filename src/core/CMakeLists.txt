@@ -6,6 +6,7 @@ else()
 endif()
 
 set(lcf_headers 
+    lcf/Database.h
     lcf/Switch.h 
     lcf/Variable.h
     lcf/Item.h
@@ -15,6 +16,7 @@ set(lcf_headers
     lcf/MapInfo.h
     lcf/MapTree.h)
 set(lcf_source 
+    lcf/Database.cpp
     lcf/Switch.cpp
     lcf/Variable.cpp
     lcf/Item.cpp
@@ -25,6 +27,7 @@ set(lcf_source
     lcf/MapTree.cpp)
 
 set(serializer_headers 
+    lcf_serializers/DatabaseSerializer.h 
     lcf_serializers/SwitchSerializer.h 
     lcf_serializers/VariableSerializer.h 
     lcf_serializers/ItemSerializer.h 
@@ -34,6 +37,7 @@ set(serializer_headers
     lcf_serializers/MapInfoSerializer.h
     lcf_serializers/MapTreeSerializer.h)
 set(serializer_source 
+    lcf_serializers/DatabaseSerializer.cpp
     lcf_serializers/SwitchSerializer.cpp
     lcf_serializers/VariableSerializer.cpp 
     lcf_serializers/ItemSerializer.cpp

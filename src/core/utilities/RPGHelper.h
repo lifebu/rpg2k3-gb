@@ -53,3 +53,9 @@ inline std::string generateID(int id) {
 
     return str;
 }
+
+
+// Generate the next ID given the number of elements that already exist.
+constexpr inline uint16_t getNextID(int numElems) {
+    return RPGMAKER::MIN_ID + numElems;
+}
