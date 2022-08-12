@@ -15,6 +15,8 @@ class EventPage {
 public:
     EventPage(uint16_t id);
 
+    void addEventCommands(std::vector<EventCommand>& commands);
+
 private:
     uint16_t id;
     std::vector<EventCommand> eventCommands;

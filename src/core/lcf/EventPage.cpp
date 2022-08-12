@@ -12,4 +12,8 @@ EventPage::EventPage(uint16_t id) {
     this->id = id;
 }
 
+void EventPage::addEventCommands(std::vector<EventCommand>& commands) {
+    eventCommands.insert(eventCommands.end(), commands.begin(), commands.end());
+}
+
 };

@@ -3,15 +3,13 @@
 #include "GBFile.h"
 #include "Globals.h"
 
-#include "thirdparty/tinyxml2/tinyxml2.h"
-#include "src/core/utilities/RPGHelper.h"
+#include "src/core/lcf/Map.h"
+#include "src/core/lcf_serializers/MapSerializer.h"
+#include "src/core/lcf_serializers/EventCommandSerializer.h"
 
 #include <iostream>
-#include <sstream>
-#include <cstdio>
 #include <cassert>
 #include <cmath>
-#include <cstdarg>
 
 using namespace gb2rpg;
 
@@ -22,179 +20,92 @@ const static int DMG_EVENT_ID = 1;
 const static int MAP_ROM_ID = 2;
 
 // public
-Map::Map(GBFile& gbFile)
-    : mapDoc(nullptr) {
-    int numOfMapROMs = ((gbFile.getRomSize() * 1024) / (MEMORYSIZES::MAX_PAGES_PER_EVENT * MEMORYSIZES::BYTES_PER_EPAGE)) + 1;
-    mapRAMID = MAP_ROM_ID + numOfMapROMs;
-
-    mapDoc = new tinyxml2::XMLDocument(TEMPLATES::MAP);
-
-    generateDMGROM();
-    generateMapROM(gbFile, numOfMapROMs);
-    generateMapRAM();
-}
-
-Map::~Map() {
-    if(mapDoc) {
-        delete mapDoc;
-        mapDoc = nullptr;
-    }
-}
-
 void Map::genMapFiles(std::vector<GBFile>& gbFiles) {
     std::cout << "Generating Map Files.\n";
     for(int i = 0; i < gbFiles.size(); ++i) {
+        auto& gbFile = gbFiles.at(i);
+        int numOfMapROMs = ((gbFile.getRomSize() * 1024) / (MEMORYSIZES::MAX_PAGES_PER_EVENT * MEMORYSIZES::BYTES_PER_EPAGE)) + 1;
+
         std::string fileName = EXPORTS::MAP_FILE_BASE + generateID(i + 1) + EXPORTS::MAP_FILE_TYPE;
         std::string filePath = PROJECT::PROJECT_DIR + fileName;
-
         std::cout << "Generating Map: " << fileName << "\n";
-        Map map = Map(gbFiles.at(i));
-        
-        
-        map.mapDoc->SaveFile(filePath.c_str(), true);
+
+        lcf::Map map;
+
+        generateDMGROM(map);
+        generateMapROM(map, gbFile, numOfMapROMs);
+        generateMapRAM(map);
+
+        lcf::MapSerializer::ToFile(filePath, map);
     }
 }
 
-
 // private
-void Map::generateDMGROM() {
-    tinyxml2::XMLDocument event(TEMPLATES::EVENT);
-    tinyxml2::XMLDocument eventPage(TEMPLATES::EVENT_PAGE);
-    tinyxml2::XMLDocument DMGROM(TEMPLATES::DMG_ROM);
-    
+void Map::generateDMGROM(lcf::Map& map) {
+    lcf::Event& event = map.addEvent("DMGROM", 0, 0);
+    lcf::EventPage& eventPage = event.addEventPage();
 
-    // Add DMGROM into event-page
-    DMGROM.DeepCloneInsertBackSiblings(&eventPage, eventPage.TraverseElement("//event_commands"));
-
-    // Set Event Page ID
-    eventPage.RootElement()->SetAttribute("id", generateID(1).c_str());
-
-    // Insert event-page into event.
-    eventPage.DeepCloneInsertBack(&event, event.TraverseElement("//pages"));
-
-    // Set Event ID, Name and Coordinate
-    std::string name = "DMGROM";
-    setEventIDNameCoord(&event, DMG_EVENT_ID, name, 0, 0);
-
-    // Insert DMG Event into map
-    event.DeepCloneInsertBack(mapDoc, mapDoc->TraverseElement("/LMU//events"));
+    std::vector<lcf::EventCommand> DMGCommands = lcf::EventCommandSerializer::MultipleFromFile(TEMPLATES::DMG_ROM);
+    eventPage.addEventCommands(DMGCommands);
 }
 
-void Map::generateMapROM(GBFile& gbFile, int numOfMapROMs) {
-    // create all necessary ROM Events
-    for(int eventID = MAP_ROM_ID; eventID < MAP_ROM_ID + numOfMapROMs; ++eventID) {
-        tinyxml2::XMLDocument event(TEMPLATES::EVENT);
-        // creating all necessary event pages.
-        for (int pageID = 1; pageID <= MEMORYSIZES::MAX_PAGES_PER_EVENT; ++pageID) {
-            if(gbFile.bytesRemaining() <= 0) {
-                // The last event-page had all Bytes we needed
-                break;
-            }
+void Map::generateMapROM(lcf::Map& map, GBFile& gbFile, int numOfMapROMs) {
+    // pre-load data
+    std::vector<lcf::EventCommand> mapRomHeader = lcf::EventCommandSerializer::MultipleFromFile(TEMPLATES::MAP_ROM_HEADER);
+    std::vector<lcf::EventCommand> mapRomLabel = lcf::EventCommandSerializer::MultipleFromFile(TEMPLATES::MAP_ROM_LABEL);
+    int startingID = map.nextEventID();
 
-            tinyxml2::XMLDocument eventPage(TEMPLATES::EVENT_PAGE);
+    // create all necessary ROM Events
+    for(int i = 0; i < numOfMapROMs; ++i) {        
+        std::string name = std::string("ROM") + generateID(map.nextEventID() - startingID + 1);
+        int x = (map.nextEventID() - 1) % RPGMAKER::MAP_SIZE_X;
+        int y = (map.nextEventID() - 1) / RPGMAKER::MAP_SIZE_Y;
+
+        lcf::Event& event = map.addEvent(name, x, y);
+
+        // creating all necessary event pages.
+        for (int j = 0; j < MEMORYSIZES::MAX_PAGES_PER_EVENT; ++j) {
+            // The last event-page had all Bytes we needed
+            if(gbFile.bytesRemaining() <= 0) break;
+
+            lcf::EventPage& eventPage = event.addEventPage();
             int numLabels = calcNumOfLabels(gbFile);
             bool lastEventPage = isLastEventPage(gbFile);
 
-    
-            // 1st: Fill event-page with map-rom-header commands
-            tinyxml2::XMLDocument mapRomHeader(TEMPLATES::MAP_ROM_HEADER);
-            setupMapRomHeader(&mapRomHeader, numLabels);
-            mapRomHeader.DeepCloneInsertBackSiblings(&eventPage, eventPage.TraverseElement("//event_commands"));
+            // Fill event-page with map-rom-header commands
+            // TODO: once eventCommandSerializer is implemented!
+            //setupMapRomHeader(mapRomHeader, numLabels);
+            eventPage.addEventCommands(mapRomHeader);
 
-            // 2nd: Fill event-page with map-rom-label commands
-            for(int labelID = 1; labelID < (numLabels + 1); ++labelID) {
-                tinyxml2::XMLDocument mapRomLabel(TEMPLATES::MAP_ROM_LABEL);
-
+            // Fill event-page with map-rom-label commands
+            for (int labelID = 1; labelID <= numLabels; ++labelID) {
                 int firstVar = packVariable(gbFile.getBytes(MEMORYSIZES::BYTES_PER_VAR));
                 int secondVar = packVariable(gbFile.peekBytes(MEMORYSIZES::BYTES_PER_VAR));
                 if(lastEventPage && labelID == numLabels) {
                     // Second variable should indicate garbage value, as it contains data after the GBFile. 
                     secondVar = -9999999;
                 }
-                setupMapRomLabel(&mapRomLabel, labelID, numLabels, firstVar, secondVar);
-                mapRomLabel.DeepCloneInsertBackSiblings(&eventPage, eventPage.TraverseElement("//event_commands"));
+
+                // TODO: once eventCommandSerializer is implemented!
+                //setupMapRomLabel(mapRomLabel, labelID, numLabels, firstVar, secondVar);
+                eventPage.addEventCommands(mapRomLabel);
             }
-
-            // 3rd: Set Event Page ID
-            eventPage.RootElement()->SetAttribute("id", generateID(pageID).c_str());
-
-            // 5th: Insert event-page into event
-            eventPage.DeepCloneInsertBack(&event, event.TraverseElement("//pages"));
         }
-
-        // Set Event ID, Name and Coordinate
-        std::string name = std::string("ROM") + generateID(eventID - MAP_ROM_ID + 1);
-        int xCoord = (eventID - 1) % RPGMAKER::MAP_SIZE_X;
-        int yCoord = (eventID - 1) / RPGMAKER::MAP_SIZE_Y;
-        setEventIDNameCoord(&event, eventID, name, xCoord, yCoord);
-
-        // Insert event into map
-        event.DeepCloneInsertBack(mapDoc, mapDoc->TraverseElement("/LMU//events"));
     }
 }
 
-void Map::generateMapRAM() {
-    tinyxml2::XMLDocument event(TEMPLATES::EVENT);
-    tinyxml2::XMLDocument eventPage(TEMPLATES::EVENT_PAGE);
-
-    // insert event-page into event.
-    eventPage.DeepCloneInsertBack(&event, event.TraverseElement("//pages"));
-
+void Map::generateMapRAM(lcf::Map& map) {
+    int startingID = map.nextEventID();
     for (int i = 0; i < MEMORYSIZES::NUM_DMG_RAM_EVENTS; ++i) {
+        std::string name = std::string("RAM") + generateID(map.nextEventID() - startingID + 1);
+        int x = (map.nextEventID() - 1) % RPGMAKER::MAP_SIZE_X;
+        int y = (map.nextEventID() - 1) / RPGMAKER::MAP_SIZE_Y;
 
-        // Set Event ID, Name and Coordinate
-        std::string name = std::string("RAM") + generateID(i + 1);
-        int eventID = mapRAMID + i;
-        int xCoord = (eventID - 1) % RPGMAKER::MAP_SIZE_X;
-        int yCoord = (eventID - 1) / RPGMAKER::MAP_SIZE_Y;
-        setEventIDNameCoord(&event, eventID, name, xCoord, yCoord);
-
-        // Insert event into map
-        event.DeepCloneInsertBack(mapDoc, mapDoc->TraverseElement("/LMU//events"));
+        lcf::Event& event = map.addEvent(name, x, y);
+        lcf::EventPage& eventPage = event.addEventPage();
     }
 }
 
-// TODO: This should exist in a different general project.
-void Map::setEventIDNameCoord(tinyxml2::XMLDocument* event, int id, std::string& name, int x, int y) {
-    assert(x >= 0 && x < RPGMAKER::MAP_SIZE_X);
-    assert(y >= 0 && y < RPGMAKER::MAP_SIZE_Y);
-
-    // Set Event ID
-    event->RootElement()->SetAttribute("id", generateID(id).c_str());
-
-    // Set Event Name
-    auto* nameElem = event->TraverseElement("//name")->FirstChild();
-    nameElem->SetValue((name).c_str());
-
-    // Set Event Coordinates
-    auto* xCoord = event->TraverseElement("//x")->FirstChild();
-    xCoord->SetValue(std::to_string(x).c_str());
-
-    auto* yCoord = event->TraverseElement("//y")->FirstChild();
-    yCoord->SetValue(std::to_string(y).c_str());
-}
-
-// TODO: This should exist in a different general project. And have wrapper functions around them (with fixed variable size) that allow named parameters which makes this problem easier. And to not have magic numbers I need enums/typedeffs for each command type!
-void setCommandParameters(tinyxml2::XMLNode* command, int numParam, ...) {
-    va_list args;
-    std::stringstream sstr;
-    va_start(args, numParam);
-    for(int i = 0; i < numParam; ++i ) {
-        sstr << va_arg(args, int);
-        if(i < (numParam - 1)) {
-            sstr << " ";
-        } 
-    }
-    va_end(args);
-
-    auto* parameters = command->TraverseElement("/parameters")->FirstChild()->ToText();
-    parameters->SetValue(sstr.str().c_str());
-}
-
-void setCommandType(tinyxml2::XMLNode* command, int newType) {
-    auto* code = command->FirstChildElement("code")->FirstChild();
-    code->SetValue(std::to_string(newType).c_str());
-}
 
 // Helper functions
 int Map::calcNumOfLabels(GBFile& gbFile) {
@@ -219,67 +130,62 @@ bool Map::isLastEventPage(GBFile& gbFile) {
     return isLastEventPage;
 }
 
-void Map::setupMapRomHeader(tinyxml2::XMLDocument* mapRomHeader, int numLabels) {
+void Map::setupMapRomHeader(std::vector<lcf::EventCommand>& mapRomHeader, int numLabels) {
+    // TODO: This is not great code But I have not yet settled on a good way to change the commands.
+    assert(mapRomHeader.size() == 4);
+
     // Need to change the boilerplate code (see map_rom_header.xml for details).
     // ByteOffset = (ByteOffset / BYTES_PER_VAR):
-    auto* command = mapRomHeader->RootElement()->TraverseElement("./EventCommand");
-    setCommandParameters(command, 7, 0, VARMAPPING::BYTE_OFFSET_ID, VARMAPPING::BYTE_OFFSET_ID, 4, 0, MEMORYSIZES::BYTES_PER_VAR, 0);
+    mapRomHeader.at(0).setParameters({7, 0, VARMAPPING::BYTE_OFFSET_ID, VARMAPPING::BYTE_OFFSET_ID, 4, 0, MEMORYSIZES::BYTES_PER_VAR, 0});
 
     // LabelID = ByteOffset
-    command = command->TraverseElement("./EventCommand");
-    setCommandParameters(command, 7, 0, VARMAPPING::LABEL_ID, VARMAPPING::LABEL_ID, 0, 1, VARMAPPING::BYTE_OFFSET_ID, 0);
+    mapRomHeader.at(1).setParameters({7, 0, VARMAPPING::LABEL_ID, VARMAPPING::LABEL_ID, 0, 1, VARMAPPING::BYTE_OFFSET_ID, 0});
 
-    // LabelID += 1:
-    command = command->TraverseElement("./EventCommand");
-    setCommandParameters(command, 7, 0, VARMAPPING::LABEL_ID, VARMAPPING::LABEL_ID, 1, 0, 1, 0);
+    // LabelID = ByteOffset
+    mapRomHeader.at(2).setParameters({7, 0, VARMAPPING::LABEL_ID, VARMAPPING::LABEL_ID, 1, 0, 1, 0});
 
-    // JumpToLabel numLabels / 2
-    command = command->TraverseElement("./EventCommand");
-    setCommandParameters(command, 1, numLabels / 2);
+    // LabelID = ByteOffset
+    mapRomHeader.at(4).setParameters({1, numLabels / 2});
 }
 
-void Map::setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID, int numLabels, int firstVar, int secondVar) {
+void Map::setupMapRomLabel(std::vector<lcf::EventCommand>& mapRomLabel, int labelID, int numLabels, int firstVar, int secondVar) {
+    // TODO: This is not great code But I have not yet settled on a good way to change the commands.
+    assert(mapRomLabel.size() == 7);
+
     // Need to change the boilerplate code (see map_rom_label.xml for details).
     // Label X
-    auto* command = mapRomLabel->RootElement();
-    setCommandParameters(command, 1, labelID);
+    mapRomLabel.at(0).setParameters({1, labelID});
 
     // IF(LabelID < X)
-    command = command->TraverseElement("./EventCommand");
-    setCommandParameters(command, 6, 1, VARMAPPING::LABEL_ID, 0, labelID, 4, 0);
+    mapRomLabel.at(1).setParameters({6, 1, VARMAPPING::LABEL_ID, 0, labelID, 4, 0});
     
     // JumpToLabel X - (min(X, 1.000 - X) / 2)
-    command = command->TraverseElement("./EventCommand");
     float minDistance = std::min(labelID, numLabels - labelID);
     if(labelID == 1) {
         // The first MapRomLabel does not need to jump here, instead change the command to EndEventProcessing
-        setCommandType(command, 12310);
-        setCommandParameters(command, 0);
+        mapRomLabel.at(2).setType(lcf::CommandType::END_EVENT_PROCESSING);
+        mapRomLabel.at(2).setParameters({0});
     } else {
         int newID = labelID - ceil(minDistance/2.0f);
-        setCommandParameters(command, 1, newID);
+        mapRomLabel.at(2).setParameters({1, newID});
     }
 
     // IF(LabelID > X)
-    command = command->TraverseElement("./EventCommand./EventCommand./EventCommand");
-    setCommandParameters(command, 6, 1, VARMAPPING::LABEL_ID, 0, labelID, 3, 0);
+    mapRomLabel.at(3).setParameters({6, 1, VARMAPPING::LABEL_ID, 0, labelID, 3, 0});
 
     // JumpToLabel X + (min(X, 1.000 - X) / 2)
-    command = command->TraverseElement("./EventCommand");
     if(labelID == numLabels) {
         // The last MapRomLabel does not need to jump here, instead change the command to EndEventProcessing.
-        setCommandType(command, 12310);
-        setCommandParameters(command, 0);
+        mapRomLabel.at(4).setType(lcf::CommandType::END_EVENT_PROCESSING);
+        mapRomLabel.at(4).setParameters({0});
     } else {
         int newID = labelID + ceil(minDistance/2.0f);
-        setCommandParameters(command, 1, newID);
+        mapRomLabel.at(4).setParameters({1, newID});
     }
 
     // READVAR1 = LABELXVALUE1
-    command = command->TraverseElement("./EventCommand./EventCommand./EventCommand");
-    setCommandParameters(command, 7, 0, VARMAPPING::READ_VAR_1, VARMAPPING::READ_VAR_1, 0, 0, firstVar, 0);
+    mapRomLabel.at(5).setParameters({7, 0, VARMAPPING::READ_VAR_1, VARMAPPING::READ_VAR_1, 0, 0, firstVar, 0});
 
     // READVAR2 = LABELXVALUE2
-    command = command->TraverseElement("./EventCommand");
-    setCommandParameters(command, 7, 0, VARMAPPING::READ_VAR_2, VARMAPPING::READ_VAR_2, 0, 0, secondVar, 0);
+    mapRomLabel.at(6).setParameters({7, 0, VARMAPPING::READ_VAR_2, VARMAPPING::READ_VAR_2, 0, 0, secondVar, 0});
 }

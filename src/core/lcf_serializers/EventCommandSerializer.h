@@ -16,6 +16,8 @@ public:
 
     static EventCommand FromFile(std::string fileName);
     static std::unique_ptr<tinyxml2::XMLDocument> ToFile(EventCommand& elem);
+
+    static std::vector<EventCommand> MultipleFromFile(std::string fileName);
 };
 
 };

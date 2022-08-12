@@ -12,4 +12,8 @@ Event::Event(uint16_t id, std::string name, uint16_t x, uint16_t y) :
     assert(1 <= id < MEMORYSIZES::MAX_PAGES_PER_EVENT);
 }
 
+EventPage& Event::addEventPage() {
+    return eventPages.emplace_back(getNextID(eventPages.size()));
+}
+
 };

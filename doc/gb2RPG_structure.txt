@@ -27,6 +27,9 @@ gb2RPG: Gameboy 2 RPG Maker.
 
     - Once I'm done with the refactor do additional passes for code quality for example moving instead of copying (use my Short-Version.yml: Coding Task Checklist ).
 
+    - stop using: "using namespace gb2rpg"
+        => better to read if you know the namespace.
+
     - Unit tests:
         - Using Catch2.
         - Integrate Unit tests into CMake!
@@ -66,6 +69,10 @@ gb2RPG: Gameboy 2 RPG Maker.
 
 
             - MAX_PAGES_PER_EVENT should be in RPGMAKER not MEMORY_SIZES.   
+
+
+            - Need Constructors that allow me to reserve space for the types that have std::vectors.
+                - If I can now the size beforehand.
             
 
             - Write the usage code first (MapTree.cpp generator, environment, compiler (later!)).
@@ -92,6 +99,10 @@ gb2RPG: Gameboy 2 RPG Maker.
 
             - Variable is basically the same as Switch, Can I combine them?
 
+            - Does it make sense to have these nested Serializers, so that I don't have to reuse code?
+                - It creates so much more code.
+                - better to just have a database serializer, with the database members being classes that have public members (most of them are const), and a constructor ?
+
             - should the serializers be the only way to instantiate a data class like Switch?
                 - If not make constructor private and use friend class.
             
@@ -109,6 +120,21 @@ gb2RPG: Gameboy 2 RPG Maker.
                 - Similiar for Map and MapInfo.
                 - makes the tinyxml2::XMLDocument returnvalue hidden!
                 - I could organize the serializers of private in namespaces instead of a whole class. (Because they are static anyway, and cannot be initialized).
+            
+
+            - IDs should be managed!
+                - How to correctly add an eventpage to the event and have the ID be managed for you?
+                - the add function returns a reference to the newly created object?
+                =>
+                void addX(instance);
+                void addXs(std::vector<instance>);
+                instance& addX(parameters);
+            
+
+            - Map::setupMapRomHeader, setupMapRomLabel:
+                - Do I want to load the template file and change every parameter, or just generate it on the fly?
+                - They should later create it and return it!
+
         
             - Most of the Datatypes are not shared. For example switch, variables, characters, items and common events are only used by the Database file => Can add the class declarations in Database.h and not in so many header files.
                 - The only thing that is actually shared is a eventcommand.

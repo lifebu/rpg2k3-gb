@@ -27,7 +27,7 @@ void Database::genDatabase() {
     genVariables(database);
     genItems(database);
     genCharacters(database);
-    //genCommonEvents(database);
+    genCommonEvents(database);
 
     lcf::DatabaseSerializer::ToFile(PROJECT::PROJECT_DIR + EXPORTS::DATABASE_FILE, database);
 }
@@ -103,6 +103,13 @@ void Database::genCharacters(lcf::Database& database) {
 }
 
 void Database::genCommonEvents(lcf::Database& database) {
+    /*
+    // TODO: check if file exists
+    auto commonEvents = lcf::CommonEventSerializer::MultipleFromFile(PROJECT::PROJECT_DIR + PROJECT::COMMON_EVENTS);
+
+    database.addCommonEvents(commonEvents);
+    */
+
     // TODO: read the common event file (parse it with) and add each common event to the database.
     /*
     tinyxml2::XMLDocument commonEvents((PROJECT::PROJECT_DIR + PROJECT::COMMON_EVENTS).c_str());

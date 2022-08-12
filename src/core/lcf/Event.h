@@ -13,7 +13,7 @@ class Event {
 public:
     Event(uint16_t id, std::string name, uint16_t x, uint16_t y);
 
-    void addEventPage();
+    EventPage& addEventPage();
 
 private:
     uint16_t id;

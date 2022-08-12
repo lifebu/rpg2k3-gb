@@ -1,27 +1,22 @@
 #pragma once
 
-#include "Filemode.h"
+#include "Event.h"
 
 #include <string>
 #include <vector>
 
 namespace tinyxml2 { class XMLDocument; }
-class Event;
 
+namespace lcf {
 
 class Map {
+    friend class MapSerializer;
 public:
-    Map(std::string fileName, FILE_MODE fileMode);
-    Map(const Map& other) = delete;
-    Map(Map&& other) = delete;
-    ~Map();
-    
-    Map& operator=(const Map& other) = delete;
-    Map& operator=(Map&& other) = delete;
+    Event& addEvent(std::string name, uint16_t x, uint16_t y);
+    uint16_t nextEventID();
 
 private:
-    tinyxml2::XMLDocument* file;
-    std::string fileName;
-
     std::vector<Event> events;
+};
+
 };

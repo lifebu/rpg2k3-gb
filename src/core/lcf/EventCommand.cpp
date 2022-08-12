@@ -12,4 +12,12 @@ EventCommand::EventCommand(CommandType type, uint8_t indentation, std::string st
     // TODO: use getters/setters for checks?
 }
 
+void EventCommand::setParameters(std::vector<int32_t> parameters) {
+    this->parameters = parameters;
+}
+
+void EventCommand::setType(CommandType type) {
+    this->type = type;
+}
+
 };

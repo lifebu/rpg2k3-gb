@@ -4,8 +4,9 @@
 #include <string>
 
 
-namespace tinyxml2 {
-    class XMLDocument;
+namespace lcf {
+    class Map;
+    class EventCommand;
 };
 
 namespace gb2rpg {
@@ -13,42 +14,19 @@ namespace gb2rpg {
 
     class Map {
     public:
-        Map(GBFile& gbFile);
-        ~Map();
-
-
-        // TODO: 
-        // could make this non-copyable but moveable, makes semantic sense.
-        //  - could save gbFile to recreate event on copy 
-        //  - shallow copy on event => BUT this requires other to be non-const. 
-        Map(const Map& other) {
-            throw;
-        };
-        Map& operator=(const Map& other) = delete;
-
-        Map(Map&& other) {
-            throw;
-        };
-        Map& operator=(Map&& other) = delete;
+        Map() = delete;
 
         static void genMapFiles(std::vector<GBFile>& gbFiles);
 
     private:
-        void generateDMGROM();
-        void generateMapROM(GBFile& gbFile, int numOfMapROMs);
-        void generateMapRAM();
+        static void generateDMGROM(lcf::Map& map);
+        static void generateMapROM(lcf::Map& map, GBFile& gbFile, int numOfMapROMs);
+        static void generateMapRAM(lcf::Map& map);
 
         // Helper functions
-        int calcNumOfLabels(GBFile& gbFile);
-        bool isLastEventPage(GBFile& gbFile);
-        void setupMapRomHeader(tinyxml2::XMLDocument* mapRomHeader, int numLabels);
-        void setupMapRomLabel(tinyxml2::XMLDocument* mapRomLabel, int labelID, int numLabels, int firstVar, int secondVar);
-
-        // TODO: Temporary:
-        void setEventIDNameCoord(tinyxml2::XMLDocument* event, int id, std::string& name, int x, int y);
-
-        tinyxml2::XMLDocument* mapDoc;
-        // MAP RAM Events start with this ID.
-        int mapRAMID;
+        static int calcNumOfLabels(GBFile& gbFile);
+        static bool isLastEventPage(GBFile& gbFile);
+        static void setupMapRomHeader(std::vector<lcf::EventCommand>& mapRomHeader, int numLabels);
+        static void setupMapRomLabel(std::vector<lcf::EventCommand>& mapRomLabel, int labelID, int numLabels, int firstVar, int secondVar);
     };
 };
