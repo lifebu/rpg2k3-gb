@@ -15,6 +15,7 @@ namespace MEMORYSIZES {
 
 
     // Map-ROM:
+    // TODO: This should probably go into RPGMAKER not MEMORY_SIZES.
     // How many pages one Event can have
     const static int MAX_PAGES_PER_EVENT = 100;
     // TODO: which BYTES_PER_VAR values is best?

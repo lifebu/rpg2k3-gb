@@ -1,27 +1,23 @@
 #pragma once
 
-#include "Filemode.h"
+#include "EventCommand.h"
 
 #include <string>
 #include <vector>
 
-namespace tinyxml2 { class XMLDocument; }
+
+namespace lcf {
+
 class EventCommand;
 
 class EventPage {
+    friend class EventPageSerializer;
 public:
-    EventPage(std::string fileName, FILE_MODE fileMode);
-    EventPage(const EventPage& other) = delete;
-    EventPage(EventPage&& other) = delete;
-    ~EventPage();
-    
-    EventPage& operator=(const EventPage& other) = delete;
-    EventPage& operator=(EventPage&& other) = delete;
+    EventPage(uint16_t id);
 
 private:
-    tinyxml2::XMLDocument* file;
-    std::string fileName;
-
     uint16_t id;
     std::vector<EventCommand> eventCommands;
+};
+
 };

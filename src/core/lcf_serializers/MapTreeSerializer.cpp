@@ -46,10 +46,10 @@ std::string generateTreeOrderString(int numOfMaps) {
 void MapTreeSerializer::ToFile(std::string fileName, MapTree& mapTree) {
     tinyxml2::XMLDocument mapTreeTempl(TEMPLATES::MAP_TREE);
 
+    // Insert map infos in to the maptree.
     for(auto& mapInfo : mapTree.mapInfos) {
         auto mapInfoDoc = MapInfoSerializer::ToFile(mapInfo);
 
-        // Insert map info in to the maptree.
         mapInfoDoc->DeepCloneInsertBack(&mapTreeTempl, mapTreeTempl.TraverseElement("/LMT/TreeMap/maps"));
     }
 

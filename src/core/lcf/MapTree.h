@@ -1,9 +1,10 @@
 #pragma once
 
+#include "MapInfo.h"
+
 #include <string>
 #include <vector>
 
-#include "MapInfo.h"
 
 namespace lcf {
 

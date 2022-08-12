@@ -34,60 +34,39 @@ gb2RPG: Gameboy 2 RPG Maker.
     - Create the "FromFile()" Functions later!
         => Can really test them by generating the file (ToFile) and then loading them again (FromFile)!
 
-    - Abstract away the actual Library I'm using to load/save and manipulate the RPGMaker Files (also needed later for Compiler).
-        - Serialization:
-            Import:
-                - Load all necessary data from the file and place it into a in-memory representation and close the file. 
-                - Not all data is needed for what I want to manipulate, only parse that.
-            Export:
-                - Save all the data from the class into the file. 
-                - Load the template for the data.
-                - Replace data with members from class.
-                - Save template again.
-                - Basically the export here does similiar thing to Map generation.
-            
-            - For each Data member (Switch.h) have a Serializer (SwitchSerializer.h)
-            - Having Import/Export in own .h file means there is only One places that know of the actual file library and type (XML, or binary) for each data type.
-            - Not every file needs a Import and Export function. Some only need import!
-
-        - Data (Switch.h, Event.h):
-            - ONLY: an in-Memory representation of ONLY the data I need to change for my software.
-            - e.g. Map: only have the list of events, the rest is never touched.
-            - These should be non-copyable, only moveable.
-
-        
-        - More High-Level File changes.
-        - Can then silently change out tinyxml2 for other library.
-        - Also: Makes Generator Code more readable. Has to focus more on what you need to generate and not how to manipulate the underlying file.
+    - Project File Data and Serializer (for file generation, compiler and Runtime):
+        - Idea:
+            - Serialization:
+                - Not every data type needs a Import and Export function. Some only need import!
+                Import:
+                    - Load all necessary data from the file and place it into a in-memory representation and close the file. 
+                    - Not all data is needed for what I want to manipulate, only parse that.
+                Export:
+                    - Save all the data from the class into the file. 
+                    - Load the template for the data.
+                    - Replace data with members from class.
+                    - Save template again.
+                    - Basically the export here does similiar thing to Map generation.
+                   
+            - Data (Switch.h, Event.h):
+                - ONLY: an in-Memory representation of ONLY the data I need to change for my software.
+                - e.g. Map: only have the list of events, the rest is never touched.
+                - These should be non-copyable, only moveable.
 
         - To-DO:
             - Order:
-                MapTree:
-                    - MapInfo + Serializer.
-                    - MapTree + Serializer.
                 Map:
                     - Event + Serializer.
                     - EventPage + Serializer.
-                    - EventCommand + Serializer.
-                Database:
-                    - Switch + Serializer.
-                    - Variable + Serializer.
-                    - Character + Serializer.
-                    - Item + Serializer.
-                    - CommonEvent + Serializer.
-                    - Database + Serializer.
+
+            - Not every file needs a Import and Export function. Some only need import!
+
+            - Copyability of these data classes? 
+                - most should be non-copyable, only moveable.       
+
+
+            - MAX_PAGES_PER_EVENT should be in RPGMAKER not MEMORY_SIZES.   
             
-            - toFile()/FromFile():
-                - PROBLEM: I want higher level files to just use the lower level "toFile()" function. to generate the file.
-                - How to reuse implementation of partial files.
-                - So that MapTree does not have to re-implement the file generation for MapInfo. It can just iterate over each map and call toFile() for each mapInfo it needs to create!
-                - Have two versions: one that allows you to specify a file via a filepath and one that allows you to have a file already open?
-            
-            
-            - When adding certain elements (like addMapInfo()) have two versions:
-                - 1: needs instance of mapInfo to be added. (move and copy)
-                - 2: one that takes parameter subset. for mapInfo: only name. ID's should be automatically managed in the mapTree. Makes usage code easier.
-                    - Can do that for variables, switches, events, event pages etc.
 
             - Write the usage code first (MapTree.cpp generator, environment, compiler (later!)).
             - usage: 
@@ -100,6 +79,7 @@ gb2RPG: Gameboy 2 RPG Maker.
             - Delete the TEMPLATES in Globals.h for gb2rpg once the serializers are all correctly implemented.
 
             - REALLY not good that some of the TOFile Versions return tinyxml2::XMLDocument. THis means other parts of the code see that there is tinyxml2 (even though only that it exists, nobody should use it).
+                => hide them as from the outside only the high-level files (Database, Map, Maptree are needed).
 
             - Do I need the getters/setters everywhere?
                 - Delete them and only have them where it is needed.
@@ -108,11 +88,10 @@ gb2RPG: Gameboy 2 RPG Maker.
                 - No getters are needed when using friend classes for the serializers (and have less of that).
                 - ONly thing that is mutable are character data (CharaRam), switch/variable values and map events (positions).
                 - Look at C++ style getters/setters (overriding operator() etc.)
+                - Expose less of the inner working of the Database class (getter/setter) and think more about how it will actually be used.
 
-            - Do I want a thirdparty to be able to construct a fresh switch on it's own?
-                - Because they have constructor?
-                - Make it private?
             - Variable is basically the same as Switch, Can I combine them?
+
             - should the serializers be the only way to instantiate a data class like Switch?
                 - If not make constructor private and use friend class.
             
@@ -125,20 +104,16 @@ gb2RPG: Gameboy 2 RPG Maker.
             - generateParamString (EventCommandSerializer) and generateTreeOrderString (MapTreeSerializer) are basically the same.
 
             - Only have db serializer public in a header (the only thing I need is toFile/FromFile for that).
-            - The rest (item, switch, char, common event etc.) is private in the db serializer.
-            - Makes less files and makes the tinyxml2 forward decleration in the internal types (switch) Hidden.
+                - The rest (item, switch, char, common event etc.) is private in the db serializer.
+                - Makes less files and makes the tinyxml2 forward decleration in the internal types (switch) Hidden.
+                - Similiar for Map and MapInfo.
+                - makes the tinyxml2::XMLDocument returnvalue hidden!
+                - I could organize the serializers of private in namespaces instead of a whole class. (Because they are static anyway, and cannot be initialized).
         
             - Most of the Datatypes are not shared. For example switch, variables, characters, items and common events are only used by the Database file => Can add the class declarations in Database.h and not in so many header files.
                 - The only thing that is actually shared is a eventcommand.
                 - If the definition is inside of the Database class can switches etc. just be POD types instead of classes? (No need for getters/Setters).
             
-
-            - Expose less of the inner working of the Database class (getter/setter) and think more about how it will actually be used.
-            
-            - MapTree.cpp and Database.cpp:
-                uint16_t nextID = RPGMAKER::MIN_ID + switches.size();
-                Bad code should be wrapped up in a "generate next ID" function (helper function).
-
             - Database.cpp:
                 - Need a way to add multiple common events from a file into the database. This Needs CommonEventSerializer.FromFile(); But How Do I distinguish between loading a file with a single common event and a file with multiple common events? FromFile() for multiple common events is part of database serializer?            
 

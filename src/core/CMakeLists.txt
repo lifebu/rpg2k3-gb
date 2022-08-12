@@ -14,7 +14,9 @@ set(lcf_headers
     lcf/CommonEvent.h
     lcf/EventCommand.h
     lcf/MapInfo.h
-    lcf/MapTree.h)
+    lcf/MapTree.h
+    lcf/EventPage.h
+    lcf/Event.h)
 set(lcf_source 
     lcf/Database.cpp
     lcf/Switch.cpp
@@ -24,7 +26,9 @@ set(lcf_source
     lcf/CommonEvent.cpp
     lcf/EventCommand.cpp
     lcf/MapInfo.cpp
-    lcf/MapTree.cpp)
+    lcf/MapTree.cpp
+    lcf/EventPage.cpp
+    lcf/Event.cpp)
 
 set(serializer_headers 
     lcf_serializers/DatabaseSerializer.h 
@@ -35,7 +39,9 @@ set(serializer_headers
     lcf_serializers/CommonEventSerializer.h
     lcf_serializers/EventCommandSerializer.h
     lcf_serializers/MapInfoSerializer.h
-    lcf_serializers/MapTreeSerializer.h)
+    lcf_serializers/MapTreeSerializer.h
+    lcf_serializers/EventSerializer.h
+    lcf_serializers/EventPageSerializer.h)
 set(serializer_source 
     lcf_serializers/DatabaseSerializer.cpp
     lcf_serializers/SwitchSerializer.cpp
@@ -45,7 +51,9 @@ set(serializer_source
     lcf_serializers/CommonEventSerializer.cpp
     lcf_serializers/EventCommandSerializer.cpp
     lcf_serializers/MapInfoSerializer.cpp
-    lcf_serializers/MapTreeSerializer.cpp)
+    lcf_serializers/MapTreeSerializer.cpp
+    lcf_serializers/EventSerializer.cpp
+    lcf_serializers/EventPageSerializer.cpp)
 
 set(utility_headers utilities/RPGHelper.h)
 
