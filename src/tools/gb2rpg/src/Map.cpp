@@ -168,10 +168,10 @@ void Map::setEventIDNameCoord(tinyxml2::XMLDocument* event, int id, std::string&
 
     // Set Event Coordinates
     auto* xCoord = event->TraverseElement("//x")->FirstChild();
-    xCoord->SetValue(std::to_string((id - 1) % RPGMAKER::MAP_SIZE_X).c_str());
+    xCoord->SetValue(std::to_string(x).c_str());
 
     auto* yCoord = event->TraverseElement("//y")->FirstChild();
-    yCoord->SetValue(std::to_string((id - 1) / RPGMAKER::MAP_SIZE_Y).c_str());
+    yCoord->SetValue(std::to_string(y).c_str());
 }
 
 // TODO: This should exist in a different general project. And have wrapper functions around them (with fixed variable size) that allow named parameters which makes this problem easier. And to not have magic numbers I need enums/typedeffs for each command type!
