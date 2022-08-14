@@ -23,8 +23,6 @@ gb2RPG: Gameboy 2 RPG Maker.
         =>
         #include "core/lcf/Switch.h"
 
-    - RPGHelper.h needs a RPGHelper.cpp to not do inlining!
-
     - Once I'm done with the refactor do additional passes for code quality for example moving instead of copying (use my Short-Version.yml: Coding Task Checklist ).
 
     - stop using: "using namespace gb2rpg"

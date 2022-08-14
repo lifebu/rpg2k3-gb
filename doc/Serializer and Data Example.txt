@@ -1,0 +1,51 @@
+
+// Serializer
+namespace tinyxml2 {class XMLDocument; };
+
+template <typename T>
+class Serializer {
+    Serializer() = delete;
+
+private:
+    // Full Files:
+    virtual T FromFile(std::string fileName);
+    virtual void ToFile(std::string fileName, T& elem);
+    
+    virtual  std::vector<T> MultipleFromFile(std::string fileName);
+    virtual  void MultipleToFile(std::string fileName, std::vector<T>& elems);
+
+    // Partial Files:
+    virtual  T FromFile(tinyxml2::XMLDocument& doc);
+    virtual tinyxml2::XMLDocument ToFile(T& elem);
+
+    virtual  std::vector<T> MultipleFromFile(tinyxml2::XMLDocument);
+    virtual tinyxml2::XMLDocument MultipleToFile(std::vector<T>& elems);
+};
+
+class Event {};
+
+class EventSerializer : Serializer<Event> {
+public:
+    EventSerializer();
+
+    Event FromFile(std::string fileName) override {
+        // Real implementation here
+    }
+};
+
+// Data:
+class Data {
+public:
+    Data(/* list of all private data */);
+
+    void addX(instance);
+    void addXs(std::vector<instance>);
+    instance& addX(parameters);
+
+// Make everything public that makes sense to be public!
+// NO uneccessary getters/Setters
+private:
+    const uint16_t unchangeableData;
+    uint16_t changeleData;
+    std::vector<uint16_t> someVector;
+};

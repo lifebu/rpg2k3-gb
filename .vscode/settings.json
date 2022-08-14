@@ -74,7 +74,9 @@
         "charconv": "cpp",
         "csetjmp": "cpp",
         "cfenv": "cpp",
-        "complex": "cpp"
+        "complex": "cpp",
+        "forward_list": "cpp",
+        "typeindex": "cpp"
     },
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }

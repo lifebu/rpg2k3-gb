@@ -60,6 +60,7 @@ set(serializer_source
     lcf_serializers/MapSerializer.cpp)
 
 set(utility_headers utilities/RPGHelper.h)
+set(utility_source utilities/RPGHelper.cpp)
 
 set(core_headers MemorySizes.h RPGMaker.h VarMapping.h)
 
@@ -68,8 +69,10 @@ project(core VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Core files for the other t
 
 
 add_library(core 
-    ${lcf_headers} ${serializer_headers} ${utility_headers} ${core_headers}
-    ${lcf_source} ${serializer_source})
+    ${lcf_headers} ${lcf_source}
+    ${serializer_headers} ${serializer_source}
+    ${utility_headers} ${utility_source}
+    ${core_headers})
 
 target_include_directories(core PRIVATE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>")
 target_include_directories(core PRIVATE ${CMAKE_SOURCE_DIR})
