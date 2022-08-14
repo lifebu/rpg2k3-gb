@@ -11,21 +11,9 @@ namespace lcf {
 
 // LCFTypeSerializer
 template<typename T>
-T LCFTypeSerializer<T>::FromFile(std::string fileName) {
-    std::string name = "";
-    uint16_t id = 1;
-    
-    auto file = tinyxml2::XMLDocument(fileName.c_str());
-    if (file.Error()) {
-        std::cout << file.ErrorStr() << std::endl;
-        return T(id, name);
-    }
-
-    auto* nameElem = file.TraverseElement(namePath.c_str())->FirstChild()->ToText();
-    name = nameElem->Value();
-    id = file.RootElement()->UnsignedAttribute("id");
-
-    return T(id, name);
+T LCFTypeSerializer<T>::FromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) {
+    // TODO: Implement
+    return T(0, "");
 }
 
 template<typename T>
