@@ -1,6 +1,9 @@
 #pragma once
 
 #include <string>
+#include <vector>
+
+namespace lcf {
 
 /**
  * @brief Template for serializers that read/write an entire file, which contains multiple instances of T.
@@ -17,3 +20,4 @@ private:
     virtual void MultipleToFile(std::string fileName, std::vector<T>& elems) = 0;
 };
 
+};

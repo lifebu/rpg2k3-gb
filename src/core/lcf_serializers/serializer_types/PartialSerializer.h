@@ -1,6 +1,12 @@
 #pragma once
 
 #include <string>
+#include <memory>
+
+
+namespace tinyxml2 {class XMLDocument; };
+
+namespace lcf {
 
 /**
  * @brief Template for serializers that are embedded in FullSerializers (allows for code to be re-used).
@@ -17,3 +23,4 @@ private:
     virtual std::unique_ptr<tinyxml2::XMLDocument> ToFile(T& elem) = 0;
 };
 
+};

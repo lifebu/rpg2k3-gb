@@ -6,6 +6,8 @@
 
 namespace tinyxml2 {class XMLDocument; };
 
+namespace lcf {
+
 template <typename T>
 class Serializer {
 protected:
@@ -25,4 +27,6 @@ private:
 
     virtual std::vector<T> MultipleFromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) = 0;
     virtual std::unique_ptr<tinyxml2::XMLDocument> MultipleToFile(std::vector<T>& elems) = 0;
+};
+
 };
