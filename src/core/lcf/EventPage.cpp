@@ -7,9 +7,8 @@
 namespace lcf {
 
 // public
-EventPage::EventPage(uint16_t id) {
-    assert(1 <= id < MEMORYSIZES::MAX_PAGES_PER_EVENT);
-    this->id = id;
+EventPage::EventPage(uint16_t id) :id(id) {
+    assert(1 <= id < RPGMAKER::MAX_PAGES_PER_EVENT);
 }
 
 void EventPage::addEventCommands(std::vector<EventCommand>& commands) {

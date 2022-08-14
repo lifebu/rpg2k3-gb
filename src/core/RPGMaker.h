@@ -23,7 +23,8 @@ namespace RPGMAKER {
     const static uint32_t RPG_VALUE_BIAS = std::pow(2, MEMORYSIZES::BYTES_PER_VAR*8) / 2;
 
     // Events:
-    
+    // How many pages one Event can have
+    const static int MAX_PAGES_PER_EVENT = 100;
 
     // Map
     const static int MAP_SIZE_X = 500;

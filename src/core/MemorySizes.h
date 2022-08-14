@@ -15,9 +15,6 @@ namespace MEMORYSIZES {
 
 
     // Map-ROM:
-    // TODO: This should probably go into RPGMAKER not MEMORY_SIZES.
-    // How many pages one Event can have
-    const static int MAX_PAGES_PER_EVENT = 100;
     // TODO: which BYTES_PER_VAR values is best?
     // TODO: As a workaround for the large memory usage and large .xml files, BYTES_PER_VAR should be set to 3. This reduces the amount of generated code  for the map ROM drastically (which is the vast majority of the memory usage).
     // BYTES_PER_VAR € [1,3], because:

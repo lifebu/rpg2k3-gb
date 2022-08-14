@@ -24,7 +24,7 @@ void Map::genMapFiles(std::vector<GBFile>& gbFiles) {
     std::cout << "Generating Map Files.\n";
     for(int i = 0; i < gbFiles.size(); ++i) {
         auto& gbFile = gbFiles.at(i);
-        int numOfMapROMs = ((gbFile.getRomSize() * 1024) / (MEMORYSIZES::MAX_PAGES_PER_EVENT * MEMORYSIZES::BYTES_PER_EPAGE)) + 1;
+        int numOfMapROMs = ((gbFile.getRomSize() * 1024) / (RPGMAKER::MAX_PAGES_PER_EVENT * MEMORYSIZES::BYTES_PER_EPAGE)) + 1;
 
         std::string fileName = EXPORTS::MAP_FILE_BASE + generateID(i + 1) + EXPORTS::MAP_FILE_TYPE;
         std::string filePath = PROJECT::PROJECT_DIR + fileName;
@@ -64,7 +64,7 @@ void Map::generateMapROM(lcf::Map& map, GBFile& gbFile, int numOfMapROMs) {
         lcf::Event& event = map.addEvent(name, x, y);
 
         // creating all necessary event pages.
-        for (int j = 0; j < MEMORYSIZES::MAX_PAGES_PER_EVENT; ++j) {
+        for (int j = 0; j < RPGMAKER::MAX_PAGES_PER_EVENT; ++j) {
             // The last event-page had all Bytes we needed
             if(gbFile.bytesRemaining() <= 0) break;
 

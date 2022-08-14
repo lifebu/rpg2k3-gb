@@ -8,42 +8,74 @@ class Serializer {
 
 private:
     // Full Files:
-    virtual T FromFile(std::string fileName);
-    virtual void ToFile(std::string fileName, T& elem);
+    virtual T FromFile(std::string fileName) = 0;
+    virtual void ToFile(std::string fileName, T& elem) = 0;
     
-    virtual  std::vector<T> MultipleFromFile(std::string fileName);
-    virtual  void MultipleToFile(std::string fileName, std::vector<T>& elems);
+    virtual  std::vector<T> MultipleFromFile(std::string fileName) = 0;
+    virtual  void MultipleToFile(std::string fileName, std::vector<T>& elems) = 0;
 
     // Partial Files:
-    virtual  T FromFile(tinyxml2::XMLDocument& doc);
-    virtual tinyxml2::XMLDocument ToFile(T& elem);
+    virtual  T FromFile(tinyxml2::XMLDocument& doc) = 0;
+    virtual tinyxml2::XMLDocument ToFile(T& elem) = 0;
 
-    virtual  std::vector<T> MultipleFromFile(tinyxml2::XMLDocument);
-    virtual tinyxml2::XMLDocument MultipleToFile(std::vector<T>& elems);
+    virtual std::vector<T> MultipleFromFile(tinyxml2::XMLDocument) = 0;
+    virtual tinyxml2::XMLDocument MultipleToFile(std::vector<T>& elems) = 0;
 };
 
 class Event {};
 
+// TODO: How to reuse Serializer Code but not have 100 .h and .cpp files? Do I need these nested Serializers?
+// TODO: Hide "Partial" Serializers because of the existance of tinyxml2::XMLDocument? Or is that okay?
 class EventSerializer : Serializer<Event> {
+private:
+    // These are serializer function that we do not need in this specific implementation.
+    //Event FromFile(std::string fileName) override;
+    void ToFile(std::string fileName, Event& elem) override;
+   
+    std::vector<Event> MultipleFromFile(std::string fileName) override;
+    void MultipleToFile(std::string fileName, std::vector<Event>& elems) override;
+
+    Event FromFile(tinyxml2::XMLDocument& doc) override;
+    tinyxml2::XMLDocument ToFile(Event& elem) override;
+
+    std::vector<Event> MultipleFromFile(tinyxml2::XMLDocument) override;
+    tinyxml2::XMLDocument MultipleToFile(std::vector<Event>& elems) override;
 public:
     EventSerializer();
-
+    // Only override functions that we actually need here.
+    // But the generic serializer interface gives us a guideline to follow.
     Event FromFile(std::string fileName) override {
         // Real implementation here
     }
 };
 
+
+
 // Data:
 class Data {
+    // TODO: Only if really needed.
+    friend class DataSerializer;
 public:
+    // Should test like this:
+    //Data(/**/): id(id), name(name), x(x), y(y) {
+    //assert(1 <= id < RPGMAKER::MAX_PAGES_PER_EVENT);
+    //}   
     Data(/* list of all private data */);
+    // could be included in the first Constructor?
+    Data(/* known vector sizes to reserve space*/);
 
-    void addX(instance);
+    Data(const Data& other) = delete;
+    Data(Data&& other) = delete;
+    operator=(const Data& other) = delete;
+    operator=(Data&& other) = delete;
+
+    void addX(instance&&);
     void addXs(std::vector<instance>);
-    instance& addX(parameters);
+    instance& addX(parameters /*Constructor params, without stuff that is managed (like ids)*/);
 
-// Make everything public that makes sense to be public!
-// NO uneccessary getters/Setters
+// Make everything public that makes sense to be public (like const stuff).
+// Make everything const that should not change after instantiation!
+// NO uneccessary getters/Setters (use C++ Style:  X var_name(), void var_name(X))
 private:
     const uint16_t unchangeableData;
     uint16_t changeleData;
