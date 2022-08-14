@@ -69,6 +69,7 @@ public:
     operator=(const Data& other) = delete;
     operator=(Data&& other) = delete;
 
+    // on all Add functions use: switches.emplace_back(getNextID(switches.size()), name);
     void addX(instance&&);
     void addXs(std::vector<instance>);
     instance& addX(parameters /*Constructor params, without stuff that is managed (like ids)*/);

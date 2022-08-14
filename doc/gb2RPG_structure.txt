@@ -71,8 +71,6 @@ gb2RPG: Gameboy 2 RPG Maker.
                 - These should be non-copyable, only moveable.
 
         - To-DO:       
-            - Delete the TEMPLATES in Globals.h for gb2rpg once the serializers are all correctly implemented.
-
             - Variable is basically the same as Switch, Can I combine them?
                 - LCFType<T>
                 - class Variable : LCFType<int32_t>

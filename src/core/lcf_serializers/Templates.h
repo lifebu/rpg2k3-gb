@@ -22,11 +22,6 @@ namespace TEMPLATES {
     // map tree
     const static char* MAP_TREE = "templates/map/map_tree.xml";
     const static char* MAP_INFO = "templates/map/map_info.xml";
-
-    // general
-    const static char* DMG_ROM = "templates/dmg_rom.xml";
-    const static char* MAP_ROM_HEADER = "templates/map_rom_header.xml";
-    const static char* MAP_ROM_LABEL = "templates/map_rom_label.xml";
 };
 
 }

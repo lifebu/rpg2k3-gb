@@ -46,7 +46,7 @@ void Database::genSwitches(lcf::Database& database) {
 }
 
 void Database::genVariables(lcf::Database& database) {
-    std::ifstream nameFile(PROJECT::PROJECT_DIR + PROJECT::SWITCH_NAMES);
+    std::ifstream nameFile(PROJECT::PROJECT_DIR + PROJECT::VAR_NAMES);
     if(!nameFile.is_open()) std::cout << WARN_NO_VAR_NAMES;
 
     for(int id = 1; id < RPGMAKER::MAX_NUM_VARIABLES; ++id) {
