@@ -1,4 +1,21 @@
 
+// Full Files: Database, MapTree, Map
+virtual T FromFile(std::string fileName) = 0;
+virtual void ToFile(std::string fileName, T& elem) = 0;
+
+// Partial Files: Character, CommonEvent, EventCommand, EventPage, Event, Item, LCFType, MapInfo, 
+virtual  T FromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) = 0;
+virtual std::unique_ptr<tinyxml2::XMLDocument> ToFile(T& elem) = 0;
+
+// Multi Serializer: CommonEvent, EventCommand
+virtual  std::vector<T> MultipleFromFile(std::string fileName) = 0;
+virtual  void MultipleToFile(std::string fileName, std::vector<T>& elems) = 0;
+
+// Multi Partial Serializer: EventCommand?
+virtual std::vector<T> MultipleFromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) = 0;
+virtual std::unique_ptr<tinyxml2::XMLDocument> MultipleToFile(std::vector<T>& elems) = 0;
+
+
 // Serializer
 namespace tinyxml2 {class XMLDocument; };
 
@@ -29,17 +46,16 @@ class Event {};
 class EventSerializer : Serializer<Event> {
 private:
     // These are serializer function that we do not need in this specific implementation.
-    //Event FromFile(std::string fileName) override;
-    void ToFile(std::string fileName, Event& elem) override;
-   
-    std::vector<Event> MultipleFromFile(std::string fileName) override;
-    void MultipleToFile(std::string fileName, std::vector<Event>& elems) override;
-
-    Event FromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) override;
-    std::unique_ptr<tinyxml2::XMLDocument> ToFile(Event& elem) override;
-
-    std::vector<Event> MultipleFromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) override;
-    std::unique_ptr<tinyxml2::XMLDocument> MultipleToFile(std::vector<Event>& elems) override;
+    
+    // Empty private definitions we do not need.
+    Event FromFile(std::string fileName) override {return Event(0, "");};
+    void ToFile(std::string fileName, Event& elem) override {};
+    std::vector<Event> MultipleFromFile(std::string fileName) override {return std::vector<Event>();};
+    void MultipleToFile(std::string fileName, std::vector<Event>& elems) override {};
+    Event FromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) override {return Event(0, "");};
+    std::unique_ptr<tinyxml2::XMLDocument> ToFile(Event& elem) override {return nullptr;};
+    std::vector<Event> MultipleFromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) override {return std::vector<Event>();};
+    std::unique_ptr<tinyxml2::XMLDocument> MultipleToFile(std::vector<Event>& elems) override { return nullptr;};
 public:
     EventSerializer();
     // Only override functions that we actually need here.
