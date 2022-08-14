@@ -15,11 +15,11 @@ private:
     virtual  void MultipleToFile(std::string fileName, std::vector<T>& elems) = 0;
 
     // Partial Files:
-    virtual  T FromFile(tinyxml2::XMLDocument& doc) = 0;
-    virtual tinyxml2::XMLDocument ToFile(T& elem) = 0;
+    virtual  T FromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) = 0;
+    virtual std::unique_ptr<tinyxml2::XMLDocument> ToFile(T& elem) = 0;
 
-    virtual std::vector<T> MultipleFromFile(tinyxml2::XMLDocument) = 0;
-    virtual tinyxml2::XMLDocument MultipleToFile(std::vector<T>& elems) = 0;
+    virtual std::vector<T> MultipleFromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) = 0;
+    virtual std::unique_ptr<tinyxml2::XMLDocument> MultipleToFile(std::vector<T>& elems) = 0;
 };
 
 class Event {};
@@ -35,11 +35,11 @@ private:
     std::vector<Event> MultipleFromFile(std::string fileName) override;
     void MultipleToFile(std::string fileName, std::vector<Event>& elems) override;
 
-    Event FromFile(tinyxml2::XMLDocument& doc) override;
-    tinyxml2::XMLDocument ToFile(Event& elem) override;
+    Event FromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) override;
+    std::unique_ptr<tinyxml2::XMLDocument> ToFile(Event& elem) override;
 
-    std::vector<Event> MultipleFromFile(tinyxml2::XMLDocument) override;
-    tinyxml2::XMLDocument MultipleToFile(std::vector<Event>& elems) override;
+    std::vector<Event> MultipleFromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) override;
+    std::unique_ptr<tinyxml2::XMLDocument> MultipleToFile(std::vector<Event>& elems) override;
 public:
     EventSerializer();
     // Only override functions that we actually need here.

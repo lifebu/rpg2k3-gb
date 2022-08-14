@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Switch.h"
-#include "Variable.h"
+#include "LCFType.h"
 #include "Character.h"
 #include "Item.h"
 #include "CommonEvent.h"

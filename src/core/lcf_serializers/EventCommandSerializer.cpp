@@ -28,7 +28,6 @@ EventCommand EventCommandSerializer::FromFile(std::string fileName) {
     return EventCommand(lcf::CommandType::LABEL, 0, "", std::vector<int32_t>());
 }
 
-// TODO: This could be generalized as generateTreeOrderString is the same.
 std::string generateParamString(std::vector<int32_t>& params) {
     std::string paramString = "";
     for (auto& param : params) {

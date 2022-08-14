@@ -7,8 +7,7 @@ endif()
 
 set(lcf_headers 
     lcf/Database.h
-    lcf/Switch.h 
-    lcf/Variable.h
+    lcf/LCFType.h
     lcf/Item.h
     lcf/Character.h
     lcf/CommonEvent.h
@@ -20,8 +19,7 @@ set(lcf_headers
     lcf/Map.h)
 set(lcf_source 
     lcf/Database.cpp
-    lcf/Switch.cpp
-    lcf/Variable.cpp
+    lcf/LCFType.cpp
     lcf/Item.cpp
     lcf/Character.cpp
     lcf/CommonEvent.cpp
@@ -33,9 +31,9 @@ set(lcf_source
     lcf/Map.cpp)
 
 set(serializer_headers 
-    lcf_serializers/DatabaseSerializer.h 
-    lcf_serializers/SwitchSerializer.h 
-    lcf_serializers/VariableSerializer.h 
+    lcf_serializers/Serializer.h
+    lcf_serializers/DatabaseSerializer.h
+    lcf_serializers/LCFTypeSerializer.h
     lcf_serializers/ItemSerializer.h 
     lcf_serializers/CharacterSerializer.h 
     lcf_serializers/CommonEventSerializer.h
@@ -45,10 +43,9 @@ set(serializer_headers
     lcf_serializers/EventSerializer.h
     lcf_serializers/EventPageSerializer.h
     lcf_serializers/MapSerializer.h)
-set(serializer_source 
+set(serializer_source
     lcf_serializers/DatabaseSerializer.cpp
-    lcf_serializers/SwitchSerializer.cpp
-    lcf_serializers/VariableSerializer.cpp 
+    lcf_serializers/LCFTypeSerializer.cpp
     lcf_serializers/ItemSerializer.cpp
     lcf_serializers/CharacterSerializer.cpp
     lcf_serializers/CommonEventSerializer.cpp

@@ -1,8 +1,9 @@
 #include "DatabaseSerializer.h"
 
 #include "Templates.h"
-#include "SwitchSerializer.h"
-#include "VariableSerializer.h"
+//#include "SwitchSerializer.h"
+//#include "VariableSerializer.h"
+#include "LCFTypeSerializer.h"
 #include "ItemSerializer.h"
 #include "CharacterSerializer.h"
 #include "CommonEventSerializer.h"
@@ -25,14 +26,14 @@ void DatabaseSerializer::ToFile(std::string fileName, Database& database) {
 
     // Switches
     for(auto& switchElem : database.switches) {
-        auto switchDoc = SwitchSerializer::ToFile(switchElem);
+        auto switchDoc = SwitchSerializer().ToFile(switchElem);
 
         switchDoc->DeepCloneInsertBack(&databaseTempl, databaseTempl.TraverseElement("/LDB/Database/switches"));
     }
 
     // Variables
     for(auto& variableElem : database.variables) {
-        auto variableDoc = VariableSerializer::ToFile(variableElem);
+        auto variableDoc = VariableSerializer().ToFile(variableElem);
 
         variableDoc->DeepCloneInsertBack(&databaseTempl, databaseTempl.TraverseElement("/LDB/Database/variables"));
     }

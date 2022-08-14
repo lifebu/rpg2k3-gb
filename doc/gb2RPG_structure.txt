@@ -71,20 +71,6 @@ gb2RPG: Gameboy 2 RPG Maker.
                 - These should be non-copyable, only moveable.
 
         - To-DO:       
-            - Variable is basically the same as Switch, Can I combine them?
-                - LCFType<T>
-                - class Variable : LCFType<int32_t>
-                - class Switch : LCFType<bool>
-                - Switch and Variable in one file!
-            
-            - generateParamString (EventCommandSerializer) and generateTreeOrderString (MapTreeSerializer) are basically the same.
-
-
-
-
-
-
-
             - Implement Serializer and Data Rework Structure.
 
             - Implement MultipleFromFile():
