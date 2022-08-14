@@ -70,8 +70,17 @@ gb2RPG: Gameboy 2 RPG Maker.
                 - e.g. Map: only have the list of events, the rest is never touched.
                 - These should be non-copyable, only moveable.
 
-        - To-DO:       
+        - To-DO:
             - Implement Serializer and Data Rework Structure.
+                - database/CharacterSerializer
+                - database/CommonEventSerializer
+                - database/ItemSerializer
+                - map/EventPageSerializer
+                - map/EventSerializer
+                - map_tree/MapInfoSerializer
+                - DatabaseSerializer
+                - MapSerializer
+                - MapTreeSerializer
 
             - Implement MultipleFromFile():
                 - For database common events generation.

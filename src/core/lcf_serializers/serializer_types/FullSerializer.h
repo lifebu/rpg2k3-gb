@@ -2,6 +2,10 @@
 
 #include <string>
 
+
+namespace lcf {
+
+// Full Files: Database, MapTree, Map
 /**
  * @brief Template for serializers that read/write an entire file.
  * 
@@ -17,3 +21,4 @@ private:
     virtual void ToFile(std::string fileName, T& elem) = 0;
 };
 
+};

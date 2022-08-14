@@ -52,7 +52,7 @@ std::unique_ptr<tinyxml2::XMLDocument> CommonEventSerializer::ToFile(CommonEvent
     // Add Event Commands
     auto* eventCommandsElem = commonEventTempl->TraverseElement("/CommonEvent/event_commands")->FirstChild();
     for(auto& eventCommand : elem.eventCommands) {
-        auto eventCommandDoc = EventCommandSerializer::ToFile(eventCommand);
+        auto eventCommandDoc = EventCommandSerializer().ToFile(eventCommand);
 
         eventCommandDoc->DeepCloneInsertBack(commonEventTempl.get(), commonEventTempl->TraverseElement("/CommonEvent/event_commands"));
     }

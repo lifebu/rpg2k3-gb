@@ -48,7 +48,6 @@ set(serializer_headers
     lcf_serializers/DatabaseSerializer.h
     lcf_serializers/MapSerializer.h
     lcf_serializers/MapTreeSerializer.h
-    lcf_serializers/Serializer.h
     lcf_serializers/Templates.h)
 
 set(serializer_source
@@ -89,6 +88,7 @@ target_include_directories(core PRIVATE
 
 include(CMakePrintHelpers)
 cmake_print_variables(PROJECT_SOURCE_DIR) 
+
 
 
 target_link_libraries(core PRIVATE tinyxml2)

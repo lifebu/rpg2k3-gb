@@ -8,6 +8,7 @@ namespace tinyxml2 {class XMLDocument; };
 
 namespace lcf {
 
+// Partial Files: Character, CommonEvent, EventCommand, EventPage, Event, Item, LCFType, MapInfo
 /**
  * @brief Template for serializers that are embedded in FullSerializers (allows for code to be re-used).
  * 

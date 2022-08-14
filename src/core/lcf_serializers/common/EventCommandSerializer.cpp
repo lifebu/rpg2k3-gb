@@ -9,21 +9,10 @@
 
 namespace lcf {
 
-EventCommand EventCommandSerializer::FromFile(std::string fileName) {
-    /*
-    std::string name = "";
-    uint16_t id = 1;
-    
-    auto file = tinyxml2::XMLDocument(fileName.c_str());
-    if (file.Error()) {
-        std::cout << file.ErrorStr() << std::endl;
-        return Switch(id, name);
-    }
+EventCommandSerializer::EventCommandSerializer() {}
 
-    auto* nameElem = file.TraverseElement("/Switch/name")->FirstChild()->ToText();
-    name = nameElem->Value();
-    id = file.RootElement()->UnsignedAttribute("id");
-    */
+// PartialSerializer
+EventCommand EventCommandSerializer::FromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) {
     return EventCommand(lcf::CommandType::LABEL, 0, "", std::vector<int32_t>());
 }
 
@@ -59,6 +48,7 @@ std::unique_ptr<tinyxml2::XMLDocument> EventCommandSerializer::ToFile(EventComma
     return commandTempl;
 }
 
+// MultiSerializer
 std::vector<EventCommand> EventCommandSerializer::MultipleFromFile(std::string fileName) {
     std::vector<EventCommand> ret;
 
@@ -69,8 +59,10 @@ std::vector<EventCommand> EventCommandSerializer::MultipleFromFile(std::string f
     }
 
     
-
     return ret;
 }
+
+void EventCommandSerializer::MultipleToFile(std::string fileName, std::vector<EventCommand>& elems) {
+};
 
 };

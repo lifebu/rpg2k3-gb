@@ -3,8 +3,10 @@
 #include <string>
 #include <vector>
 
+
 namespace lcf {
 
+// Multi Serializer: CommonEvent, EventCommand
 /**
  * @brief Template for serializers that read/write an entire file, which contains multiple instances of T.
  * 

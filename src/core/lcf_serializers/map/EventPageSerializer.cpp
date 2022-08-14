@@ -23,7 +23,7 @@ std::unique_ptr<tinyxml2::XMLDocument> EventPageSerializer::ToFile(EventPage& ev
 
     // Insert Event Commands
     for(auto& eventCommand : eventPage.eventCommands) {
-        auto eventCommandDoc = EventCommandSerializer::ToFile(eventCommand);
+        auto eventCommandDoc = EventCommandSerializer().ToFile(eventCommand);
 
         eventCommandDoc->DeepCloneInsertBack(eventPageTempl.get(), eventPageTempl->TraverseElement("//event_commands"));
     }

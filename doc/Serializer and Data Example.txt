@@ -3,7 +3,7 @@
 virtual T FromFile(std::string fileName) = 0;
 virtual void ToFile(std::string fileName, T& elem) = 0;
 
-// Partial Files: Character, CommonEvent, EventCommand, EventPage, Event, Item, LCFType, MapInfo, 
+// Partial Files: Character, CommonEvent, EventCommand, EventPage, Event, Item, LCFType, MapInfo
 virtual  T FromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) = 0;
 virtual std::unique_ptr<tinyxml2::XMLDocument> ToFile(T& elem) = 0;
 

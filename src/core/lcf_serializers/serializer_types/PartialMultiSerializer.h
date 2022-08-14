@@ -6,8 +6,10 @@
 
 namespace tinyxml2 {class XMLDocument; };
 
+
 namespace lcf {
 
+// Multi Partial Serializer: EventCommand?
 /**
  * @brief Template for serializers that are embedded in MultiSerializers (allows for code to be re-used).
  * 
