@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/core/lcf/EventCommand.h"
+#include "../../lcf/common/EventCommand.h"
 
 #include <string>
 #include <memory>

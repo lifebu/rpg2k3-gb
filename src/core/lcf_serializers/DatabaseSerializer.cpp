@@ -1,14 +1,12 @@
 #include "DatabaseSerializer.h"
 
 #include "Templates.h"
-//#include "SwitchSerializer.h"
-//#include "VariableSerializer.h"
-#include "LCFTypeSerializer.h"
-#include "ItemSerializer.h"
-#include "CharacterSerializer.h"
-#include "CommonEventSerializer.h"
+#include "database/LCFTypeSerializer.h"
+#include "database/ItemSerializer.h"
+#include "database/CharacterSerializer.h"
+#include "database/CommonEventSerializer.h"
 
-#include "src/core/utilities/RPGHelper.h"
+#include "utilities/RPGHelper.h"
 #include "thirdparty/tinyxml2/tinyxml2.h"
 
 #include <iostream>

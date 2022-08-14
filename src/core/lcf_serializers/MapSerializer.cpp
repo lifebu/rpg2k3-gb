@@ -1,9 +1,9 @@
 #include "MapSerializer.h"
 
 #include "Templates.h"
-#include "EventSerializer.h"
+#include "map/EventSerializer.h"
 
-#include "src/core/utilities/RPGHelper.h"
+#include "utilities/RPGHelper.h"
 #include "thirdparty/tinyxml2/tinyxml2.h"
 
 #include <iostream>

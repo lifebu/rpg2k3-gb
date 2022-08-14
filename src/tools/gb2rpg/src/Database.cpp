@@ -2,8 +2,8 @@
 
 #include "Globals.h"
 
-#include "src/core/lcf/Database.h"
-#include "src/core/lcf_serializers/DatabaseSerializer.h"
+#include "core/lcf/Database.h"
+#include "core/lcf_serializers/DatabaseSerializer.h"
 
 #include <tuple>
 #include <iostream>

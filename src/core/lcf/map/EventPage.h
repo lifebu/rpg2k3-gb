@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EventCommand.h"
+#include "../common/EventCommand.h"
 
 #include <string>
 #include <vector>

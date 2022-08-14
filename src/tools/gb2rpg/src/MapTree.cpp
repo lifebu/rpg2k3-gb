@@ -3,7 +3,7 @@
 #include "GBFile.h"
 #include "Globals.h"
 
-#include "src/core/lcf_serializers/MapTreeSerializer.h"
+#include "core/lcf_serializers/MapTreeSerializer.h"
 
 #include <iostream>
 

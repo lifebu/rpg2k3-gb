@@ -1,9 +1,9 @@
 #include "MapTreeSerializer.h"
 
 #include "Templates.h"
-#include "MapInfoSerializer.h"
+#include "map_tree/MapInfoSerializer.h"
 
-#include "src/core/utilities/RPGHelper.h"
+#include "utilities/RPGHelper.h"
 #include "thirdparty/tinyxml2/tinyxml2.h"
 
 #include <iostream>

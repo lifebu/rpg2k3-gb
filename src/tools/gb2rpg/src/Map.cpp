@@ -3,9 +3,9 @@
 #include "GBFile.h"
 #include "Globals.h"
 
-#include "src/core/lcf/Map.h"
-#include "src/core/lcf_serializers/MapSerializer.h"
-#include "src/core/lcf_serializers/EventCommandSerializer.h"
+#include "core/lcf/Map.h"
+#include "core/lcf_serializers/MapSerializer.h"
+#include "core/lcf_serializers/common/EventCommandSerializer.h"
 
 #include <iostream>
 #include <cassert>

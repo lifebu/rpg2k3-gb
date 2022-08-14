@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-#include "src/core/utilities/RPGHelper.h"
+#include "utilities/RPGHelper.h"
 
 namespace lcf {
 

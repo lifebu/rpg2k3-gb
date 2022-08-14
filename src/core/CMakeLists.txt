@@ -5,61 +5,72 @@ else()
     cmake_policy(VERSION 3.22)
 endif()
 
-set(lcf_headers 
-    lcf/Database.h
-    lcf/LCFType.h
-    lcf/Item.h
-    lcf/Character.h
-    lcf/CommonEvent.h
-    lcf/EventCommand.h
-    lcf/MapInfo.h
-    lcf/MapTree.h
-    lcf/EventPage.h
-    lcf/Event.h
-    lcf/Map.h)
-set(lcf_source 
-    lcf/Database.cpp
-    lcf/LCFType.cpp
-    lcf/Item.cpp
-    lcf/Character.cpp
-    lcf/CommonEvent.cpp
-    lcf/EventCommand.cpp
-    lcf/MapInfo.cpp
-    lcf/MapTree.cpp
-    lcf/EventPage.cpp
-    lcf/Event.cpp
-    lcf/Map.cpp)
 
-set(serializer_headers 
-    lcf_serializers/Serializer.h
+set(lcf_headers
+    lcf/common/EventCommand.h
+    lcf/database/Character.h
+    lcf/database/CommonEvent.h
+    lcf/database/Item.h
+    lcf/database/LCFType.h
+    lcf/map/Event.h
+    lcf/map/EventPage.h
+    lcf/map_tree/MapInfo.h
+    lcf/Database.h
+    lcf/Map.h
+    lcf/MapTree.h)
+
+set(lcf_source 
+    lcf/common/EventCommand.cpp
+    lcf/database/Character.cpp
+    lcf/database/CommonEvent.cpp
+    lcf/database/Item.cpp
+    lcf/database/LCFType.cpp
+    lcf/map/Event.cpp
+    lcf/map/EventPage.cpp
+    lcf/map_tree/MapInfo.cpp
+    lcf/Database.cpp
+    lcf/Map.cpp
+    lcf/MapTree.cpp)
+
+set(serializer_headers
+    lcf_serializers/common/EventCommandSerializer.h
+    lcf_serializers/database/CharacterSerializer.h
+    lcf_serializers/database/CommonEventSerializer.h
+    lcf_serializers/database/ItemSerializer.h
+    lcf_serializers/database/LCFTypeSerializer.h
+    lcf_serializers/map/EventSerializer.h
+    lcf_serializers/map/EventPageSerializer.h
+    lcf_serializers/map_tree/MapInfoSerializer.h
+    lcf_serializers/serializer_types/FullSerializer.h
+    lcf_serializers/serializer_types/MultiSerializer.h
+    lcf_serializers/serializer_types/PartialMultiSerializer.h
+    lcf_serializers/serializer_types/PartialSerializer.h
     lcf_serializers/DatabaseSerializer.h
-    lcf_serializers/LCFTypeSerializer.h
-    lcf_serializers/ItemSerializer.h 
-    lcf_serializers/CharacterSerializer.h 
-    lcf_serializers/CommonEventSerializer.h
-    lcf_serializers/EventCommandSerializer.h
-    lcf_serializers/MapInfoSerializer.h
+    lcf_serializers/MapSerializer.h
     lcf_serializers/MapTreeSerializer.h
-    lcf_serializers/EventSerializer.h
-    lcf_serializers/EventPageSerializer.h
-    lcf_serializers/MapSerializer.h)
+    lcf_serializers/Serializer.h
+    lcf_serializers/Templates.h)
+
 set(serializer_source
+    lcf_serializers/common/EventCommandSerializer.cpp
+    lcf_serializers/database/CharacterSerializer.cpp
+    lcf_serializers/database/CommonEventSerializer.cpp
+    lcf_serializers/database/ItemSerializer.cpp
+    lcf_serializers/database/LCFTypeSerializer.cpp
+    lcf_serializers/map/EventSerializer.cpp
+    lcf_serializers/map/EventPageSerializer.cpp
+    lcf_serializers/map_tree/MapInfoSerializer.cpp
     lcf_serializers/DatabaseSerializer.cpp
-    lcf_serializers/LCFTypeSerializer.cpp
-    lcf_serializers/ItemSerializer.cpp
-    lcf_serializers/CharacterSerializer.cpp
-    lcf_serializers/CommonEventSerializer.cpp
-    lcf_serializers/EventCommandSerializer.cpp
-    lcf_serializers/MapInfoSerializer.cpp
-    lcf_serializers/MapTreeSerializer.cpp
-    lcf_serializers/EventSerializer.cpp
-    lcf_serializers/EventPageSerializer.cpp
-    lcf_serializers/MapSerializer.cpp)
+    lcf_serializers/MapSerializer.cpp
+    lcf_serializers/MapTreeSerializer.cpp)
 
 set(utility_headers utilities/RPGHelper.h)
 set(utility_source utilities/RPGHelper.cpp)
 
-set(core_headers MemorySizes.h RPGMaker.h VarMapping.h)
+set(def_headers 
+    def/MemorySizes.h 
+    def/RPGMaker.h 
+    def/VarMapping.h)
 
 
 project(core VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Core files for the other tools of the project")
@@ -69,10 +80,16 @@ add_library(core
     ${lcf_headers} ${lcf_source}
     ${serializer_headers} ${serializer_source}
     ${utility_headers} ${utility_source}
-    ${core_headers})
+    ${def_headers})
 
 target_include_directories(core PRIVATE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>")
-target_include_directories(core PRIVATE ${CMAKE_SOURCE_DIR})
+target_include_directories(core PRIVATE 
+        ${PROJECT_SOURCE_DIR}
+        ${CMAKE_SOURCE_DIR})
+
+include(CMakePrintHelpers)
+cmake_print_variables(PROJECT_SOURCE_DIR) 
+
 
 target_link_libraries(core PRIVATE tinyxml2)
 

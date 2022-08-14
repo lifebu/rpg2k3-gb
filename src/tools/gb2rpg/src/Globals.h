@@ -1,6 +1,6 @@
 #include <string>
 
-#include "src/core/utilities/RPGHelper.h"
+#include "core/utilities/RPGHelper.h"
 
 namespace gb2rpg {
     // TODO: These should go once the serializers are all correctly implemented.

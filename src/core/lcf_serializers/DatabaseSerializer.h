@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/core/lcf/Database.h"
+#include "../lcf/Database.h"
 
 #include <string>
 

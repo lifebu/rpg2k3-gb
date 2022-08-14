@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Serializer.h"
-#include "src/core/lcf/LCFType.h"
+#include "lcf_serializers/Serializer.h"
+#include "lcf/database/LCFType.h"
 
 #include <string>
 #include <memory>

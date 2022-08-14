@@ -1,7 +1,7 @@
 #include "GBFile.h"
 
 #include "CLI.h"
-#include "src/core/MemorySizes.h"
+#include "core/def/MemorySizes.h"
 
 #include <iostream>
 #include <cassert>

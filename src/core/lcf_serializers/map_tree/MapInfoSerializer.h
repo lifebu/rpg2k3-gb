@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../lcf/MapInfo.h"
+#include "lcf/map_tree/MapInfo.h"
 
 #include <string>
 #include <memory>

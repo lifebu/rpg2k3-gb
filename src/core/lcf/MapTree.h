@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MapInfo.h"
+#include "map_tree/MapInfo.h"
 
 #include <string>
 #include <vector>
@@ -9,7 +9,6 @@
 namespace lcf {
 
 class MapTree {
-    // TODO: Not that nice!
     friend class MapTreeSerializer;
 
 public:

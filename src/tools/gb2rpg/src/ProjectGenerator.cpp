@@ -2,7 +2,7 @@
 
 #include "Globals.h"
 
-#include "src/core/utilities/RPGHelper.h"
+#include "core/utilities/RPGHelper.h"
 
 #include <iostream>
 #include <string>

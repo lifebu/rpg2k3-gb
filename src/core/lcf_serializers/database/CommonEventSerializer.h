@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/core/lcf/CommonEvent.h"
+#include "lcf/database/CommonEvent.h"
 
 #include <string>
 #include <memory>

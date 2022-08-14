@@ -1,8 +1,7 @@
 #include "CommonEvent.h"
 
-#include "EventCommand.h"
-#include "src/core/utilities/RPGHelper.h"
-#include "thirdparty/tinyxml2/tinyxml2.h"
+#include "lcf/common/EventCommand.h"
+#include "utilities/RPGHelper.h"
 
 
 namespace lcf {

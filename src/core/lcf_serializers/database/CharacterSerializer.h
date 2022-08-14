@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/core/lcf/Character.h"
+#include "lcf/database/Character.h"
 
 #include <string>
 #include <memory>

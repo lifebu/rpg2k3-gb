@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/core/lcf/MapTree.h"
+#include "../lcf/MapTree.h"
 
 #include <string>
 

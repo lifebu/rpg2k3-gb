@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../lcf/EventPage.h"
+#include "lcf/map/EventPage.h"
 
 #include <string>
 #include <memory>

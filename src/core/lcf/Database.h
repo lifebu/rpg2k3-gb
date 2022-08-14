@@ -1,10 +1,10 @@
 #pragma once
 
-#include "LCFType.h"
-#include "Character.h"
-#include "Item.h"
-#include "CommonEvent.h"
-#include "EventCommand.h"
+#include "database/LCFType.h"
+#include "database/Character.h"
+#include "database/Item.h"
+#include "database/CommonEvent.h"
+#include "common/EventCommand.h"
 
 #include <string>
 
