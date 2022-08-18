@@ -11,6 +11,8 @@
 
 namespace lcf {
 
+CommonEventSerializer::CommonEventSerializer() {}
+
 CommonEvent CommonEventSerializer::FromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) {
 
     return CommonEvent(1, "", lcf::TriggerType::NONE);

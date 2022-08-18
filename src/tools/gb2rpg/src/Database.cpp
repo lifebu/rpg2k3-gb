@@ -29,7 +29,7 @@ void Database::genDatabase() {
     genCharacters(database);
     genCommonEvents(database);
 
-    lcf::DatabaseSerializer::ToFile(PROJECT::PROJECT_DIR + EXPORTS::DATABASE_FILE, database);
+    lcf::DatabaseSerializer().ToFile(PROJECT::PROJECT_DIR + EXPORTS::DATABASE_FILE, database);
 }
 
 void Database::genSwitches(lcf::Database& database) {

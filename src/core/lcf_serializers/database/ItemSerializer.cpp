@@ -11,6 +11,8 @@
 
 namespace lcf {
 
+ItemSerializer::ItemSerializer() {}
+
 Item ItemSerializer::FromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) {
     return Item(0, "name", ItemType::WEAPON);
 }

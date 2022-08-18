@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../lcf_serializers/serializer_types/FullSerializer.h"
 #include "../lcf/Database.h"
 
 #include <string>
@@ -7,13 +8,13 @@
 
 namespace lcf {
 
-class DatabaseSerializer {
+class DatabaseSerializer : FullSerializer<Database> {
 
 public:
-    DatabaseSerializer() = delete;
+    DatabaseSerializer();
 
-    static Database FromFile(std::string fileName);
-    static void ToFile(std::string fileName, Database& database);
+    Database FromFile(std::string fileName) override;
+    void ToFile(std::string fileName, Database& database) override;
 };
 
 };

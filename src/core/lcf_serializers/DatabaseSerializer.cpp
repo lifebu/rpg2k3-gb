@@ -14,6 +14,7 @@
 namespace lcf {
 
 
+DatabaseSerializer::DatabaseSerializer() {}
 
 Database DatabaseSerializer::FromFile(std::string fileName) {
     return Database();
