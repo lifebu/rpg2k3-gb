@@ -38,7 +38,7 @@ void DatabaseSerializer::ToFile(std::string fileName, Database& database) {
 
     // Items
     for(auto& itemElem : database.items) {
-        auto itemDoc = ItemSerializer::ToFile(itemElem);
+        auto itemDoc = ItemSerializer().ToFile(itemElem);
 
         itemDoc->DeepCloneInsertBack(&databaseTempl, databaseTempl.TraverseElement("/LDB/Database/items"));
     }

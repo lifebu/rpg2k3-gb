@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../lcf_serializers/serializer_types/PartialSerializer.h"
 #include "lcf/database/Item.h"
 
 #include <string>
@@ -10,12 +11,12 @@ namespace tinyxml2 {class XMLDocument; };
 
 namespace lcf {
 
-class ItemSerializer {
+class ItemSerializer : PartialSerializer<Item> {
 public:
-    ItemSerializer() = delete;
+    ItemSerializer();
 
-    static Item FromFile(std::string fileName);
-    static std::unique_ptr<tinyxml2::XMLDocument> ToFile(Item& elem);
+    Item FromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) override;
+    std::unique_ptr<tinyxml2::XMLDocument> ToFile(Item& elem) override;
 };
 
 };
