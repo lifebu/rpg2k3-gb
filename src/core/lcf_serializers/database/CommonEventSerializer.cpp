@@ -11,21 +11,7 @@
 
 namespace lcf {
 
-CommonEvent CommonEventSerializer::FromFile(std::string fileName) {
-    /*
-    std::string name = "";
-    uint16_t id = 1;
-    
-    auto file = tinyxml2::XMLDocument(fileName.c_str());
-    if (file.Error()) {
-        std::cout << file.ErrorStr() << std::endl;
-        return Switch(id, name);
-    }
-
-    auto* nameElem = file.TraverseElement("/Switch/name")->FirstChild()->ToText();
-    name = nameElem->Value();
-    id = file.RootElement()->UnsignedAttribute("id");
-    */
+CommonEvent CommonEventSerializer::FromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) {
 
     return CommonEvent(1, "", lcf::TriggerType::NONE);
 }

@@ -52,7 +52,7 @@ void DatabaseSerializer::ToFile(std::string fileName, Database& database) {
 
     // Common Events
     for(auto& commonEventsElem : database.commonEvents) {
-        auto commonEventDoc = CommonEventSerializer::ToFile(commonEventsElem);
+        auto commonEventDoc = CommonEventSerializer().ToFile(commonEventsElem);
 
         commonEventDoc->DeepCloneInsertBack(&databaseTempl, databaseTempl.TraverseElement("/LDB/Database/commonevents"));
     }
