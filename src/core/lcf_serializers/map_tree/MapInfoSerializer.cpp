@@ -9,21 +9,10 @@
 
 namespace lcf {
 
-MapInfo MapInfoSerializer::FromFile(std::string fileName) {
-    std::string name = "";
-    uint16_t id = 1;
-    
-    auto file = tinyxml2::XMLDocument(fileName.c_str());
-    if (file.Error()) {
-        std::cout << file.ErrorStr() << std::endl;
-        return MapInfo(id, name);
-    }
+MapInfoSerializer::MapInfoSerializer() {}
 
-    auto* nameElem = file.TraverseElement("/MapInfo/name")->FirstChild()->ToText();
-    name = nameElem->Value();
-    id = file.RootElement()->UnsignedAttribute("id");
-
-    return MapInfo(id, name);
+MapInfo MapInfoSerializer::FromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) {
+    return MapInfo(0, "");
 }
 
 std::unique_ptr<tinyxml2::XMLDocument> MapInfoSerializer::ToFile(MapInfo& mapInfo) {

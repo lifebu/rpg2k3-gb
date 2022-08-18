@@ -10,25 +10,9 @@
 
 namespace lcf {
 
+MapTreeSerializer::MapTreeSerializer() {}
 
-
-// TODO: Implement (should use MapInfoSerializer unique_ptr<XMLDocument> FromFile()) like ToFile does!
 MapTree MapTreeSerializer::FromFile(std::string fileName) {
-    /*
-    auto file = tinyxml2::XMLDocument(fileName.c_str());
-    if (file.Error()) {
-        std::cout << file.ErrorStr() << std::endl;
-        return MapTree(0);
-    }
-
-    file
-
-    MapTree mapTree(numMaps);
-
-    std::vector<MapInfo> infos;
-    */
-
-
     return MapTree(0);
 }
 
@@ -47,7 +31,7 @@ void MapTreeSerializer::ToFile(std::string fileName, MapTree& mapTree) {
 
     // Insert map infos in to the maptree.
     for(auto& mapInfo : mapTree.mapInfos) {
-        auto mapInfoDoc = MapInfoSerializer::ToFile(mapInfo);
+        auto mapInfoDoc = MapInfoSerializer().ToFile(mapInfo);
 
         mapInfoDoc->DeepCloneInsertBack(&mapTreeTempl, mapTreeTempl.TraverseElement("/LMT/TreeMap/maps"));
     }

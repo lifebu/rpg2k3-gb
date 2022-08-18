@@ -20,5 +20,5 @@ void MapTree::genMapTree(std::vector<GBFile>& gbFiles) {
     }
 
     std::string filePath = PROJECT::PROJECT_DIR + EXPORTS::MAPTREE_FILE;
-    lcf::MapTreeSerializer::ToFile(filePath, mapTree);
+    lcf::MapTreeSerializer().ToFile(filePath, mapTree);
 }
