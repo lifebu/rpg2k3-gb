@@ -45,7 +45,7 @@ void DatabaseSerializer::ToFile(std::string fileName, Database& database) {
 
     // Characters
     for(auto& characterElem : database.characters) {
-        auto characterDoc = CharacterSerializer::ToFile(characterElem);
+        auto characterDoc = CharacterSerializer().ToFile(characterElem);
 
         characterDoc->DeepCloneInsertBack(&databaseTempl, databaseTempl.TraverseElement("/LDB/Database/actors"));
     }

@@ -10,22 +10,9 @@
 
 namespace lcf {
 
-Character CharacterSerializer::FromFile(std::string fileName) {
-    /*
-    std::string name = "";
-    uint16_t id = 1;
-    
-    auto file = tinyxml2::XMLDocument(fileName.c_str());
-    if (file.Error()) {
-        std::cout << file.ErrorStr() << std::endl;
-        return Switch(id, name);
-    }
+CharacterSerializer::CharacterSerializer() {}
 
-    auto* nameElem = file.TraverseElement("/Switch/name")->FirstChild()->ToText();
-    name = nameElem->Value();
-    id = file.RootElement()->UnsignedAttribute("id");
-    */
-
+Character CharacterSerializer::FromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) {
     return Character(0, "name");
 }
 
