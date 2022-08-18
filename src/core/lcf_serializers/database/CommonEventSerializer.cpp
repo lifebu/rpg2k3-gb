@@ -13,6 +13,7 @@ namespace lcf {
 
 CommonEventSerializer::CommonEventSerializer() {}
 
+// PartialSerializer
 CommonEvent CommonEventSerializer::FromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) {
 
     return CommonEvent(1, "", lcf::TriggerType::NONE);
@@ -47,5 +48,22 @@ std::unique_ptr<tinyxml2::XMLDocument> CommonEventSerializer::ToFile(CommonEvent
 
     return commonEventTempl;
 }
+
+// MultiSerializer
+std::vector<CommonEvent> CommonEventSerializer::MultipleFromFile(std::string fileName) {
+    std::vector<CommonEvent> ret;
+
+    auto file = tinyxml2::XMLDocument(fileName.c_str());
+    if (file.Error()) {
+        std::cout << file.ErrorStr() << std::endl;
+        return ret;
+    }
+
+    
+    return ret;
+}
+
+void CommonEventSerializer::MultipleToFile(std::string fileName, std::vector<CommonEvent>& elems) {
+};
 
 };
