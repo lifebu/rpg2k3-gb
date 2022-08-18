@@ -10,6 +10,8 @@
 
 namespace lcf {
 
+MapSerializer::MapSerializer() {}
+
 
 Map MapSerializer::FromFile(std::string fileName) {
     return Map();
@@ -21,7 +23,7 @@ void MapSerializer::ToFile(std::string fileName, Map& map) {
 
     // Insert events into the map.
     for(auto& event : map.events) {
-        auto eventDoc = EventSerializer::ToFile(event);
+        auto eventDoc = EventSerializer().ToFile(event);
 
         eventDoc->DeepCloneInsertBack(&mapTempl, mapTempl.TraverseElement("/LMU//events"));
     }

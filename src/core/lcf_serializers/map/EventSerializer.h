@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../lcf_serializers/serializer_types/PartialSerializer.h"
 #include "lcf/map/Event.h"
 
 #include <string>
@@ -9,12 +10,12 @@ namespace tinyxml2 {class XMLDocument; };
 
 namespace lcf {
 
-class EventSerializer {
+class EventSerializer : PartialSerializer<Event> {
 public:
-    EventSerializer() = delete;
+    EventSerializer();
 
-    static Event FromFile(std::string fileName);
-    static std::unique_ptr<tinyxml2::XMLDocument> ToFile(Event& event);
+    Event FromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) override;
+    std::unique_ptr<tinyxml2::XMLDocument> ToFile(Event& event) override;
 };
 
 };

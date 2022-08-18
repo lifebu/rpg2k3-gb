@@ -10,7 +10,9 @@
 
 namespace lcf {
 
-Event EventSerializer::FromFile(std::string fileName) {
+EventSerializer::EventSerializer() {}
+
+Event EventSerializer::FromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) {
     // TODO: Implement!
     return Event(1, "", 0, 0);
 }
@@ -34,7 +36,7 @@ std::unique_ptr<tinyxml2::XMLDocument> EventSerializer::ToFile(Event& event) {
 
     // Insert Event Pages
     for(auto& eventPage : event.eventPages) {
-        auto eventPageDoc = EventPageSerializer::ToFile(eventPage);
+        auto eventPageDoc = EventPageSerializer().ToFile(eventPage);
 
         eventPageDoc->DeepCloneInsertBack(eventTempl.get(), eventTempl->TraverseElement("//event_commands"));
     }

@@ -10,8 +10,9 @@
 
 namespace lcf {
 
-EventPage EventPageSerializer::FromFile(std::string fileName) {
-    // TODO: Implement!
+EventPageSerializer::EventPageSerializer() {}
+
+EventPage EventPageSerializer::FromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) {
     return EventPage(1);
 }
 

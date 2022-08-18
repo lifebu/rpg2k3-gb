@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../lcf_serializers/serializer_types/FullSerializer.h"
 #include "../lcf/Map.h"
 
 #include <string>
@@ -7,13 +8,13 @@
 
 namespace lcf {
 
-class MapSerializer {
+class MapSerializer : FullSerializer<Map> {
 
 public:
-    MapSerializer() = delete;
+    MapSerializer();
 
-    static Map FromFile(std::string fileName);
-    static void ToFile(std::string fileName, Map& map);
+    Map FromFile(std::string fileName) override;
+    void ToFile(std::string fileName, Map& map) override;
 };
 
 };

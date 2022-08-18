@@ -36,7 +36,7 @@ void Map::genMapFiles(std::vector<GBFile>& gbFiles) {
         generateMapROM(map, gbFile, numOfMapROMs);
         generateMapRAM(map);
 
-        lcf::MapSerializer::ToFile(filePath, map);
+        lcf::MapSerializer().ToFile(filePath, map);
     }
 }
 
