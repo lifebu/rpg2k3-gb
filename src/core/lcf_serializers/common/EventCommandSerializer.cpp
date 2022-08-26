@@ -13,7 +13,7 @@ EventCommandSerializer::EventCommandSerializer() {}
 
 // PartialSerializer
 EventCommand EventCommandSerializer::FromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) {
-    return EventCommand(lcf::CommandType::LABEL, 0, "", std::vector<int32_t>());
+    return EventCommand(lcf::EventCommand::CommandType::LABEL, 0, "", std::vector<int32_t>());
 }
 
 std::string generateParamString(std::vector<int32_t>& params) {

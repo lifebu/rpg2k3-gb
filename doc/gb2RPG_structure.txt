@@ -27,6 +27,13 @@ gb2RPG: Gameboy 2 RPG Maker.
 
     - stop using: "using namespace gb2rpg"
         => better to read if you know the namespace.
+    
+
+    - Add Documentation!
+
+    - Try to have less code overall:
+        - Do I need the structure for the serializers?
+        - currently 1.800 lines of code :/
 
     - Unit tests:
         - Using Catch2.
@@ -72,19 +79,24 @@ gb2RPG: Gameboy 2 RPG Maker.
 
         - To-DO:
             - Implement Serializer and Data Rework Structure.
-                - database/CharacterSerializer
-                - database/CommonEventSerializer
-                - database/ItemSerializer
-                - map/EventPageSerializer
-                - map/EventSerializer
-                - map_tree/MapInfoSerializer
-                - DatabaseSerializer
-                - MapSerializer
-                - MapTreeSerializer
+                - Implement the FromFile Methods.
+                - Implement the MultiSerializers:
+                    EventCommandSerializer, CommonEventSerializer
+                
+                Updated LCF common data types.
+                - lcf/database
+                - lcf/map
+                - lcf/map_tree
+                - Database, Map, MapTree
+            
 
-            - Implement MultipleFromFile():
-                - For database common events generation.
-                - For map to insert event commands (map ROM and DMG Rom)
+            - Add bounded values to every public data member where it makes sense.
+                - It is used like a normal primitive type (int)
+                - But does range checking for a public variable.
+                - It checks when setting, incrementing (normal integer operations), if operation is permitted against boundaries
+                - If not => error message and ignore request.
+                - Create typedefs for common RPG Maker value ranges.
+                - Like ID-Range, 10Million Range etc.
 
 
             - Find a way to use partial serializers that does not expose the underlying library (tinyxml2::XMLDocument).
@@ -113,7 +125,7 @@ gb2RPG: Gameboy 2 RPG Maker.
                       
 
         - Write Functions for setting/generating event-commands of different types.
-            - 
+            - should create a system to automatically manage indentation.
             - set/copy/generate ...
             - setCommandParams
                 !- GENERAL Function. (element and argument list)

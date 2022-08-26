@@ -41,3 +41,6 @@ project/*
 ## completed build files in the main folder
 easyrpg-player
 lcf2xml
+
+## VS Code Counter Addon Folder
+.VSCodeCounter
