@@ -10,16 +10,18 @@ namespace lcf {
 
 class Event {
     friend class EventSerializer;
+
 public:
-    Event(uint16_t id, std::string name, uint16_t x, uint16_t y);
+    Event(const uint16_t id, const std::string name, const uint16_t x, const uint16_t y);
 
     EventPage& addEventPage();
 
-private:
-    uint16_t id;
-    std::string name;
+public:
     uint16_t x;
     uint16_t y;
+private:
+    const uint16_t id;
+    const std::string name;
     std::vector<EventPage> eventPages;
 };
 

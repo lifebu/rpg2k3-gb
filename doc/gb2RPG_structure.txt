@@ -101,6 +101,8 @@ gb2RPG: Gameboy 2 RPG Maker.
                     Character-ID: 1-RPGMAKER::MAX_NUM_CHARS
                     Switch-IDs: 1-RPGMAKER::MAX_NUM_SWITCHES
                     Variable-IDs: 1-RPGMAKER::MAX_NUM_VARIABLES
+                    Event-Pages: 1-RPGMAKER::MAX_PAGES_PER_EVENT
+                    
 
 
 

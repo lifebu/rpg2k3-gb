@@ -7,11 +7,11 @@
 namespace lcf {
 
 // public
-EventPage::EventPage(uint16_t id) :id(id) {
+EventPage::EventPage(const uint16_t id) :id(id) {
     assert(1 <= id < RPGMAKER::MAX_PAGES_PER_EVENT);
 }
 
-void EventPage::addEventCommands(std::vector<EventCommand>& commands) {
+void EventPage::addEventCommands(const std::vector<EventCommand>& commands) {
     eventCommands.insert(eventCommands.end(), commands.begin(), commands.end());
 }
 
