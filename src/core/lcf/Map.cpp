@@ -6,11 +6,15 @@
 
 namespace lcf {
 
-Event& Map::addEvent(std::string name, uint16_t x, uint16_t y) {
+Map::Map(const int numOfEvents) {
+    events.reserve(numOfEvents);
+}
+
+Event& Map::addEvent(const std::string name, const uint16_t x, const uint16_t y) {
     return events.emplace_back(getNextID(events.size()), name, x, y);
 }
 
-uint16_t Map::nextEventID() {
+const uint16_t Map::nextEventID() {
     return getNextID(events.size());
 }
 

@@ -15,11 +15,13 @@ class Database {
     friend class DatabaseSerializer;
 
 public: 
-    void addSwitch(std::string name);
-    void addVariable(std::string name);
-    void addCharacter(std::string name);
-    void addItem(std::string name, Item::ItemType type);
-    void addCommonEvent(std::string name, CommonEvent::TriggerType trigger);
+    Database(const int numOfSwitches = 0, const int numOfVariables = 0, const int numOfChars = 0, const int numOfItems = 0, const int numOfCommonEvents = 0);
+
+    Switch& addSwitch(const std::string name);
+    Variable& addVariable(const std::string name);
+    Character& addCharacter(const std::string name);
+    Item& addItem(const std::string name, const Item::ItemType type);
+    CommonEvent& addCommonEvent(const std::string name, const CommonEvent::TriggerType trigger);
 
 private:
     std::vector<Switch> switches;

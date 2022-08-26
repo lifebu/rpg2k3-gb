@@ -4,24 +4,32 @@
 
 namespace lcf {
 
-void Database::addSwitch(std::string name) {
-    switches.emplace_back(getNextID(switches.size()), name);
+Database::Database(const int numOfSwitches, const int numOfVariables, const int numOfChars, const int numOfItems, const int numOfCommonEvents) {
+    switches.reserve(numOfSwitches);
+    variables.reserve(numOfVariables);
+    characters.reserve(numOfChars);
+    items.reserve(numOfItems);
+    commonEvents.reserve(numOfCommonEvents);
 }
 
-void Database::addVariable(std::string name) {
-    variables.emplace_back(getNextID(variables.size()), name);
+Switch& Database::addSwitch(const std::string name) {
+    return switches.emplace_back(getNextID(switches.size()), name);
 }
 
-void Database::addCharacter(std::string name) {
-    characters.emplace_back(getNextID(characters.size()), name);
+Variable& Database::addVariable(const std::string name) {
+    return variables.emplace_back(getNextID(variables.size()), name);
 }
 
-void Database::addItem(std::string name, Item::ItemType type) {
-    items.emplace_back(getNextID(items.size()), name, type);
+Character& Database::addCharacter(const std::string name) {
+    return characters.emplace_back(getNextID(characters.size()), name);
 }
 
-void Database::addCommonEvent(std::string name, CommonEvent::TriggerType trigger) {
-    commonEvents.emplace_back(getNextID(commonEvents.size()), name, trigger);
+Item& Database::addItem(const std::string name, const Item::ItemType type) {
+    return items.emplace_back(getNextID(items.size()), name, type);
+}
+
+CommonEvent& Database::addCommonEvent(const std::string name, const CommonEvent::TriggerType trigger) {
+    return commonEvents.emplace_back(getNextID(commonEvents.size()), name, trigger);
 }
 
 };

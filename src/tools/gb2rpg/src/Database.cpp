@@ -19,7 +19,9 @@ const static std::string WARN_NO_COMMON_EVENTS = "Info: Could not find 'project/
 
 // public
 void Database::genDatabase() {
-    lcf::Database database;
+    lcf::Database database(
+        RPGMAKER::MAX_NUM_SWITCHES, RPGMAKER::MAX_NUM_VARIABLES,
+        MEMORYSIZES::TOTAL_USED_ITEMS, RPGMAKER::MAX_NUM_CHARS);
 
     std::cout << "Generating Database: RPG_RT.edb\n";
 

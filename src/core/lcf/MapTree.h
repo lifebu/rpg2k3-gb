@@ -17,9 +17,9 @@ public:
      * 
      * @param numMaps How many maps this mapTree will need.
      */
-    MapTree(int numMaps);
+    MapTree(int numMaps = 0);
 
-    void addMapInfo(std::string mapName);
+    MapInfo& addMapInfo(std::string mapName);
 private:
     std::vector<MapInfo> mapInfos;
 };

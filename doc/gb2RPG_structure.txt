@@ -82,12 +82,7 @@ gb2RPG: Gameboy 2 RPG Maker.
                 - Implement the FromFile Methods.
                 - Implement the MultiSerializers:
                     EventCommandSerializer, CommonEventSerializer
-                
-                Updated LCF map tree data types.
-                - lcf/map_tree
-                - Database, Map, MapTree
-            
-
+          
             - Add bounded values to every public data member where it makes sense.
                 - It is used like a normal primitive type (int)
                 - But does range checking for a public variable.

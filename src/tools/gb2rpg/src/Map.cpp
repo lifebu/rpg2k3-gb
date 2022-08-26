@@ -30,7 +30,7 @@ void Map::genMapFiles(std::vector<GBFile>& gbFiles) {
         std::string filePath = PROJECT::PROJECT_DIR + fileName;
         std::cout << "Generating Map: " << fileName << "\n";
 
-        lcf::Map map;
+        lcf::Map map(1 + numOfMapROMs + MEMORYSIZES::NUM_DMG_RAM_EVENTS);
 
         generateDMGROM(map);
         generateMapROM(map, gbFile, numOfMapROMs);

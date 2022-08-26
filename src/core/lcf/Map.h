@@ -11,9 +11,12 @@ namespace lcf {
 
 class Map {
     friend class MapSerializer;
+
 public:
-    Event& addEvent(std::string name, uint16_t x, uint16_t y);
-    uint16_t nextEventID();
+    Map(const int numOfEvents = 0);
+
+    Event& addEvent(const std::string name, const uint16_t x, const uint16_t y);
+    const uint16_t nextEventID();
 
 private:
     std::vector<Event> events;
