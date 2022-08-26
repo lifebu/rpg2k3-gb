@@ -19,11 +19,11 @@ std::unique_ptr<tinyxml2::XMLDocument> MapInfoSerializer::ToFile(MapInfo& mapInf
     auto mapInfoTempl = std::make_unique<tinyxml2::XMLDocument>(TEMPLATES::MAP_INFO);
 
     // Set Map ID
-    mapInfoTempl->RootElement()->SetAttribute("id", generateID(mapInfo.getID()).c_str());
+    mapInfoTempl->RootElement()->SetAttribute("id", generateID(mapInfo.id).c_str());
 
     // Change map name to filename.
     auto* name = mapInfoTempl->TraverseElement("/MapInfo/name")->FirstChild()->ToText();
-    name->SetValue(mapInfo.getName().c_str());
+    name->SetValue(mapInfo.name.c_str());
 
     return mapInfoTempl;
 }

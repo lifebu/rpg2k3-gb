@@ -7,26 +7,9 @@
 namespace lcf {
 
 // public
-MapInfo::MapInfo(uint16_t id, std::string name) {
-    setName(name);
-    setID(id);
+MapInfo::MapInfo(const uint16_t id, const std::string name) : 
+        id(id), name(name) {
 }
 
-uint16_t MapInfo::getID() {
-    return id;
-}
-
-void MapInfo::setID(uint16_t val) {
-    assert(1 <= val < RPGMAKER::MAX_ID);
-    id = val;
-}
-
-std::string MapInfo::getName() {
-    return name;
-}
-
-void MapInfo::setName(std::string val) {
-    name = val;
-}
 
 };

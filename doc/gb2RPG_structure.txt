@@ -83,8 +83,7 @@ gb2RPG: Gameboy 2 RPG Maker.
                 - Implement the MultiSerializers:
                     EventCommandSerializer, CommonEventSerializer
                 
-                Updated LCF database data types.
-                - lcf/map
+                Updated LCF map tree data types.
                 - lcf/map_tree
                 - Database, Map, MapTree
             
@@ -102,7 +101,7 @@ gb2RPG: Gameboy 2 RPG Maker.
                     Switch-IDs: 1-RPGMAKER::MAX_NUM_SWITCHES
                     Variable-IDs: 1-RPGMAKER::MAX_NUM_VARIABLES
                     Event-Pages: 1-RPGMAKER::MAX_PAGES_PER_EVENT
-                    
+
 
 
 
