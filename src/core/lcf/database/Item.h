@@ -5,31 +5,25 @@
 
 namespace lcf {
 
-enum ItemType {
-    WEAPON = 1,
-    SHIELD = 2,
-    BODY = 3,
-    HEAD = 4,
-    ACCESSORY = 5
-};
 
 class Item {
+    friend class ItemSerializer;
+
 public:
-    Item(uint16_t id, std::string name, ItemType type);
+    enum ItemType {
+        WEAPON = 1,
+        SHIELD = 2,
+        BODY = 3,
+        HEAD = 4,
+        ACCESSORY = 5
+    };
 
-    uint16_t getID();
-    void setID(uint16_t val);
-
-    std::string getName();
-    void setName(std::string val);
-
-    ItemType getType();
-    void setType(ItemType val);
+    Item(const uint16_t id, const std::string name, const ItemType type);
 
 private:
-    uint16_t id;
-    std::string name;
-    ItemType type;
+    const uint16_t id;
+    const std::string name;
+    const ItemType type;
 };
 
 };

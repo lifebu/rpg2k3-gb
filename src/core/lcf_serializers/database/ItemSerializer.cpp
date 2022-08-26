@@ -14,7 +14,7 @@ namespace lcf {
 ItemSerializer::ItemSerializer() {}
 
 Item ItemSerializer::FromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) {
-    return Item(0, "name", ItemType::WEAPON);
+    return Item(0, "name", Item::ItemType::WEAPON);
 }
 
 // Generate the local IDs required for the correct type IDs of the item.
@@ -46,16 +46,16 @@ std::unique_ptr<tinyxml2::XMLDocument> ItemSerializer::ToFile(Item& elem) {
     auto itemTempl = std::make_unique<tinyxml2::XMLDocument>(TEMPLATES::ITEM);
 
     // Set switch ID
-    itemTempl->RootElement()->SetAttribute("id", generateID(elem.getID()).c_str());
+    itemTempl->RootElement()->SetAttribute("id", generateID(elem.id).c_str());
 
     // Change item Name: E.g. WPN0001, BODY0012
-    uint16_t localID = getLocalID(elem.getID());
+    uint16_t localID = getLocalID(elem.id);
     auto* name = itemTempl->TraverseElement("/Item/name")->FirstChild()->ToText();
-    name->SetValue((RPGMAKER::ITEM_NAMES[elem.getType()] + generateID(localID)).c_str());
+    name->SetValue((RPGMAKER::ITEM_NAMES[elem.type] + generateID(localID)).c_str());
 
     // Change item type
     auto* type = itemTempl->TraverseElement("/Item/type")->FirstChild()->ToText();
-    type->SetValue(std::to_string(elem.getType()).c_str());
+    type->SetValue(std::to_string(elem.type).c_str());
 
     return itemTempl;
 }

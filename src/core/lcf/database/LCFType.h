@@ -9,32 +9,29 @@ template<typename T>
 class LCFType {
     friend class SwitchSerializer;
     friend class VariableSerializer;
-protected:
-    LCFType(uint16_t id, std::string name, T value);
 
-public:
+public: 
     LCFType() = delete;
 
-    T getValue();
-    void setValue(T val);
+protected:
+    LCFType(const uint16_t id, const std::string name, const T value);
 
+public:
     const uint16_t id;
     const std::string name;
-
-private:
     T value;
 };
 
 class Switch : public LCFType<bool> {
     friend class SwitchSerializer;
 public:
-    Switch(uint16_t id, std::string name, bool value = false);
+    Switch(const uint16_t id, const std::string name, const bool value = false);
 };
 
 class Variable : public LCFType<int32_t> {
     friend class VariableSerializer;
 public:
-    Variable(uint16_t id, std::string name, int32_t value = 0);
+    Variable(const uint16_t id, const std::string name, const int32_t value = 0);
 };
 
 };

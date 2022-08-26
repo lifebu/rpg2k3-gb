@@ -6,18 +6,13 @@
 namespace lcf {
 
 class Character {
+    friend class CharacterSerializer;
+
 public:
-    Character(uint16_t id, std::string name);
+    Character(const uint16_t id, const std::string name);
 
-    uint16_t getID();
-    void setID(uint16_t val);
-
-    std::string getName();
-    void setName(std::string val);
-
-private:
-    uint16_t id;
-    std::string name;
+public:
+    const uint16_t id;
 
     // stats
     uint32_t exp;
@@ -34,6 +29,9 @@ private:
     uint16_t BodyID;
     uint16_t HeadID;
     uint16_t AccessoryID;
+
+private:
+    const std::string name;
 };
 
 };

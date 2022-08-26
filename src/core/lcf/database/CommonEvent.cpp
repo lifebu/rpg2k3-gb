@@ -3,43 +3,19 @@
 #include "lcf/common/EventCommand.h"
 #include "utilities/RPGHelper.h"
 
+#include <cassert>
+
 
 namespace lcf {
 
 // public
-CommonEvent::CommonEvent(uint16_t id, std::string name, TriggerType trigger) {
-
-    setID(id);
-    setName(name);
-    setTriggerType(trigger);
+CommonEvent::CommonEvent(const uint16_t id, const std::string name, const TriggerType trigger) : 
+        id(id), name(name), trigger(trigger) {
+    assert(1 <= id < RPGMAKER::MAX_ID);
 }
 
-uint16_t CommonEvent::getID() {
-    return id;
+CommonEvent::CommonEvent(const uint16_t id, const std::string name, const TriggerType trigger, const size_t numOfEventCommands) : 
+        id(id), name(name), trigger(trigger) {
+    eventCommands.reserve(numOfEventCommands);
 }
-
-void CommonEvent::setID(uint16_t val) {
-    assert(1 <= val < RPGMAKER::MAX_ID);
-    id = val;
-}
-
-std::string CommonEvent::getName() {
-    return name;
-}
-void CommonEvent::setName(std::string val) {
-    name = val;
-}
-
-TriggerType CommonEvent::getTriggerType() {
-    return trigger;
-}
-
-void CommonEvent::setTriggerType(TriggerType val) {
-    trigger = val;
-}
-
-void CommonEvent::addEventCommand(EventCommand&& eventCommand) {
-    eventCommands.emplace_back(eventCommand);
-}
-
 };

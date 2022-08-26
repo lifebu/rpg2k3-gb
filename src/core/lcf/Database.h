@@ -18,8 +18,8 @@ public:
     void addSwitch(std::string name);
     void addVariable(std::string name);
     void addCharacter(std::string name);
-    void addItem(std::string name, ItemType type);
-    void addCommonEvent(std::string name, TriggerType trigger);
+    void addItem(std::string name, Item::ItemType type);
+    void addCommonEvent(std::string name, CommonEvent::TriggerType trigger);
 
 private:
     std::vector<Switch> switches;

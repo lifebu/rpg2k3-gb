@@ -16,7 +16,7 @@ CommonEventSerializer::CommonEventSerializer() {}
 // PartialSerializer
 CommonEvent CommonEventSerializer::FromFile(std::unique_ptr<tinyxml2::XMLDocument>& doc) {
 
-    return CommonEvent(1, "", lcf::TriggerType::NONE);
+    return CommonEvent(1, "", lcf::CommonEvent::TriggerType::NONE);
 }
 
 std::string FlagToString(bool val) {
@@ -28,15 +28,15 @@ std::unique_ptr<tinyxml2::XMLDocument> CommonEventSerializer::ToFile(CommonEvent
     auto commonEventTempl = std::make_unique<tinyxml2::XMLDocument>(TEMPLATES::COMMON_EVENT);
 
     // Set Common Event ID
-    commonEventTempl->RootElement()->SetAttribute("id", generateID(elem.getID()).c_str());
+    commonEventTempl->RootElement()->SetAttribute("id", generateID(elem.id).c_str());
 
     // Change Common Event name
     auto* nameElem = commonEventTempl->TraverseElement("/CommonEvent/name")->FirstChild()->ToText();
-    nameElem->SetValue(elem.getName().c_str());
+    nameElem->SetValue(elem.name.c_str());
 
     // Change Trigger Type
     auto* triggerElem = commonEventTempl->TraverseElement("/CommonEvent/trigger")->FirstChild();
-    triggerElem->SetValue(std::to_string(elem.getTriggerType()).c_str());
+    triggerElem->SetValue(std::to_string(elem.trigger).c_str());
 
     // Add Event Commands
     auto* eventCommandsElem = commonEventTempl->TraverseElement("/CommonEvent/event_commands")->FirstChild();

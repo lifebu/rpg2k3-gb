@@ -90,7 +90,7 @@ void Database::genItems(lcf::Database& database) {
         auto[typeID, localID] = getItemTypeAndLocalID(id);
         std::string name = RPGMAKER::ITEM_NAMES[typeID] + generateID(localID);
 
-        database.addItem(name, static_cast<lcf::ItemType>(typeID));
+        database.addItem(name, static_cast<lcf::Item::ItemType>(typeID));
     }
 }
 

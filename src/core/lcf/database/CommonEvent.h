@@ -6,36 +6,27 @@
 
 namespace lcf {
 
-enum TriggerType {
-    AUTORUN = 3,
-    PARALLEL_PROCESS = 4,
-    NONE = 5
-};
 
 class EventCommand;
 
 class CommonEvent {
-    // TODO: Not that nice!
     friend class CommonEventSerializer;
 
 public:
-    CommonEvent(uint16_t id, std::string name, TriggerType trigger);
+    enum TriggerType {
+        AUTORUN = 3,
+        PARALLEL_PROCESS = 4,
+        NONE = 5
+    };
 
-    uint16_t getID();
-    void setID(uint16_t val);
 
-    std::string getName();
-    void setName(std::string val);
-
-    TriggerType getTriggerType();
-    void setTriggerType(TriggerType val);
-
-    void addEventCommand(EventCommand&& eventCommand);
+    CommonEvent(const uint16_t id, const std::string name, const TriggerType trigger);
+    CommonEvent(const uint16_t id, const std::string name, const TriggerType trigger, const size_t numOfEventCommands);
 
 private:
-    uint16_t id;
-    std::string name;
-    TriggerType trigger;
+    const uint16_t id;
+    const std::string name;
+    const TriggerType trigger;
     std::vector<EventCommand> eventCommands;
 };
 

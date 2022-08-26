@@ -12,25 +12,15 @@ LCFType<T>::LCFType(uint16_t id, std::string name, T value) :
     id(id), name(name), value(value) {
 }
 
-template<typename T>
-T LCFType<T>::getValue() {
-    return value;
-}
-
-template<typename T>
-void LCFType<T>::setValue(T val) {
-    value = val;
-}
-
 // Switch
-Switch::Switch(uint16_t id, std::string name, bool value) 
+Switch::Switch(const uint16_t id, const std::string name, const bool value) 
     : LCFType(id, name, value) {
     assert(1 <= value < RPGMAKER::MAX_NUM_SWITCHES);
 }
 
 
 // Variable
-Variable::Variable(uint16_t id, std::string name, int32_t value)
+Variable::Variable(const uint16_t id, const std::string name, const int32_t value)
     : LCFType(id, name, value) {
     assert(1 <= value < RPGMAKER::MAX_NUM_VARIABLES);
 }

@@ -20,11 +20,13 @@ std::unique_ptr<tinyxml2::XMLDocument> CharacterSerializer::ToFile(Character& el
     auto charTempl = std::make_unique<tinyxml2::XMLDocument>(TEMPLATES::CHARACTER);
 
     // Set character ID
-    charTempl->RootElement()->SetAttribute("id", generateID(elem.getID()).c_str());
+    charTempl->RootElement()->SetAttribute("id", generateID(elem.id).c_str());
 
     // Change character name
     auto* nameElem = charTempl->TraverseElement("/Actor/name")->FirstChild()->ToText();
-    nameElem->SetValue(elem.getName().c_str());
+    nameElem->SetValue(elem.name.c_str());
+
+    // TODO: Do I need to serialize character stats and items?
 
     return charTempl;
 }

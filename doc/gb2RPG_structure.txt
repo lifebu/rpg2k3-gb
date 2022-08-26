@@ -83,8 +83,7 @@ gb2RPG: Gameboy 2 RPG Maker.
                 - Implement the MultiSerializers:
                     EventCommandSerializer, CommonEventSerializer
                 
-                Updated LCF common data types.
-                - lcf/database
+                Updated LCF database data types.
                 - lcf/map
                 - lcf/map_tree
                 - Database, Map, MapTree
@@ -97,6 +96,12 @@ gb2RPG: Gameboy 2 RPG Maker.
                 - If not => error message and ignore request.
                 - Create typedefs for common RPG Maker value ranges.
                 - Like ID-Range, 10Million Range etc.
+                - List of Ranges:
+                    ID: 1-9.999
+                    Character-ID: 1-RPGMAKER::MAX_NUM_CHARS
+                    Switch-IDs: 1-RPGMAKER::MAX_NUM_SWITCHES
+                    Variable-IDs: 1-RPGMAKER::MAX_NUM_VARIABLES
+
 
 
             - Find a way to use partial serializers that does not expose the underlying library (tinyxml2::XMLDocument).

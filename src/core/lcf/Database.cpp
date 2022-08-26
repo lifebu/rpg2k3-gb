@@ -16,11 +16,11 @@ void Database::addCharacter(std::string name) {
     characters.emplace_back(getNextID(characters.size()), name);
 }
 
-void Database::addItem(std::string name, ItemType type) {
+void Database::addItem(std::string name, Item::ItemType type) {
     items.emplace_back(getNextID(items.size()), name, type);
 }
 
-void Database::addCommonEvent(std::string name, TriggerType trigger) {
+void Database::addCommonEvent(std::string name, CommonEvent::TriggerType trigger) {
     commonEvents.emplace_back(getNextID(commonEvents.size()), name, trigger);
 }
 
