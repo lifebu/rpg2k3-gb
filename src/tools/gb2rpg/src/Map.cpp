@@ -73,8 +73,7 @@ void Map::generateMapROM(lcf::Map& map, GBFile& gbFile, int numOfMapROMs) {
             bool lastEventPage = isLastEventPage(gbFile);
 
             // Fill event-page with map-rom-header commands
-            // TODO: once eventCommandSerializer is implemented!
-            //setupMapRomHeader(mapRomHeader, numLabels);
+            setupMapRomHeader(mapRomHeader, numLabels);
             eventPage.addEventCommands(mapRomHeader);
 
             // Fill event-page with map-rom-label commands
@@ -86,8 +85,7 @@ void Map::generateMapROM(lcf::Map& map, GBFile& gbFile, int numOfMapROMs) {
                     secondVar = -9999999;
                 }
 
-                // TODO: once eventCommandSerializer is implemented!
-                //setupMapRomLabel(mapRomLabel, labelID, numLabels, firstVar, secondVar);
+                setupMapRomLabel(mapRomLabel, labelID, numLabels, firstVar, secondVar);
                 eventPage.addEventCommands(mapRomLabel);
             }
         }

@@ -80,6 +80,10 @@ gb2RPG: Gameboy 2 RPG Maker.
         - To-DO:
             - Implement Serializer and Data Rework Structure.
                 - Implement the FromFile Methods.
+                    - common
+                    - database
+                    - map
+                    - map_tree
                 - Implement the MultiSerializers:
                     EventCommandSerializer, CommonEventSerializer
           
@@ -98,16 +102,31 @@ gb2RPG: Gameboy 2 RPG Maker.
                     Event-Pages: 1-RPGMAKER::MAX_PAGES_PER_EVENT
 
 
+            - only make accessor where it makes sense and it does something.
+
+
+            - stop using classes for the serializers, just put them into a namespace (serializer namespace)
+                - They don't have real members anyway
+                - aside from variable and switches.
+                - also they can live in a single file => less code!
+                - could make parsing harder, as the database gets the partial switch xml and needs to change the id.
+            
+            - use a precompiled header for the STL elements I use.
+            
+
+            - change the id system?
+                - Do the partial types like items really need an id?
+                - the id is only part of their container (database).
+                - the database can manage request of finding a type based in id.
+            
+
 
 
             - Find a way to use partial serializers that does not expose the underlying library (tinyxml2::XMLDocument).
+                - If I go with directly working with the binary file, It could use File*.
+                - Could also use File with position or filestream?
 
-            - Do I need the getters/setters everywhere?
-                - Expose less of the inner working of the Database class (getter/setter) and think more about how it will actually be used.
-
-            - Can I try to not use friend class?          
-            
-
+   
 
             - Most of the Datatypes are not shared. For example switch, variables, characters, items and common events are only used by the Database file => Can add the class declarations in Database.h and not in so many header files.
                 - The only thing that is actually shared is a eventcommand.
