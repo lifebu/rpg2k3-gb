@@ -10,172 +10,208 @@ gb2RPG: Gameboy 2 RPG Maker.
 
 
 - TODO:
-    - Need to provide the EasyRPG/RTP replacement.
-        - Just copy it into the project?
-        - EasyRPG/RTP does not work correctly.
-        - It does use different names for the RTP.
-        - Change base templates to use Local files not RTP? Can I use RTP myself?
-       
-    - Implement more Robust Error Checks.
+    - Tools:
+        - Unit tests:
+            - Using Catch2.
+            - Integrate Unit tests into CMake!
 
-    - Better includes in core:
-        #include "src/core/lcf/Switch.h"
-        =>
-        #include "core/lcf/Switch.h"
+    - Code Cleanup:
+        - constants:
+            - Make clear from the constants path which of them are variable constants and which constants are hardcoded because of RPG MAKER limitations.
 
-    - Once I'm done with the refactor do additional passes for code quality for example moving instead of copying (use my Short-Version.yml: Coding Task Checklist ).
+        - Clean up serializer structure:
+            - Do I need the structure for the serializers?
+            - WAY to much structure for little gain.
+            - currently 1.800 lines of code :/
+            - Also: Way to many classes that only have a couple of LOC.
+        
+        - I am not sure about the LCFType for Switches/Variables.
+            - Don't save a lot of code anymore and basically the same.
+            - makes it uneccessarily complex.
+        
+        - use a precompiled header for the STL elements I use.
 
-    - stop using: "using namespace gb2rpg"
-        => better to read if you know the namespace.
+        
+        
+    - Code Style:
+        - Write a small code style guide.
+
+        - Add Documentation!
+
+        - Implement more Robust Error Checks.
+
+        - Better includes in core:
+            #include "src/core/lcf/Switch.h"
+            =>
+            #include "core/lcf/Switch.h"
+        
+        - stop using: "using namespace gb2rpg"
+                => better to read if you know the namespace.
+
+        - Once I'm done with the refactor do additional passes for code quality for example moving instead of copying (use my Short-Version.yml: Coding Task Checklist ).
+
+        - only make accessor where it makes sense and it does something.
     
+        
+    - Function:
+        - Project File Data and Serializer (for file generation, compiler and Runtime):
+            - Idea:
+                - Serialization:
+                    - Not every data type needs a Import and Export function. Some only need import!
+                    Import:
+                        - Load all necessary data from the file and place it into a in-memory representation and close the file. 
+                        - Not all data is needed for what I want to manipulate, only parse that.
+                    Export:
+                        - Save all the data from the class into the file. 
+                        - Load the template for the data.
+                        - Replace data with members from class.
+                        - Save template again.
+                        - Basically the export here does similiar thing to Map generation.
+                    
+                - Data (Switch.h, Event.h):
+                    - ONLY: an in-Memory representation of ONLY the data I need to change for my software.
+                    - e.g. Map: only have the list of events, the rest is never touched.
+                    - These should be non-copyable, only moveable.
+                
+                - encapsulates all the .xml dependencies.
 
-    - Add Documentation!
+            - To-DO:
+                - Implement Serializer and Data Rework Structure.
+                    - Implement the FromFile Methods.
+                        - common
+                        - database
+                        - map
+                        - map_tree
+                    - Implement the MultiSerializers:
+                        EventCommandSerializer, CommonEventSerializer
+            
+                - Add bounded values to every public data member where it makes sense.
+                    - It is used like a normal primitive type (int)
+                    - But does range checking for a public variable.
+                    - template<type>: type is the primitive type.
+                        - template does range checks.
+                        - wrapper template.
+                    - Debug feature that can be turned off.
+                    - It checks when setting, incrementing (normal integer operations), if operation is permitted against boundaries
+                    - If not => error message and ignore request.
+                    - Create typedefs for common RPG Maker value ranges.
+                    - Like ID-Range, 10Million Range etc.
+                    - List of Ranges:
+                        ID: 1-9.999
+                        Character-ID: 1-RPGMAKER::MAX_NUM_CHARS
+                        Switch-IDs: 1-RPGMAKER::MAX_NUM_SWITCHES
+                        Variable-IDs: 1-RPGMAKER::MAX_NUM_VARIABLES
+                        Event-Pages: 1-RPGMAKER::MAX_PAGES_PER_EVENT
 
-    - Try to have less code overall:
-        - Do I need the structure for the serializers?
-        - currently 1.800 lines of code :/
+                
+                - stop using classes for the serializers, just put them into a namespace (serializer namespace)
+                    - They don't have real members anyway
+                    - aside from variable and switches.
+                    - also they can live in a single file => less code!
+                    - could make parsing harder, as the database gets the partial switch xml and needs to change the id.
+                
 
-    - Unit tests:
-        - Using Catch2.
-        - Integrate Unit tests into CMake!
+                - change the id system?
+                    - Do the partial types like items really need an id?
+                    - the id is only part of their container (database).
+                    - the database can manage request of finding a type based in id.
 
-    - Create the "FromFile()" Functions later!
-        => Can really test them by generating the file (ToFile) and then loading them again (FromFile)!
+                - Find a way to use partial serializers that does not expose the underlying library (tinyxml2::XMLDocument).
+                    - If I go with directly working with the binary file, It could use File*.
+                    - Could also use File with position or filestream?
 
-    - lcf uses:
-        - GB2RPG: instantiate high level file class, fill it and then use 
-            - Serializer::ToFile(): Database, MapTree, Map.
-        - GB2RPG: Insert multiple middle level file classes fomr a file: Common Events (from compiler), Event Commands (Template ROM Code, DMGROM). 
-            - Serializer::MultipleFromFile()
-        - CRPGEnv: Load High level file class using 
-            - Serializer::FromFile(): Database, MapTree, Map.
-        - Compiler: Generate multiple middle level file classes to a File: 
-            - Common Evvents: for Emulator Code.
-            - for symmetry: Event Commands (Template code generation?)
-            Serializer::MultipleToFile()
+    
+                - Most of the Datatypes are not shared. For example switch, variables, characters, items and common events are only used by the Database file => Can add the class declarations in Database.h and not in so many header files.
+                    - The only thing that is actually shared is a eventcommand.
+                    - If the definition is inside of the Database class can switches etc. just be POD types instead of classes? (No need for getters/Setters).
+                    - And the database file would be responsible for ID management.
 
-        - CRPGEnv: Update the folowing data while Running:
-            Database: Character Stats (Exp, etc), Character Equipment, Variable/Switch values
-            Map: Event Positions.
+                - Only have db serializer public in a header (the only thing I need is toFile/FromFile for that).
+                    - The rest (item, switch, char, common event etc.) is private in the db serializer.
+                    - Makes less files and makes the tinyxml2 forward decleration in the internal types (switch) Hidden.
+                    - Similiar for Map and MapInfo.
+                    - makes the tinyxml2::XMLDocument returnvalue hidden!
+                    - I could organize the serializers of private in namespaces instead of a whole class. (Because they are static anyway, and cannot be initialized).
+                
+                - Map::setupMapRomHeader, setupMapRomLabel:
+                    - Do I want to load the template file and change every parameter, or just generate it on the fly?
+                    - They should later create it and return it!
+                    => Create and return and not template
+                    => But this needs good event-command generation.
 
-    - Project File Data and Serializer (for file generation, compiler and Runtime):
-        - Idea:
-            - Serialization:
-                - Not every data type needs a Import and Export function. Some only need import!
-                Import:
-                    - Load all necessary data from the file and place it into a in-memory representation and close the file. 
-                    - Not all data is needed for what I want to manipulate, only parse that.
-                Export:
-                    - Save all the data from the class into the file. 
-                    - Load the template for the data.
-                    - Replace data with members from class.
-                    - Save template again.
-                    - Basically the export here does similiar thing to Map generation.
-                   
-            - Data (Switch.h, Event.h):
-                - ONLY: an in-Memory representation of ONLY the data I need to change for my software.
-                - e.g. Map: only have the list of events, the rest is never touched.
-                - These should be non-copyable, only moveable.
+            - Write Functions for setting/generating event-commands of different types.
+                - should create a system to automatically manage indentation.
+                - set/copy/generate ...
+                - setCommandParams
+                    !- GENERAL Function. (element and argument list)
+                    ALSO:
+                        - Create other functions that build on top of that which have types for the parameters.
+                        - setConditionalBranchParams etc.
+                        - also need Typedefs (enums?) for the paramters, so that I do not punch in magic numbers.
+                - setEventIDNameCoord
+                - Libraries of Functionality that allows me to manipulate event-commands.
+                - should work ontop on the tinyxml2 library and changes I do to that.
 
-        - To-DO:
-            - Implement Serializer and Data Rework Structure.
-                - Implement the FromFile Methods.
-                    - common
-                    - database
-                    - map
-                    - map_tree
-                - Implement the MultiSerializers:
-                    EventCommandSerializer, CommonEventSerializer
+            - Event-Generation and Manipulation can be made more general.
+                - factory pattern???
+                - Map::generateDMGROM(), generateMapRAM() and generateMapROM() are structurely very similar:
+                    - generate code for event-page
+                    - insert code in event-page
+                    - setEventPageID()
+                    - insert event-page into event
+                    - setEventIDNameCoord()
+                    - insert event into map.
+                - could be more generalized.
+                    - maybe not one function but certain sub-functions?
+                - But I do not know yet how compiler will need to work and how it uses it.
+                - Event-Manipulation is similar for Map and Compiler.
           
-            - Add bounded values to every public data member where it makes sense.
-                - It is used like a normal primitive type (int)
-                - But does range checking for a public variable.
-                - It checks when setting, incrementing (normal integer operations), if operation is permitted against boundaries
-                - If not => error message and ignore request.
-                - Create typedefs for common RPG Maker value ranges.
-                - Like ID-Range, 10Million Range etc.
-                - List of Ranges:
-                    ID: 1-9.999
-                    Character-ID: 1-RPGMAKER::MAX_NUM_CHARS
-                    Switch-IDs: 1-RPGMAKER::MAX_NUM_SWITCHES
-                    Variable-IDs: 1-RPGMAKER::MAX_NUM_VARIABLES
-                    Event-Pages: 1-RPGMAKER::MAX_PAGES_PER_EVENT
+        - RPGHelper:
+            - The functions should be in a namespace.
+            - Need a better place for all the functions.
 
+        - Performance:
+            - 2 MByte Cartidge: 16GB RAM, 2m20s, 1.6GB XML File.
+            - Loading the 1.6GB XML file takes up 14.1GB RAM and When Creating it I use up over 16GB!
+            - Resulting Binary File is: 95,4 MByte.
 
-            - only make accessor where it makes sense and it does something.
+            - less memory usage:
+                - a) Use different XML Library:
+                    - can use https://libexpat.github.io/
+                        https://github.com/libexpat/libexpat
+                        this is what lcf2xml uses. 
+                        - stream-oriented XML parser.
+                        - good if files are too large to fit into RAM.
+                    - lcf2xml only requires 600mb of memory in comparison to tinyxml2's 16GB!
+                    - lcf2xml only takes 44 seconds in comparison to my 2m20s (but it's task might be simpler!).
 
-
-            - stop using classes for the serializers, just put them into a namespace (serializer namespace)
-                - They don't have real members anyway
-                - aside from variable and switches.
-                - also they can live in a single file => less code!
-                - could make parsing harder, as the database gets the partial switch xml and needs to change the id.
-            
-            - use a precompiled header for the STL elements I use.
-            
-
-            - change the id system?
-                - Do the partial types like items really need an id?
-                - the id is only part of their container (database).
-                - the database can manage request of finding a type based in id.
-            
-
-
-
-            - Find a way to use partial serializers that does not expose the underlying library (tinyxml2::XMLDocument).
-                - If I go with directly working with the binary file, It could use File*.
-                - Could also use File with position or filestream?
-
-   
-
-            - Most of the Datatypes are not shared. For example switch, variables, characters, items and common events are only used by the Database file => Can add the class declarations in Database.h and not in so many header files.
-                - The only thing that is actually shared is a eventcommand.
-                - If the definition is inside of the Database class can switches etc. just be POD types instead of classes? (No need for getters/Setters).
-
-            - Only have db serializer public in a header (the only thing I need is toFile/FromFile for that).
-                - The rest (item, switch, char, common event etc.) is private in the db serializer.
-                - Makes less files and makes the tinyxml2 forward decleration in the internal types (switch) Hidden.
-                - Similiar for Map and MapInfo.
-                - makes the tinyxml2::XMLDocument returnvalue hidden!
-                - I could organize the serializers of private in namespaces instead of a whole class. (Because they are static anyway, and cannot be initialized).
-            
-            - Map::setupMapRomHeader, setupMapRomLabel:
-                - Do I want to load the template file and change every parameter, or just generate it on the fly?
-                - They should later create it and return it!      
-                      
-
-        - Write Functions for setting/generating event-commands of different types.
-            - should create a system to automatically manage indentation.
-            - set/copy/generate ...
-            - setCommandParams
-                !- GENERAL Function. (element and argument list)
-                ALSO:
-                    - Create other functions that build on top of that which have types for the parameters.
-                    - setConditionalBranchParams etc.
-                    - also need Typedefs (enums?) for the paramters, so that I do not punch in magic numbers.
-            - setEventIDNameCoord
-            - Libraries of Functionality that allows me to manipulate event-commands.
-            - should work ontop on the tinyxml2 library and changes I do to that.
-
-        - Event-Generation and Manipulation can be made more general.
-            - factory pattern???
-            - Map::generateDMGROM(), generateMapRAM() and generateMapROM() are structurely very similar:
-                - generate code for event-page
-                - insert code in event-page
-                - setEventPageID()
-                - insert event-page into event
-                - setEventIDNameCoord()
-                - insert event into map.
-            - could be more generalized.
-                - maybe not one function but certain sub-functions?
-            - But I do not know yet how compiler will need to work and how it uses it.
-            - Event-Manipulation is similar for Map and Compiler.
+                - b) Directly work on the binary file:
+                    - 1.6GB of XML (MAP.emu for 2MB ROM) equals 95,4MB of Binary format (.lmu).
+                    - Can I find a comprehensive RPG Maker file structure reference?
+                        => Probably not.
+                        - A lot of work to reverse engineer liblcf and/or lcf files.
+                    - Even the CPP Project could use the binary files, If I create my own library, or use certain elements from easyRPG.
+                    - Rewrite my serializers to work on binary files.
+                    - How do I then do the template files?
+                    
+                - c) I could multithread parts of the map generation as it can take a long time.
+                    - Generating the Mapfile for Pokemon Red takes 2m20s for a 2 mByte Cartridge. 
+                    - Each Thread is responsible for multiple Event pages (when reading cartridge).
+                    - Even with Tetris (32 kByte) and 3.000Bytes/Page I could have ~11 Threads in parallel!.
+                    - You can also (more easily) parallelise on the file level.
+                
+                - What I'll do:
+                    use a) + c)
     
-    - RPGHelper:
-        - The functions should be in a namespace.
-        - Need a better place for all the functions.
+        - Need to provide the EasyRPG/RTP replacement.
+            - Just copy it into the project?
+            - EasyRPG/RTP does not work correctly.
+            - It does use different names for the RTP.
+            - Change base templates to use Local files not RTP? Can I use RTP myself?
+            - No structure with overloads just some functions that use the same name
+                - Don't like the constructor calls for basically static functions
 
-    - Memory Leak?:
+        - Memory Leak?:
             //TODO: calling DeepClone/ShallowClone creates a leak somehow (?)
             /*
             // Total: 180kB
@@ -193,174 +229,132 @@ gb2RPG: Gameboy 2 RPG Maker.
             // Total: 240kB, 60kByte Leaked: 
             int b = 10;
             */
-    
 
-    - Performance:
-        - 2 MByte Cartidge: 16GB RAM, 2m20s, 1.6GB XML File.
-        - Loading the 1.6GB XML file takes up 14.1GB RAM and When Creating it I use up over 16GB!
-        - Resulting Binary File is: 95,4 MByte.
+Info:
+    - ROM/RAM Data:
+        MAP-ROM: Events + Pages
+        MAP-RAM: Event + Position!
+        DMG-ROM: One Event.
 
-        - less memory usage:
-            - quick solution:
-                - I set BYTES_PER_VAR to 3 to reduce it from 16GB to 6GB and a 550MB .xml files instead of 1.6GB.
-                - More like a workaround for now.
+    - RPG Info:
+        - commands i need:
+            - Control Variables:
+            - Conditional Branch:
+            - Label:
+            - Jump to Label
+            - Call Event:
+            - Comment:
 
-            - shortterm solution:
-                - can use https://libexpat.github.io/
-                    https://github.com/libexpat/libexpat
-                    this is what lcf2xml uses. 
-                    - stream-oriented XML parser.
-                    - good if files are too large to fit into RAM.
-                - lcf2xml only requires 600mb of memory in comparison to tinyxml2's 16GB!
-                - lcf2xml only takes 44 seconds in comparison to my 2m20s (but it's task might be simpler!).
+        - Map0001.emu (.xml):
+            - <events>: List of events
+            - <event id="0001">
+                <name>MAP-ROM-001</name>
+                <x>0</x>
+                <y>0</y>
+                <pages>: List of Pages
+            - <EventPage id="0001">
+            - I do not need to change all the other settings 
+                => Can use a template file.
 
-            - longterm solution:
-                - directly work on the binary file.
-                    - 1.6GB of XML (MAP.emu for 2MB ROM) equals 95,4MB of Binary format (.lmu).
-                    - Can I find a comprehensive RPG Maker file structure reference?
-                    - Even the CPP Project could use the binary files, If I create my own library, or use certain elements from easyRPG.
-        
-        - I could multithread parts of the map generation as it can take a long time.
-            - Generating the Mapfile for Pokemon Red takes 2m20s for a 2 mByte Cartridge. 
-            - Each Thread is responsible for multiple Event pages (when reading cartridge).
-            - Even with Tetris (32 kByte) and 3.000Bytes/Page I could have ~11 Threads in parallel!.
-        
-        => Binary File + Multithreading:
-            - Do not need to stitch together or stream the XML file.
-            - Binary file are at max 100mb => keep it just in memory.
-            - Have a list of std::vector<EventPage>. Each thread fills one of those vectors.
-            - Then just write the binary file for each event.
-
-
-
-
-
-
-- ROM/RAM Data:
-    MAP-ROM: Events + Pages
-    MAP-RAM: Event + Position!
-    DMG-ROM: One Event.
-
-- RPG Info:
-    - commands i need:
-        - Control Variables:
-        - Conditional Branch:
-        - Label:
-        - Jump to Label
-        - Call Event:
-        - Comment:
-
-    - Map0001.emu (.xml):
-        - <events>: List of events
-        - <event id="0001">
-            <name>MAP-ROM-001</name>
-            <x>0</x>
-            <y>0</y>
-            <pages>: List of Pages
-        - <EventPage id="0001">
-        - I do not need to change all the other settings 
-            => Can use a template file.
-
-- sequence:
-    - read cartridge header:
-        - $0100-$014F
-            Entry Point:        4 Bytes     Binary
-            Nintendo Logo:      48 Byte     Binary
-            Title:              11 Byte     ASCII
-            Manufacturer Code:  4 Byte      ASCII
-            CGB Flag:           1 Byte      Binary
-            New Lincensee Code: 2 Byte      Binary
-            SGB Flag:           1 Byte      Binary
-            Cartridge Type:     1 Byte      Binary
-            ROM-Size:           1 Byte      Binary
-            RAM-Size:           1 Byte      Binary
-            Destination Code:   1 Byte      Binary
-            Old Lincensee Code: 1 Byte      Binary
-            Version number:     1 Byte      Binary
-            Header Checksum:    1 Byte      Binary
-            Global Checksum:    2 Byte      Binary
-        
-        - read ROM-Size and RAM-Size.
-        - later: Title (to show in RPG Maker!)
-    
-    - Create Map File:
-        - load map-template
-
-        - add DMG-ROM Event:
-            => Create my own DMG-ROM in C-Code similar to Emulator C-Code.
-                => good test for emulator.
-                => better from a legal standpoint than to use actual DMG-ROM.
-                => so this event is different to the other events. Actual logic.
+    - sequence:
+        - read cartridge header:
+            - $0100-$014F
+                Entry Point:        4 Bytes     Binary
+                Nintendo Logo:      48 Byte     Binary
+                Title:              11 Byte     ASCII
+                Manufacturer Code:  4 Byte      ASCII
+                CGB Flag:           1 Byte      Binary
+                New Lincensee Code: 2 Byte      Binary
+                SGB Flag:           1 Byte      Binary
+                Cartridge Type:     1 Byte      Binary
+                ROM-Size:           1 Byte      Binary
+                RAM-Size:           1 Byte      Binary
+                Destination Code:   1 Byte      Binary
+                Old Lincensee Code: 1 Byte      Binary
+                Version number:     1 Byte      Binary
+                Header Checksum:    1 Byte      Binary
+                Global Checksum:    2 Byte      Binary
             
-            - use event template.
-            - Read DMG_ROM.cpp file.
-            - use CEC to compile into .xml
-            - create an Event to the map with .xml as code.
-            
-        - add MAP-ROM Events: (Cartridge-ROM)
-            - read from actual .gb file (input).
-            - use event template.
-            - use rom-size:
-            - code:
-                - Code is binary jump.
-                Header:
-                    ByteOffset = ByteOffset / BYTES_PER_VAR
-                    LabelID = ByteOffset
-                    LabelID += 1
-                    JumpToLabel numLabels / 2;
-                Label-Boilerplate:
-                    Label X
-                    if (LabelID < X)
-                        JumpToLabel X - (min(X, 1.000 - X) / 2)
-                    if (LabelID > X)
-                        JumpToLabel X + (min(X, 1.000 - X) / 2)
-                    READVAR1 = LABELXVALUE1
-                    READVAR2 = LABELXVALUE2
-                    EndEventProcessing
-
-
-        - add MAP-RAM Events: (DMG-RAM)
-            - 500 by 500 map.
-            - use event template.
-            - Add empty events. Only Thing I need is position.
-
-        - write output .xml file.
-
-        - call LCF2XML to turn into mapfile.
-
-    - Create Maptree File:
-        - I think I don't need to change the template. should work like that.
-        - if I want to support multiple gameboy games and mapfiles later I might need to change it.
-
-        - call LCF2XML to turn into maptreefile.
-
-    - Create Database File:
-        - load database-template.
+            - read ROM-Size and RAM-Size.
+            - later: Title (to show in RPG Maker!)
         
-        - add CHARA-RAM:
-            - add items:
-                - use item template.
-                - create 9216 items.
-                - item-id defines which item type it is.
+        - Create Map File:
+            - load map-template
+
+            - add DMG-ROM Event:
+                => Create my own DMG-ROM in C-Code similar to Emulator C-Code.
+                    => good test for emulator.
+                    => better from a legal standpoint than to use actual DMG-ROM.
+                    => so this event is different to the other events. Actual logic.
+                
+                - use event template.
+                - Read DMG_ROM.cpp file.
+                - use CEC to compile into .xml
+                - create an Event to the map with .xml as code.
+                
+            - add MAP-ROM Events: (Cartridge-ROM)
+                - read from actual .gb file (input).
+                - use event template.
+                - use rom-size:
+                - code:
+                    - Code is binary jump.
+                    Header:
+                        ByteOffset = ByteOffset / BYTES_PER_VAR
+                        LabelID = ByteOffset
+                        LabelID += 1
+                        JumpToLabel numLabels / 2;
+                    Label-Boilerplate:
+                        Label X
+                        if (LabelID < X)
+                            JumpToLabel X - (min(X, 1.000 - X) / 2)
+                        if (LabelID > X)
+                            JumpToLabel X + (min(X, 1.000 - X) / 2)
+                        READVAR1 = LABELXVALUE1
+                        READVAR2 = LABELXVALUE2
+                        EndEventProcessing
+
+
+            - add MAP-RAM Events: (DMG-RAM)
+                - 500 by 500 map.
+                - use event template.
+                - Add empty events. Only Thing I need is position.
+
+            - write output .xml file.
+
+            - call LCF2XML to turn into mapfile.
+
+        - Create Maptree File:
+            - I think I don't need to change the template. should work like that.
+            - if I want to support multiple gameboy games and mapfiles later I might need to change it.
+
+            - call LCF2XML to turn into maptreefile.
+
+        - Create Database File:
+            - load database-template.
             
-            - add characters:
-                - use character template.
-                - create 2966 characters.
+            - add CHARA-RAM:
+                - add items:
+                    - use item template.
+                    - create 9216 items.
+                    - item-id defines which item type it is.
+                
+                - add characters:
+                    - use character template.
+                    - create 2966 characters.
 
-        - add EMU Code:
-            - load the emu-code .xml (if available)
-            - copy:
-                common events, switches, variables to database.
+            - add EMU Code:
+                - load the emu-code .xml (if available)
+                - copy:
+                    common events, switches, variables to database.
 
-        - write output .xml file.
+            - write output .xml file.
 
-        - call LCF2XML to turn into databasefile.
-    
-    - Create project folder:
-        - folder structure (empty folder):
-            - Title, System2, System, Sound, Picture, Panorama, Music, Movie, Monster, GameOver, Frame, FaceSet, ChipSet, CharSet, BattleWeapon, BattleCharSet, Battle2, Battle, Backdrop
-        - copy compiled data:
-            mapfiles (Map0001.lmu,...), maptree (RPG_RT.lmt), database (RPG_RT.ldb)
-        - copy required data:
-            RPG_RT.ini, *.r3proj, ultimate_rt_eb.dll, RPT_RT.exe
-    
+            - call LCF2XML to turn into databasefile.
+        
+        - Create project folder:
+            - folder structure (empty folder):
+                - Title, System2, System, Sound, Picture, Panorama, Music, Movie, Monster, GameOver, Frame, FaceSet, ChipSet, CharSet, BattleWeapon, BattleCharSet, Battle2, Battle, Backdrop
+            - copy compiled data:
+                mapfiles (Map0001.lmu,...), maptree (RPG_RT.lmt), database (RPG_RT.ldb)
+            - copy required data:
+                RPG_RT.ini, *.r3proj, ultimate_rt_eb.dll, RPT_RT.exe
