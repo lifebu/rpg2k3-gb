@@ -137,13 +137,13 @@ void Map::setupMapRomHeader(std::vector<lcf::EventCommand>& mapRomHeader, int nu
     mapRomHeader.at(0).parameters = {7, 0, VARMAPPING::BYTE_OFFSET_ID, VARMAPPING::BYTE_OFFSET_ID, 4, 0, MEMORYSIZES::BYTES_PER_VAR, 0};
 
     // LabelID = ByteOffset
-    mapRomHeader.at(0).parameters = {7, 0, VARMAPPING::LABEL_ID, VARMAPPING::LABEL_ID, 0, 1, VARMAPPING::BYTE_OFFSET_ID, 0};
+    mapRomHeader.at(1).parameters = {7, 0, VARMAPPING::LABEL_ID, VARMAPPING::LABEL_ID, 0, 1, VARMAPPING::BYTE_OFFSET_ID, 0};
 
     // LabelID = ByteOffset
-    mapRomHeader.at(0).parameters = {7, 0, VARMAPPING::LABEL_ID, VARMAPPING::LABEL_ID, 1, 0, 1, 0};
+    mapRomHeader.at(2).parameters = {7, 0, VARMAPPING::LABEL_ID, VARMAPPING::LABEL_ID, 1, 0, 1, 0};
 
     // LabelID = ByteOffset
-    mapRomHeader.at(0).parameters = {1, numLabels / 2};
+    mapRomHeader.at(3).parameters = {1, numLabels / 2};
 }
 
 void Map::setupMapRomLabel(std::vector<lcf::EventCommand>& mapRomLabel, int labelID, int numLabels, int firstVar, int secondVar) {
