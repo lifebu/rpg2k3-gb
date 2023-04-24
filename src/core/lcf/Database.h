@@ -4,7 +4,7 @@
 #include "database/Character.h"
 #include "database/Item.h"
 #include "database/CommonEvent.h"
-#include "common/EventCommand.h"
+#include "event/EventCommand.h"
 
 #include <string>
 

@@ -5,7 +5,8 @@
 #include "src/Database.h"
 #include "src/ProjectGenerator.h"
 
-int main (int argc, char* argv[]) {
+int main (int argc, char* argv[]) 
+{
     gb2rpg::ProjectGenerator::cleanProjectFolder();    
 
     gb2rpg::CLIOptions cli = gb2rpg::CLIOptions(argc, argv);

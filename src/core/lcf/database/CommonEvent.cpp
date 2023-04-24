@@ -1,6 +1,6 @@
 #include "CommonEvent.h"
 
-#include "lcf/common/EventCommand.h"
+#include "lcf/event/EventCommand.h"
 #include "utilities/RPGHelper.h"
 
 #include <cassert>

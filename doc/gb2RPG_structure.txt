@@ -30,8 +30,7 @@ gb2RPG: Gameboy 2 RPG Maker.
             - makes it uneccessarily complex.
         
         - use a precompiled header for the STL elements I use.
-
-        
+   
         
     - Code Style:
         - Write a small code style guide.
@@ -44,6 +43,7 @@ gb2RPG: Gameboy 2 RPG Maker.
             #include "src/core/lcf/Switch.h"
             =>
             #include "core/lcf/Switch.h"
+            and no relative includes pls!
         
         - stop using: "using namespace gb2rpg"
                 => better to read if you know the namespace.
@@ -54,6 +54,7 @@ gb2RPG: Gameboy 2 RPG Maker.
     
         
     - Function:
+        Now:
         - Project File Data and Serializer (for file generation, compiler and Runtime):
             - Idea:
                 - Serialization:
@@ -76,6 +77,12 @@ gb2RPG: Gameboy 2 RPG Maker.
                 - encapsulates all the .xml dependencies.
 
             - To-DO:
+                - Why unique ptr's for stuff?
+
+                - Reduce the complexity of all the serializer classes that mostly do very similar things or are very short.
+                    - Only show serializers publicly that we actually use publicly.
+                    - Rest is private implementation.
+
                 - Implement Serializer and Data Rework Structure.
                     - Implement the FromFile Methods.
                         - common
@@ -84,6 +91,10 @@ gb2RPG: Gameboy 2 RPG Maker.
                         - map_tree
                     - Implement the MultiSerializers:
                         EventCommandSerializer, CommonEventSerializer
+                    - ToFile/FromFile as complete version and intermediate verison.
+                        - Complete version (gets a filestring) calls the intermediate version.
+                        - and MultiSerializes call the intermediate version multiple times.
+                        - I think this was kinda like my "partial serializer" idea.
             
                 - Add bounded values to every public data member where it makes sense.
                     - It is used like a normal primitive type (int)
@@ -103,24 +114,28 @@ gb2RPG: Gameboy 2 RPG Maker.
                         Variable-IDs: 1-RPGMAKER::MAX_NUM_VARIABLES
                         Event-Pages: 1-RPGMAKER::MAX_PAGES_PER_EVENT
 
-                
                 - stop using classes for the serializers, just put them into a namespace (serializer namespace)
                     - They don't have real members anyway
                     - aside from variable and switches.
                     - also they can live in a single file => less code!
                     - could make parsing harder, as the database gets the partial switch xml and needs to change the id.
                 
-
                 - change the id system?
                     - Do the partial types like items really need an id?
                     - the id is only part of their container (database).
                     - the database can manage request of finding a type based in id.
+                    - But I can also completly delete all the IDs because they are only relevant when you serialze them data into .xml. Not before.
+                        => Can then generate the IDs.
 
                 - Find a way to use partial serializers that does not expose the underlying library (tinyxml2::XMLDocument).
                     - If I go with directly working with the binary file, It could use File*.
                     - Could also use File with position or filestream?
+                
+                - Change the Indententation System:
+                    - When writing out event commands keep track of the current indentation and write it out.
+                    - When you encounter certain commands (like if-statements), then you increment the indentation (after the if-statement is created).
+                    - When you encounter other commands (like end-if-statements), then you decrement the indentation (before the end-if-statement is written).
 
-    
                 - Most of the Datatypes are not shared. For example switch, variables, characters, items and common events are only used by the Database file => Can add the class declarations in Database.h and not in so many header files.
                     - The only thing that is actually shared is a eventcommand.
                     - If the definition is inside of the Database class can switches etc. just be POD types instead of classes? (No need for getters/Setters).
@@ -134,38 +149,19 @@ gb2RPG: Gameboy 2 RPG Maker.
                     - I could organize the serializers of private in namespaces instead of a whole class. (Because they are static anyway, and cannot be initialized).
                 
                 - Map::setupMapRomHeader, setupMapRomLabel:
-                    - Do I want to load the template file and change every parameter, or just generate it on the fly?
-                    - They should later create it and return it!
-                    => Create and return and not template
-                    => But this needs good event-command generation.
+                    - Generate the header and label code on the fly and don't use the template anymore.
 
-            - Write Functions for setting/generating event-commands of different types.
-                - should create a system to automatically manage indentation.
-                - set/copy/generate ...
-                - setCommandParams
-                    !- GENERAL Function. (element and argument list)
-                    ALSO:
-                        - Create other functions that build on top of that which have types for the parameters.
-                        - setConditionalBranchParams etc.
-                        - also need Typedefs (enums?) for the paramters, so that I do not punch in magic numbers.
-                - setEventIDNameCoord
-                - Libraries of Functionality that allows me to manipulate event-commands.
-                - should work ontop on the tinyxml2 library and changes I do to that.
+        Later:     
+        - EventCommandFactories:
+            - I now have low-level factories to set the actual event command.
+            - It would be nice to have a more "high-level" event command generation, wher you do not have to set every little thing?
+            - But I should wait for that until I do the actual code gen?
+                - Maybe this is not needed as there are only very few places where actual event command generation is done.
 
-            - Event-Generation and Manipulation can be made more general.
-                - factory pattern???
-                - Map::generateDMGROM(), generateMapRAM() and generateMapROM() are structurely very similar:
-                    - generate code for event-page
-                    - insert code in event-page
-                    - setEventPageID()
-                    - insert event-page into event
-                    - setEventIDNameCoord()
-                    - insert event into map.
-                - could be more generalized.
-                    - maybe not one function but certain sub-functions?
-                - But I do not know yet how compiler will need to work and how it uses it.
-                - Event-Manipulation is similar for Map and Compiler.
-          
+            - Checks for the Inputs?
+                - Some of the Inputs are dependent on each other.
+                - If you use a specific flag, other parameters will be interpreted differently.
+
         - RPGHelper:
             - The functions should be in a namespace.
             - Need a better place for all the functions.

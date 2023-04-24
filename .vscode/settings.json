@@ -98,7 +98,9 @@
         "locale": "cpp",
         "queue": "cpp",
         "stack": "cpp",
-        "__verbose_abort": "cpp"
+        "__verbose_abort": "cpp",
+        "valarray": "cpp",
+        "*.in": "cpp"
     },
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }

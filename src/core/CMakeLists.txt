@@ -7,7 +7,9 @@ endif()
 
 
 set(lcf_headers
-    lcf/common/EventCommand.h
+    lcf/event/EventCommand.h
+    lcf/event/EventCommandFactory.h
+    lcf/event/EventCommandFactoryDef.h
     lcf/database/Character.h
     lcf/database/CommonEvent.h
     lcf/database/Item.h
@@ -20,7 +22,8 @@ set(lcf_headers
     lcf/MapTree.h)
 
 set(lcf_source 
-    lcf/common/EventCommand.cpp
+    lcf/event/EventCommand.cpp
+    lcf/event/EventCommandFactory.cpp
     lcf/database/Character.cpp
     lcf/database/CommonEvent.cpp
     lcf/database/Item.cpp
