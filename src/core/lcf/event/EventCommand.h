@@ -28,7 +28,6 @@ public:
 
     EventCommand(const CommandType type, const uint8_t indentation, const std::string stringParam, const std::vector<int32_t> parameters);
 
-
     // ~ 16bit
     CommandType type;
     // ~ 240 bit, rarely used

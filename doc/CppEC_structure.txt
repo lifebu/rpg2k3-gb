@@ -114,3 +114,11 @@ CppEC: C++ Event Compiler.
             - .JSON?
             - used during runtime.
             - this mapping file provides with template information.
+
+
+- Generation Solutions:
+    - Function parameter + return value:
+        - 1st: Create a stack system and generate code on that, similar to function stacks.
+        - 2nd: Each function has their dedicated and hard coded variables the use for params and return values.
+            - 2 Params and 1 Return Value => 3 Variables returns.
+        - 2 can save some commands (better performance) at the cost of memory.

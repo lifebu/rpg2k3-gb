@@ -36,14 +36,13 @@ set(lcf_source
     lcf/MapTree.cpp)
 
 set(serializer_headers
-    lcf_serializers/common/EventCommandSerializer.h
+    lcf_serializers/EventCommandSerializer.h
     lcf_serializers/database/CharacterSerializer.h
-    lcf_serializers/database/CommonEventSerializer.h
+    lcf_serializers/CommonEventSerializer.h
     lcf_serializers/database/ItemSerializer.h
     lcf_serializers/database/LCFTypeSerializer.h
     lcf_serializers/map/EventSerializer.h
     lcf_serializers/map/EventPageSerializer.h
-    lcf_serializers/map_tree/MapInfoSerializer.h
     lcf_serializers/serializer_types/FullSerializer.h
     lcf_serializers/serializer_types/MultiSerializer.h
     lcf_serializers/serializer_types/PartialMultiSerializer.h
@@ -54,14 +53,13 @@ set(serializer_headers
     lcf_serializers/Templates.h)
 
 set(serializer_source
-    lcf_serializers/common/EventCommandSerializer.cpp
+    lcf_serializers/EventCommandSerializer.cpp
     lcf_serializers/database/CharacterSerializer.cpp
-    lcf_serializers/database/CommonEventSerializer.cpp
+    lcf_serializers/CommonEventSerializer.cpp
     lcf_serializers/database/ItemSerializer.cpp
     lcf_serializers/database/LCFTypeSerializer.cpp
     lcf_serializers/map/EventSerializer.cpp
     lcf_serializers/map/EventPageSerializer.cpp
-    lcf_serializers/map_tree/MapInfoSerializer.cpp
     lcf_serializers/DatabaseSerializer.cpp
     lcf_serializers/MapSerializer.cpp
     lcf_serializers/MapTreeSerializer.cpp)

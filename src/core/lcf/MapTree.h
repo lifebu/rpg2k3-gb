@@ -5,10 +5,11 @@
 #include <string>
 #include <vector>
 
+namespace lcf 
+{
 
-namespace lcf {
-
-class MapTree {
+class MapTree 
+{
     friend class MapTreeSerializer;
 
 public:
@@ -20,6 +21,8 @@ public:
     MapTree(int numMaps = 0);
 
     MapInfo& addMapInfo(std::string mapName);
+    void addMapInfo(MapInfo& other);
+
 private:
     std::vector<MapInfo> mapInfos;
 };

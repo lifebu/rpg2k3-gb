@@ -1,7 +1,7 @@
 #include "EventPageSerializer.h"
 
 #include "lcf_serializers/Templates.h"
-#include "lcf_serializers/common/EventCommandSerializer.h"
+#include "lcf_serializers/EventCommandSerializer.h"
 
 #include "utilities/RPGHelper.h"
 #include "thirdparty/tinyxml2/tinyxml2.h"

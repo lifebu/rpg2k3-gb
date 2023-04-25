@@ -77,6 +77,9 @@ gb2RPG: Gameboy 2 RPG Maker.
                 - encapsulates all the .xml dependencies.
 
             - To-DO:
+                - Now the new system uses class-friends so that some serializers can use already defined functions in other serializers.
+                    => Maybe by putting everything in one class that gets better?
+                
                 - Why unique ptr's for stuff?
 
                 - Reduce the complexity of all the serializer classes that mostly do very similar things or are very short.

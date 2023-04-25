@@ -2,17 +2,6 @@ CppRPGEnv: C++-RPG Maker Environment
     - C++-code can be run outside of RPG Maker so that I can debug it normally without dependencies.
         - Plattform Code that runs my code (kinda like engine).
 
-- C++ Emulator Code is treated as the CommonEvents for the Runtime Environment.
-    - Compile as .lib file.
-
-
-- My C++-Code that implements the actual emulator uses a header file (RPGDef.h)
-    => THIS IS AN API / INTERFACE.
-    - This header declares the functions of the RPG Maker code that I use.
-        - Like changeEXP(), setEventLocation().
-    - It could also defines the variables and switches with their names. (?)
-        - My C++-Code should set the names (?)
-
 - Interface:
     - RPG Maker Commands:
         Debug & Menu:
@@ -39,26 +28,35 @@ CppRPGEnv: C++-RPG Maker Environment
         Input:
             Key Input Processing
     
-    - Code Constructs:
-        Control Switches = Bool operations
-        Control Variables = int operations
-        Conditional Branch = IF-Else
-        JumpToLabel/Label = Goto
-        Loop/Break Loop = Any kind of loop
-
     - Other RPG Maker Related Functions:
         Setting Name of Variables/Switches.
 
-- Runtime Tasks:
-    - Call Common Events:
-        - list of Common Events, that are Parallel Processes.
-        - Call each of them once per frame.
+    - Interface to Emu:
+        - Just have one Function in Emulator called "RPGMain" that is entry point from Env and CodeGen will generate a Common Event from that (which is the first one).
+        - This function can be implemented from interface class?
     
+    - Interface to Env:
+        - One Interface class that has the commands to the environment where CodeGen will generate fitting EventCommands (ShowPicture, ShowChoices, etc)
+
+- Tasks:
+    - Tasks:
+        - Load lcf files (Database, Maps, MapTree)
+        - Setup some Environmentstate and sfml.
+    
+    - Each Update:
+        - Update Inputs from sfml
+        - Call "RPGMain" (Game Update)
+        - Render Game.
+
     - Framerate Control:
         - 60fps.
         - Common Event can reduce framerate.
     
     - Rendering:
+        - Idea:
+            - Basically keep the entire state in Memory and when Rendering iterate over that.
+            - State can be the current pictures in Program that are loaded.
+            - Functions from Interface like "ShowPicture" will change the state of the Environment.
         - Resolution:
             4:3, 
         - Show Text:
@@ -72,25 +70,13 @@ CppRPGEnv: C++-RPG Maker Environment
             - basically like a pad lock.
         - Show Picture:
             - Basically just a sprite!.
-        - Show/Hide Player (Ignore!).#
+        - Show/Hide Player (Ignore!).
+
     
     - Key Input:
         - Basically just a few keyboard keys you can use.
+        - I need to create a complete state of the keyboard. AFAIK sfml does not allow to just querry the keystate at any time.
     
-    - Data:
-        - Load Maptree file (tinyxml2). So you know where the player starts.
-        - Load Mapfile.
-        - Load Database.
-        - All of them need classes/functions for the specific parts.
-
-- The Header is implemented in a Runner
-    - Some functions just change the state of the environment.
-        - changeExp(), setEventLocation()
-        - It has a simplified RPGMaker state representation.
-    - Some functions need to do real I/O:
-        - 2D-Rendering / Blitting (SDL? SIMPLE OpenGL?)
-            - showText(), showChoices(), inputNumber(), showPicture(), 
-        - keyInputProcessing()
 
 - Can use SFML to create the basic graphic/window layer.
     https://www.sfml-dev.org

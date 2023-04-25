@@ -4,7 +4,7 @@
 #include "database/LCFTypeSerializer.h"
 #include "database/ItemSerializer.h"
 #include "database/CharacterSerializer.h"
-#include "database/CommonEventSerializer.h"
+#include "CommonEventSerializer.h"
 
 #include "utilities/RPGHelper.h"
 #include "thirdparty/tinyxml2/tinyxml2.h"

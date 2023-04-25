@@ -1,39 +1,50 @@
 #include "MapTreeSerializer.h"
 
 #include "Templates.h"
-#include "map_tree/MapInfoSerializer.h"
 
 #include "utilities/RPGHelper.h"
 #include "thirdparty/tinyxml2/tinyxml2.h"
 
 #include <iostream>
+#include <memory>
 
 namespace lcf {
 
-MapTreeSerializer::MapTreeSerializer() {}
-
-MapTree MapTreeSerializer::FromFile(std::string fileName) {
-    return MapTree(0);
-}
-
-std::string generateTreeOrderString(int numOfMaps) {
-    std::string treeOrderString = "0 ";
-    for (int id = 1; id <= numOfMaps; ++id) {
-        std::string emptySpace = id != numOfMaps ? " " : "";
-        treeOrderString.append(std::to_string(id) + emptySpace);
+MapTree MapTreeSerializer::FromFile(std::string fileName) 
+{
+    auto file = tinyxml2::XMLDocument(fileName.c_str());
+    if (file.Error()) 
+    {
+        std::cout << file.ErrorStr() << std::endl;
+        return MapTree(0);
     }
 
-    return treeOrderString;
+    MapTree mapTree = MapTree(0);
+
+    // We skip the mapinfo root.
+    auto* currentMapInfo = file.TraverseElement("/LMT/TreeMap/maps/MapInfo")->NextSiblingElement();
+    while(currentMapInfo)
+    {
+        MapInfo newMapInfo = MapInfoFromFileImpl(currentMapInfo);
+        mapTree.addMapInfo(newMapInfo);
+        currentMapInfo = currentMapInfo->NextSiblingElement();
+    }
+
+    return mapTree;
 }
 
-void MapTreeSerializer::ToFile(std::string fileName, MapTree& mapTree) {
+void MapTreeSerializer::ToFile(std::string fileName, MapTree& mapTree) 
+{
     tinyxml2::XMLDocument mapTreeTempl(TEMPLATES::MAP_TREE);
+    tinyxml2::XMLDocument mapInfoTempl(TEMPLATES::MAP_INFO);
 
     // Insert map infos in to the maptree.
-    for(auto& mapInfo : mapTree.mapInfos) {
-        auto mapInfoDoc = MapInfoSerializer().ToFile(mapInfo);
+    for(auto& mapInfo : mapTree.mapInfos) 
+    {
+        auto* mapInfoElement = mapInfoTempl.TraverseElement("/MapInfo");
+        MapInfoToFileImpl(mapInfo, mapInfoElement);
 
-        mapInfoDoc->DeepCloneInsertBack(&mapTreeTempl, mapTreeTempl.TraverseElement("/LMT/TreeMap/maps"));
+        mapInfoElement->DeepCloneInsertBack(&mapTreeTempl, mapTreeTempl.TraverseElement("/LMT/TreeMap/maps"));
     }
 
     // Change the tree orders in the map.
@@ -42,6 +53,45 @@ void MapTreeSerializer::ToFile(std::string fileName, MapTree& mapTree) {
     treeOrderName->SetValue(treeOrderString.c_str());
 
     mapTreeTempl.SaveFile(fileName.c_str(), false);
+    if (mapTreeTempl.Error()) 
+    {
+        std::cout << mapTreeTempl.ErrorStr() << std::endl;
+    }
+}
+
+MapInfo MapTreeSerializer::MapInfoFromFileImpl(tinyxml2::XMLElement* mapInfo)
+{
+    // Get Map ID
+    uint16_t id = mapInfo->IntAttribute("id");
+
+    // Get map name.
+    auto* nameElem = mapInfo->TraverseElement("/name")->FirstChild()->ToText();
+    std::string name = (nameElem == nullptr) ? "" : nameElem->Value();
+
+    return MapInfo(id, name);
+}
+
+void MapTreeSerializer::MapInfoToFileImpl(const MapInfo& elem, tinyxml2::XMLElement* mapInfo)
+{
+    // Set Map ID
+    mapInfo->SetAttribute("id", generateID(elem.id).c_str());
+
+    // Change map name to filename.
+    auto* name = mapInfo->TraverseElement("/name")->FirstChild()->ToText();
+    name->SetValue(elem.name.c_str());
+}
+
+std::string MapTreeSerializer::generateTreeOrderString(int numOfMaps) 
+{
+    std::string treeOrderString = "0 ";
+
+    for (int id = 1; id <= numOfMaps; ++id) 
+    {
+        std::string emptySpace = id != numOfMaps ? " " : "";
+        treeOrderString.append(std::to_string(id) + emptySpace);
+    }
+
+    return treeOrderString;
 }
 
 };

@@ -6,7 +6,7 @@
 #include "core/lcf/event/EventCommandFactory.h"
 #include "core/lcf/Map.h"
 #include "core/lcf_serializers/MapSerializer.h"
-#include "core/lcf_serializers/common/EventCommandSerializer.h"
+#include "core/lcf_serializers/EventCommandSerializer.h"
 
 #include <iostream>
 #include <cassert>
@@ -46,14 +46,14 @@ void Map::generateDMGROM(lcf::Map& map) {
     lcf::Event& event = map.addEvent("DMGROM", 0, 0);
     lcf::EventPage& eventPage = event.addEventPage();
 
-    std::vector<lcf::EventCommand> DMGCommands = lcf::EventCommandSerializer().MultipleFromFile(TEMPLATES::DMG_ROM);
+    std::vector<lcf::EventCommand> DMGCommands = lcf::EventCommandSerializer::MultipleFromFile(TEMPLATES::DMG_ROM);
     eventPage.addEventCommands(DMGCommands);
 }
 
 void Map::generateMapROM(lcf::Map& map, GBFile& gbFile, int numOfMapROMs) {
     // pre-load data
-    std::vector<lcf::EventCommand> mapRomHeader = lcf::EventCommandSerializer().MultipleFromFile(TEMPLATES::MAP_ROM_HEADER);
-    std::vector<lcf::EventCommand> mapRomLabel = lcf::EventCommandSerializer().MultipleFromFile(TEMPLATES::MAP_ROM_LABEL);
+    std::vector<lcf::EventCommand> mapRomHeader = lcf::EventCommandSerializer::MultipleFromFile(TEMPLATES::MAP_ROM_HEADER);
+    std::vector<lcf::EventCommand> mapRomLabel = lcf::EventCommandSerializer::MultipleFromFile(TEMPLATES::MAP_ROM_LABEL);
     int startingID = map.nextEventID();
 
     // create all necessary ROM Events

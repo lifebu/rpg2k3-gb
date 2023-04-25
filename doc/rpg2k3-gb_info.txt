@@ -2,7 +2,7 @@
     - GB2RPG: instantiate high level file class, fill it and then use 
         - Serializer::ToFile(): Database, MapTree, Map.
     - GB2RPG: Insert multiple middle level file classes fomr a file: Common Events (from compiler), Event Commands (Template ROM Code, DMGROM). 
-        - Serializer::MultipleFromFile()
+        - Serializer::MultipleFromFile(): CommonEvents
     - CRPGEnv: Load High level file class using 
         - Serializer::FromFile(): Database, MapTree, Map.
     - Compiler: Generate multiple middle level file classes to a File: 
@@ -10,8 +10,13 @@
         - for symmetry: Event Commands (Template code generation?)
         Serializer::MultipleToFile()
 
+    => Serializers:
+        Database: ToFile(), FromFile()
+        Map: ToFile(), FromFile()
+        d_MapTree: ToFile(), FromFile()
+        d_EventCommand: MultipleFromFile(), MultipleToFile()
+        d_CommonEvents: MultipleFromFile(), MultipleToFile()
+
     - CRPGEnv: Update the folowing data while Running:
         Database: Character Stats (Exp, etc), Character Equipment, Variable/Switch values
         Map: Event Positions.
-
-- 
