@@ -4,7 +4,7 @@
 
 #include <string>
 
-namespace tinyxml2 {class XMLDocument; class XMLElement;};
+namespace tinyxml2 {class XMLElement;};
 
 namespace lcf {
 

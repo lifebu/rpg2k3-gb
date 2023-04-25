@@ -26,6 +26,6 @@ CommonEvent::CommonEvent(const uint16_t id, const std::string name,
 
 void CommonEvent::addEventCommand(EventCommand& other)
 {
-    return eventCommands.push_back(other);
+    eventCommands.push_back(other);
 }
 };

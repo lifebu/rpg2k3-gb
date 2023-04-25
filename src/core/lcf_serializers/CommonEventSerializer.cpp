@@ -87,6 +87,8 @@ CommonEvent CommonEventSerializer::FromFileImpl(tinyxml2::XMLElement* commonEven
 
 void CommonEventSerializer::ToFileImpl(const CommonEvent& elem, tinyxml2::XMLDocument* doc, tinyxml2::XMLElement* commonEvent)
 {
+    tinyxml2::XMLDocument commandTempl(TEMPLATES::EVENT_COMMAND);
+
     // Set Common Event ID
     commonEvent->SetAttribute("id", generateID(elem.id).c_str());
 
@@ -101,11 +103,9 @@ void CommonEventSerializer::ToFileImpl(const CommonEvent& elem, tinyxml2::XMLDoc
     // No Support for Switch Flag and Switch ID
 
     // Add Event Commands
-    auto commandTempl = std::make_unique<tinyxml2::XMLDocument>(TEMPLATES::EVENT_COMMAND);
-    auto* eventCommandsElem = commonEvent->TraverseElement("/event_commands")->FirstChild();
     for(auto& eventCommand : elem.eventCommands) 
     {
-        auto* eventCommandElement = commandTempl->TraverseElement("/EventCommand");
+        auto* eventCommandElement = commandTempl.TraverseElement("/EventCommand");
         EventCommandSerializer::ToFileImpl(eventCommand, eventCommandElement);
 
         eventCommandElement->DeepCloneInsertBack(doc, commonEvent->TraverseElement("/event_commands"));

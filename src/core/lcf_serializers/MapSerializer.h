@@ -1,20 +1,26 @@
 #pragma once
 
-#include "../lcf_serializers/serializer_types/FullSerializer.h"
 #include "../lcf/Map.h"
 
 #include <string>
 
+namespace tinyxml2 {class XMLDocument; class XMLElement;};
 
-namespace lcf {
+namespace lcf 
+{
 
-class MapSerializer : FullSerializer<Map> {
-
+class MapSerializer
+{
 public:
-    MapSerializer();
+    static Map FromFile(std::string fileName);
+    static void ToFile(std::string fileName, Map& map);
 
-    Map FromFile(std::string fileName) override;
-    void ToFile(std::string fileName, Map& map) override;
+private:
+    static Event EventFromFileImpl(tinyxml2::XMLElement* eventElem);
+    static void EventToFileImpl(const Event& elem, tinyxml2::XMLDocument* doc, tinyxml2::XMLElement* eventElem);
+
+    static EventPage EventPageFromFileImpl(tinyxml2::XMLElement* eventPageElem);
+    static void EventPageToFileImpl(const EventPage& elem, tinyxml2::XMLDocument* doc, tinyxml2::XMLElement* eventPageElem);
 };
 
 };

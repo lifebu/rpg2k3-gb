@@ -41,7 +41,6 @@ set(serializer_headers
     lcf_serializers/CommonEventSerializer.h
     lcf_serializers/database/ItemSerializer.h
     lcf_serializers/database/LCFTypeSerializer.h
-    lcf_serializers/map/EventSerializer.h
     lcf_serializers/map/EventPageSerializer.h
     lcf_serializers/serializer_types/FullSerializer.h
     lcf_serializers/serializer_types/MultiSerializer.h
@@ -58,7 +57,6 @@ set(serializer_source
     lcf_serializers/CommonEventSerializer.cpp
     lcf_serializers/database/ItemSerializer.cpp
     lcf_serializers/database/LCFTypeSerializer.cpp
-    lcf_serializers/map/EventSerializer.cpp
     lcf_serializers/map/EventPageSerializer.cpp
     lcf_serializers/DatabaseSerializer.cpp
     lcf_serializers/MapSerializer.cpp

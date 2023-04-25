@@ -6,15 +6,18 @@
 #include <vector>
 
 
-namespace lcf {
+namespace lcf 
+{
 
-class Event {
-    friend class EventSerializer;
+class Event 
+{
+    friend class MapSerializer;
 
 public:
     Event(const uint16_t id, const std::string name, const uint16_t x, const uint16_t y);
 
     EventPage& addEventPage();
+    void addEventPage(EventPage& other);
 
 public:
     uint16_t x;

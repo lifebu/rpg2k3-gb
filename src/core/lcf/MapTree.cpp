@@ -17,7 +17,7 @@ MapInfo& MapTree::addMapInfo(std::string mapName)
 
 void MapTree::addMapInfo(MapInfo& other)
 {
-    return mapInfos.push_back(other);
+    mapInfos.push_back(other);
 }
 
 };

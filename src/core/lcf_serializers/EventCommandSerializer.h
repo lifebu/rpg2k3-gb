@@ -12,6 +12,8 @@ namespace lcf
 class EventCommandSerializer
 {
     friend class CommonEventSerializer;
+    friend class MapSerializer;
+    friend class DatabaseSerializer;
 
 public:
     static std::vector<EventCommand> MultipleFromFile(std::string fileName);

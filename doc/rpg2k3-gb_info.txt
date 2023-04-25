@@ -12,7 +12,9 @@
 
     => Serializers:
         Database: ToFile(), FromFile()
-        Map: ToFile(), FromFile()
+            Database => Switches, Variables, Items, Characters, CommonEvents => EventCommands
+        d_Map: ToFile(), FromFile()
+            Map => Event => EventPage => EventCommands
         d_MapTree: ToFile(), FromFile()
         d_EventCommand: MultipleFromFile(), MultipleToFile()
         d_CommonEvents: MultipleFromFile(), MultipleToFile()
