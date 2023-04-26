@@ -1,13 +1,14 @@
 #pragma once
 
+#include "../event/EventCommand.h"
+
 #include <string>
 #include <vector>
 
 
-namespace lcf {
 
-
-class EventCommand;
+namespace lcf 
+{
 
 class CommonEvent 
 {
@@ -27,9 +28,9 @@ public:
     void addEventCommand(EventCommand& other);
 
 private:
-    const uint16_t id;
-    const std::string name;
-    const TriggerType trigger;
+    uint16_t id;
+    std::string name;
+    TriggerType trigger;
     std::vector<EventCommand> eventCommands;
 };
 

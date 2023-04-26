@@ -6,7 +6,7 @@
 namespace lcf {
 
 class Character {
-    friend class CharacterSerializer;
+    friend class DatabaseSerializer;
 
 public:
     Character(const uint16_t id, const std::string name);

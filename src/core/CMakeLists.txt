@@ -37,15 +37,7 @@ set(lcf_source
 
 set(serializer_headers
     lcf_serializers/EventCommandSerializer.h
-    lcf_serializers/database/CharacterSerializer.h
     lcf_serializers/CommonEventSerializer.h
-    lcf_serializers/database/ItemSerializer.h
-    lcf_serializers/database/LCFTypeSerializer.h
-    lcf_serializers/map/EventPageSerializer.h
-    lcf_serializers/serializer_types/FullSerializer.h
-    lcf_serializers/serializer_types/MultiSerializer.h
-    lcf_serializers/serializer_types/PartialMultiSerializer.h
-    lcf_serializers/serializer_types/PartialSerializer.h
     lcf_serializers/DatabaseSerializer.h
     lcf_serializers/MapSerializer.h
     lcf_serializers/MapTreeSerializer.h
@@ -53,11 +45,7 @@ set(serializer_headers
 
 set(serializer_source
     lcf_serializers/EventCommandSerializer.cpp
-    lcf_serializers/database/CharacterSerializer.cpp
     lcf_serializers/CommonEventSerializer.cpp
-    lcf_serializers/database/ItemSerializer.cpp
-    lcf_serializers/database/LCFTypeSerializer.cpp
-    lcf_serializers/map/EventPageSerializer.cpp
     lcf_serializers/DatabaseSerializer.cpp
     lcf_serializers/MapSerializer.cpp
     lcf_serializers/MapTreeSerializer.cpp)

@@ -13,11 +13,11 @@
     => Serializers:
         Database: ToFile(), FromFile()
             Database => Switches, Variables, Items, Characters, CommonEvents => EventCommands
-        d_Map: ToFile(), FromFile()
+        Map: ToFile(), FromFile()
             Map => Event => EventPage => EventCommands
-        d_MapTree: ToFile(), FromFile()
-        d_EventCommand: MultipleFromFile(), MultipleToFile()
-        d_CommonEvents: MultipleFromFile(), MultipleToFile()
+        MapTree: ToFile(), FromFile()
+        EventCommand: MultipleFromFile(), MultipleToFile()
+        CommonEvents: MultipleFromFile(), MultipleToFile()
 
     - CRPGEnv: Update the folowing data while Running:
         Database: Character Stats (Exp, etc), Character Equipment, Variable/Switch values

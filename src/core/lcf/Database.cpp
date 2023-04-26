@@ -2,9 +2,11 @@
 
 #include "utilities/RPGHelper.h"
 
-namespace lcf {
+namespace lcf 
+{
 
-Database::Database(const int numOfSwitches, const int numOfVariables, const int numOfChars, const int numOfItems, const int numOfCommonEvents) {
+Database::Database(const int numOfSwitches, const int numOfVariables, const int numOfChars, const int numOfItems, const int numOfCommonEvents) 
+{
     switches.reserve(numOfSwitches);
     variables.reserve(numOfVariables);
     characters.reserve(numOfChars);
@@ -12,24 +14,60 @@ Database::Database(const int numOfSwitches, const int numOfVariables, const int 
     commonEvents.reserve(numOfCommonEvents);
 }
 
-Switch& Database::addSwitch(const std::string name) {
+Switch& Database::addSwitch(const std::string name) 
+{
     return switches.emplace_back(getNextID(switches.size()), name);
 }
 
-Variable& Database::addVariable(const std::string name) {
+void Database::addSwitch(Switch& newSwitch)
+{
+    switches.push_back(newSwitch);
+}
+
+Variable& Database::addVariable(const std::string name) 
+{
     return variables.emplace_back(getNextID(variables.size()), name);
 }
 
-Character& Database::addCharacter(const std::string name) {
+void Database::addVariable(Variable& newVariable)
+{
+    variables.push_back(newVariable);
+}
+
+Character& Database::addCharacter(const std::string name) 
+{
     return characters.emplace_back(getNextID(characters.size()), name);
 }
 
-Item& Database::addItem(const std::string name, const Item::ItemType type) {
+void Database::addCharacter(Character& newCharacter)
+{
+    characters.push_back(newCharacter);
+}
+
+Item& Database::addItem(const std::string name, const Item::ItemType type) 
+{
     return items.emplace_back(getNextID(items.size()), name, type);
 }
 
-CommonEvent& Database::addCommonEvent(const std::string name, const CommonEvent::TriggerType trigger) {
+void Database::addItem(Item& newItem)
+{
+    items.push_back(newItem);
+}
+
+
+CommonEvent& Database::addCommonEvent(const std::string name, const CommonEvent::TriggerType trigger) 
+{
     return commonEvents.emplace_back(getNextID(commonEvents.size()), name, trigger);
+}
+
+void Database::addCommonEvents(const std::vector<CommonEvent>& newCommonEvents)
+{
+    commonEvents.insert(commonEvents.end(), newCommonEvents.begin(), newCommonEvents.end());
+}
+
+void Database::addCommonEvent(const CommonEvent& newCommonEvent)
+{
+    commonEvents.push_back(newCommonEvent);
 }
 
 };

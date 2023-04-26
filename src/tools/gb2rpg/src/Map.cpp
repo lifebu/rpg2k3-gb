@@ -37,7 +37,7 @@ void Map::genMapFiles(std::vector<GBFile>& gbFiles) {
         generateMapROM(map, gbFile, numOfMapROMs);
         generateMapRAM(map);
 
-        lcf::MapSerializer::ToFile(filePath, map);
+        //lcf::MapSerializer::ToFile(filePath, map);
     }
 }
 
@@ -168,7 +168,7 @@ void Map::setupMapRomHeader(std::vector<lcf::EventCommand>& mapRomHeader, int nu
 }
 
 void Map::setupMapRomLabel(std::vector<lcf::EventCommand>& mapRomLabel, int labelID, int numLabels, int firstVar, int secondVar) {
-    assert(mapRomLabel.size() == 11);
+    assert(mapRomLabel.size() == 12);
 
     // Need to change the boilerplate code (see map_rom_label.xml for details).
     // Label X
@@ -238,10 +238,13 @@ void Map::setupMapRomLabel(std::vector<lcf::EventCommand>& mapRomLabel, int labe
 
     // READVAR2 = LABELXVALUE2
     lcf::EventCommandFactory::GenControlVariable(
-        mapRomLabel.at(9), 
+        mapRomLabel.at(10), 
         lcf::ControlVariableCommand::Type::SINGLE_VARIABLE,
         VARMAPPING::READ_VAR_2, VARMAPPING::READ_VAR_2,
         lcf::ControlVariableCommand::Operation::OPERATION_SET,
         lcf::ControlVariableCommand::OperandTypes::OPERANDS_CONSTANT,
         secondVar, 0);
+    
+    // End Event Processing
+    lcf::EventCommandFactory::GenEndEventProcessing(mapRomLabel.at(11));
 }

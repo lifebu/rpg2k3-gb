@@ -7,7 +7,7 @@ namespace lcf {
 
 
 class Item {
-    friend class ItemSerializer;
+    friend class DatabaseSerializer;
 
 public:
     enum ItemType {

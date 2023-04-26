@@ -1,6 +1,6 @@
 #pragma once
 
-#include "lcf/database/CommonEvent.h"
+#include "../lcf/database/CommonEvent.h"
 
 #include <string>
 #include <memory>
@@ -12,6 +12,8 @@ namespace lcf {
 
 class CommonEventSerializer
 {
+    friend class DatabaseSerializer;
+
 public:
     static std::vector<CommonEvent> MultipleFromFile(std::string fileName);
     static void MultipleToFile(std::string fileName, std::vector<CommonEvent>& elems);

@@ -73,7 +73,6 @@ CommonEvent CommonEventSerializer::FromFileImpl(tinyxml2::XMLElement* commonEven
     CommonEvent newElement = CommonEvent(id, name, trigger);
 
     // Get Event Commands
-    std::vector<EventCommand> eventCommands;
     auto* currentCommand = commonEvent->TraverseElement("event_commands/EventCommand");
     while(currentCommand)
     {

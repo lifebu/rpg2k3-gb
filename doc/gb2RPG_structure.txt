@@ -51,110 +51,56 @@ gb2RPG: Gameboy 2 RPG Maker.
         - Once I'm done with the refactor do additional passes for code quality for example moving instead of copying (use my Short-Version.yml: Coding Task Checklist ).
 
         - only make accessor where it makes sense and it does something.
-    
         
     - Function:
         Now:
-        - Project File Data and Serializer (for file generation, compiler and Runtime):
-            - Idea:
-                - Serialization:
-                    - Not every data type needs a Import and Export function. Some only need import!
-                    Import:
-                        - Load all necessary data from the file and place it into a in-memory representation and close the file. 
-                        - Not all data is needed for what I want to manipulate, only parse that.
-                    Export:
-                        - Save all the data from the class into the file. 
-                        - Load the template for the data.
-                        - Replace data with members from class.
-                        - Save template again.
-                        - Basically the export here does similiar thing to Map generation.
-                    
-                - Data (Switch.h, Event.h):
-                    - ONLY: an in-Memory representation of ONLY the data I need to change for my software.
-                    - e.g. Map: only have the list of events, the rest is never touched.
-                    - These should be non-copyable, only moveable.
-                
-                - encapsulates all the .xml dependencies.
+        - Poor Performance for the MapSerializer.
+            - Why does the generation for the events take so long? Need to analyze.
+            - It now takes >10 minutes to generate the map for tetris (32kByte))
 
-            - To-DO:
-                - Now the new system uses class-friends so that some serializers can use already defined functions in other serializers.
-                    => Maybe by putting everything in one class that gets better?
-                
-                - Why unique ptr's for stuff?
+        - Serializers: Now the new system uses class-friends so that some serializers can use already defined functions in other serializers.
+            => Maybe by putting everything in one class that gets better?
+            => If I don't need to use "friend" then I can make them napespaces instead of classes.
+        
+        - Serializers: remove the id system?
+            - Do the partial types like items really need an id?
+            - the id is only part of their container (database).
+            - the database can manage request of finding a type based in id.
+            - But I can also completly delete all the IDs because they are only relevant when you serialze them data into .xml. Not before.
+                => Can then generate the IDs.
+        
+        - Serializers: remove the Indententation System:
+            - When writing out event commands keep track of the current indentation and write it out.
+            - When you encounter certain commands (like if-statements), then you increment the indentation (after the if-statement is created).
+            - When you encounter other commands (like end-if-statements), then you decrement the indentation (before the end-if-statement is written).
+        
+        - Map::setupMapRomHeader, setupMapRomLabel:
+            - Generate the header and label code on the fly and don't use the template anymore.
+        
+        Later:
+        - Most of the Datatypes are not shared. 
+            - For example switch, variables, characters, items and common events are only used by the Database file => Can add the class declarations in Database.h and not in so many header files.
+            - The only thing that is actually shared is a eventcommand.
+            - If the definition is inside of the Database class can switches etc. just be POD types instead of classes? (No need for getters/Setters).
 
-                - Reduce the complexity of all the serializer classes that mostly do very similar things or are very short.
-                    - Only show serializers publicly that we actually use publicly.
-                    - Rest is private implementation.
+        - Add bounded values to every public data member where it makes sense.
+            - It is used like a normal primitive type (int)
+            - But does range checking for a public variable.
+            - template<type>: type is the primitive type.
+                - template does range checks.
+                - wrapper template.
+            - Debug feature that can be turned off.
+            - It checks when setting, incrementing (normal integer operations), if operation is permitted against boundaries
+            - If not => error message and ignore request.
+            - Create typedefs for common RPG Maker value ranges.
+            - Like ID-Range, 10Million Range etc.
+            - List of Ranges:
+                ID: 1-9.999
+                Character-ID: 1-RPGMAKER::MAX_NUM_CHARS
+                Switch-IDs: 1-RPGMAKER::MAX_NUM_SWITCHES
+                Variable-IDs: 1-RPGMAKER::MAX_NUM_VARIABLES
+                Event-Pages: 1-RPGMAKER::MAX_PAGES_PER_EVENT
 
-                - Implement Serializer and Data Rework Structure.
-                    - Implement the FromFile Methods.
-                        - common
-                        - database
-                        - map
-                        - map_tree
-                    - Implement the MultiSerializers:
-                        EventCommandSerializer, CommonEventSerializer
-                    - ToFile/FromFile as complete version and intermediate verison.
-                        - Complete version (gets a filestring) calls the intermediate version.
-                        - and MultiSerializes call the intermediate version multiple times.
-                        - I think this was kinda like my "partial serializer" idea.
-            
-                - Add bounded values to every public data member where it makes sense.
-                    - It is used like a normal primitive type (int)
-                    - But does range checking for a public variable.
-                    - template<type>: type is the primitive type.
-                        - template does range checks.
-                        - wrapper template.
-                    - Debug feature that can be turned off.
-                    - It checks when setting, incrementing (normal integer operations), if operation is permitted against boundaries
-                    - If not => error message and ignore request.
-                    - Create typedefs for common RPG Maker value ranges.
-                    - Like ID-Range, 10Million Range etc.
-                    - List of Ranges:
-                        ID: 1-9.999
-                        Character-ID: 1-RPGMAKER::MAX_NUM_CHARS
-                        Switch-IDs: 1-RPGMAKER::MAX_NUM_SWITCHES
-                        Variable-IDs: 1-RPGMAKER::MAX_NUM_VARIABLES
-                        Event-Pages: 1-RPGMAKER::MAX_PAGES_PER_EVENT
-
-                - stop using classes for the serializers, just put them into a namespace (serializer namespace)
-                    - They don't have real members anyway
-                    - aside from variable and switches.
-                    - also they can live in a single file => less code!
-                    - could make parsing harder, as the database gets the partial switch xml and needs to change the id.
-                
-                - change the id system?
-                    - Do the partial types like items really need an id?
-                    - the id is only part of their container (database).
-                    - the database can manage request of finding a type based in id.
-                    - But I can also completly delete all the IDs because they are only relevant when you serialze them data into .xml. Not before.
-                        => Can then generate the IDs.
-
-                - Find a way to use partial serializers that does not expose the underlying library (tinyxml2::XMLDocument).
-                    - If I go with directly working with the binary file, It could use File*.
-                    - Could also use File with position or filestream?
-                
-                - Change the Indententation System:
-                    - When writing out event commands keep track of the current indentation and write it out.
-                    - When you encounter certain commands (like if-statements), then you increment the indentation (after the if-statement is created).
-                    - When you encounter other commands (like end-if-statements), then you decrement the indentation (before the end-if-statement is written).
-
-                - Most of the Datatypes are not shared. For example switch, variables, characters, items and common events are only used by the Database file => Can add the class declarations in Database.h and not in so many header files.
-                    - The only thing that is actually shared is a eventcommand.
-                    - If the definition is inside of the Database class can switches etc. just be POD types instead of classes? (No need for getters/Setters).
-                    - And the database file would be responsible for ID management.
-
-                - Only have db serializer public in a header (the only thing I need is toFile/FromFile for that).
-                    - The rest (item, switch, char, common event etc.) is private in the db serializer.
-                    - Makes less files and makes the tinyxml2 forward decleration in the internal types (switch) Hidden.
-                    - Similiar for Map and MapInfo.
-                    - makes the tinyxml2::XMLDocument returnvalue hidden!
-                    - I could organize the serializers of private in namespaces instead of a whole class. (Because they are static anyway, and cannot be initialized).
-                
-                - Map::setupMapRomHeader, setupMapRomLabel:
-                    - Generate the header and label code on the fly and don't use the template anymore.
-
-        Later:     
         - EventCommandFactories:
             - I now have low-level factories to set the actual event command.
             - It would be nice to have a more "high-level" event command generation, wher you do not have to set every little thing?

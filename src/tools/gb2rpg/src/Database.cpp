@@ -4,6 +4,7 @@
 
 #include "core/lcf/Database.h"
 #include "core/lcf_serializers/DatabaseSerializer.h"
+#include "core/lcf_serializers/CommonEventSerializer.h"
 
 #include <tuple>
 #include <iostream>
@@ -31,7 +32,7 @@ void Database::genDatabase() {
     genCharacters(database);
     genCommonEvents(database);
 
-    lcf::DatabaseSerializer().ToFile(PROJECT::PROJECT_DIR + EXPORTS::DATABASE_FILE, database);
+    lcf::DatabaseSerializer::ToFile(PROJECT::PROJECT_DIR + EXPORTS::DATABASE_FILE, database);
 }
 
 void Database::genSwitches(lcf::Database& database) {
@@ -105,22 +106,9 @@ void Database::genCharacters(lcf::Database& database) {
 }
 
 void Database::genCommonEvents(lcf::Database& database) {
-    /*
+    
     // TODO: check if file exists
-    auto commonEvents = lcf::CommonEventSerializer::MultipleFromFile(PROJECT::PROJECT_DIR + PROJECT::COMMON_EVENTS);
+    std::vector<lcf::CommonEvent> commonEvents = lcf::CommonEventSerializer::MultipleFromFile(PROJECT::PROJECT_DIR + PROJECT::COMMON_EVENTS);
 
     database.addCommonEvents(commonEvents);
-    */
-
-    // TODO: read the common event file (parse it with) and add each common event to the database.
-    /*
-    tinyxml2::XMLDocument commonEvents((PROJECT::PROJECT_DIR + PROJECT::COMMON_EVENTS).c_str());
-    if(commonEvents.ErrorID() == tinyxml2::XML_ERROR_FILE_NOT_FOUND)
-        std::cout << WARN_NO_COMMON_EVENTS;
-    
-    if(!commonEvents.Error()) {
-
-        commonEvents.DeepCloneInsertBackSiblings(&databaseDoc, databaseDoc.TraverseElement("/LDB/Database/commonevents"));
-    }
-    */
 }
