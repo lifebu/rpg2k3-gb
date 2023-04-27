@@ -33,5 +33,5 @@ Files extracted from upstream source:
 ## EasyRPGPlayer
 
 - Upstream: https://github.com/EasyRPG/Player
-- Version: git (69aaeb2d, 2022)
+- Version: 0-7-0-stable (69aaeb2d, 2022)
 - License: GPLv3

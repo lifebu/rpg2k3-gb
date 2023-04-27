@@ -5,3 +5,7 @@
 	path = thirdparty/EasyRPGPlayer
 	url = https://github.com/EasyRPG/Player
 	branch = 0-7-0-stable
+[submodule "thirdparty/SFML"]
+	path = thirdparty/SFML
+	url = https://github.com/SFML/SFML
+	branch = 2.6.x
