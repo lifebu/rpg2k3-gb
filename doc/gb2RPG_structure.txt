@@ -67,10 +67,7 @@ gb2RPG: Gameboy 2 RPG Maker.
                     - MultilineComment, Choice Case, Brancth Start, Loop Start, MultiLinShowText
                 - Decrement on:
                     - Choice Case, Branch Else (else decrements itself), branch end, loop end.
-        
-        - Map::setupMapRomHeader, setupMapRomLabel:
-            - Generate the header and label code on the fly and don't use the template anymore.
-        
+               
         - Add the following EventCommands to Factories for the Runtime Environment:
             - Show Text, Show Choices, Input Number, Change Item, Change Party Member, Change EXP, change parameters, change equipment, set event location, get event id, erase event, call event, show picture, show/hide player, key input processing
         

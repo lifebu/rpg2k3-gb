@@ -63,9 +63,6 @@ void Map::generateDMGROM(lcf::Map& map)
 
 void Map::generateMapROM(lcf::Map& map, GBFile& gbFile, int numOfMapROMs) 
 {
-    // pre-load data
-    std::vector<lcf::EventCommand> mapRomHeader = lcf::EventCommandSerializer::MultipleFromFile(TEMPLATES::MAP_ROM_HEADER);
-    std::vector<lcf::EventCommand> mapRomLabel = lcf::EventCommandSerializer::MultipleFromFile(TEMPLATES::MAP_ROM_LABEL);
     int startingID = map.nextEventID();
 
     // create all necessary ROM Events
@@ -86,7 +83,7 @@ void Map::generateMapROM(lcf::Map& map, GBFile& gbFile, int numOfMapROMs)
             bool lastEventPage = isLastEventPage(gbFile);
 
             // Fill event-page with map-rom-header commands
-            setupMapRomHeader(mapRomHeader, numLabels);
+            std::vector<lcf::EventCommand> mapRomHeader = setupMapRomHeader(numLabels);
             eventPage.addEventCommands(mapRomHeader);
 
             // Fill event-page with map-rom-label commands
@@ -98,7 +95,7 @@ void Map::generateMapROM(lcf::Map& map, GBFile& gbFile, int numOfMapROMs)
                     secondVar = -9999999;
                 }
 
-                setupMapRomLabel(mapRomLabel, labelID, numLabels, firstVar, secondVar);
+                std::vector<lcf::EventCommand> mapRomLabel = setupMapRomLabel(labelID, numLabels, firstVar, secondVar);
                 eventPage.addEventCommands(mapRomLabel);
             }
         }
@@ -144,124 +141,122 @@ bool Map::isLastEventPage(GBFile& gbFile)
     return isLastEventPage;
 }
 
-void Map::setupMapRomHeader(std::vector<lcf::EventCommand>& mapRomHeader, int numLabels) 
+std::vector<lcf::EventCommand> Map::setupMapRomHeader(int numLabels) 
 {
-    assert(mapRomHeader.size() == 6);
+    std::vector<lcf::EventCommand> mapRomHeader;
 
-    // Need to change the boilerplate code (see map_rom_header.xml for details).
     // Comment
-    lcf::EventCommandFactory::GenFirstLineComment(mapRomHeader.at(0), "Convert Offset from Bytes to Variables");
+    mapRomHeader.push_back(lcf::EventCommandFactory::GenFirstLineComment("Convert Offset from Bytes to Variables"));
 
     // ByteOffset = (ByteOffset / BYTES_PER_VAR):
-    lcf::EventCommandFactory::GenControlVariable(
-        mapRomHeader.at(1), 
+    mapRomHeader.push_back(lcf::EventCommandFactory::GenControlVariable(
         lcf::ControlVariableCommand::Type::SINGLE_VARIABLE,
         VARMAPPING::BYTE_OFFSET_ID, VARMAPPING::BYTE_OFFSET_ID,
         lcf::ControlVariableCommand::Operation::OPERATION_DIV,
         lcf::ControlVariableCommand::OperandTypes::OPERANDS_CONSTANT,
-        MEMORYSIZES::BYTES_PER_VAR, 0);
+        MEMORYSIZES::BYTES_PER_VAR, 0));
     
     // LabelID = ByteOffset
-    lcf::EventCommandFactory::GenControlVariable(
-        mapRomHeader.at(2), 
+    mapRomHeader.push_back(lcf::EventCommandFactory::GenControlVariable(
         lcf::ControlVariableCommand::Type::SINGLE_VARIABLE,
         VARMAPPING::LABEL_ID, VARMAPPING::LABEL_ID,
         lcf::ControlVariableCommand::Operation::OPERATION_SET,
         lcf::ControlVariableCommand::OperandTypes::OPERANDS_VARIABLE,
-        VARMAPPING::BYTE_OFFSET_ID, 0);
+        VARMAPPING::BYTE_OFFSET_ID, 0));
 
     // LabelID += 1
-    lcf::EventCommandFactory::GenControlVariable(
-        mapRomHeader.at(3), 
+    mapRomHeader.push_back(lcf::EventCommandFactory::GenControlVariable(
         lcf::ControlVariableCommand::Type::SINGLE_VARIABLE,
         VARMAPPING::LABEL_ID, VARMAPPING::LABEL_ID,
         lcf::ControlVariableCommand::Operation::OPERATION_ADD,
         lcf::ControlVariableCommand::OperandTypes::OPERANDS_CONSTANT,
-        1, 0);
+        1, 0));
 
     // JumpToLabel numLabels / 2
-    lcf::EventCommandFactory::GenJumpToLabel(mapRomHeader.at(4), numLabels / 2);
+    mapRomHeader.push_back(lcf::EventCommandFactory::GenJumpToLabel(numLabels / 2));
+
+    // Empty comment
+    mapRomHeader.push_back(lcf::EventCommandFactory::GenFirstLineComment(""));
+
+    return mapRomHeader;
 }
 
-void Map::setupMapRomLabel(std::vector<lcf::EventCommand>& mapRomLabel, int labelID, int numLabels, int firstVar, int secondVar) 
+std::vector<lcf::EventCommand> Map::setupMapRomLabel(int labelID, int numLabels, int firstVar, int secondVar) 
 {
-    assert(mapRomLabel.size() == 12);
+    std::vector<lcf::EventCommand> mapRomHeader;
 
-    // Need to change the boilerplate code (see map_rom_label.xml for details).
     // Label X
-    lcf::EventCommandFactory::GenLabel(mapRomLabel.at(0), labelID);
+    mapRomHeader.push_back(lcf::EventCommandFactory::GenLabel(labelID));
 
     // IF(LabelID < X)
-    lcf::EventCommandFactory::GenConditionalBranch(
-        mapRomLabel.at(1), 
+    mapRomHeader.push_back(lcf::EventCommandFactory::GenConditionalBranch(
         lcf::ConditionalBranchCommand::Type::VARIABLE,
         VARMAPPING::LABEL_ID, 
         lcf::ConditionalBranchCommand::RHSType::USE_CONSTANT, labelID, 
-        lcf::ConditionalBranchCommand::Comparison::LESS, false);
+        lcf::ConditionalBranchCommand::Comparison::LESS, false));
     
     // JumpToLabel X - (min(X, 1.000 - X) / 2)
     float minDistance = std::min(labelID, numLabels - labelID);
     if(labelID == 1) 
     {
         // The first MapRomLabel does not need to jump here, instead change the command to EndEventProcessing
-        lcf::EventCommandFactory::GenEndEventProcessing(mapRomLabel.at(2));
+        mapRomHeader.push_back(lcf::EventCommandFactory::GenEndEventProcessing());
     }
     else 
     {
         int newID = labelID - ceil(minDistance/2.0f);
-        lcf::EventCommandFactory::GenJumpToLabel(mapRomLabel.at(2), newID);
+        mapRomHeader.push_back(lcf::EventCommandFactory::GenJumpToLabel(newID));
     }
 
     // NOOP
-    lcf::EventCommandFactory::GenNoOp(mapRomLabel.at(3));
+    mapRomHeader.push_back(lcf::EventCommandFactory::GenNoOp());
 
     // ENDIF
-    lcf::EventCommandFactory::GenEndBranch(mapRomLabel.at(4));
+    mapRomHeader.push_back(lcf::EventCommandFactory::GenEndBranch());
 
     // IF(LabelID > X)
-    lcf::EventCommandFactory::GenConditionalBranch(
-        mapRomLabel.at(5), 
+    mapRomHeader.push_back(lcf::EventCommandFactory::GenConditionalBranch(
         lcf::ConditionalBranchCommand::Type::VARIABLE,
         VARMAPPING::LABEL_ID, 
         lcf::ConditionalBranchCommand::RHSType::USE_CONSTANT, labelID, 
-        lcf::ConditionalBranchCommand::Comparison::GREATER, false);
+        lcf::ConditionalBranchCommand::Comparison::GREATER, false));
 
     // JumpToLabel X + (min(X, 1.000 - X) / 2)
     if(labelID == numLabels) 
     {
         // The last MapRomLabel does not need to jump here, instead change the command to EndEventProcessing.
-        lcf::EventCommandFactory::GenEndEventProcessing(mapRomLabel.at(6));
+        mapRomHeader.push_back(lcf::EventCommandFactory::GenEndEventProcessing());
     } 
     else 
     {
         int newID = labelID + ceil(minDistance/2.0f);
-        lcf::EventCommandFactory::GenJumpToLabel(mapRomLabel.at(6), newID);
+        mapRomHeader.push_back(lcf::EventCommandFactory::GenJumpToLabel(newID));
     }
 
     // NOOP
-    lcf::EventCommandFactory::GenNoOp(mapRomLabel.at(7));
+    mapRomHeader.push_back(lcf::EventCommandFactory::GenNoOp());
 
     // ENDIF
-    lcf::EventCommandFactory::GenEndBranch(mapRomLabel.at(8));
+    mapRomHeader.push_back(lcf::EventCommandFactory::GenEndBranch());
 
     // READVAR1 = LABELXVALUE1
-    lcf::EventCommandFactory::GenControlVariable(
-        mapRomLabel.at(9), 
+    mapRomHeader.push_back(lcf::EventCommandFactory::GenControlVariable(
         lcf::ControlVariableCommand::Type::SINGLE_VARIABLE,
         VARMAPPING::READ_VAR_1, VARMAPPING::READ_VAR_1,
         lcf::ControlVariableCommand::Operation::OPERATION_SET,
         lcf::ControlVariableCommand::OperandTypes::OPERANDS_CONSTANT,
-        firstVar, 0);
+        firstVar, 0));
 
     // READVAR2 = LABELXVALUE2
-    lcf::EventCommandFactory::GenControlVariable(
-        mapRomLabel.at(10), 
+    mapRomHeader.push_back(lcf::EventCommandFactory::GenControlVariable(
         lcf::ControlVariableCommand::Type::SINGLE_VARIABLE,
         VARMAPPING::READ_VAR_2, VARMAPPING::READ_VAR_2,
         lcf::ControlVariableCommand::Operation::OPERATION_SET,
         lcf::ControlVariableCommand::OperandTypes::OPERANDS_CONSTANT,
-        secondVar, 0);
+        secondVar, 0));
     
     // End Event Processing
-    lcf::EventCommandFactory::GenEndEventProcessing(mapRomLabel.at(11));
+    mapRomHeader.push_back(lcf::EventCommandFactory::GenEndEventProcessing());
+
+    return mapRomHeader;
 }

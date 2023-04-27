@@ -28,7 +28,7 @@ namespace gb2rpg {
         // Helper functions
         static int calcNumOfLabels(GBFile& gbFile);
         static bool isLastEventPage(GBFile& gbFile);
-        static void setupMapRomHeader(std::vector<lcf::EventCommand>& mapRomHeader, int numLabels);
-        static void setupMapRomLabel(std::vector<lcf::EventCommand>& mapRomLabel, int labelID, int numLabels, int firstVar, int secondVar);
+        static std::vector<lcf::EventCommand> setupMapRomHeader(int numLabels);
+        static std::vector<lcf::EventCommand> setupMapRomLabel(int labelID, int numLabels, int firstVar, int secondVar);
     };
 };
