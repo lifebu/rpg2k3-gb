@@ -7,12 +7,19 @@
 Gameboy Emulator written in C++ for RPGMaker 2003 with custom toolchain to allow compiling and debugging.
 
 ## Table of Contents
+- [rpg2k3-gb](#rpg2k3-gb)
+  - [Table of Contents](#table-of-contents)
   - [General Information](#general-information)
   - [Current State](#current-state)
   - [Technologies Used](#technologies-used)
   - [How To Run](#how-to-run)
   - [Illustrations](#illustrations)
   - [Features](#features)
+    - [Emulator](#emulator)
+    - [Toolchain](#toolchain)
+      - [GB2RPG: Gameboy 2 RPG Maker.](#gb2rpg-gameboy-2-rpg-maker)
+      - [CppRPGEnv: C++ RPG Maker Environment](#cpprpgenv-c-rpg-maker-environment)
+      - [CppEC: C++ Event Compiler.](#cppec-c-event-compiler)
   - [Sources](#sources)
 
 ## General Information
@@ -35,6 +42,8 @@ The other tools needed will be worked on in the following order:
 - lcf2xml: To implement custom toolchain.
 - Easy RPG Player: For Testing/Debugging purposes, to run final project you can either use original RPG Maker 2003 or Easy RPG Player.
 - SFML: To create the simple RPG Maker runtime.
+- tinyxml: XMLParser used for custom toolchain.
+- rapidxml: XMLParser used for custom toolchain.
 
 ## How To Run
 This project requires original RPG Maker 2003 project files that cannot be shared for legal reasons. You can acquire the RPG Maker 2003 from [Steam](https://store.steampowered.com/app/362870/RPG_Maker_2003/). Create a new project called "Gameboy_Emulator". Copy the following files into the `templates/project` folder: `Gameboy_Emulator.r3proj`, `RPG_RT.exe`, `RPG_RT.ini`, `ultimate_rt_eb.dll`.
@@ -66,6 +75,7 @@ Tools:
 - [lcf2xml from liblcf](https://github.com/EasyRPG/liblcf): convert RPG Maker Project Files to/from xml.
 - [Easy RPG Player](https://github.com/EasyRPG/Player): Run RPG Maker Projects on many platforms.
 - [tinyxml2](https://github.com/leethomason/tinyxml2): to read/write xml files in C++.
+- [rapidxml](https://rapidxml.sourceforge.net/): to read/write xml files in C++.
 - [SFML](https://www.sfml-dev.org/): Simple runtime that allows 2D graphics, audio and networking.
 - [RPG Maker 2003](https://www.rpgmakerweb.com/products/rpg-maker-2003): To run the projects on the original RPG Maker you can buy it on [Steam](https://store.steampowered.com/app/362870/RPG_Maker_2003/).
 
