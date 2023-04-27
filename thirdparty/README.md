@@ -11,10 +11,27 @@ Files extracted from upstream source:
 - `tinyxml2.h` and `tinyxml2.cpp`
 - `LICENSE.txt`
 
-
 ## liblcf
 
 - Upstream: https://github.com/EasyRPG/liblcf
 - Version: git (bbc37249c303f53f4f83e7e5f7e4ac93b9148962, 2022)
 - License: MIT
 - Fork (submodule): https://github.com/lifebu/liblcf
+
+## rapidxml
+
+- Upstream: https://rapidxml.sourceforge.net/
+- Version: 1.13 (2023)
+- License: MIT
+
+## SFML
+
+- Upstream: https://github.com/SFML/SFML
+- Version: 2.6.x (a21c3c101cd02e41b79ffc515f93c649e230e263, 2023)
+- License: zlib/libpng
+
+## EasyRPGPlayer
+
+- Upstream: https://github.com/EasyRPG/Player
+- Version: git (69aaeb2d, 2022)
+- License: GPLv3
