@@ -10,13 +10,18 @@ project(rpg2k3-gb VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Gameboy emulator for 
 # core
 add_subdirectory(src/core)
 
+# emu
+add_subdirectory(src/emu)
+
 # tools
 add_subdirectory(src/tools/gb2rpg)
+add_subdirectory(src/tools/cppRPGenv)
 
 # thirdparty
 add_subdirectory(thirdparty/tinyxml2)
 add_subdirectory(thirdparty/rapidxml)
 add_subdirectory(thirdparty/liblcf)
 file(COPY "build/thirdparty/liblcf/lcf2xml" DESTINATION ${CMAKE_SOURCE_DIR})
+add_subdirectory(thirdparty/SFML)
 #add_subdirectory(thirdparty/EasyRPGPlayer)
 #file(COPY "build/thirdparty/EasyRPGPlayer/easyrpg-player" DESTINATION ${CMAKE_SOURCE_DIR})

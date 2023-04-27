@@ -81,7 +81,7 @@ include(CMakePrintHelpers)
 cmake_print_variables(PROJECT_SOURCE_DIR) 
 
 
-
+# third party
 target_link_libraries(core PRIVATE tinyxml2)
 
 target_compile_features(core PUBLIC cxx_std_17)

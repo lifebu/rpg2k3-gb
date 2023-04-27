@@ -39,7 +39,7 @@ CppRPGEnv: C++-RPG Maker Environment
         - One Interface class that has the commands to the environment where CodeGen will generate fitting EventCommands (ShowPicture, ShowChoices, etc)
 
 - Tasks:
-    - Tasks:
+    - Start:
         - Load lcf files (Database, Maps, MapTree)
         - Setup some Environmentstate and sfml.
     
