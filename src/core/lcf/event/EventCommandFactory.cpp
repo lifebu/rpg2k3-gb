@@ -2,10 +2,12 @@
 
 #include "EventCommand.h"
 
+#include <iostream>
 
 namespace lcf 
 {
 
+// NoOp
 EventCommand EventCommandFactory::GenNoOp()
 {
     return EventCommand(EventCommand::CommandType::NO_OP, 0, "", {});
@@ -16,6 +18,33 @@ void EventCommandFactory::GenNoOp(EventCommand& command)
     command.type = EventCommand::CommandType::NO_OP;
     //command.indentation = 0;
     command.stringParam = "";
+    command.parameters.clear();
+}
+
+// Comments and Textboxes
+EventCommand EventCommandFactory::GenFirstLineShowText(std::string text)
+{
+    return EventCommand(EventCommand::CommandType::FIRST_LINE_SHOW_TEXT, 0, text, {});
+}
+
+void EventCommandFactory::GenFirstLineShowText(EventCommand& command, std::string text)
+{
+    command.type = EventCommand::CommandType::FIRST_LINE_SHOW_TEXT;
+    //command.indentation = 0;
+    command.stringParam = text;
+    command.parameters.clear();
+}
+
+EventCommand EventCommandFactory::GenMultiLineShowText(std::string text)
+{
+    return EventCommand(EventCommand::CommandType::MULTI_LINE_SHOW_TEXT, 0, text, {});
+}
+
+void EventCommandFactory::GenMultiLineShowText(EventCommand& command, std::string text)
+{
+    command.type = EventCommand::CommandType::MULTI_LINE_SHOW_TEXT;
+    //command.indentation = 0;
+    command.stringParam = text;
     command.parameters.clear();
 }
 
@@ -45,6 +74,8 @@ void EventCommandFactory::GenMultiLineComment(EventCommand& command, std::string
     command.parameters.clear();
 }
 
+
+// Control Variables
 EventCommand EventCommandFactory::GenControlVariable(ControlVariableCommand::Type type, 
         uint16_t startID, uint16_t endID, 
         ControlVariableCommand::Operation operation, 
@@ -84,6 +115,84 @@ void EventCommandFactory::GenControlVariable(EventCommand& command,
     });
 }
 
+EventCommand EventCommandFactory::GenChoices(std::vector<std::string> choices, bool includeCancel)
+{
+    return EventCommand(EventCommand::CommandType::CHOICES, 0, GenChoicesString(choices), 
+    {
+        static_cast<int32_t>(GenChoiceID(choices, includeCancel))
+    });
+}
+
+// Show Choices
+void EventCommandFactory::GenChoices(EventCommand& command, std::vector<std::string> choices, bool includeCancel)
+{
+    command.type = EventCommand::CommandType::CHOICES;
+    //command.indentation = 0;
+    command.stringParam = GenChoicesString(choices);
+    command.parameters.clear();
+    command.parameters.insert(command.parameters.end(),
+    {
+        static_cast<int32_t>(GenChoiceID(choices, includeCancel))
+    });
+}
+
+EventCommand EventCommandFactory::GenChoiceCase(std::string choiceName, ChoicesCommand::ChoiceCaseOnCancel cancelBehaviour)
+{
+    return EventCommand(EventCommand::CommandType::CHOICE_CASE, 0, choiceName, 
+    {
+        static_cast<int32_t>(cancelBehaviour)
+    });
+}
+
+void EventCommandFactory::GenChoiceCase(EventCommand& command, std::string choiceName, ChoicesCommand::ChoiceCaseOnCancel cancelBehaviour)
+{
+    command.type = EventCommand::CommandType::CHOICE_CASE;
+    //command.indentation = 0;
+    command.stringParam = choiceName;
+    command.parameters.clear();
+    command.parameters.insert(command.parameters.end(),
+    {
+        static_cast<int32_t>(cancelBehaviour)
+    });
+}
+
+EventCommand EventCommandFactory::GenChoiceBranchEnd()
+{
+    return EventCommand(EventCommand::CommandType::CHOICE_BRANCH_END, 0, "", {});
+}
+
+void EventCommandFactory::GenChoiceBranchEnd(EventCommand& command)
+{
+    command.type = EventCommand::CommandType::CHOICE_BRANCH_END;
+    //command.indentation = 0;
+    command.stringParam = "";
+    command.parameters.clear();
+}
+
+// Input Number
+EventCommand EventCommandFactory::GetInputNumber(int32_t numberOfDigits, uint16_t storageVarID)
+{
+    return EventCommand(EventCommand::CommandType::INPUT_NUMBER, 0, "", 
+    {
+        numberOfDigits,
+        static_cast<int32_t>(storageVarID)
+    });
+}
+
+void EventCommandFactory::GetInputNumber(EventCommand& command, int32_t numberOfDigits, uint16_t storageVarID)
+{
+    command.type = EventCommand::CommandType::INPUT_NUMBER;
+    //command.indentation = 0;
+    command.stringParam = "";
+    command.parameters.clear();
+    command.parameters.insert(command.parameters.end(),
+    {
+        numberOfDigits,
+        static_cast<int32_t>(storageVarID)
+    });
+}
+
+// Label
 EventCommand EventCommandFactory::GenLabel(uint16_t labelID)
 {
     return EventCommand(EventCommand::CommandType::LABEL, 0, "", 
@@ -124,6 +233,7 @@ void EventCommandFactory::GenJumpToLabel(EventCommand& command, uint16_t labelID
     });
 }
 
+// Conditional Branch
 EventCommand EventCommandFactory::GenConditionalBranch(ConditionalBranchCommand::Type type, 
     uint16_t LHSVariableID, 
     ConditionalBranchCommand::RHSType rhsType, uint16_t rhs, 
@@ -189,6 +299,8 @@ void EventCommandFactory::GenEndBranch(EventCommand& command)
     command.parameters.clear();
 }
 
+
+// Events
 EventCommand EventCommandFactory::GenEndEventProcessing()
 {
     return EventCommand(EventCommand::CommandType::END_EVENT_PROCESSING, 0, "", {});
@@ -200,6 +312,40 @@ void EventCommandFactory::GenEndEventProcessing(EventCommand& command)
     //command.indentation = 0;
     command.stringParam = "";
     command.parameters.clear();
+}
+
+// Helper
+std::string EventCommandFactory::GenChoicesString(std::vector<std::string>& choices)
+{
+    std::string ret;
+
+    for(auto& choice : choices)
+    {
+        ret += choice;
+        if(ret != *(choices.end() - 1))
+        {
+            ret += ", ";
+        }
+    }
+
+    return ret;
+}
+
+int EventCommandFactory::GenChoiceID(std::vector<std::string>& choices, bool includeCancel)
+{
+    if(choices.size() > 4)
+    {
+        std::cout << "More than 4 choices are not supported!" << std::endl;
+        return 0;
+    }
+
+    int choiceID = choices.size();
+    if(choices.size() == 4 && includeCancel)
+    {
+        choiceID++;
+    }
+
+    return choiceID;
 }
 
 };

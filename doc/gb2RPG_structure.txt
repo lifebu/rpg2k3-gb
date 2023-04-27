@@ -53,7 +53,7 @@ gb2RPG: Gameboy 2 RPG Maker.
         - only make accessor where it makes sense and it does something.
         
     - Function:
-        Now:
+        Later:
         - Serializers: remove the Indententation System:
             - When writing out event commands keep track of the current indentation and write it out.
             - When you encounter certain commands (like if-statements), then you increment the indentation (after the if-statement is created).
@@ -69,9 +69,8 @@ gb2RPG: Gameboy 2 RPG Maker.
                     - Choice Case, Branch Else (else decrements itself), branch end, loop end.
                
         - Add the following EventCommands to Factories for the Runtime Environment:
-            - Show Text, Show Choices, Input Number, Change Item, Change Party Member, Change EXP, change parameters, change equipment, set event location, get event id, erase event, call event, show picture, show/hide player, key input processing
+            - Show Choices, Input Number, Change Item, Change Party Member, Change EXP, change parameters, change equipment, set event location, get event id, erase event, call event, show picture, show/hide player, key input processings.
         
-        Later:
         - Serializers: remove the id system?
             - Do the partial types like items really need an id?
             - the id is only part of their container (database).

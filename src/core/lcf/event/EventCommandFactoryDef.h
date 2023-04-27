@@ -109,4 +109,17 @@ namespace ConditionalBranchCommand
     };
 };
 
+namespace ChoicesCommand
+{
+    enum class ChoiceCaseOnCancel
+    {
+        DISALLOW = 0,
+        CHOICE_1 = 1,
+        CHOICE_2 = 2,
+        CHOICE_3 = 3,
+        CHOICE_4 = 4,
+        OWN_BRANCH = 5
+    };
+};
+
 };
