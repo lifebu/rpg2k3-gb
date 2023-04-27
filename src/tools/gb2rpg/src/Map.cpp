@@ -22,7 +22,7 @@ const static int DMG_EVENT_ID = 1;
 const static int MAP_ROM_ID = 2;
 
 // public
-void Map::genMapFiles(std::vector<GBFile>& gbFiles) 
+void Map::genMapFiles(std::vector<GBFile>& gbFiles, CLIOptions::XMLParser parserToUse) 
 {
     std::cout << "Generating Map Files.\n";
     for(int i = 0; i < gbFiles.size(); ++i) 
@@ -40,10 +40,14 @@ void Map::genMapFiles(std::vector<GBFile>& gbFiles)
         generateMapROM(map, gbFile, numOfMapROMs);
         generateMapRAM(map);
 
-        
-
-        //lcf::MapSerializerRAPID::ToFile(filePath, map);
-        lcf::MapSerializer::ToFile(filePath, map);
+        if(parserToUse == CLIOptions::XMLParser::TINYXML)
+        {
+            lcf::MapSerializer::ToFile(filePath, map);
+        }
+        else if (parserToUse == CLIOptions::XMLParser::RAPIDXML)
+        {
+            lcf::MapSerializerRAPID::ToFile(filePath, map);
+        }
     }
 }
 

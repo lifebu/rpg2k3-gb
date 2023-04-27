@@ -9,9 +9,6 @@
 
 int main (int argc, char* argv[]) 
 {
-    //auto map = lcf::MapSerializer::FromFile("project/Map0001.emu");
-
-    
     gb2rpg::ProjectGenerator::cleanProjectFolder();    
 
     gb2rpg::CLIOptions cli = gb2rpg::CLIOptions(argc, argv);
@@ -21,7 +18,7 @@ int main (int argc, char* argv[])
     std::vector<gb2rpg::GBFile> gbFiles = gbGen.genGBFiles(cli);
     if(gbGen.hadErrors()) return 0;
     
-    gb2rpg::Map::genMapFiles(gbFiles);
+    gb2rpg::Map::genMapFiles(gbFiles, cli.getXMLParser());
     
     //gb2rpg::MapTree::genMapTree(gbFiles);
     

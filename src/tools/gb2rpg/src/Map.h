@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CLI.h"
+
 #include <vector>
 #include <string>
 
@@ -16,7 +18,7 @@ namespace gb2rpg {
     public:
         Map() = delete;
 
-        static void genMapFiles(std::vector<GBFile>& gbFiles);
+        static void genMapFiles(std::vector<GBFile>& gbFiles, CLIOptions::XMLParser parserToUse);
 
     private:
         static void generateDMGROM(lcf::Map& map);
