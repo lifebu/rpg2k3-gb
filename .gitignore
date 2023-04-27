@@ -44,3 +44,6 @@ lcf2xml
 
 ## VS Code Counter Addon Folder
 .VSCodeCounter
+
+## Profiling Data
+temp/*.out

@@ -12,6 +12,7 @@ namespace lcf
 class Event 
 {
     friend class MapSerializer;
+    friend class MapSerializerRAPID;
 
 public:
     Event(const uint16_t id, const std::string name, const uint16_t x, const uint16_t y);
@@ -23,8 +24,8 @@ public:
     uint16_t x;
     uint16_t y;
 private:
-    const uint16_t id;
-    const std::string name;
+    uint16_t id;
+    std::string name;
     std::vector<EventPage> eventPages;
 };
 

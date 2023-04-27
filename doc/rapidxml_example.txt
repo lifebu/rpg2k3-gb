@@ -1,0 +1,63 @@
+/*
+During Generation:
+    With Pokemon Red:
+    Memory:
+        Tiny: 9.4 GB
+        Rapid: 4.4 GB
+        => 46%
+    Time:
+        Tiny: 100s
+        Rapid: 48s
+        => 48%
+    Output Size:
+        Tiny:  2.4 GB
+            - Compact Mode: 1.1GB
+        Rapid: 762 MB
+        => 31%
+
+
+Theory:
+10 EventPages (1.3kb) @ 12006 EventCommands (386B)
+=> 13kb + 45.256KByte ~ 44MByte
+not 3GB?
+Binary File is 10MByte
+
+How many EventCommands Should be per Page?
+    Header => ignore
+    Label: 12 Commands @ 1.000 Label per Epage => 12.0006 EventCommands kinda make sense.
+*/
+
+// How to do the following things:
+// Load the XML
+rapidxml::file file2(fileName.c_str());
+rapidxml::xml_document<> doc;
+doc.parse<0>(file2.data());
+
+// TraverseElement("/LMU/Map/events/Event");
+auto* eventsBlaBla = doc.first_node("LMU")->first_node("Map")->first_node("events");
+auto* mapElemBla = doc.first_node("LMU")->first_node("Map")->first_node("events")->first_node("Event");
+// DeepCloneInsertBack
+// insert mapElementBla as last child of eventsBlabla
+eventsBlaBla->insert_node(nullptr, eventsBlaBla->document()->clone_node(mapElemBla));
+mapElemBla->first_attribute("id")->value("0002");
+// NextSiblingElement()
+mapElemBla->next_sibling();
+// SaveToFile()
+std::ofstream output("playground/map_rom_header.xml");
+if(!output.is_open())
+{
+    return Map(0);
+}
+output << doc;
+output.close();
+// GetAttribute
+mapElemBla->first_attribute()->value();
+// SetAttribute:
+mapElemBla->first_attribute()->value("Hi!");
+// FirstChild()
+mapElemBla->first_node();
+// GetValue
+mapElemBla->value();
+//SetValue()
+mapElemBla->value("Hi!");
+return Map(0);

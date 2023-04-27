@@ -54,21 +54,6 @@ gb2RPG: Gameboy 2 RPG Maker.
         
     - Function:
         Now:
-        - Poor Performance for the MapSerializer.
-            - Why does the generation for the events take so long? Need to analyze.
-            - It now takes >10 minutes to generate the map for tetris (32kByte))
-
-        - Serializers: Now the new system uses class-friends so that some serializers can use already defined functions in other serializers.
-            => Maybe by putting everything in one class that gets better?
-            => If I don't need to use "friend" then I can make them napespaces instead of classes.
-        
-        - Serializers: remove the id system?
-            - Do the partial types like items really need an id?
-            - the id is only part of their container (database).
-            - the database can manage request of finding a type based in id.
-            - But I can also completly delete all the IDs because they are only relevant when you serialze them data into .xml. Not before.
-                => Can then generate the IDs.
-        
         - Serializers: remove the Indententation System:
             - When writing out event commands keep track of the current indentation and write it out.
             - When you encounter certain commands (like if-statements), then you increment the indentation (after the if-statement is created).
@@ -78,6 +63,14 @@ gb2RPG: Gameboy 2 RPG Maker.
             - Generate the header and label code on the fly and don't use the template anymore.
         
         Later:
+        - Serializers: remove the id system?
+            - Do the partial types like items really need an id?
+            - the id is only part of their container (database).
+            - the database can manage request of finding a type based in id.
+            - But I can also completly delete all the IDs because they are only relevant when you serialze them data into .xml. Not before.
+                => Can then generate the IDs.
+            - Hold on to the Id-System for now, maybe it I need it for the CodeGen.
+
         - Most of the Datatypes are not shared. 
             - For example switch, variables, characters, items and common events are only used by the Database file => Can add the class declarations in Database.h and not in so many header files.
             - The only thing that is actually shared is a eventcommand.
@@ -129,6 +122,11 @@ gb2RPG: Gameboy 2 RPG Maker.
                         - good if files are too large to fit into RAM.
                     - lcf2xml only requires 600mb of memory in comparison to tinyxml2's 16GB!
                     - lcf2xml only takes 44 seconds in comparison to my 2m20s (but it's task might be simpler!).
+                
+                    - Tried testing rapidxml:
+                        It is way faster, requires way less Memory (~40%)
+                        - But currently the output file is corruptes :/
+                        - Need to fix tat.
 
                 - b) Directly work on the binary file:
                     - 1.6GB of XML (MAP.emu for 2MB ROM) equals 95,4MB of Binary format (.lmu).

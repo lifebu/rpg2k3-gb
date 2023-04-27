@@ -13,6 +13,7 @@ namespace lcf
 class Map 
 {
     friend class MapSerializer;
+    friend class MapSerializerRAPID;
 
 public:
     Map(const int numOfEvents = 0);

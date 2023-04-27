@@ -15,6 +15,7 @@ add_subdirectory(src/tools/gb2rpg)
 
 # thirdparty
 add_subdirectory(thirdparty/tinyxml2)
+add_subdirectory(thirdparty/rapidxml)
 add_subdirectory(thirdparty/liblcf)
 file(COPY "build/thirdparty/liblcf/lcf2xml" DESTINATION ${CMAKE_SOURCE_DIR})
 add_subdirectory(thirdparty/EasyRPGPlayer)

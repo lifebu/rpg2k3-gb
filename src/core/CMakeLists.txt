@@ -37,17 +37,21 @@ set(lcf_source
 
 set(serializer_headers
     lcf_serializers/EventCommandSerializer.h
+    lcf_serializers/EventCommandSerializerRAPID.h
     lcf_serializers/CommonEventSerializer.h
     lcf_serializers/DatabaseSerializer.h
     lcf_serializers/MapSerializer.h
+    lcf_serializers/MapSerializerRAPID.h
     lcf_serializers/MapTreeSerializer.h
     lcf_serializers/Templates.h)
 
 set(serializer_source
     lcf_serializers/EventCommandSerializer.cpp
+    lcf_serializers/EventCommandSerializerRAPID.cpp
     lcf_serializers/CommonEventSerializer.cpp
     lcf_serializers/DatabaseSerializer.cpp
     lcf_serializers/MapSerializer.cpp
+    lcf_serializers/MapSerializerRAPID.cpp
     lcf_serializers/MapTreeSerializer.cpp)
 
 set(utility_headers utilities/RPGHelper.h)

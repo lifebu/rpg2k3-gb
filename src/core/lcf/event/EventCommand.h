@@ -8,6 +8,7 @@ namespace lcf {
 
 class EventCommand {
     friend class EventCommandSerializer;
+    friend class EventCommandSerializerRAPID;
     friend class EventCommandFactory;
 
 public:

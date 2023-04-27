@@ -1,0 +1,77 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "process",
+			"label": "CPU Profiling (callgrind)",
+			"command": "valgrind",
+			"args": [
+				"--tool=callgrind",
+				"--callgrind-out-file=temp/callgrind.out",
+				"${command:cmake.launchTargetPath}",
+				"-g",
+                "playground/Tetris.gb",
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "none",
+			"detail": "CPU Profile program by using callgrind"
+		},
+		{
+			"type": "process",
+			"label": "Cache Profiling (cachgrind)",
+			"command": "valgrind",
+			"args": [
+				"--tool=cachegrind",
+				"--cachegrind-out-file=temp/cachegrind.out",
+				"${command:cmake.launchTargetPath}",
+				"-g",
+                "playground/Tetris.gb",
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "none",
+			"detail": "Cache Profile program by using cachegrind"
+		},
+		{
+			"type": "process",
+			"label": "Open CPU profile data (kcallgrind)",
+			"command": "kcachegrind",
+			"args": [
+				"temp/callgrind.out"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "none",
+			"detail": "Open CPU profile data using kcallgrind"
+		},
+		{
+			"type": "process",
+			"label": "Open cache profile data (kcallgrind)",
+			"command": "kcachegrind",
+			"args": [
+				"temp/cachegrind.out"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "none",
+			"detail": "Open cache profile data using kcallgrind"
+		}
+	]
+}

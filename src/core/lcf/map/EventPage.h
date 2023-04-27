@@ -12,6 +12,7 @@ class EventCommand;
 
 class EventPage {
     friend class MapSerializer;
+    friend class MapSerializerRAPID;
 
 public:
     EventPage(const uint16_t id);

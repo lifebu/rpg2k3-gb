@@ -5,8 +5,13 @@
 #include "src/Database.h"
 #include "src/ProjectGenerator.h"
 
+#include "core/lcf_serializers/MapSerializer.h"
+
 int main (int argc, char* argv[]) 
 {
+    //auto map = lcf::MapSerializer::FromFile("project/Map0001.emu");
+
+    
     gb2rpg::ProjectGenerator::cleanProjectFolder();    
 
     gb2rpg::CLIOptions cli = gb2rpg::CLIOptions(argc, argv);
@@ -18,11 +23,11 @@ int main (int argc, char* argv[])
     
     gb2rpg::Map::genMapFiles(gbFiles);
     
-    gb2rpg::MapTree::genMapTree(gbFiles);
+    //gb2rpg::MapTree::genMapTree(gbFiles);
     
-    gb2rpg::Database::genDatabase();
+    //gb2rpg::Database::genDatabase();
 
-    gb2rpg::ProjectGenerator::genProjectFolder(gbFiles.size());
-
+    //gb2rpg::ProjectGenerator::genProjectFolder(gbFiles.size());
+    
     return 0;
 }
