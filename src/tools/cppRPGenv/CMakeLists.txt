@@ -8,7 +8,7 @@ endif()
 project(cppRPGEnv VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Runtime Environment similar to RPG Maker 2003")
 
 set(cppRPGEnv_headers
-    interface/RPGMakerInterface.h interface/RPGEntryPoint.h interface_impl/RPGMakerImpl.h)
+    interface_impl/RPGMakerImpl.h)
 
 set(cppRPGEnv_source
     interface_impl/RPGMakerImpl.cpp)

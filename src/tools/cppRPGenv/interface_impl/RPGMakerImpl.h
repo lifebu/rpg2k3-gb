@@ -1,12 +1,13 @@
 #pragma once
 
-#include "../interface/RPGMakerInterface.h"
+#include "core/emu_interface/RPGMakerInterface.h"
 
 namespace rpgenv 
 {
 
 class RPGMakerImpl : public RPGMakerInterface
 {
+public:
     // Debug & Menu
     void ShowText() override;
     void ShowChoices() override;

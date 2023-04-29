@@ -1,8 +1,14 @@
 #pragma one
 
+#include "core/emu_interface/RPGEntryPoint.h"
 
-class EMUEntryPoint
+namespace emu 
+{
+
+class EMUEntryPoint : public rpgenv::RPGEntryPoint
 {
 public:
-    void cheese();
+    void RPGMain(rpgenv::RPGMakerInterface* rpgMaker) override;
+};
+
 };

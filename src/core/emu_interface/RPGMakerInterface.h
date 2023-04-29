@@ -5,6 +5,7 @@ namespace rpgenv
 
 class RPGMakerInterface
 {
+public:
     // Debug & Menu
     virtual void ShowText() = 0;
     virtual void ShowChoices() = 0;

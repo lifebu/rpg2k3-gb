@@ -1,12 +1,16 @@
 #include <SFML/Graphics.hpp>
 
-#include "interface/RPGMakerInterface.h"
+#include <emu/EMUEntryPoint.h>
 
-#include "emu/EMUEntryPoint.h"
+#include "interface_impl/RPGMakerImpl.h"
+
 
 int main (int argc, char* argv[]) 
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
+
+    emu::EMUEntryPoint emulator;
+    rpgenv::RPGMakerImpl rpgMakerInterface;
 
     while (window.isOpen())
     {
@@ -18,6 +22,8 @@ int main (int argc, char* argv[])
                 window.close();
             }
         }
+
+        emulator.RPGMain(&rpgMakerInterface);
 
         window.clear(sf::Color::Black);
 
