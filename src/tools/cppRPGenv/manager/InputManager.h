@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SFML/Window.hpp>
+
 #include "core/def/RPGMaker.h"
 
 namespace rpgenv 
@@ -17,6 +19,9 @@ public:
 
     void Init();
     void Shutdown();
+
+private:
+    sf::Keyboard::Key ConvertKeyCodeToSFML(RPGMAKER::KeyCodes key);
 };
 
 }

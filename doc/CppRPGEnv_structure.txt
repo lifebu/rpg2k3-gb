@@ -3,7 +3,6 @@ CppRPGEnv: C++-RPG Maker Environment
         - Plattform Code that runs my code (kinda like engine).
 
 - To-Do:
-    - Implement InputManager.
     - Implement Renderer.
     - Implement System states (textbox, choices, number input).
 
