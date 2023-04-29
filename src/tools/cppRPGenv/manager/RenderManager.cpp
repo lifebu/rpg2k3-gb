@@ -18,8 +18,9 @@ RenderManager* RenderManager::Get()
 
 void RenderManager::Init() 
 {
-    m_Window.create(sf::VideoMode(640, 480), "C++ RPG Env", sf::Style::Titlebar | sf::Style::Close);
+    m_Window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "C++ RPG Env", sf::Style::Titlebar | sf::Style::Close);
     m_Window.setFramerateLimit(60);
+    m_Window.setPosition(sf::Vector2i(1920 / 2 - WINDOW_WIDTH / 2, 1080 / 2 - WINDOW_HEIGHT / 2));
 
     // TODO: Just some test stuff for now!
     if(!m_TestFont.loadFromFile("data/GamegirlClassic.ttf"))
@@ -29,11 +30,8 @@ void RenderManager::Init()
     }
 
     m_TestText.setFont(m_TestFont);
-    m_TestText.setString("Loading lcf files");
     m_TestText.setCharacterSize(24);
     m_TestText.setFillColor(sf::Color::White);
-    sf::FloatRect textRect = m_TestText.getLocalBounds();
-    m_TestText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top  + textRect.height / 2.0f);
 }
 
 void RenderManager::Shutdown() 
@@ -60,6 +58,13 @@ sf::Window& RenderManager::GetWindow()
 bool RenderManager::isWindowOpen()
 {
     return m_Window.isOpen();
+}
+
+void RenderManager::ShowText(std::string text) 
+{
+    m_TestText.setString(text);
+    sf::FloatRect textRect = m_TestText.getLocalBounds();
+    m_TestText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top  + textRect.height / 2.0f);
 }
 
 };

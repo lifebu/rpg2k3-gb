@@ -1,12 +1,16 @@
 #include "RPGMakerImpl.h"
 
+#include "tools/cppRPGenv/manager/InputManager.h"
+#include "tools/cppRPGenv/manager/LCFManager.h"
+#include "tools/cppRPGenv/manager/RenderManager.h"
+
 namespace rpgenv 
 {
 
 // Debug & Menu
-void RPGMakerImpl::ShowText()
+void RPGMakerImpl::ShowText(std::string text)
 {
-
+    RenderManager::Get()->ShowText(text);
 }
 
 void RPGMakerImpl::ShowChoices()

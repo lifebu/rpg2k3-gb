@@ -20,11 +20,11 @@ int main (int argc, char* argv[])
     
     gb2rpg::Map::genMapFiles(gbFiles, cli.getXMLParser());
     
-    //gb2rpg::MapTree::genMapTree(gbFiles);
+    gb2rpg::MapTree::genMapTree(gbFiles);
     
-    //gb2rpg::Database::genDatabase();
+    gb2rpg::Database::genDatabase();
 
-    //gb2rpg::ProjectGenerator::genProjectFolder(gbFiles.size());
+    gb2rpg::ProjectGenerator::genProjectFolder(gbFiles.size());
     
     return 0;
 }

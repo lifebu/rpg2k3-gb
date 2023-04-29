@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 namespace rpgenv 
 {
 
@@ -7,7 +9,7 @@ class RPGMakerInterface
 {
 public:
     // Debug & Menu
-    virtual void ShowText() = 0;
+    virtual void ShowText(std::string text) = 0;
     virtual void ShowChoices() = 0;
     virtual void InputNumber() = 0;
 

@@ -1,5 +1,10 @@
 #pragma once
 
+#include <string>
+
+#include <core/lcf/Database.h>
+#include <core/lcf/Map.h>
+
 namespace rpgenv 
 {
 
@@ -7,6 +12,14 @@ namespace rpgenv
 class LCFManager
 {
 private:
+    enum class LoadingPhases
+    {
+        NOT_LOADED,
+        LOADING_DATABASE,
+        LOADING_MAP,
+        LOADING_FINISHED
+    };
+
     LCFManager() = default;
 
 public:
@@ -15,7 +28,15 @@ public:
     void Init();
     void Shutdown();
 
-    void LoadLCFFiles();
+    void ContinueLoading();
+
+    bool isLoadingFinished();
+
+private:
+    LoadingPhases m_LoadingPhases = LoadingPhases::NOT_LOADED;
+
+    lcf::Database m_Database;
+    lcf::Map m_Map;
 };
 
 }

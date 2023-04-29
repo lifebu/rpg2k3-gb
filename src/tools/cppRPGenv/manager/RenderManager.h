@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include <SFML/Graphics.hpp>
 
 namespace rpgenv 
@@ -7,6 +9,9 @@ namespace rpgenv
 
 class RenderManager
 {
+    static constexpr int WINDOW_WIDTH = 640;
+    static constexpr int WINDOW_HEIGHT = 480;
+
 private:
     RenderManager() = default;
 
@@ -20,6 +25,8 @@ public:
 
     sf::Window& GetWindow();
     bool isWindowOpen();
+
+    void ShowText(std::string text);
 
 private:
     sf::RenderWindow m_Window;

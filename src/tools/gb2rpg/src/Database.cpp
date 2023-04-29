@@ -2,6 +2,7 @@
 
 #include "Globals.h"
 
+#include "core/def/Globals.h"
 #include "core/lcf/Database.h"
 #include "core/lcf_serializers/DatabaseSerializer.h"
 #include "core/lcf_serializers/CommonEventSerializer.h"
@@ -32,11 +33,11 @@ void Database::genDatabase() {
     genCharacters(database);
     genCommonEvents(database);
 
-    lcf::DatabaseSerializer::ToFile(PROJECT::PROJECT_DIR + EXPORTS::DATABASE_FILE, database);
+    lcf::DatabaseSerializer::ToFile(GLOBALS::PROJECT::PROJECT_DIR + GLOBALS::EXPORTS::DATABASE_FILE, database);
 }
 
 void Database::genSwitches(lcf::Database& database) {
-    std::ifstream nameFile(PROJECT::PROJECT_DIR + PROJECT::SWITCH_NAMES);
+    std::ifstream nameFile(GLOBALS::PROJECT::PROJECT_DIR + GLOBALS::PROJECT::SWITCH_NAMES);
     if(!nameFile.is_open()) std::cout << WARN_NO_SWITCH_NAMES;
 
     for(int id = 1; id < RPGMAKER::MAX_NUM_SWITCHES; ++id) {
@@ -49,7 +50,7 @@ void Database::genSwitches(lcf::Database& database) {
 }
 
 void Database::genVariables(lcf::Database& database) {
-    std::ifstream nameFile(PROJECT::PROJECT_DIR + PROJECT::VAR_NAMES);
+    std::ifstream nameFile(GLOBALS::PROJECT::PROJECT_DIR + GLOBALS::PROJECT::VAR_NAMES);
     if(!nameFile.is_open()) std::cout << WARN_NO_VAR_NAMES;
 
     for(int id = 1; id < RPGMAKER::MAX_NUM_VARIABLES; ++id) {
@@ -108,7 +109,7 @@ void Database::genCharacters(lcf::Database& database) {
 void Database::genCommonEvents(lcf::Database& database) {
     
     // TODO: check if file exists
-    std::vector<lcf::CommonEvent> commonEvents = lcf::CommonEventSerializer::MultipleFromFile(PROJECT::PROJECT_DIR + PROJECT::COMMON_EVENTS);
+    std::vector<lcf::CommonEvent> commonEvents = lcf::CommonEventSerializer::MultipleFromFile(GLOBALS::PROJECT::PROJECT_DIR + GLOBALS::PROJECT::COMMON_EVENTS);
 
     database.addCommonEvents(commonEvents);
 }

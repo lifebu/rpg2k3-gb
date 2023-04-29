@@ -3,6 +3,7 @@
 #include "GBFile.h"
 #include "Globals.h"
 
+#include "core/def/Globals.h"
 #include "core/lcf_serializers/MapTreeSerializer.h"
 
 #include <iostream>
@@ -21,6 +22,6 @@ void MapTree::genMapTree(std::vector<GBFile>& gbFiles)
         mapTree.addMapInfo(mapName);
     }
 
-    std::string filePath = PROJECT::PROJECT_DIR + EXPORTS::MAPTREE_FILE;
+    std::string filePath = GLOBALS::PROJECT::PROJECT_DIR + GLOBALS::EXPORTS::MAPTREE_FILE;
     lcf::MapTreeSerializer::ToFile(filePath, mapTree);
 }

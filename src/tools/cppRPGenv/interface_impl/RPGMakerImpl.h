@@ -9,7 +9,7 @@ class RPGMakerImpl : public RPGMakerInterface
 {
 public:
     // Debug & Menu
-    void ShowText() override;
+    void ShowText(std::string text) override;
     void ShowChoices() override;
     void InputNumber() override;
 

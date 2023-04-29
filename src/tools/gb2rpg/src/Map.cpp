@@ -3,6 +3,7 @@
 #include "GBFile.h"
 #include "Globals.h"
 
+#include "core/def/Globals.h"
 #include "core/lcf/event/EventCommandFactory.h"
 #include "core/lcf/Map.h"
 #include "core/lcf_serializers/MapSerializer.h"
@@ -30,8 +31,8 @@ void Map::genMapFiles(std::vector<GBFile>& gbFiles, CLIOptions::XMLParser parser
         auto& gbFile = gbFiles.at(i);
         int numOfMapROMs = ((gbFile.getRomSize() * 1024) / (RPGMAKER::MAX_PAGES_PER_EVENT * MEMORYSIZES::BYTES_PER_EPAGE)) + 1;
 
-        std::string fileName = EXPORTS::MAP_FILE_BASE + generateID(i + 1) + EXPORTS::MAP_FILE_TYPE;
-        std::string filePath = PROJECT::PROJECT_DIR + fileName;
+        std::string fileName = GLOBALS::EXPORTS::MAP_FILE_BASE + generateID(i + 1) + GLOBALS::EXPORTS::MAP_FILE_TYPE;
+        std::string filePath = GLOBALS::PROJECT::PROJECT_DIR + fileName;
         std::cout << "Generating Map: " << fileName << "\n";
 
         lcf::Map map(1 + numOfMapROMs + MEMORYSIZES::NUM_DMG_RAM_EVENTS);

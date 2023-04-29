@@ -5,7 +5,7 @@ namespace emu
 
 void EMUEntryPoint::RPGMain(rpgenv::RPGMakerInterface* rpgMaker)
 {
-    rpgMaker->CallEvent();
+    rpgMaker->ShowText("Emulator is running!");
 }
 
 };

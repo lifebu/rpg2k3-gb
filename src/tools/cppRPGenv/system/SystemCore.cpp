@@ -38,6 +38,8 @@ void SystemCore::Init()
     inputManager->Init();
     renderManager->Init();
     lcfManager->Init();
+
+    renderManager->ShowText("Loading...");
 }
 
 void SystemCore::Shutdown() 
@@ -76,7 +78,12 @@ void SystemCore::Update()
     {
         case States::LOADING:
         {
-            m_CurrentState = States::RUN_EMU;
+            lcfManager->ContinueLoading();
+            if(lcfManager->isLoadingFinished())
+            {
+                renderManager->ShowText("");
+                m_CurrentState = States::RUN_EMU;
+            }
         }break;
         case States::RUN_EMU:
         {
