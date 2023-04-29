@@ -43,7 +43,27 @@
 		},
 		{
 			"type": "process",
-			"label": "Open CPU profile data (kcallgrind)",
+			"label": "Memory Profiling (massif)",
+			"command": "valgrind",
+			"args": [
+				"--tool=massif",
+				"--massif-out-file=temp/massif.out",
+				"${command:cmake.launchTargetPath}",
+				"-g",
+                "playground/Tetris.gb",
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "none",
+			"detail": "Memory Profile program by using massif"
+		},
+		{
+			"type": "process",
+			"label": "Open CPU profile data (kcachegrind)",
 			"command": "kcachegrind",
 			"args": [
 				"temp/callgrind.out"
@@ -55,11 +75,11 @@
 				"$gcc"
 			],
 			"group": "none",
-			"detail": "Open CPU profile data using kcallgrind"
+			"detail": "Open CPU profile data using kcachegrind"
 		},
 		{
 			"type": "process",
-			"label": "Open cache profile data (kcallgrind)",
+			"label": "Open cache profile data (kcachegrind)",
 			"command": "kcachegrind",
 			"args": [
 				"temp/cachegrind.out"
@@ -71,7 +91,23 @@
 				"$gcc"
 			],
 			"group": "none",
-			"detail": "Open cache profile data using kcallgrind"
+			"detail": "Open cache profile data using kcachegrind"
+		},
+		{
+			"type": "process",
+			"label": "Open memory profile data (massif-visualizer)",
+			"command": "massif-visualizer",
+			"args": [
+				"temp/massif.out"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "none",
+			"detail": "Open memory profile data using massif-visualizer"
 		}
 	]
 }

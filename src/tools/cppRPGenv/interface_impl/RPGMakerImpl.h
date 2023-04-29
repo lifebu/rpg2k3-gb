@@ -8,7 +8,10 @@ namespace rpgenv
 class RPGMakerImpl : public RPGMakerInterface
 {
 public:
-    // Debug & Menu
+    // Debug
+    void DebugPrint(std::string text) override;
+
+    // Interaction
     void ShowText(std::string text) override;
     void ShowChoices() override;
     void InputNumber() override;

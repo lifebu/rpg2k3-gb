@@ -6,6 +6,7 @@
 #include <core/def/Globals.h>
 #include <core/lcf_serializers/DatabaseSerializer.h>
 #include <core/lcf_serializers/MapSerializer.h>
+#include <core/lcf_serializers/MapSerializerRAPID.h>
 #include <core/utilities/RPGHelper.h>
 
 namespace rpgenv

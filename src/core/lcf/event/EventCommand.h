@@ -43,7 +43,7 @@ public:
     std::vector<int32_t> parameters;
 private:
     // TODO: should create a system to automatically manage indentation.
-    uint8_t indentation;
+    uint8_t indentation = 0;
 };
 
 };

@@ -89,7 +89,7 @@ void EventCommandSerializer::ToFileImpl(const EventCommand& elem, tinyxml2::XMLE
 
     // Change parameters
     auto* paramElem = eventCommand->TraverseElement("/parameters")->FirstChild();
-    indentElem->SetValue(generateParamString(elem.parameters).c_str());
+    paramElem->SetValue(generateParamString(elem.parameters).c_str());
 }
 
 std::vector<int32_t> EventCommandSerializer::parseParamString(const std::string& paramString) 

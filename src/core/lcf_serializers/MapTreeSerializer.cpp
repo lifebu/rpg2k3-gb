@@ -77,8 +77,8 @@ void MapTreeSerializer::MapInfoToFileImpl(const MapInfo& elem, tinyxml2::XMLElem
     mapInfo->SetAttribute("id", generateID(elem.id).c_str());
 
     // Change map name to filename.
-    auto* name = mapInfo->TraverseElement("/name")->FirstChild()->ToText();
-    name->SetValue(elem.name.c_str());
+    auto* nameElem = mapInfo->TraverseElement("/name")->FirstChild()->ToText();
+    nameElem->SetValue(elem.name.c_str());
 }
 
 std::string MapTreeSerializer::generateTreeOrderString(int numOfMaps) 

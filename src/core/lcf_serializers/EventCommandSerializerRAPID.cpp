@@ -13,46 +13,48 @@ namespace lcf
 std::vector<EventCommand> EventCommandSerializerRAPID::MultipleFromFile(std::string fileName) 
 {
     std::vector<EventCommand> ret;
-    /*
-    auto file = tinyxml2::XMLDocument(fileName.c_str());
-    if (file.Error()) 
-    {
-        std::cout << file.ErrorStr() << std::endl;
-        return ret;
-    }
 
-    auto* currentCommand = file.TraverseElement("/EventCommand");
+    rapidxml::file file(fileName.c_str());
+    rapidxml::xml_document<> doc;
+    doc.parse<0>(file.data());
+
+    auto* currentCommand = doc.first_node("EventCommand");
     while(currentCommand)
     {
         ret.emplace_back(FromFileImpl(currentCommand));
-        currentCommand = currentCommand->NextSiblingElement();
+        currentCommand = currentCommand->next_sibling();
     }
-    */
     
     return ret;
 }
 
-void EventCommandSerializerRAPID::MultipleToFile(std::string fileName, std::vector<EventCommand>& elems) {
-    /*
-    auto file = tinyxml2::XMLDocument();
-    auto* root = file.RootElement();
+void EventCommandSerializerRAPID::MultipleToFile(std::string fileName, std::vector<EventCommand>& elems) 
+{
+    rapidxml::file file(fileName.c_str());
+    rapidxml::xml_document<> doc;
+    doc.parse<0>(file.data());
 
-    tinyxml2::XMLDocument commandTempl(TEMPLATES::EVENT_COMMAND);
+    rapidxml::file file1(TEMPLATES::EVENT_COMMAND);
+    rapidxml::xml_document<> commandTempl;
+    commandTempl.parse<0>(file1.data());
+
     for(auto& eventCommand : elems)
     {
-        auto* eventCommandElement = commandTempl.TraverseElement("/EventCommand");
+        auto* eventCommandElement = commandTempl.first_node("EventCommand");
         ToFileImpl(eventCommand, eventCommandElement);
         
-        eventCommandElement->DeepCloneInsertBack(&file, root);
+        auto* whereToInsert = doc.last_node("EventCommand");
+        whereToInsert->insert_node(nullptr, whereToInsert->document()->clone_node(eventCommandElement));
     }
 
-    file.SaveFile(fileName.c_str());
-    if (file.Error()) 
+    std::ofstream output(fileName);
+    if(!output.is_open())
     {
-        std::cout << file.ErrorStr() << std::endl;
+        // TODO: log this error!
         return;
     }
-    */
+    output << doc;
+    output.close();
 };
 
 EventCommand EventCommandSerializerRAPID::FromFileImpl(rapidxml::xml_node<>* eventCommand)
@@ -92,7 +94,7 @@ void EventCommandSerializerRAPID::ToFileImpl(const EventCommand& elem, rapidxml:
 
     // Change parameters
     auto* paramElem = eventCommand->first_node("parameters")->first_node();
-    indentElem->value(generateParamString(elem.parameters).c_str());
+    paramElem->value(generateParamString(elem.parameters).c_str());
 }
 
 std::vector<int32_t> EventCommandSerializerRAPID::parseParamString(const std::string& paramString) 

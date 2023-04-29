@@ -8,7 +8,10 @@ namespace rpgenv
 class RPGMakerInterface
 {
 public:
-    // Debug & Menu
+    // Debug
+    virtual void DebugPrint(std::string text) = 0;
+
+    // Interaction
     virtual void ShowText(std::string text) = 0;
     virtual void ShowChoices() = 0;
     virtual void InputNumber() = 0;

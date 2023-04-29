@@ -85,7 +85,7 @@ Event MapSerializerRAPID::EventFromFileImpl(rapidxml::xml_node<>* eventElem)
     uint16_t y = std::stoi(yCoordElem->value());
 
     Event newEvent = Event(id, name, x, y);
-    auto* currentPage = eventElem->first_node("pages");
+    auto* currentPage = eventElem->first_node("pages")->first_node("EventPage");
     while(currentPage)
     {
         EventPage newEventPage = EventPageFromFileImpl(currentPage);
@@ -138,7 +138,7 @@ EventPage MapSerializerRAPID::EventPageFromFileImpl(rapidxml::xml_node<>* eventP
 
     // Get EventCommands
     EventPage newEventPage = EventPage(id);
-    auto* currentEventCommand = eventPageElem->first_node("event_commands");
+    auto* currentEventCommand = eventPageElem->first_node("event_commands")->first_node("EventCommand");
     while(currentEventCommand)
     {
         EventCommand newEventCommands = EventCommandSerializerRAPID::FromFileImpl(currentEventCommand);

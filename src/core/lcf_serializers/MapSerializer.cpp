@@ -77,7 +77,7 @@ Event MapSerializer::EventFromFileImpl(tinyxml2::XMLElement* eventElem)
     uint16_t y = std::stoi(yCoordElem->Value());
 
     Event newEvent = Event(id, name, x, y);
-    auto* currentPage = eventElem->TraverseElement("/pages");
+    auto* currentPage = eventElem->TraverseElement("/pages/EventPage");
     while(currentPage)
     {
         EventPage newEventPage = EventPageFromFileImpl(currentPage);
@@ -126,7 +126,7 @@ EventPage MapSerializer::EventPageFromFileImpl(tinyxml2::XMLElement* eventPageEl
 
     // Get EventCommands
     EventPage newEventPage = EventPage(id);
-    auto* currentEventCommand = eventPageElem->TraverseElement("/event_commands");
+    auto* currentEventCommand = eventPageElem->TraverseElement("/event_commands/EventCommand");
     while(currentEventCommand)
     {
         EventCommand newEventCommands = EventCommandSerializer::FromFileImpl(currentEventCommand);

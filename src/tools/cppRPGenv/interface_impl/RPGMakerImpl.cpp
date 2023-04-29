@@ -6,11 +6,16 @@
 
 namespace rpgenv 
 {
-
-// Debug & Menu
-void RPGMakerImpl::ShowText(std::string text)
+// Debug
+void RPGMakerImpl::DebugPrint(std::string text)
 {
     RenderManager::Get()->ShowText(text);
+}
+
+// Interaction
+void RPGMakerImpl::ShowText(std::string text)
+{
+
 }
 
 void RPGMakerImpl::ShowChoices()
