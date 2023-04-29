@@ -27,6 +27,7 @@ public:
 
     sf::Window& GetWindow();
     bool isWindowOpen();
+    bool isWindowFocused();
 
     void ShowDebugText(std::string text);
 

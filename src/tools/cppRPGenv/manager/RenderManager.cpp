@@ -75,6 +75,11 @@ bool RenderManager::isWindowOpen()
     return m_Window.isOpen();
 }
 
+bool RenderManager::isWindowFocused()
+{
+    return m_Window.hasFocus();
+}
+
 void RenderManager::ShowDebugText(std::string text) 
 {
     m_DebugText.setString(text);

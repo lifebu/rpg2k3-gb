@@ -74,6 +74,11 @@ void SystemCore::Update()
 
     UpdateEvents();
 
+    if(!renderManager->isWindowFocused())
+    {
+        return;
+    }
+
     switch(m_CurrentState)
     {
         case States::LOADING:
