@@ -3,19 +3,15 @@
 #include "tools/cppRPGenv/manager/InputManager.h"
 #include "tools/cppRPGenv/manager/LCFManager.h"
 #include "tools/cppRPGenv/manager/RenderManager.h"
+#include "tools/cppRPGenv/system/SystemCore.h"
 
 namespace rpgenv 
 {
-// Debug
-void RPGMakerImpl::DebugPrint(std::string text)
-{
-    RenderManager::Get()->ShowText(text);
-}
-
 // Interaction
 void RPGMakerImpl::ShowText(std::string text)
 {
-
+    RenderManager::Get()->OpenTextBox(text);
+    SystemCore::Get()->ChangeSystemState(SystemCore::States::PROCESS_TEXTBOX);
 }
 
 void RPGMakerImpl::ShowChoices(std::vector<std::string> choices, lcf::Choices::ChoiceCaseOnCancel cancelBehaviour)
@@ -85,11 +81,6 @@ void RPGMakerImpl::CallEvent(lcf::CallEvent::EventType eventType, uint16_t event
 void RPGMakerImpl::ShowPicture(lcf::ShowPicture::PictureIDType pictureIDType, uint16_t pictureID, 
     lcf::ShowPicture::PosType posType, uint16_t xPos, uint16_t yPos, 
     uint8_t red /*= 100*/, uint8_t green /*= 100*/, uint8_t blue /*= 100*/, uint16_t saturation /*= 100*/)
-{
-
-}
-
-void RPGMakerImpl::ShowHidePlayer(lcf::ShowHidePlayer::Visibility visibility)
 {
 
 }

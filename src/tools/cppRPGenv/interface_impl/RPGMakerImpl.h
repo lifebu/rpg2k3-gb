@@ -8,9 +8,6 @@ namespace rpgenv
 class RPGMakerImpl : public RPGMakerInterface
 {
 public:
-    // Debug
-    void DebugPrint(std::string text) override;
-
     // Interaction
     void ShowText(std::string text) override;
 
@@ -60,8 +57,6 @@ public:
     void ShowPicture(lcf::ShowPicture::PictureIDType pictureIDType, uint16_t pictureID, 
         lcf::ShowPicture::PosType posType, uint16_t xPos, uint16_t yPos, 
         uint8_t red = 100, uint8_t green = 100, uint8_t blue = 100, uint16_t saturation = 100) override;
-    
-    void ShowHidePlayer(lcf::ShowHidePlayer::Visibility visibility) override;
 
     // Input
     [[nodiscard]] bool KeyInputProcessing(RPGMAKER::KeyCodes keycode) override;

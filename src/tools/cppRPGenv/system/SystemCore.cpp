@@ -39,7 +39,7 @@ void SystemCore::Init()
     renderManager->Init();
     lcfManager->Init();
 
-    renderManager->ShowText("Loading...");
+    renderManager->ShowDebugText("Loading...");
 }
 
 void SystemCore::Shutdown() 
@@ -81,7 +81,7 @@ void SystemCore::Update()
             lcfManager->ContinueLoading();
             if(lcfManager->isLoadingFinished())
             {
-                renderManager->ShowText("");
+                renderManager->ShowDebugText("");
                 m_CurrentState = States::RUN_EMU;
             }
         }break;
@@ -91,15 +91,15 @@ void SystemCore::Update()
         }break;
         case States::PROCESS_TEXTBOX:
         {
-
+            UpdateTextboxState();
         }break;
         case States::PROCESS_CHOICES:
         {
-
+            UpdateChoiceState();
         }break;
         case States::PROCESS_NUMBER_INPUT:
         {
-
+            UpdateInputState();
         }break;
         default:
         {
@@ -108,6 +108,11 @@ void SystemCore::Update()
     }
 
     RenderManager::Get()->Render();
+}
+
+void SystemCore::ChangeSystemState(States newState)
+{
+    m_CurrentState = newState;
 }
 
 void SystemCore::UpdateEvents()
@@ -122,6 +127,27 @@ void SystemCore::UpdateEvents()
             window.close();
         }
     }
+}
+
+void SystemCore::UpdateTextboxState()
+{
+    auto* inputManager = InputManager::Get();
+
+    if(inputManager->isKeyPressed(RPGMAKER::KeyCodes::CANCEL))
+    {
+        RenderManager::Get()->CloseTextBox();
+        m_CurrentState = States::RUN_EMU;
+    }
+}
+
+void SystemCore::UpdateChoiceState()
+{
+    
+}
+
+void SystemCore::UpdateInputState()
+{
+
 }
 
 };

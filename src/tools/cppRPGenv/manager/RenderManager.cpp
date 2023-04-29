@@ -18,20 +18,29 @@ RenderManager* RenderManager::Get()
 
 void RenderManager::Init() 
 {
-    m_Window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "C++ RPG Env", sf::Style::Titlebar | sf::Style::Close);
-    m_Window.setFramerateLimit(60);
-    m_Window.setPosition(sf::Vector2i(1920 / 2 - WINDOW_WIDTH / 2, 1080 / 2 - WINDOW_HEIGHT / 2));
+    m_Window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "C++ RPG Env", 
+        sf::Style::Titlebar | sf::Style::Close);
 
-    // TODO: Just some test stuff for now!
-    if(!m_TestFont.loadFromFile("data/GamegirlClassic.ttf"))
+    // Position window in the middle of the screen.
+    auto currentRes = sf::VideoMode::getDesktopMode();
+    m_Window.setPosition(sf::Vector2i(
+        currentRes.width / 2 - WINDOW_WIDTH / 2, 
+        currentRes.height / 2 - WINDOW_HEIGHT / 2));
+    
+    m_Window.setFramerateLimit(60);
+    
+    if(!m_Font.loadFromFile(std::string(FONT_PATH)))
     {
-        std::cout << "could not load the font!" << std::endl;
+        std::cout << "Could not load the font: " << FONT_PATH << std::endl;
         return;
     }
 
-    m_TestText.setFont(m_TestFont);
-    m_TestText.setCharacterSize(24);
-    m_TestText.setFillColor(sf::Color::White);
+    m_DebugText.setFont(m_Font);
+    m_DebugText.setCharacterSize(24);
+    m_DebugText.setFillColor(sf::Color::White);
+
+    // Initialize Textbox
+    m_TextBox.SetFont(m_Font);
 }
 
 void RenderManager::Shutdown() 
@@ -41,11 +50,17 @@ void RenderManager::Shutdown()
 
 void RenderManager::Render()
 {
-    m_TestText.setPosition( m_Window.getView().getCenter());
-
     m_Window.clear(sf::Color(128, 0, 128));
 
-    m_Window.draw(m_TestText);
+    // DebugText
+    {
+        m_Window.draw(m_DebugText);
+    }
+
+    if(m_TextBox.m_IsOpen)
+    {
+        m_Window.draw(m_TextBox);
+    }
 
     m_Window.display();
 }
@@ -60,11 +75,27 @@ bool RenderManager::isWindowOpen()
     return m_Window.isOpen();
 }
 
-void RenderManager::ShowText(std::string text) 
+void RenderManager::ShowDebugText(std::string text) 
 {
-    m_TestText.setString(text);
-    sf::FloatRect textRect = m_TestText.getLocalBounds();
-    m_TestText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top  + textRect.height / 2.0f);
+    m_DebugText.setString(text);
+
+    // Center the debug text
+    sf::FloatRect textRect = m_DebugText.getLocalBounds();
+    m_DebugText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top  + textRect.height / 2.0f);
+    m_DebugText.setPosition(m_Window.getView().getCenter());
+}
+
+void RenderManager::OpenTextBox(std::string text)
+{
+    const sf::View& view = m_Window.getView();
+
+    m_TextBox.m_IsOpen = true;
+    m_TextBox.SetupTextbox(view, text);
+}
+
+void RenderManager::CloseTextBox()
+{
+    m_TextBox.m_IsOpen = false;
 }
 
 };

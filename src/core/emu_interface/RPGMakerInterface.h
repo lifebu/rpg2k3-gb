@@ -12,9 +12,6 @@ namespace rpgenv
 class RPGMakerInterface
 {
 public:
-    // Debug
-    virtual void DebugPrint(std::string text) = 0;
-
     // Interaction
     virtual void ShowText(std::string text) = 0;
     
@@ -64,8 +61,6 @@ public:
     virtual void ShowPicture(lcf::ShowPicture::PictureIDType pictureIDType, uint16_t pictureID, 
         lcf::ShowPicture::PosType posType, uint16_t xPos, uint16_t yPos, 
         uint8_t red = 100, uint8_t green = 100, uint8_t blue = 100, uint16_t saturation = 100) = 0;
-    
-    virtual void ShowHidePlayer(lcf::ShowHidePlayer::Visibility visibility) = 0;
 
     // Input
     [[nodiscard]] virtual bool KeyInputProcessing(RPGMAKER::KeyCodes keycode) = 0;

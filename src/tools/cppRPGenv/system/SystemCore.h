@@ -10,6 +10,9 @@ namespace rpgenv
 // 
 class SystemCore
 {
+    SystemCore();
+
+public:
     enum class States : int
     {
         // At the start the lcf files need to be loaded
@@ -26,9 +29,7 @@ class SystemCore
         STATES_NUM
     };
 
-    SystemCore();
 
-public:
     static SystemCore* Get();
 
     void Init();
@@ -37,8 +38,13 @@ public:
     bool ShouldShutdown();
     void Update();
 
+    void ChangeSystemState(States newState);
+
 private:
     void UpdateEvents();
+    void UpdateTextboxState();
+    void UpdateChoiceState();
+    void UpdateInputState();
 
     States m_CurrentState;
     emu::EMUEntryPoint m_Emulator;

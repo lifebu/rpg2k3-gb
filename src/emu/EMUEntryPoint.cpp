@@ -7,24 +7,20 @@ namespace emu
 
 void EMUEntryPoint::RPGMain(rpgenv::RPGMakerInterface* rpgMaker)
 {
-    static int once = 0;
-    if(once < 1)
-    {
-        rpgMaker->DebugPrint("Emulator is running!");
-        once ++;
-    }
+    /*rpgMaker->ShowText(
+        "Emulator is running pretty well I would say so!!!\n"
+        "Emulator is running pretty well I would say so!!!\n"
+        "Emulator is running pretty well I would say so!!!\n"
+        "Emulator is running pretty well I would say so!!!\n");
+        */
 
-    static int xPos = 0;
+    rpgMaker->ShowText(
+        "Emulator is running pretty well I would say so!!!"
+        "Emulator is running pretty well I would say so!!!"
+        "Emulator is running pretty well I would say so!!!"
+        "Emulator is running pretty well I would say so!!!");
     
-    if(rpgMaker->KeyInputProcessing(RPGMAKER::KeyCodes::LEFT))
-    {
-        xPos--;
-    }
-
-    if(rpgMaker->KeyInputProcessing(RPGMAKER::KeyCodes::RIGHT))
-    {
-        xPos++;
-    }
+    return;
 }
 
 };

@@ -4,7 +4,10 @@ CppRPGEnv: C++-RPG Maker Environment
 
 - To-Do:
     - Implement Renderer.
-    - Implement System states (textbox, choices, number input).
+        - ShowChoices
+        - InputNumber
+        - ShowPicture
+    - Implement System states (choices, number input).
 
 - Interface:
     - RPG Maker Commands:
