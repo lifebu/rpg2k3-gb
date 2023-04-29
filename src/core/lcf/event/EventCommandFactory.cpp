@@ -76,10 +76,10 @@ void EventCommandFactory::GenMultiLineComment(EventCommand& command, std::string
 
 
 // Control Variables
-EventCommand EventCommandFactory::GenControlVariable(ControlVariableCommand::Type type, 
+EventCommand EventCommandFactory::GenControlVariable(ControlVariable::Type type, 
         uint16_t startID, uint16_t endID, 
-        ControlVariableCommand::Operation operation, 
-        ControlVariableCommand::OperandTypes operandTypes, 
+        ControlVariable::Operation operation, 
+        ControlVariable::OperandTypes operandTypes, 
         int32_t firstOperand, int32_t secondOperand)
 {
     return EventCommand(EventCommand::CommandType::CONTROL_VARIABLE, 0, "", 
@@ -94,10 +94,10 @@ EventCommand EventCommandFactory::GenControlVariable(ControlVariableCommand::Typ
 }
 
 void EventCommandFactory::GenControlVariable(EventCommand& command,      
-        ControlVariableCommand::Type type, 
+        ControlVariable::Type type, 
         uint16_t startID, uint16_t endID, 
-        ControlVariableCommand::Operation operation, 
-        ControlVariableCommand::OperandTypes operandTypes, 
+        ControlVariable::Operation operation, 
+        ControlVariable::OperandTypes operandTypes, 
         int32_t firstOperand, int32_t secondOperand)
 {
     command.type = EventCommand::CommandType::CONTROL_VARIABLE;
@@ -136,7 +136,7 @@ void EventCommandFactory::GenChoices(EventCommand& command, std::vector<std::str
     });
 }
 
-EventCommand EventCommandFactory::GenChoiceCase(std::string choiceName, ChoicesCommand::ChoiceCaseOnCancel cancelBehaviour)
+EventCommand EventCommandFactory::GenChoiceCase(std::string choiceName, Choices::ChoiceCaseOnCancel cancelBehaviour)
 {
     return EventCommand(EventCommand::CommandType::CHOICE_CASE, 0, choiceName, 
     {
@@ -144,7 +144,7 @@ EventCommand EventCommandFactory::GenChoiceCase(std::string choiceName, ChoicesC
     });
 }
 
-void EventCommandFactory::GenChoiceCase(EventCommand& command, std::string choiceName, ChoicesCommand::ChoiceCaseOnCancel cancelBehaviour)
+void EventCommandFactory::GenChoiceCase(EventCommand& command, std::string choiceName, Choices::ChoiceCaseOnCancel cancelBehaviour)
 {
     command.type = EventCommand::CommandType::CHOICE_CASE;
     //command.indentation = 0;
@@ -234,10 +234,10 @@ void EventCommandFactory::GenJumpToLabel(EventCommand& command, uint16_t labelID
 }
 
 // Conditional Branch
-EventCommand EventCommandFactory::GenConditionalBranch(ConditionalBranchCommand::Type type, 
+EventCommand EventCommandFactory::GenConditionalBranch(ConditionalBranch::Type type, 
     uint16_t LHSVariableID, 
-    ConditionalBranchCommand::RHSType rhsType, uint16_t rhs, 
-    ConditionalBranchCommand::Comparison comparison, bool hasElseCase)
+    ConditionalBranch::RHSType rhsType, uint16_t rhs, 
+    ConditionalBranch::Comparison comparison, bool hasElseCase)
 {
     // TYPE VARID ISCONST RHS COMPARE ELSE
     return EventCommand(EventCommand::CommandType::CONDITIONAL_BRANCH, 0, "", 
@@ -252,10 +252,10 @@ EventCommand EventCommandFactory::GenConditionalBranch(ConditionalBranchCommand:
 }
 
 void EventCommandFactory::GenConditionalBranch(EventCommand& command,
-    ConditionalBranchCommand::Type type, 
+    ConditionalBranch::Type type, 
     uint16_t LHSVariableID, 
-    ConditionalBranchCommand::RHSType rhsType, uint16_t rhs, 
-    ConditionalBranchCommand::Comparison comparison, bool hasElseCase)
+    ConditionalBranch::RHSType rhsType, uint16_t rhs, 
+    ConditionalBranch::Comparison comparison, bool hasElseCase)
 {
     command.type = EventCommand::CommandType::CONDITIONAL_BRANCH;
     //command.indentation = 0;

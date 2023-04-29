@@ -43,7 +43,7 @@ void RenderManager::Render()
 {
     m_TestText.setPosition( m_Window.getView().getCenter());
 
-    m_Window.clear(sf::Color::Black);
+    m_Window.clear(sf::Color(128, 0, 128));
 
     m_Window.draw(m_TestText);
 

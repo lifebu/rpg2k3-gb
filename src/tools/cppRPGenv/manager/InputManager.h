@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/def/RPGMaker.h"
 
 namespace rpgenv 
 {
@@ -11,6 +12,8 @@ private:
 
 public:
     static InputManager* Get();
+
+    bool isKeyPressed(RPGMAKER::KeyCodes key);
 
     void Init();
     void Shutdown();

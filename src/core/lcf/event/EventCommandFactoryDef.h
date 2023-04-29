@@ -3,7 +3,7 @@
 namespace lcf 
 {
 
-namespace ControlVariableCommand
+namespace ControlVariable
 {
     enum class Type
     {
@@ -85,7 +85,7 @@ namespace ControlVariableCommand
     };
 };
 
-namespace ConditionalBranchCommand
+namespace ConditionalBranch
 {
     enum class Type
     {
@@ -109,7 +109,7 @@ namespace ConditionalBranchCommand
     };
 };
 
-namespace ChoicesCommand
+namespace Choices
 {
     enum class ChoiceCaseOnCancel
     {
@@ -119,6 +119,201 @@ namespace ChoicesCommand
         CHOICE_3 = 3,
         CHOICE_4 = 4,
         OWN_BRANCH = 5
+    };
+};
+
+namespace ChangeItem
+{
+    enum class Operation
+    {
+        INCREASE = 0,
+        DECREASE = 1
+    };
+
+    enum class ItemIDType
+    {
+        FIXED_ITEM_ID,
+        VARIABLE_ID
+    };
+
+    enum class OperandType
+    {
+        CONSTANT = 0,
+        VARIABLE = 0
+    };
+};
+
+namespace ChangePartyMember
+{
+    enum class Operation
+    {
+        ADD = 0,
+        REMOVE = 1
+    };
+
+    enum class ActorIDType
+    {
+        FIXED_ITEM_ID,
+        VARIABLE_ID
+    };
+};
+
+namespace ChangeExp
+{
+    enum class ActorRange
+    {
+        ENTIRE_PARTY = 0,
+        FIXED_ID = 1,
+        VARIABLE_ID = 2
+    };
+
+    enum class Operation
+    {
+        INCREASE = 0,
+        DECREASE = 1
+    };
+
+    enum class Operand
+    {
+        CONSTANT = 0,
+        VALUE = 1
+    };
+
+    enum class ShowLevelUp
+    {
+        DONT_SHOW = 0,
+        SHOW_LEVEL_UP = 1
+    };
+};
+
+namespace ChangeParam
+{
+    enum class ActorRange
+    {
+        ENTIRE_PARTY = 0,
+        FIXED_ID = 1,
+        VARIABLE_ID = 2
+    };
+
+    enum class Operation
+    {
+        INCREASE = 0,
+        DECREASE = 1
+    };
+
+    enum class Parameter
+    {
+        MAX_HP = 0,
+        MAX_MP = 1,
+        ATTACK = 2,
+        DEFENSE = 3,
+        MIND = 4,
+        AGILITY = 5
+    };
+
+    enum class Operand
+    {
+        CONSTANT = 0,
+        VALUE = 1
+    };
+};
+
+namespace ChangeEquip
+{
+    enum class ActorRange
+    {
+        ENTIRE_PARTY = 0,
+        FIXED_ID = 1,
+        VARIABLE_ID = 2
+    };
+
+    enum class Operation
+    {
+        CHANGE_EQUIPMENT = 0,
+        REMOVE_EQUIPMENT = 1
+    };
+
+    enum class ItemIDType
+    {
+        FIXED_ID = 0,
+        VARIABLE_ID = 1
+    };
+
+    enum class Item
+    {
+        UNEQUIP_WEAPON = 0,
+        UNEQUIP_SHIELD = 1,
+        UNEQUIP_BODY = 2,
+        UNEQUIP_HEAD = 3,
+        UNEQUIP_ACCESSORY = 4,
+        UNEQUIP_ALL = 5
+    };
+};
+
+namespace SetEventLocation
+{
+    enum class EventIDType
+    {
+        EVENT_ID = 0,
+        THIS_EVENT_ID = 10005
+    };
+
+    enum class LocationType
+    {
+        CONSTANT = 0,
+        VARIABLE_IDS = 1
+    };
+
+    enum class DIRECTION
+    {
+        RETAIN = 0,
+        UP = 1,
+        RIGHT = 2,
+        DOWN = 3,
+        LEFT = 4
+    };
+};
+
+namespace GetEventID
+{
+    enum class LocationType
+    {
+        CONSTANT = 0,
+        VARIABLE_ID = 1
+    };
+};
+
+namespace CallEvent
+{
+    enum class EventType
+    {
+        COMMON_EVENT = 0,
+        CONST_MAP_EVENT = 1,
+        VARIABLE_MAP_EVENT = 2
+    };
+};
+
+namespace ShowHidePlayer
+{
+    enum class Visibility
+    {
+        INVISIBLE = 0,
+        VISIBLE = 1
+    };
+};
+
+namespace ShowPicture
+{
+    enum class PictureIDType
+    {
+        CONSTANT = 0,
+        VARIABLE_ID = 1
+    };
+
+    enum class PosType
+    {
+        CONSTANT = 0,
+        VARIABLE_ID = 1
     };
 };
 

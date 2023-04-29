@@ -2,6 +2,11 @@ CppRPGEnv: C++-RPG Maker Environment
     - C++-code can be run outside of RPG Maker so that I can debug it normally without dependencies.
         - Plattform Code that runs my code (kinda like engine).
 
+- To-Do:
+    - Implement InputManager.
+    - Implement Renderer.
+    - Implement System states (textbox, choices, number input).
+
 - Interface:
     - RPG Maker Commands:
         Debug & Menu:

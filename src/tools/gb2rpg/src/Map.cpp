@@ -151,26 +151,26 @@ std::vector<lcf::EventCommand> Map::setupMapRomHeader(int numLabels)
 
     // ByteOffset = (ByteOffset / BYTES_PER_VAR):
     mapRomHeader.push_back(lcf::EventCommandFactory::GenControlVariable(
-        lcf::ControlVariableCommand::Type::SINGLE_VARIABLE,
+        lcf::ControlVariable::Type::SINGLE_VARIABLE,
         VARMAPPING::BYTE_OFFSET_ID, VARMAPPING::BYTE_OFFSET_ID,
-        lcf::ControlVariableCommand::Operation::OPERATION_DIV,
-        lcf::ControlVariableCommand::OperandTypes::OPERANDS_CONSTANT,
+        lcf::ControlVariable::Operation::OPERATION_DIV,
+        lcf::ControlVariable::OperandTypes::OPERANDS_CONSTANT,
         MEMORYSIZES::BYTES_PER_VAR, 0));
     
     // LabelID = ByteOffset
     mapRomHeader.push_back(lcf::EventCommandFactory::GenControlVariable(
-        lcf::ControlVariableCommand::Type::SINGLE_VARIABLE,
+        lcf::ControlVariable::Type::SINGLE_VARIABLE,
         VARMAPPING::LABEL_ID, VARMAPPING::LABEL_ID,
-        lcf::ControlVariableCommand::Operation::OPERATION_SET,
-        lcf::ControlVariableCommand::OperandTypes::OPERANDS_VARIABLE,
+        lcf::ControlVariable::Operation::OPERATION_SET,
+        lcf::ControlVariable::OperandTypes::OPERANDS_VARIABLE,
         VARMAPPING::BYTE_OFFSET_ID, 0));
 
     // LabelID += 1
     mapRomHeader.push_back(lcf::EventCommandFactory::GenControlVariable(
-        lcf::ControlVariableCommand::Type::SINGLE_VARIABLE,
+        lcf::ControlVariable::Type::SINGLE_VARIABLE,
         VARMAPPING::LABEL_ID, VARMAPPING::LABEL_ID,
-        lcf::ControlVariableCommand::Operation::OPERATION_ADD,
-        lcf::ControlVariableCommand::OperandTypes::OPERANDS_CONSTANT,
+        lcf::ControlVariable::Operation::OPERATION_ADD,
+        lcf::ControlVariable::OperandTypes::OPERANDS_CONSTANT,
         1, 0));
 
     // JumpToLabel numLabels / 2
@@ -191,10 +191,10 @@ std::vector<lcf::EventCommand> Map::setupMapRomLabel(int labelID, int numLabels,
 
     // IF(LabelID < X)
     mapRomHeader.push_back(lcf::EventCommandFactory::GenConditionalBranch(
-        lcf::ConditionalBranchCommand::Type::VARIABLE,
+        lcf::ConditionalBranch::Type::VARIABLE,
         VARMAPPING::LABEL_ID, 
-        lcf::ConditionalBranchCommand::RHSType::USE_CONSTANT, labelID, 
-        lcf::ConditionalBranchCommand::Comparison::LESS, false));
+        lcf::ConditionalBranch::RHSType::USE_CONSTANT, labelID, 
+        lcf::ConditionalBranch::Comparison::LESS, false));
     
     // JumpToLabel X - (min(X, 1.000 - X) / 2)
     float minDistance = std::min(labelID, numLabels - labelID);
@@ -217,10 +217,10 @@ std::vector<lcf::EventCommand> Map::setupMapRomLabel(int labelID, int numLabels,
 
     // IF(LabelID > X)
     mapRomHeader.push_back(lcf::EventCommandFactory::GenConditionalBranch(
-        lcf::ConditionalBranchCommand::Type::VARIABLE,
+        lcf::ConditionalBranch::Type::VARIABLE,
         VARMAPPING::LABEL_ID, 
-        lcf::ConditionalBranchCommand::RHSType::USE_CONSTANT, labelID, 
-        lcf::ConditionalBranchCommand::Comparison::GREATER, false));
+        lcf::ConditionalBranch::RHSType::USE_CONSTANT, labelID, 
+        lcf::ConditionalBranch::Comparison::GREATER, false));
 
     // JumpToLabel X + (min(X, 1.000 - X) / 2)
     if(labelID == numLabels) 
@@ -242,18 +242,18 @@ std::vector<lcf::EventCommand> Map::setupMapRomLabel(int labelID, int numLabels,
 
     // READVAR1 = LABELXVALUE1
     mapRomHeader.push_back(lcf::EventCommandFactory::GenControlVariable(
-        lcf::ControlVariableCommand::Type::SINGLE_VARIABLE,
+        lcf::ControlVariable::Type::SINGLE_VARIABLE,
         VARMAPPING::READ_VAR_1, VARMAPPING::READ_VAR_1,
-        lcf::ControlVariableCommand::Operation::OPERATION_SET,
-        lcf::ControlVariableCommand::OperandTypes::OPERANDS_CONSTANT,
+        lcf::ControlVariable::Operation::OPERATION_SET,
+        lcf::ControlVariable::OperandTypes::OPERANDS_CONSTANT,
         firstVar, 0));
 
     // READVAR2 = LABELXVALUE2
     mapRomHeader.push_back(lcf::EventCommandFactory::GenControlVariable(
-        lcf::ControlVariableCommand::Type::SINGLE_VARIABLE,
+        lcf::ControlVariable::Type::SINGLE_VARIABLE,
         VARMAPPING::READ_VAR_2, VARMAPPING::READ_VAR_2,
-        lcf::ControlVariableCommand::Operation::OPERATION_SET,
-        lcf::ControlVariableCommand::OperandTypes::OPERANDS_CONSTANT,
+        lcf::ControlVariable::Operation::OPERATION_SET,
+        lcf::ControlVariable::OperandTypes::OPERANDS_CONSTANT,
         secondVar, 0));
     
     // End Event Processing

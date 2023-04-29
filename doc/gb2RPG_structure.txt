@@ -180,6 +180,8 @@ gb2RPG: Gameboy 2 RPG Maker.
             // Total: 240kB, 60kByte Leaked: 
             int b = 10;
             */
+            If I load the XML file from memory, the entire file is somehow leaked.
+            You can see that in the cppRPGEnv, where the memory usage did not go down after loading the XML file :/
 
 Info:
     - ROM/RAM Data:

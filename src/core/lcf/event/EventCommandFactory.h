@@ -33,24 +33,24 @@ public:
     static void GenMultiLineComment(EventCommand& command, std::string comment);
 
     // Control Variables
-    static EventCommand GenControlVariable(ControlVariableCommand::Type type, 
+    static EventCommand GenControlVariable(ControlVariable::Type type, 
         uint16_t startID, uint16_t endID, 
-        ControlVariableCommand::Operation operation, 
-        ControlVariableCommand::OperandTypes operandTypes, 
+        ControlVariable::Operation operation, 
+        ControlVariable::OperandTypes operandTypes, 
         int32_t firstOperand, int32_t secondOperand);
     
-    static void GenControlVariable(EventCommand& command, ControlVariableCommand::Type type, 
+    static void GenControlVariable(EventCommand& command, ControlVariable::Type type, 
         uint16_t startID, uint16_t endID, 
-        ControlVariableCommand::Operation operation, 
-        ControlVariableCommand::OperandTypes operandTypes, 
+        ControlVariable::Operation operation, 
+        ControlVariable::OperandTypes operandTypes, 
         int32_t firstOperand, int32_t secondOperand);
 
     // Show Choices
     static EventCommand GenChoices(std::vector<std::string> choices, bool includeCancel);
     static void GenChoices(EventCommand& command, std::vector<std::string> choices, bool includeCancel); 
 
-    static EventCommand GenChoiceCase(std::string choiceName, ChoicesCommand::ChoiceCaseOnCancel cancelBehaviour);
-    static void GenChoiceCase(EventCommand& command, std::string choiceName, ChoicesCommand::ChoiceCaseOnCancel cancelBehaviour); 
+    static EventCommand GenChoiceCase(std::string choiceName, Choices::ChoiceCaseOnCancel cancelBehaviour);
+    static void GenChoiceCase(EventCommand& command, std::string choiceName, Choices::ChoiceCaseOnCancel cancelBehaviour); 
 
     static EventCommand GenChoiceBranchEnd();
     static void GenChoiceBranchEnd(EventCommand& command); 
@@ -67,15 +67,15 @@ public:
     static void GenJumpToLabel(EventCommand& command, uint16_t labelID);
 
     // Conditional Branch
-    static EventCommand GenConditionalBranch(ConditionalBranchCommand::Type type, 
+    static EventCommand GenConditionalBranch(ConditionalBranch::Type type, 
     uint16_t LHSVariableID, 
-    ConditionalBranchCommand::RHSType rhsType, uint16_t rhs, 
-    ConditionalBranchCommand::Comparison comparison, bool hasElseCase);
+    ConditionalBranch::RHSType rhsType, uint16_t rhs, 
+    ConditionalBranch::Comparison comparison, bool hasElseCase);
 
-    static void GenConditionalBranch(EventCommand& command, ConditionalBranchCommand::Type type, 
+    static void GenConditionalBranch(EventCommand& command, ConditionalBranch::Type type, 
     uint16_t LHSVariableID, 
-    ConditionalBranchCommand::RHSType rhsType, uint16_t rhs, 
-    ConditionalBranchCommand::Comparison comparison, bool hasElseCase);
+    ConditionalBranch::RHSType rhsType, uint16_t rhs, 
+    ConditionalBranch::Comparison comparison, bool hasElseCase);
 
     static EventCommand GenElseBranch();
     static void GenElseBranch(EventCommand& command);

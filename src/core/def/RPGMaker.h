@@ -45,4 +45,31 @@ namespace RPGMAKER {
     const static int HEAD_ID = 4;
     const static int ACCESSORY_ID = 5;
     const std::string ITEM_NAMES[6] = { "0", "WPN", "SHLD", "BODY", "HEAD", "ACCES"};
+
+    // KeyCodes
+    enum class KeyCodes
+    {
+        DOWN = 1,
+        LEFT = 2,
+        RIGHT = 3,
+        UP = 4,
+        SELECT = 5,
+        CANCEL = 6,
+        SHIFT = 7,
+        NUMBER_0 = 10,
+        NUMBER_1 = 11,
+        NUMBER_2 = 12,
+        NUMBER_3 = 13,
+        NUMBER_4 = 14,
+        NUMBER_5 = 15,
+        NUMBER_6 = 16,
+        NUMBER_7 = 17,
+        NUMBER_8 = 18,
+        NUMBER_9 = 19,
+        SYMBOL_PLUS = 20,
+        SYMBOL_MINUS = 21,
+        SYMBOL_MUL = 22,
+        SYMBOL_DIV = 23,
+        SYMBOL_DOT = 24
+    };
 };

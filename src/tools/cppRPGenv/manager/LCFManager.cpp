@@ -56,7 +56,6 @@ void LCFManager::ContinueLoading()
             m_LoadingPhases = LoadingPhases::LOADING_FINISHED;
         }break;
     }
-
 }
 
 bool LCFManager::isLoadingFinished() 

@@ -118,7 +118,42 @@ CppEC: C++ Event Compiler.
 
 - Generation Solutions:
     - Function parameter + return value:
-        - 1st: Create a stack system and generate code on that, similar to function stacks.
-        - 2nd: Each function has their dedicated and hard coded variables the use for params and return values.
+        - 1st: Parameter Stack 
+            - Create a stack system and generate code on that, similar to function stacks.
+        - 2nd: Hardcoded Adresses 
+            - Each function has their dedicated and hard coded variables the use for params and return values.
             - 2 Params and 1 Return Value => 3 Variables returns.
-        - 2 can save some commands (better performance) at the cost of memory.
+            - 2 can save some commands (better performance) at the cost of memory.
+            - Cannot support recursion and foo()->bar()->foo()
+        - 3rd: Hybrid
+            - Always use version 2 where possible.
+            - after calling a function, set the hard coded variables to a default value (-MAX_INT)
+            - This indicates that they are not in use.
+            - If they are already in use (foo()->bar()->foo()), then use the stack.
+            - This could create too much overhead and actually hurt performance.
+
+
+- Phases:
+    - 1st Phase: Homogenization
+        - Take the code and change it so that it is more directly compatible with the way RPG Maker can do certain things
+            e.g.
+            if(rpgMaker->KeyInputProcessing(RPGMAKER::KeyCodes::LEFT))
+            =>
+            bool temp = rpgMaker->KeyInputProcessing(RPGMAKER::KeyCodes::LEFT);
+            if(temp)
+        
+        - This is still normal and valid C++ code, just sometimes more verbose to make it easier for the next phase.
+        - This can make my emulator code look nicer, but doesn't make the actual compilation harder.
+        - This phase wants to change the goal to make any kind of operation look the same (Homogeneous)
+        
+    - 2nd Phase: Language Feature Generation
+        - Some things still need to be generated that are given basics in C++.
+        - example: We need to generate some code to generate the variable stack.
+            bool temp = rpgMaker->KeyInputProcessing(RPGMAKER::KeyCodes::LEFT);
+            the temp is a variable that needs to create something on the stack.
+        - This will still be valid C++ code, but it uses some extra helper libraries (like my stack).
+    
+    - 3rd Phase: Translate
+        - Now that the code is preprocessed you can just go through the code line by line and simply convert to RPG Maker commands.
+    
+    - It would be cool if the code after Phase 1 and 2 is still technical valid C++ code, can be exported to files and be run in the environment to check where a stage fails to change the code.
