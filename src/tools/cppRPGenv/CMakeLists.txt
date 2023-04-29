@@ -8,10 +8,14 @@ endif()
 project(cppRPGEnv VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Runtime Environment similar to RPG Maker 2003")
 
 set(cppRPGEnv_headers
-    interface_impl/RPGMakerImpl.h)
+    interface_impl/RPGMakerImpl.h
+    manager/InputManager.h manager/LCFManager.h manager/RenderManager.h
+    system/SystemCore.h)
 
 set(cppRPGEnv_source
-    interface_impl/RPGMakerImpl.cpp)
+    interface_impl/RPGMakerImpl.cpp
+    manager/InputManager.cpp manager/LCFManager.cpp manager/RenderManager.cpp
+    system/SystemCore.cpp)
 
 add_executable(cppRPGEnv cppRPGenv.cpp ${cppRPGEnv_source} ${cppRPGEnv_headers})
 

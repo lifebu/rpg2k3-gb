@@ -38,20 +38,58 @@ CppRPGEnv: C++-RPG Maker Environment
     - Interface to Env:
         - One Interface class that has the commands to the environment where CodeGen will generate fitting EventCommands (ShowPicture, ShowChoices, etc)
 
-- Tasks:
-    - Start:
-        - Load lcf files (Database, Maps, MapTree)
-        - Setup some Environmentstate and sfml.
+- Logic Flow:
+    - Structure:
+        - Multiple Managers (singletons), that can be initialized independent from ctor.
+        - InputManager:
+            - Either directly use sfml::Keyboard or sfml::Events to update input.
+            - If sfml::Keyboard changes during frame this can cause Problems.
+            - Translate simplified inputs (up/down, cancel, select) into sfml::KeyCodes using a Key mapping (non changeable!).
+        
+        - RenderManager:
+            - Stateful renderer. 
+            - It's state are changed with some RPGMaker commands (ShowPicture, ShowChoices).
+            - Every frame it uses it's state to draw using sfml.
+        
+        - LCFManager:
+            - responsible for the lcf data (database and maps).
+            - it loads the lcf-files at the start to initialize everything.
     
+        - StateManager:
+            - Different states some of them will not call the emulator:
+                - So the emulator has to do x cpu-cycles per frame.
+                - It already did y of them, so z = x - y are left.
+                - The ShowText is triggered. it knows how many are still left. 
+                    => Show text immediately closes RPGMain.
+                - Then we don't update emu until textbox is closed again.
+                - we go back to RunRPGMain State and the emulator will do the last z cycles.
+                - Then in one go it will udpate the renderer.
+        
+    - Startup:
+        - Initialize Managers.
+        - Load lcf files:
+            - Render some debug text to show loading.
+            - So do we have some kind of state machine?
+            - load a single lcf file per update and once loading is complete change to the running state.
+    
+    - Shutdown:
+        - Shutdown Managers.
+        
     - Each Update:
-        - Update Inputs from sfml
+        - EventProc function:
+            - Reacts to events maybe updates inputs.
+            - Update Inputs:
+                - Maybe I don't need to do that if I can query the input every time.
+            
         - Call "RPGMain" (Game Update)
-        - Render Game.
+            - This will change the actual state of the game.
 
-    - Framerate Control:
-        - 60fps.
-        - Common Event can reduce framerate.
-    
+        - Render to screen.
+            - RenderManager renders the current state to the screen.
+  
+    - Framerate:
+        - Add some checks to see of the call to RPGMain is longer than 1/60 fps ~ 16.66ms
+
     - Rendering:
         - Idea:
             - Basically keep the entire state in Memory and when Rendering iterate over that.
@@ -72,10 +110,175 @@ CppRPGEnv: C++-RPG Maker Environment
             - Basically just a sprite!.
         - Show/Hide Player (Ignore!).
 
-    
     - Key Input:
         - Basically just a few keyboard keys you can use.
         - I need to create a complete state of the keyboard. AFAIK sfml does not allow to just querry the keystate at any time.
+    
+    - Logic Flow for different RPG Maker Commands:
+        Debug & Menu
+        - ShowText:
+            - Renderer: 
+                - Textbox: bottom 35% of screen.
+                - 4 lines of text.
+                - 50 characters without face graphic, 38 characters with face graphic per line.
+            - State: 
+                - Freezes Emulator.
+            - Input: 
+                - Enter/Cancel => Player closes the textbox.
+            - LCF: 
+                - Nothing.
+
+        - ShowChoices:
+            - Renderer:
+                - Textbox: bottom 35% of screen. 
+                - <= 4 lines of text (depending on number of choices).
+                - selection Rectangle.
+            - State:
+                - Freezes Emulator
+            - Input:
+                - Up/Down: Change selection (wraps)
+                - Enter: Select.
+                - Escape: Cancel (either disabled, or default choice).
+            - LCF: 
+                - Write selected choice to variable.
+
+        - InputNumber:
+            - Renderer:
+                - Textbox: bottom 35% of screen.
+                - One line of text (generated from current number) with 1-7 digits.
+                - selection rectangle
+            - State:
+                - Freezes Emulator
+            - Input:
+                - Up/Down: Increment/Decrement current digit.
+                - Left/Right: Move current digit selection (No wrap).
+                - Select: Accept Input.
+            - LCF: 
+                - Write selected number to variable.
+
+        Chara Ram
+        - ChangeItem:
+            - Renderer:
+                - Nothing
+            - State:
+                - Nothing
+            - Input:
+                - Nothing
+            - LCF: 
+                - Write change into character.
+
+        - ChangePartyMember:
+            - Renderer:
+                - Nothing
+            - State:
+                - Nothing
+            - Input:
+                - Nothing
+            - LCF: 
+                - Write change into character.
+
+        - ChangeEXP:
+            - Renderer:
+                - Nothing
+            - State:
+                - Nothing
+            - Input:
+                - Nothing
+            - LCF: 
+                - Write change into character.
+
+        - ChangeParameters:
+            - Renderer:
+                - Nothing
+            - State:
+                - Nothing
+            - Input:
+                - Nothing
+            - LCF: 
+                - Write change into character.
+
+        - ChangeEquipment:
+            - Renderer:
+                - Nothing
+            - State:
+                - Nothing
+            - Input:
+                - Nothing
+            - LCF: 
+                - Write change into character.
+
+        Events
+        - SetEventLocation:
+            - Renderer:
+                - Nothing
+            - State:
+                - Nothing
+            - Input:
+                - Nothing
+            - LCF: 
+                - Write change into event.
+
+        - GetEventID:
+            - Renderer:
+                - Nothing
+            - State:
+                - Nothing
+            - Input:
+                - Nothing
+            - LCF: 
+                - Write event id into variable.
+
+        - EraseEvent:
+            - Renderer:
+                - Nothing
+            - State:
+                - Nothing
+            - Input:
+                - Nothing
+            - LCF: 
+                - Erase event in map.
+
+        - CallEvent:
+            - Renderer:
+                - Nothing
+            - State:
+                - Nothing
+            - Input:
+                - Nothing
+            - LCF: 
+                - I don't know if this will be supported like that?
+
+        Rendering
+        - ShowPicture:
+            - Renderer:
+                - Either allocate a new picture (if it is a previously unknown id) or change parametrs of the picture.
+            - State:
+                - Nothing
+            - Input:
+                - Nothing
+            - LCF: 
+                - Nothing
+
+        - ShowHidePlayer:
+            - Renderer:
+                - Not used by the environment?
+            - State:
+                - Nothing
+            - Input:
+                - Nothing
+            - LCF: 
+                - Nothing
+
+        Input
+        - KeyInputProcessing:
+            - Renderer:
+                - Nothing
+            - State:
+                - Nothing
+            - Input:
+                - Get the input state and create the number (1-24)
+            - LCF: 
+                - Store the number into the variable specified.
     
 
 - Can use SFML to create the basic graphic/window layer.

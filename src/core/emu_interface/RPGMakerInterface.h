@@ -22,6 +22,7 @@ public:
     virtual void SetEventLocation() = 0;
     virtual void GetEventID() = 0;
     virtual void EraseEvent() = 0;
+    // TODO: Maybe this is not part of the interface but is something that is generated based on function calls in the emulator.
     virtual void CallEvent() = 0;
 
     // Rendering

@@ -1,34 +1,21 @@
 #include <SFML/Graphics.hpp>
 
-#include <emu/EMUEntryPoint.h>
+#include <iostream>
 
-#include "interface_impl/RPGMakerImpl.h"
-
+#include "manager/RenderManager.h"
+#include "system/SystemCore.h"
 
 int main (int argc, char* argv[]) 
 {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
+    auto* systemCore = rpgenv::SystemCore::Get();
+    systemCore->Init();
 
-    emu::EMUEntryPoint emulator;
-    rpgenv::RPGMakerImpl rpgMakerInterface;
-
-    while (window.isOpen())
+    while (!systemCore->ShouldShutdown())
     {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if(event.type == sf::Event::Closed)
-            {
-                window.close();
-            }
-        }
-
-        emulator.RPGMain(&rpgMakerInterface);
-
-        window.clear(sf::Color::Black);
-
-        window.display();
+        systemCore->Update();
     }
+
+    systemCore->Shutdown();
 
     return 0;
 }
