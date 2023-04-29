@@ -1,8 +1,3 @@
-#include <SFML/Graphics.hpp>
-
-#include <iostream>
-
-#include "manager/RenderManager.h"
 #include "system/SystemCore.h"
 
 int main (int argc, char* argv[]) 

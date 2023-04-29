@@ -18,7 +18,7 @@ RenderManager* RenderManager::Get()
 
 void RenderManager::Init() 
 {
-    m_Window.create(sf::VideoMode(640, 480), "C++ RPG Env");
+    m_Window.create(sf::VideoMode(640, 480), "C++ RPG Env", sf::Style::Titlebar | sf::Style::Close);
     m_Window.setFramerateLimit(60);
 
     // TODO: Just some test stuff for now!

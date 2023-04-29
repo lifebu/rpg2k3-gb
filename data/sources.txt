@@ -1,0 +1,3 @@
+GamegirlClassic.ttf:
+    - https://www.fontspace.com/gamegirl-classic-font-f3331
+    - License: Freeware, Non-commercial.
