@@ -11,13 +11,13 @@ set(cppRPGEnv_headers
     interface_impl/RPGMakerImpl.h
     manager/InputManager.h manager/LCFManager.h manager/RenderManager.h
     system/SystemCore.h
-    manager/render_manager/TextBox.h)
+    manager/renderer/TextBox.h)
 
 set(cppRPGEnv_source
     interface_impl/RPGMakerImpl.cpp
     manager/InputManager.cpp manager/LCFManager.cpp manager/RenderManager.cpp
     system/SystemCore.cpp
-    manager/render_manager/TextBox.cpp)
+    manager/renderer/TextBox.cpp)
 
 add_executable(cppRPGEnv cppRPGenv.cpp ${cppRPGEnv_source} ${cppRPGEnv_headers})
 

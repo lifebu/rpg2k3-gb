@@ -4,7 +4,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "render_manager/TextBox.h"
+#include "renderer/TextBox.h"
 
 namespace rpgenv 
 {
@@ -41,6 +41,10 @@ private:
     sf::Font m_Font;
     sf::Text m_DebugText;
     renderer::TextBox m_TextBox;
+
+    // Pictures are pixel in this texture.
+    sf::Texture m_PictureTexture;
+    sf::Sprite m_PictureSprite;
 };
 
 }

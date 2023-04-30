@@ -1,45 +1,52 @@
-Main:
-    - called once per frame @ 60.0 fps
-    - responsibilities:
-        - init: once
-        - input_gather: Gather Input and set appropriate memory locations.
-            => setting memory area FF00 => call update_input_bytes
-        - main CPU/PPU-cycle loop (70.224 CPU/PPU-cycles)
-            - update_timer: clock-timer.
-                - Timer-Interrupt.
-            - ppu: execute one dot (dot ~ cycle).
-            - cpu: execute one cycle.
+Structure:
+    (Low-Level to High-Level).
+    - Programming Language Features:
+        - This is auto generated code to support features of C++ that the RPG Maker does not have.
+        - This is technically not part of the Emulator code, but part of the entire stack.
+    
+    - RPG Maker Features:
+        - Library of functions that are needed because I am in the RPG Maker.
+        - Packing/Unpacking Variables, etc.
+    
+    - Memory:
+        - Responsible for all the Behaviour of the Memory map and DMA Hardware.
+        - This can include the MBC (Memory Bank Controller), Input Codes, Handling when sth can be accessed.
+        - This basically abstracts everything below, so that the other Elements know little of the RPG Maker underneath.
+    
+    - Main GB Loop:
+        - Called once per frame @ 60.0fps
+        - Do 70.224 CPU/PPU-cylces per frame.
+    
+    - Timer:
+        - Updated Timer logic and set Interrupt flags.
+    
+    - PPU:
+        - Handle rendering.
+        - Manages access rights to OAM and VRAM.
+        - Dot ~ cycle
 
-Memory compression: ?
-    - pack_memory:
-        - pack 3 Bytes into 1 RPGMaker Variable
-    - unpack_memory:
-        - unpack 1 RPGMaker Variable into 3 Bytes
-    - really needed?
-        - can't i directly access individual bits in a Variable?
-
-Common Library:
-    - some of the work I need to do in RPG Maker is not directly tied to the actual emulation itself.
-    - e.g. packing/unpacking of the 3 Bytes in one VAR, converting GB Adresses to EventIDs and ByteOffsets.
-    - should create one common library of functions that is compiled like the emulator code.
-    - It uses the same interface as the Emulator uses, so it will be compiled by CEC the same as emulator code.
+    - CPU:
+        - load and execute CPU Instructions, use registers, handle interrupts, change memory.
     
 
-Init:
-    - load ROM Banks 0+1
-    - load DMG Boot rom
-        - merge Rom Bank 0 with DMG Boot rom 
-    - set memory (VAR0003-VAR0012) to zero. 
-        (REAL GB do not intialize RAM it is random values).
-    - set registers to zero (VAR0013-VAR0018)
-    - other setup:
-        Input: FF00.7-FF00.6 are unused and are always set to 1
-        - certain state variables for emulations need to be set.
-            - PPU: Change mode to 2 (starts in mode 2!)
+RPG Maker Features:
+    Memory compression:
+        - pack_memory:
+            - pack 3 Bytes into 1 RPGMaker Variable
+        - unpack_memory:
+            - unpack 1 RPGMaker Variable into 3 Bytes
+        - really needed?
+            - can't i directly access individual bits in a Variable?
+    
+    Converting Adresses:
+        - from GB Adresses to EventIDs, PageID and ByteOffsets.
 
-Input:
-    - input_gather:
-        input-map: (Maker -> GameBoy)
+Memory:
+    - Manages special Regions of the memory map.
+    - I/O Registers:
+        - When the cpu changes the "select" bits for the input read out the input from RPG Maker and set the corresponding bits.
+        - When inputs change from (0->1) add an interrupt if enabled (Joypad Interrupt).
+        - input-map: (Maker -> GameBoy)
             if: down (1)        -> then: down   (FF00.4=0 && FF00.3=0),
             if: left (2)        -> then: left   (FF00.4=0 && FF00.1=0),
             if: right (3)       -> then: right  (FF00.4=0 && FF00.0=0),
@@ -49,42 +56,21 @@ Input:
             if: Numpad 2 (12)   -> then: select (FF00.5=0 && FF00.2=0),
             if: Numpad 3 (13)   -> then: start  (FF00.5=0 && FF00.3=0)
             otherwise the corresponding bit is 1 (not-pressed, not-selected)
-        sequence:
-            - save current input in variable 2k3_input. (1-13)
 
-        Info:
-            if the bit FF00.4 or FF00.5 is changed to 0
-                => the other bit needs to be set to 1 (not-selected)
-                => call update_input_bytes.
-            if the bit FF00.4 or FF00.5 is changed to 1
-                => the other bit needs to be set to 0 (selected)
-                => call update_input_bytes
+    - MBC:
+        - Implement Code like the old MBCs to handle functionality there.
+        - They react to writes to specific magic values.
 
-    - update_input_bytes:
-        # called every time FF00.4 or FF00.5 is changed.
-        set bits 0-3 to 1
-        FF00.4 == 0:
-            set corresponding bit to 0 from 2k3_input
-        FF00.5 == 0:
-            set corresponding bit to 0 from 2k3_input
-    
-    - interrupts:
-        - when updating input => look at input flanks (0->1) and save them. You need them for interrupts.
-        - set Joypad interrupt if applicable.
+Timer:
+    - 4 modes: 16/64/256/1024 cycles per increment, 
+    - 1 Byte of counting.
+    - Reset:
+        - Write to $FF04
+        - stop (start after stop ends)
+        - on speed switch (GBC Speed Modes)
+    - Write-to-FF04 => Reset to $00
 
-Timer-Update:
-    - DIV-Timer:
-        - 16.384Hz, 256 Cycles per increment.
-        - 1 Byte of counting.
-        - Reset:
-            - Write to $FF04
-            - stop (start after stop ends)
-            - on speed switch (GBC Speed Modes)
-            - 
-        - Write-to-FF04 => Reset to $00
-        - 
-
-PPU:   
+PPU:
     - when to update pictures:
         - once per frame:
             - 160*144*4 = 2 Bits/Pixel => 46.080 Bits = 5.760 = 1.920 Variables.
@@ -150,6 +136,14 @@ CPU:
     - Post Instruction Hook:
         - When instruction is done, e.g. it is a I/O Write => You might have to call other code like the MBC.
 
-MBC:
-    - Implement Code like the old MBCs to handle functionality there.
-    - They react to writes to specific magic values.
+
+Init:
+    - load ROM Banks 0+1
+    - load DMG Boot rom
+        - merge Rom Bank 0 with DMG Boot rom.
+    - set memory (VAR0003-VAR0012) to zero. 
+        (REAL GB do not intialize RAM it is random values).
+    - set registers to zero (VAR0013-VAR0018)
+    - Input: FF00.7-FF00.6 are unused and are always set to 1
+    - certain state variables for emulations need to be set.
+        - PPU: Change mode to 2 (starts in mode 2!)

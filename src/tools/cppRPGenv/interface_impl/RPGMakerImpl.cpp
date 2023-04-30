@@ -80,7 +80,7 @@ void RPGMakerImpl::CallEvent(lcf::CallEvent::EventType eventType, uint16_t event
 // Rendering
 void RPGMakerImpl::ShowPicture(lcf::ShowPicture::PictureIDType pictureIDType, uint16_t pictureID, 
     lcf::ShowPicture::PosType posType, uint16_t xPos, uint16_t yPos, 
-    uint8_t red /*= 100*/, uint8_t green /*= 100*/, uint8_t blue /*= 100*/, uint16_t saturation /*= 100*/)
+    float red /*= 1.0f*/, float green /*= 1.0f*/, float blue /*= 1.0f*/, float saturation /*= 1.0f*/)
 {
 
 }
