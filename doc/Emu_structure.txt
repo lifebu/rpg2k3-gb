@@ -42,8 +42,8 @@ RPG Maker Features:
         - from GB Adresses to EventIDs, PageID and ByteOffsets.
 
 Memory:
-    - Manages special Regions of the memory map.
-    - I/O Registers:
+    - Manages special Regions of the memory map:
+    - Joypad Input:
         - When the cpu changes the "select" bits for the input read out the input from RPG Maker and set the corresponding bits.
         - When inputs change from (0->1) add an interrupt if enabled (Joypad Interrupt).
         - input-map: (Maker -> GameBoy)
@@ -56,6 +56,23 @@ Memory:
             if: Numpad 2 (12)   -> then: select (FF00.5=0 && FF00.2=0),
             if: Numpad 3 (13)   -> then: start  (FF00.5=0 && FF00.3=0)
             otherwise the corresponding bit is 1 (not-pressed, not-selected)
+    
+    - Audio Register:
+        - Just ignored for now.
+
+    - VRAM Bank Selection (CGB).
+
+    - WRam Bank Selection (CGB).
+
+    - BG / OBJ Palettes (CGB).
+
+    - Graphics Control:
+        - LCD Contro, Status, Position, Scrolling and Palletes.
+        - Written by CPU, Reacted by PPU.
+        - Memory itself does not do special things with it.
+    
+    - Serial Transfer:
+        - I will not suppor this correctly but maybe I need to add some simple behaviour to tell the game that there is no connection?
 
     - MBC:
         - Implement Code like the old MBCs to handle functionality there.
@@ -136,6 +153,8 @@ CPU:
     - Post Instruction Hook:
         - When instruction is done, e.g. it is a I/O Write => You might have to call other code like the MBC.
 
+Audio:
+    - Not Supported right now.
 
 Init:
     - load ROM Banks 0+1
