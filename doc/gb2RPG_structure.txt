@@ -121,6 +121,77 @@ gb2RPG: Gameboy 2 RPG Maker.
             - Loading the 1.6GB XML file takes up 14.1GB RAM and When Creating it I use up over 16GB!
             - Resulting Binary File is: 95,4 MByte.
 
+            - Mapsize (generated Code):
+                - Pokemon Red (1MByte):
+                - Header:
+                    - 6 commands per page for the Header, 350 pages.
+                    - Total => 2.100
+                    - Single Command Less saves: 350 EventCommands
+                - Label:
+                    - 12 commands per label * 1.000 Labels = 12.000 commands per page.
+                    - @ 350 pages.
+                    - Total => 4.200.000 event commands
+                    - Single Command less saves: 350.000 commands
+                => Total size of xml file: 2.3GB
+
+                - Reduction:
+                    - 2 commands in label, 2 command in header.
+                    => reduce by 700.700 commands (16%).
+                    => Filesize: 300MByte less.
+                    => Reduced by 13%
+
+                - Binary Search (1.400 + 3.500.000 = 3.501.400 (83%)):
+                    - Header (4):
+                    ByteOffset = (ByteOffset / BYTES_PER_VAR):
+                    LabelID = ByteOffset
+                    LabelID += 1
+                    JumpToLabel numLabels / 2
+
+                    - Label (10):
+                    Label X
+                    IF(LabelID < X)
+                        JumpToLabel X - (min(X, 1.000 - X) / 2)
+                        or:
+                        EndEventProcessing
+                    ENDIF
+                    IF(LabelID > X)
+                        JumpToLabel X + (min(X, 1.000 - X) / 2)
+                        or:
+                        EndEventProcessing
+                    ENDIF
+                    READVAR1 = LABELXVALUE1
+                    READVAR2 = LABELXVALUE2
+                    EndEventProcessing
+
+                - Linear (1.050 + 1.750.000 = 1.751.050 (40%)):
+                    - Header (3):
+                    ByteOffset = (ByteOffset / BYTES_PER_VAR):
+                    LabelID = ByteOffset
+                    LabelID += 1
+
+                    - Label (5):
+                    IF(LabelID == X)
+                        READVAR1 = LABELXVALUE1
+                        READVAR2 = LABELXVALUE2
+                        EndEventProcessing
+                    ENDIF
+                
+                - Linear:
+                    - To combat the slowness of the system I could reduce VARS_PER_EPAGE.
+                
+                - Linear + Binary:
+                    - Mostly linear but we have a couple of start points (jumped to by the header).
+                    - We can have 10 Linear reagions each responsible for 100 Values for the 1.000 VARS_PER_EPAGE.
+                
+                - 
+
+                
+
+
+                
+            
+                
+
             - less memory usage:
                 - a) Use different XML Library:
                     - can use https://libexpat.github.io/

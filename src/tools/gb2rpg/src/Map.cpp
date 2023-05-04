@@ -147,7 +147,7 @@ std::vector<lcf::EventCommand> Map::setupMapRomHeader(int numLabels)
     std::vector<lcf::EventCommand> mapRomHeader;
 
     // Comment
-    mapRomHeader.push_back(lcf::EventCommandFactory::GenFirstLineComment("Convert Offset from Bytes to Variables"));
+    //mapRomHeader.push_back(lcf::EventCommandFactory::GenFirstLineComment("Convert Offset from Bytes to Variables"));
 
     // ByteOffset = (ByteOffset / BYTES_PER_VAR):
     mapRomHeader.push_back(lcf::EventCommandFactory::GenControlVariable(
@@ -177,7 +177,7 @@ std::vector<lcf::EventCommand> Map::setupMapRomHeader(int numLabels)
     mapRomHeader.push_back(lcf::EventCommandFactory::GenJumpToLabel(numLabels / 2));
 
     // Empty comment
-    mapRomHeader.push_back(lcf::EventCommandFactory::GenFirstLineComment(""));
+    //mapRomHeader.push_back(lcf::EventCommandFactory::GenFirstLineComment(""));
 
     return mapRomHeader;
 }
@@ -210,7 +210,7 @@ std::vector<lcf::EventCommand> Map::setupMapRomLabel(int labelID, int numLabels,
     }
 
     // NOOP
-    mapRomHeader.push_back(lcf::EventCommandFactory::GenNoOp());
+    //mapRomHeader.push_back(lcf::EventCommandFactory::GenNoOp());
 
     // ENDIF
     mapRomHeader.push_back(lcf::EventCommandFactory::GenEndBranch());
@@ -235,7 +235,7 @@ std::vector<lcf::EventCommand> Map::setupMapRomLabel(int labelID, int numLabels,
     }
 
     // NOOP
-    mapRomHeader.push_back(lcf::EventCommandFactory::GenNoOp());
+    //mapRomHeader.push_back(lcf::EventCommandFactory::GenNoOp());
 
     // ENDIF
     mapRomHeader.push_back(lcf::EventCommandFactory::GenEndBranch());
