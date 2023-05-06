@@ -27,7 +27,7 @@ void RenderManager::Init()
         currentRes.width / 2 - WINDOW_WIDTH / 2, 
         currentRes.height / 2 - WINDOW_HEIGHT / 2));
     
-    m_Window.setFramerateLimit(60);
+    m_Window.setFramerateLimit(15);
     
     if(!m_Font.loadFromFile(std::string(FONT_PATH)))
     {
@@ -41,6 +41,9 @@ void RenderManager::Init()
 
     // Initialize Textbox
     m_TextBox.SetFont(m_Font);
+
+    // Initialize ChoiceBox
+    m_ChoiceBox.SetFont(m_Font);
 }
 
 void RenderManager::Shutdown() 
@@ -62,9 +65,15 @@ void RenderManager::Render()
         m_Window.draw(m_TextBox);
     }
 
+    if(m_ChoiceBox.m_IsOpen)
+    {
+        m_Window.draw(m_ChoiceBox);
+    }
+
     m_Window.display();
 }
 
+// Window
 sf::Window& RenderManager::GetWindow()
 {
     return m_Window;
@@ -80,6 +89,7 @@ bool RenderManager::isWindowFocused()
     return m_Window.hasFocus();
 }
 
+// Debug Text
 void RenderManager::ShowDebugText(std::string text) 
 {
     m_DebugText.setString(text);
@@ -90,17 +100,68 @@ void RenderManager::ShowDebugText(std::string text)
     m_DebugText.setPosition(m_Window.getView().getCenter());
 }
 
+// Textbox
 void RenderManager::OpenTextBox(std::string text)
 {
     const sf::View& view = m_Window.getView();
 
     m_TextBox.m_IsOpen = true;
-    m_TextBox.SetupTextbox(view, text);
+    m_TextBox.Setup(view, text);
 }
 
 void RenderManager::CloseTextBox()
 {
     m_TextBox.m_IsOpen = false;
 }
+
+void RenderManager::OpenChoiceBox(std::vector<std::string> choices,
+    lcf::Choices::ChoiceCaseOnCancel cancelBehaviour) 
+{
+    const sf::View& view = m_Window.getView();
+
+    m_ChoiceBox.m_IsOpen = true;
+    m_ChoiceBox.Setup(view, choices, cancelBehaviour);
+}
+
+void RenderManager::MoveChoice(int delta) 
+{
+    m_ChoiceBox.MoveChoice(delta);
+}
+
+bool RenderManager::ClosingChoiceAllowed()
+{
+    return m_ChoiceBox.GetCancelBehaviour() != lcf::Choices::ChoiceCaseOnCancel::DISALLOW;
+}
+
+int RenderManager::CancelChoice()
+{
+    m_ChoiceBox.m_IsOpen = false;
+
+    switch(m_ChoiceBox.GetCancelBehaviour())
+    {
+        case lcf::Choices::ChoiceCaseOnCancel::CHOICE_1:
+            return 1;
+        case lcf::Choices::ChoiceCaseOnCancel::CHOICE_2:
+            return 2;
+        case lcf::Choices::ChoiceCaseOnCancel::CHOICE_3:
+            return 3;
+        case lcf::Choices::ChoiceCaseOnCancel::CHOICE_4:
+            return 4;
+        // TODO: How to handle this case?
+        case lcf::Choices::ChoiceCaseOnCancel::OWN_BRANCH:
+            return -1;
+    }
+
+    // Error case
+    return -1;
+}
+
+int RenderManager::CloseChoice()
+{
+    m_ChoiceBox.m_IsOpen = false;
+    return m_ChoiceBox.GetChoiceIndex();
+}
+
+// Choices
 
 };

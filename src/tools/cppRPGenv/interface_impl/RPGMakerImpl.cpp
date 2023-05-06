@@ -16,7 +16,8 @@ void RPGMakerImpl::ShowText(std::string text)
 
 void RPGMakerImpl::ShowChoices(std::vector<std::string> choices, lcf::Choices::ChoiceCaseOnCancel cancelBehaviour)
 {
-
+    RenderManager::Get()->OpenChoiceBox(choices, cancelBehaviour);
+    SystemCore::Get()->ChangeSystemState(SystemCore::States::PROCESS_CHOICES);
 }
 
 void RPGMakerImpl::InputNumber(uint8_t numOfDigits)

@@ -4,10 +4,15 @@ CppRPGEnv: C++-RPG Maker Environment
 
 - To-Do:
     - Implement Renderer.
-        - ShowChoices
         - InputNumber
         - ShowPicture
-    - Implement System states (choices, number input).
+    - Implement System states (number input).
+
+    - Clean up the Class Zoo that I have created:
+        - The 3 Rendererclasses (ChoiceBox, InputBox and TextBox) share a lot of code just have it in the RenderManager.
+        - A lot of those "Manager" just don't do a lot of interesting transformation.
+            - Maybe I can just add them to the System Core?
+        
 
 - Interface:
     - RPG Maker Commands:

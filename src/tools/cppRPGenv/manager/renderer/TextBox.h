@@ -20,15 +20,15 @@ namespace renderer
 class TextBox final : public sf::Drawable
 {
     static constexpr float TEXT_BOX_SIZE = 0.25f;
-    static constexpr int MAX_STRING_SIZE = 200;
     static constexpr int MAX_CHAR_PER_LINE = 50;
+    static constexpr int MAX_STRING_SIZE = MAX_CHAR_PER_LINE * 4;
 
 public:
     TextBox();
 
     void SetFont(sf::Font& font);
 
-    void SetupTextbox(const sf::View& view, std::string text);
+    void Setup(const sf::View& view, std::string text);
 
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -39,7 +39,6 @@ public:
     bool m_IsOpen = false;
 
 private:
-    float m_HeightPercent = 0.35f;
     sf::Text m_Text;
     sf::RectangleShape m_Box;
 

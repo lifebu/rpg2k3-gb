@@ -74,10 +74,12 @@ void SystemCore::Update()
 
     UpdateEvents();
 
+    /*
     if(!renderManager->isWindowFocused())
     {
         return;
     }
+    */
 
     switch(m_CurrentState)
     {
@@ -147,7 +149,30 @@ void SystemCore::UpdateTextboxState()
 
 void SystemCore::UpdateChoiceState()
 {
+    auto* inputManager = InputManager::Get();
+    auto* renderManager = RenderManager::Get();
     
+    if(inputManager->isKeyPressed(RPGMAKER::KeyCodes::UP))
+    {
+        renderManager->MoveChoice(-1);
+    }
+    else if (inputManager->isKeyPressed(RPGMAKER::KeyCodes::DOWN))
+    {
+        renderManager->MoveChoice(1);
+    }
+    else if (inputManager->isKeyPressed(RPGMAKER::KeyCodes::CANCEL))
+    {
+        if(renderManager->ClosingChoiceAllowed())
+        {
+            int choiceIndex = renderManager->CancelChoice();
+            m_CurrentState = States::RUN_EMU;
+        }
+    }
+    else if (inputManager->isKeyPressed(RPGMAKER::KeyCodes::SELECT))
+    {
+        int choiceIndex = renderManager->CloseChoice();
+        m_CurrentState = States::RUN_EMU;
+    }
 }
 
 void SystemCore::UpdateInputState()

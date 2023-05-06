@@ -2,9 +2,9 @@
 
 #include <iostream>
 
-#include <SFML/Graphics/View.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/View.hpp>
 
 namespace rpgenv
 {
@@ -26,12 +26,12 @@ void TextBox::SetFont(sf::Font& font)
     m_Text.setFont(font);
 }
 
-void TextBox::SetupTextbox(const sf::View& view, std::string text)
+void TextBox::Setup(const sf::View& view, std::string text)
 {
     int size = text.size();
     if(size > MAX_STRING_SIZE)
     {
-        std::cout << "Maximum size of text for the Textbox is 200 characters, tried to set a text with the size of " + text.size() << "." << std::endl;
+        std::cout << "Maximum size of text for the Textbox is " << MAX_STRING_SIZE << " characters, tried to set a text with the size of " + text.size() << "." << std::endl;
         return;
     }
 
