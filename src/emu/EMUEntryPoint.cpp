@@ -15,8 +15,9 @@ void EMUEntryPoint::RPGMain(rpgenv::RPGMakerInterface* rpgMaker)
         "Emulator is running pretty well I would say so!!!");
     */
 
-   rpgMaker->ShowChoices({"Yes", "No", "Maybe?", "Definetly"}, lcf::Choices::ChoiceCaseOnCancel::OWN_BRANCH);
+    rpgMaker->ShowChoices({"Yes", "No", "Maybe?", "Definetly"}, lcf::Choices::ChoiceCaseOnCancel::OWN_BRANCH);
 
+    //rpgMaker->InputNumber(5);
     
     
     return;

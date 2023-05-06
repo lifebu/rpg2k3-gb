@@ -2,6 +2,8 @@
 
 #include <SFML/Window.hpp>
 
+#include "RenderManager.h"
+
 #include <iostream>
 #include <cassert>
 
@@ -21,6 +23,11 @@ InputManager* InputManager::Get()
 
 bool InputManager::isKeyPressed(RPGMAKER::KeyCodes key)
 {
+    if(!RenderManager::Get()->isWindowFocused())
+    {
+        return false;
+    }
+
     if(sf::Keyboard::isKeyPressed(ConvertKeyCodeToSFML(key)))
     {
         return true;
