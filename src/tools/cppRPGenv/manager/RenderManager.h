@@ -50,6 +50,12 @@ public:
     // returns the index of the choice.
     int CloseChoice();
 
+    // InputNumber
+    void OpenNumberInput(uint8_t numOfDigits);
+    void ChangeSelectedNumber(int delta);
+    void MoveSelectedNumber(int delta);
+    int CloseNumberInput();
+
 
 private:
     sf::RenderWindow m_Window;
@@ -61,6 +67,9 @@ private:
 
     // ChoiceBox
     renderer::ChoiceBox m_ChoiceBox;
+
+    // InputBox
+    renderer::InputBox m_InputBox;
 
     // Pictures are pixel in this texture.
     sf::Texture m_PictureTexture;

@@ -170,7 +170,30 @@ void SystemCore::UpdateChoiceState()
 
 void SystemCore::UpdateInputState()
 {
-
+    auto* inputManager = InputManager::Get();
+    auto* renderManager = RenderManager::Get();
+    
+    if(inputManager->isKeyPressed(RPGMAKER::KeyCodes::UP))
+    {
+        renderManager->ChangeSelectedNumber(1);
+    }
+    else if (inputManager->isKeyPressed(RPGMAKER::KeyCodes::DOWN))
+    {
+        renderManager->ChangeSelectedNumber(-1);
+    }
+    else if (inputManager->isKeyPressed(RPGMAKER::KeyCodes::LEFT))
+    {
+        renderManager->MoveSelectedNumber(-1);
+    }
+    else if (inputManager->isKeyPressed(RPGMAKER::KeyCodes::RIGHT))
+    {
+        renderManager->MoveSelectedNumber(1);
+    }
+    else if (inputManager->isKeyPressed(RPGMAKER::KeyCodes::SELECT))
+    {
+        int Chosennumber = renderManager->CloseNumberInput();
+        m_CurrentState = States::RUN_EMU;
+    }
 }
 
 };

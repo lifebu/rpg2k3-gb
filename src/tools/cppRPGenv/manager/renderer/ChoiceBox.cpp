@@ -57,8 +57,6 @@ void ChoiceBox::Setup(const sf::View& view, std::vector<std::string> choices,
 
 void ChoiceBox::MoveChoice(int delta)
 {
-    int prevIndex = m_SelectedIndex;
-
     m_SelectedIndex += delta;
     m_SelectedIndex = (m_SelectedIndex >= 0) 
         ? (m_SelectedIndex % MAX_NUM_CHOICES) 

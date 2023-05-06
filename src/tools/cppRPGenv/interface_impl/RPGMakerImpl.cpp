@@ -22,7 +22,7 @@ void RPGMakerImpl::ShowChoices(std::vector<std::string> choices, lcf::Choices::C
 
 void RPGMakerImpl::InputNumber(uint8_t numOfDigits)
 {
-    //RenderManager::Get()->OpenInputBox(numOfDigits);
+    RenderManager::Get()->OpenNumberInput(numOfDigits);
     SystemCore::Get()->ChangeSystemState(SystemCore::States::PROCESS_NUMBER_INPUT);
 }
 

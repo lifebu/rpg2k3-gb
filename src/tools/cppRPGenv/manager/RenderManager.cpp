@@ -44,6 +44,9 @@ void RenderManager::Init()
 
     // Initialize ChoiceBox
     m_ChoiceBox.SetFont(m_Font);
+
+    // Initialize InputBox
+    m_InputBox.setFont(m_Font);
 }
 
 void RenderManager::Shutdown() 
@@ -68,6 +71,11 @@ void RenderManager::Render()
     if(m_ChoiceBox.m_IsOpen)
     {
         m_Window.draw(m_ChoiceBox);
+    }
+
+    if(m_InputBox.m_IsOpen)
+    {
+        m_Window.draw(m_InputBox);
     }
 
     m_Window.display();
@@ -114,6 +122,7 @@ void RenderManager::CloseTextBox()
     m_TextBox.m_IsOpen = false;
 }
 
+// Choices
 void RenderManager::OpenChoiceBox(std::vector<std::string> choices,
     lcf::Choices::ChoiceCaseOnCancel cancelBehaviour) 
 {
@@ -162,6 +171,29 @@ int RenderManager::CloseChoice()
     return m_ChoiceBox.GetChoiceIndex();
 }
 
-// Choices
+// InputNumber
+void RenderManager::OpenNumberInput(uint8_t numOfDigits) 
+{
+    const sf::View& view = m_Window.getView();
+
+    m_InputBox.m_IsOpen = true;
+    m_InputBox.Setup(view, numOfDigits);
+}
+
+void RenderManager::ChangeSelectedNumber(int delta) 
+{
+    m_InputBox.IncreaseDigit(delta);
+}
+
+void RenderManager::MoveSelectedNumber(int delta) 
+{
+    m_InputBox.MoveDigit(delta);
+}
+
+int RenderManager::CloseNumberInput()
+{
+    m_InputBox.m_IsOpen = false;
+    return m_InputBox.GetNumber();
+}
 
 };

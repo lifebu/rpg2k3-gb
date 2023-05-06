@@ -4,15 +4,19 @@ CppRPGEnv: C++-RPG Maker Environment
 
 - To-Do:
     - Implement Renderer.
-        - InputNumber
         - ShowPicture
-    - Implement System states (number input).
 
     - Clean up the Class Zoo that I have created:
         - The 3 Rendererclasses (ChoiceBox, InputBox and TextBox) share a lot of code just have it in the RenderManager.
         - A lot of those "Manager" just don't do a lot of interesting transformation.
             - Maybe I can just add them to the System Core?
-        
+    
+    - I can more clearly seperate the Render stuff from the Logic of moving the textbox.
+        - Most of the code of the textbox seems to belong more to actual game logic not rendering.
+
+    - Initialization based on the view does not need to happen when you open Textboxes etc. it can happen once and be done once IFF the view could change (which it cannot).
+
+    - 
 
 - Interface:
     - RPG Maker Commands:
