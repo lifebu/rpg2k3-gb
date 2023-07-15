@@ -32,6 +32,9 @@ public:
 
     bool isLoadingFinished();
 
+    lcf::Database& GetDatabase();
+    lcf::Map& GetMap();
+
 private:
     LoadingPhases m_LoadingPhases = LoadingPhases::NOT_LOADED;
 

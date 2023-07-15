@@ -31,7 +31,12 @@ void RPGMakerImpl::ChangeItem(lcf::ChangeItem::Operation operation,
     lcf::ChangeItem::ItemIDType idType, uint16_t idTypeValue, 
     lcf::ChangeItem::OperandType operandType, uint16_t operand)
 {
+    /*
+    auto* lcfManager = LCFManager::Get();
 
+    lcf::Item& item = lcfManager->GetDatabase().GetItemByID(idType, idTypeValue);
+    int changeBy = operandType == lcf::ChangeItem::Operation::INCREASE ? : ;
+    */
 }
 
 void RPGMakerImpl::ChangePartyMember(lcf::ChangePartyMember::Operation operation,
@@ -76,7 +81,8 @@ uint16_t RPGMakerImpl::GetEventID(lcf::GetEventID::LocationType locationType,
 void RPGMakerImpl::CallEvent(lcf::CallEvent::EventType eventType, uint16_t eventID, 
     uint16_t pageNumber)
 {
-
+    // TODO: The code will use this to read the ROM and RAM on the Map, so do not call the actual database but write to the expected variables like the generated code would.
+    return;
 }
 
 // Rendering

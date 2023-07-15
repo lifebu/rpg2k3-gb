@@ -62,4 +62,15 @@ bool LCFManager::isLoadingFinished()
 { 
     return m_LoadingPhases == LoadingPhases::LOADING_FINISHED; 
 }
+
+lcf::Database &LCFManager::GetDatabase() 
+{
+    return m_Database;
+}
+
+lcf::Map &LCFManager::GetMap()
+{
+    return m_Map;
+}
+
 }; // namespace rpgenv
