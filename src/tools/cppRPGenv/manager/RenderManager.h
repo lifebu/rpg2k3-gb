@@ -24,10 +24,11 @@ class RenderManager : public Singleton<RenderManager>, public IManager
 
 public:
     void Init() override;
+
+    void PollEvents();
     void Render();
 
     // Window
-    sf::Window& GetWindow();
     bool isWindowOpen();
     bool isWindowFocused();
 

@@ -12,14 +12,7 @@ CppRPGEnv: C++-RPG Maker Environment
 
         - A lot of those "Manager" just don't do a lot of interesting transformation.
             - Maybe I can just add them to the System Core?
-        
-        - SystemCore does a lot of things:
-            - It is responsible for managers (creation, init, shutdown).
-            - It is the Entrypoint and core loop.
-
-            - It is the main state machine.
-            => Maybe have the statemachine seperate?
-    
+            
     - I can more clearly seperate the Render stuff from the Logic of moving the textbox.
         - Most of the code of the textbox seems to belong more to actual game logic not rendering.
         - currently a lot of those classes have some game logic and some render logic.

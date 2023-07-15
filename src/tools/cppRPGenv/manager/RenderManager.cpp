@@ -38,8 +38,19 @@ void RenderManager::Init()
     m_InputBox.setFont(m_Font);
 }
 
-void RenderManager::Render()
+void RenderManager::PollEvents() 
 {
+    sf::Event event;
+    while (m_Window.pollEvent(event))
+    {
+        if(event.type == sf::Event::Closed)
+        {
+            m_Window.close();
+        }
+    }
+}
+
+void RenderManager::Render() {
     m_Window.clear(sf::Color(128, 0, 128));
 
     // DebugText
@@ -66,11 +77,6 @@ void RenderManager::Render()
 }
 
 // Window
-sf::Window& RenderManager::GetWindow()
-{
-    return m_Window;
-}
-
 bool RenderManager::isWindowOpen()
 {
     return m_Window.isOpen();

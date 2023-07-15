@@ -59,7 +59,8 @@ set(serializer_source
     lcf_serializers/MapTreeSerializer.cpp)
 
 set(structure_headers
-    structure/Singleton.h)
+    structure/Singleton.h
+    structure/StateMachine.h)
 
 set(utility_headers utilities/RPGHelper.h)
 set(utility_source utilities/RPGHelper.cpp)
