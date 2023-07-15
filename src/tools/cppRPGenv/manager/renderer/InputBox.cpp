@@ -28,7 +28,7 @@ InputBox::InputBox()
     m_SelectionBox.setFillColor(sf::Color::Transparent);
 }
 
-void InputBox::setFont(sf::Font &font)
+void InputBox::SetFont(sf::Font &font)
 {
     m_Text.setFont(font);
 }

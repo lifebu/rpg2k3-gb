@@ -35,7 +35,7 @@ void RenderManager::Init()
     m_ChoiceBox.SetFont(m_Font);
 
     // Initialize InputBox
-    m_InputBox.setFont(m_Font);
+    m_InputBox.SetFont(m_Font);
 }
 
 void RenderManager::PollEvents() 
@@ -50,7 +50,8 @@ void RenderManager::PollEvents()
     }
 }
 
-void RenderManager::Render() {
+void RenderManager::Render() 
+{
     m_Window.clear(sf::Color(128, 0, 128));
 
     // DebugText

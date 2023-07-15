@@ -10,6 +10,7 @@
 namespace rpgenv 
 {
 
+// Allows easy access to inputs
 class InputManager : public Singleton<InputManager>, public IManager
 {
 public:

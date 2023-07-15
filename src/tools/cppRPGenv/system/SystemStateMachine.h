@@ -25,12 +25,16 @@ enum class SystemStates : int
     STATES_NUM
 };
 
+// Responsible for the System states and most of the logic glueing everything else together.
 class SystemStateMachine : public StateMachine<SystemStates>
 {
 public:
     SystemStateMachine();
 
 private:
+    // State Transitions
+
+    // State Functions
     void UpdateLoadingState();
     void UpdateRunEmuState();
     void UpdateTextboxState();

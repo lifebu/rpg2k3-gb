@@ -13,7 +13,7 @@ void SystemCore::Init()
     m_InputManager.Init();
     m_LCFManager.Init();
     m_RenderManager.Init();
-    m_SystemStateMachine.ChangeState(SystemStates::LOADING);
+    m_SystemStateMachine.Init(SystemStates::LOADING);
 }
 
 void SystemCore::Shutdown() 
@@ -31,9 +31,7 @@ bool SystemCore::ShouldShutdown()
 void SystemCore::Update()
 {
     m_RenderManager.PollEvents();
-
     m_SystemStateMachine.Update();
-
     m_RenderManager.Render();
 }
 

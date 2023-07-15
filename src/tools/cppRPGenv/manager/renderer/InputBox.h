@@ -31,7 +31,7 @@ class InputBox final : public sf::Drawable
 public:
     InputBox();
 
-    void setFont(sf::Font& font);
+    void SetFont(sf::Font& font);
 
     void Setup(const sf::View& view, uint8_t numOfDigits);
 
