@@ -3,7 +3,7 @@
 #include <vector>
 #include <fstream>
 #include <string>
-
+#include <cstdint>
 
 namespace gb2rpg {
     class CLIOptions;

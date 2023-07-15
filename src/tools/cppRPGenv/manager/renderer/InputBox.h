@@ -5,6 +5,7 @@
 #include <SFML/Graphics/Text.hpp>
 
 #include <string>
+#include <cstdint>
 
 namespace sf
 {
