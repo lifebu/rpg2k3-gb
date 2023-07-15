@@ -5,8 +5,9 @@
 #include <SFML/Graphics.hpp>
 
 #include <core/lcf/event/EventCommandFactoryDef.h>
+#include <core/structure/Singleton.h>
 
-#include "structure/Manager.h"
+#include "structure/ManagerInterface.h"
 // TODO: this should be forward declared. Or we use a simple interface class for the Render Manager. Users should not know these classes here.
 #include "renderer/TextBox.h"
 #include "renderer/ChoiceBox.h"
@@ -15,7 +16,7 @@
 namespace rpgenv 
 {
 
-class RenderManager : public Manager<RenderManager>
+class RenderManager : public Singleton<RenderManager>, public IManager
 {
     static constexpr int WINDOW_WIDTH = 640;
     static constexpr int WINDOW_HEIGHT = 480;

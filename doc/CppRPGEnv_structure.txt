@@ -13,9 +13,6 @@ CppRPGEnv: C++-RPG Maker Environment
         - A lot of those "Manager" just don't do a lot of interesting transformation.
             - Maybe I can just add them to the System Core?
         
-        - Also add a base Singleton or Manager class.
-            - SystemCore is basically also a Manager.
-        
         - SystemCore does a lot of things:
             - It is responsible for managers (creation, init, shutdown).
             - It is the Entrypoint and core loop.

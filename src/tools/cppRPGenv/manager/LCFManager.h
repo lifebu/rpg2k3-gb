@@ -4,14 +4,15 @@
 
 #include <core/lcf/Database.h>
 #include <core/lcf/Map.h>
+#include <core/structure/Singleton.h>
 
-#include "structure/Manager.h"
+#include "structure/ManagerInterface.h"
 
 namespace rpgenv 
 {
 
 // Manages access and lifetime of lcf files (database, maps).
-class LCFManager : public Manager<LCFManager>
+class LCFManager : public Singleton<LCFManager>, public IManager
 {
 private:
     enum class LoadingPhases

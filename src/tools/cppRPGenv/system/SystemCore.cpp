@@ -11,47 +11,25 @@ namespace rpgenv
 
 SystemCore::SystemCore()
 {
-    // construct managers.
-    new InputManager();
-    new RenderManager();
-    new LCFManager();
-}
-
-static SystemCore* m_Instance = nullptr;
-
-SystemCore* SystemCore::Get() 
-{
-    if(!m_Instance)
-    {
-        m_Instance = new SystemCore();
-    }
-    return m_Instance; 
+    m_Managers.emplace_back(std::make_unique<InputManager>());
+    m_Managers.emplace_back(std::make_unique<RenderManager>());
+    m_Managers.emplace_back(std::make_unique<LCFManager>()); 
 }
 
 void SystemCore::Init() 
 {
-    // initialize managers
-    auto* inputManager = rpgenv::InputManager::Get();
-    auto* renderManager = rpgenv::RenderManager::Get();
-    auto* lcfManager = rpgenv::LCFManager::Get();
-
-    inputManager->Init();
-    renderManager->Init();
-    lcfManager->Init();
-
-    renderManager->ShowDebugText("Loading...");
+    for(auto& manager : m_Managers)
+    {
+        manager->Init();
+    }
 }
 
 void SystemCore::Shutdown() 
 {
-    // shutdown managers
-    auto* inputManager = rpgenv::InputManager::Get();
-    auto* renderManager = rpgenv::RenderManager::Get();
-    auto* lcfManager = rpgenv::LCFManager::Get();
-
-    inputManager->Shutdown();
-    renderManager->Shutdown();
-    lcfManager->Shutdown();
+    for(auto& manager : m_Managers)
+    {
+        manager->Shutdown();
+    }
 }
 
 bool SystemCore::ShouldShutdown()
@@ -78,6 +56,7 @@ void SystemCore::Update()
     {
         case States::LOADING:
         {
+            renderManager->ShowDebugText("Loading...");
             lcfManager->ContinueLoading();
             if(lcfManager->isLoadingFinished())
             {

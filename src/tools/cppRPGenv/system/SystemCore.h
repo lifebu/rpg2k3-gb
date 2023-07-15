@@ -1,17 +1,21 @@
 #pragma once
 
+#include <memory>
+
+#include <core/structure/Singleton.h>
+
 #include <emu/EMUEntryPoint.h>
 
+#include "manager/structure/ManagerInterface.h"
 #include "interface_impl/RPGMakerImpl.h"
 
 namespace rpgenv 
 {
 
-// 
-class SystemCore
-{
-    SystemCore();
 
+// Responsible for manager lifetime, entrypoint, and core loop.
+class SystemCore : public Singleton<SystemCore>, public IManager
+{
 public:
     enum class States : int
     {
@@ -29,15 +33,14 @@ public:
         STATES_NUM
     };
 
+    SystemCore();
 
-    static SystemCore* Get();
-
-    void Init();
-    void Shutdown();
+    void Init() override;
+    void Shutdown() override;
+    void Update() override;
 
     bool ShouldShutdown();
-    void Update();
-
+   
     void ChangeSystemState(States newState);
 
 private:
@@ -45,6 +48,8 @@ private:
     void UpdateTextboxState();
     void UpdateChoiceState();
     void UpdateInputState();
+
+    std::vector<std::unique_ptr<IManager>> m_Managers;
 
     States m_CurrentState;
     emu::EMUEntryPoint m_Emulator;

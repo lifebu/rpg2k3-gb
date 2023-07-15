@@ -2,13 +2,15 @@
 
 #include <SFML/Window.hpp>
 
-#include "core/def/RPGMaker.h"
-#include "structure/Manager.h"
+#include <core/def/RPGMaker.h>
+#include <core/structure/Singleton.h>
+
+#include "structure/ManagerInterface.h"
 
 namespace rpgenv 
 {
 
-class InputManager : public Manager<InputManager>
+class InputManager : public Singleton<InputManager>, public IManager
 {
 public:
     bool isKeyPressed(RPGMAKER::KeyCodes key);
