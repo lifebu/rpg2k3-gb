@@ -6,6 +6,7 @@
 
 #include <core/lcf/event/EventCommandFactoryDef.h>
 
+#include "structure/Manager.h"
 // TODO: this should be forward declared. Or we use a simple interface class for the Render Manager. Users should not know these classes here.
 #include "renderer/TextBox.h"
 #include "renderer/ChoiceBox.h"
@@ -14,20 +15,14 @@
 namespace rpgenv 
 {
 
-class RenderManager
+class RenderManager : public Manager<RenderManager>
 {
     static constexpr int WINDOW_WIDTH = 640;
     static constexpr int WINDOW_HEIGHT = 480;
     static constexpr std::string_view FONT_PATH = "data/GamegirlClassic.ttf";
 
-private:
-    RenderManager() = default;
-
 public:
-    static RenderManager* Get();
-
-    void Init();
-    void Shutdown();
+    void Init() override;
     void Render();
 
     // Window

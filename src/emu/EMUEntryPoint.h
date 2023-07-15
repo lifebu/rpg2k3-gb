@@ -8,7 +8,7 @@ namespace emu
 class EMUEntryPoint : public rpgenv::RPGEntryPoint
 {
 public:
-    void RPGMain(rpgenv::RPGMakerInterface* rpgMaker) override;
+    void RPGMain() override;
 };
 
 };

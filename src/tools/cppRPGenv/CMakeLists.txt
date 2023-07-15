@@ -13,7 +13,8 @@ set(cppRPGEnv_headers
     system/SystemCore.h
     manager/renderer/TextBox.h
     manager/renderer/ChoiceBox.h
-    manager/renderer/InputBox.h)
+    manager/renderer/InputBox.h
+    manager/structure/Manager.h)
 
 set(cppRPGEnv_source
     interface_impl/RPGMakerImpl.cpp

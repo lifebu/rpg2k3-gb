@@ -5,17 +5,6 @@
 namespace rpgenv
 {
 
-static RenderManager* m_Instance = nullptr;
-
-RenderManager* RenderManager::Get() 
-{
-    if(!m_Instance)
-    {
-        m_Instance = new RenderManager();
-    }
-    return m_Instance; 
-}
-
 void RenderManager::Init() 
 {
     m_Window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "C++ RPG Env", 
@@ -47,11 +36,6 @@ void RenderManager::Init()
 
     // Initialize InputBox
     m_InputBox.setFont(m_Font);
-}
-
-void RenderManager::Shutdown() 
-{
-    
 }
 
 void RenderManager::Render()

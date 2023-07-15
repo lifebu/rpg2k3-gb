@@ -3,22 +3,15 @@
 #include <SFML/Window.hpp>
 
 #include "core/def/RPGMaker.h"
+#include "structure/Manager.h"
 
 namespace rpgenv 
 {
 
-class InputManager
+class InputManager : public Manager<InputManager>
 {
-private:
-    InputManager() = default;
-
 public:
-    static InputManager* Get();
-
     bool isKeyPressed(RPGMAKER::KeyCodes key);
-
-    void Init();
-    void Shutdown();
 
 private:
     sf::Keyboard::Key ConvertKeyCodeToSFML(RPGMAKER::KeyCodes key);

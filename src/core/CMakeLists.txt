@@ -35,6 +35,10 @@ set(lcf_source
     lcf/Map.cpp
     lcf/MapTree.cpp)
 
+set(emu_headers
+    emu_interface/RPGEntryPoint.h
+    emu_interface/RPGMakerInterface.h)
+
 set(serializer_headers
     lcf_serializers/EventCommandSerializer.h
     lcf_serializers/EventCommandSerializerRAPID.h
@@ -54,6 +58,9 @@ set(serializer_source
     lcf_serializers/MapSerializerRAPID.cpp
     lcf_serializers/MapTreeSerializer.cpp)
 
+set(structure_headers
+    structure/Singleton.h)
+
 set(utility_headers utilities/RPGHelper.h)
 set(utility_source utilities/RPGHelper.cpp)
 
@@ -68,6 +75,8 @@ project(core VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Core files for the other t
 
 add_library(core 
     ${lcf_headers} ${lcf_source}
+    ${emu_headers}
+    ${structure_headers}
     ${serializer_headers} ${serializer_source}
     ${utility_headers} ${utility_source}
     ${def_headers})

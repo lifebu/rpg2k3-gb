@@ -10,17 +10,6 @@
 namespace rpgenv
 {
 
-static InputManager* m_Instance = nullptr;
-
-InputManager* InputManager::Get() 
-{
-    if(!m_Instance)
-    {
-        m_Instance = new InputManager();
-    }
-    return m_Instance; 
-}
-
 bool InputManager::isKeyPressed(RPGMAKER::KeyCodes key)
 {
     if(!RenderManager::Get()->isWindowFocused())
@@ -34,16 +23,6 @@ bool InputManager::isKeyPressed(RPGMAKER::KeyCodes key)
     }
 
     return false;
-}
-
-void InputManager::Init() 
-{
-
-}
-
-void InputManager::Shutdown() 
-{
-
 }
 
 sf::Keyboard::Key InputManager::ConvertKeyCodeToSFML(RPGMAKER::KeyCodes key)

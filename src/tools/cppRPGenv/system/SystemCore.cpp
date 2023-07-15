@@ -12,9 +12,9 @@ namespace rpgenv
 SystemCore::SystemCore()
 {
     // construct managers.
-    rpgenv::InputManager::Get();
-    rpgenv::RenderManager::Get();
-    rpgenv::LCFManager::Get();
+    new InputManager();
+    new RenderManager();
+    new LCFManager();
 }
 
 static SystemCore* m_Instance = nullptr;
@@ -87,7 +87,7 @@ void SystemCore::Update()
         }break;
         case States::RUN_EMU:
         {
-            m_Emulator.RPGMain(&m_RPGMakerInterface);
+            m_Emulator.RPGMain();
         }break;
         case States::PROCESS_TEXTBOX:
         {
@@ -107,7 +107,7 @@ void SystemCore::Update()
         }break;
     }
 
-    RenderManager::Get()->Render();
+    renderManager->Render();
 }
 
 void SystemCore::ChangeSystemState(States newState)

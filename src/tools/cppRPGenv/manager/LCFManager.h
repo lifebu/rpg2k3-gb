@@ -5,11 +5,13 @@
 #include <core/lcf/Database.h>
 #include <core/lcf/Map.h>
 
+#include "structure/Manager.h"
+
 namespace rpgenv 
 {
 
 // Manages access and lifetime of lcf files (database, maps).
-class LCFManager
+class LCFManager : public Manager<LCFManager>
 {
 private:
     enum class LoadingPhases
@@ -20,14 +22,7 @@ private:
         LOADING_FINISHED
     };
 
-    LCFManager() = default;
-
 public:
-    static LCFManager* Get();
-
-    void Init();
-    void Shutdown();
-
     void ContinueLoading();
 
     bool isLoadingFinished();

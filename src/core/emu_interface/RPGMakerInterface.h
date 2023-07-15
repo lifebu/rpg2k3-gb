@@ -5,11 +5,12 @@
 
 #include "core/def/RPGMaker.h"
 #include "core/lcf/event/EventCommandFactoryDef.h"
+#include "core/structure/Singleton.h"
 
 namespace rpgenv
 {
 
-class RPGMakerInterface
+class RPGMakerInterface : public Singleton<RPGMakerInterface>
 {
 public:
     // Interaction

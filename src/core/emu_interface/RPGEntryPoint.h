@@ -8,7 +8,7 @@ namespace rpgenv
 class RPGEntryPoint
 {
 public:
-    virtual void RPGMain(RPGMakerInterface* rpgMaker) = 0;
+    virtual void RPGMain() = 0;
 };
 
 };
