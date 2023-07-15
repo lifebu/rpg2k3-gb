@@ -9,7 +9,6 @@
 
 namespace rpgenv
 {
-
 bool InputManager::isKeyPressed(RPGMAKER::KeyCodes key)
 {
     if(!RenderManager::Get()->isWindowFocused())

@@ -1,18 +1,16 @@
 #include "system/SystemCore.h"
 
-#include <memory>
-
 int main (int argc, char* argv[]) 
 {
-    auto systemCore = std::make_unique<rpgenv::SystemCore>();
-    systemCore->Init();
+    rpgenv::SystemCore systemCore;
+    systemCore.Init();
 
-    while (!systemCore->ShouldShutdown())
+    while (!systemCore.ShouldShutdown())
     {
-        systemCore->Update();
+        systemCore.Update();
     }
 
-    systemCore->Shutdown();
+    systemCore.Shutdown();
 
     return 0;
 }

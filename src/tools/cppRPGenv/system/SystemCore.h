@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include <core/structure/Singleton.h>
 
 #include "manager/InputManager.h"
@@ -19,8 +17,6 @@ namespace rpgenv
 class SystemCore : public Singleton<SystemCore>, public IManager
 {
 public:
-    SystemCore();
-
     void Init() override;
     void Shutdown() override;
     void Update() override;
@@ -30,11 +26,10 @@ public:
     void ChangeSystemState(SystemStates newState);
 
 private:
-    std::unique_ptr<InputManager>   m_InputManager;
-    std::unique_ptr<LCFManager>     m_LCFManager;
-    std::unique_ptr<RenderManager>  m_RenderManager;
-    
-    std::unique_ptr<rpgenv::RPGMakerImpl> m_RPGMakerInterface;
+    InputManager   m_InputManager;
+    LCFManager     m_LCFManager;
+    RenderManager  m_RenderManager; 
+    rpgenv::RPGMakerImpl m_RPGMakerInterface;
 
     SystemStateMachine m_SystemStateMachine;
 };
