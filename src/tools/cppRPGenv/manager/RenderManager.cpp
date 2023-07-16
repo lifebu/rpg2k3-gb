@@ -219,8 +219,8 @@ int RenderManager::CloseNumberInput()
 
 void RenderManager::PutPixel(int x, int y, uint32_t value)
 {
-    assert(x > 0 && x < m_PictureTexture.getSize().x 
-        && y > 0 && y < m_PictureTexture.getSize().y);
+    assert(x >= 0 && x < m_PictureTexture.getSize().x 
+        && y >= 0 && y < m_PictureTexture.getSize().y);
 
     uint8_t* valuePtr = reinterpret_cast<uint8_t*>(&value);
     m_PictureTexture.update(valuePtr, 1, 1, x, y);
