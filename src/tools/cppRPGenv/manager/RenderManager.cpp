@@ -1,5 +1,6 @@
 #include "RenderManager.h"
 
+#include <cassert>
 #include <iostream>
 
 namespace rpgenv
@@ -76,7 +77,7 @@ void RenderManager::PollEvents()
 
 void RenderManager::Render() 
 {
-    m_Window.clear(sf::Color(128, 0, 128));
+    m_Window.clear(sf::Color::Black);
 
     // Pictures
     {
@@ -216,4 +217,12 @@ int RenderManager::CloseNumberInput()
     return m_InputBox.GetNumber();
 }
 
+void RenderManager::PutPixel(int x, int y, uint32_t value)
+{
+    assert(x > 0 && x < m_PictureTexture.getSize().x 
+        && y > 0 && y < m_PictureTexture.getSize().y);
+
+    uint8_t* valuePtr = reinterpret_cast<uint8_t*>(&value);
+    m_PictureTexture.update(valuePtr, 1, 1, x, y);
+}
 };

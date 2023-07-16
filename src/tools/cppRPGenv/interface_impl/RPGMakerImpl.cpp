@@ -91,7 +91,14 @@ void RPGMakerImpl::ShowPicture(lcf::ShowPicture::PictureIDType pictureIDType, ui
     lcf::ShowPicture::PosType posType, uint16_t xPos, uint16_t yPos, 
     float red /*= 1.0f*/, float green /*= 1.0f*/, float blue /*= 1.0f*/, float saturation /*= 1.0f*/)
 {
+    // TODO: This is for testing rendering stuff.
+    uint8_t red8 = static_cast<uint8_t>(red * 255.0f);
+    uint8_t green8 = static_cast<uint8_t>(green * 255.0f);
+    uint8_t blue8 = static_cast<uint8_t>(blue * 255.0f);
 
+    sf::Color color = sf::Color(red8, green8, blue8, 255);
+
+    RenderManager::Get()->PutPixel(xPos, yPos, color.toInteger());
 }
 
 // Input

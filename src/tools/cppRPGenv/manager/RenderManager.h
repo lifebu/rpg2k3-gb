@@ -54,6 +54,8 @@ public:
     void MoveSelectedNumber(int delta);
     int CloseNumberInput();
 
+    // Pictures
+    void PutPixel(int x,  int y, uint32_t value);
 
 private:
     sf::RenderWindow m_Window;
