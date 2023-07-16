@@ -27,6 +27,8 @@ void RenderManager::Init()
     m_DebugText.setFont(m_Font);
     m_DebugText.setCharacterSize(24);
     m_DebugText.setFillColor(sf::Color::White);
+    m_DebugText.setOutlineColor(sf::Color::Black);
+    m_DebugText.setOutlineThickness(3.0f);
 
     // Initialize Textbox
     m_TextBox.SetFont(m_Font);
@@ -36,6 +38,28 @@ void RenderManager::Init()
 
     // Initialize InputBox
     m_InputBox.SetFont(m_Font);
+
+    // Pictures
+    if(!m_PictureTexture.loadFromFile(std::string(STATIC_IMAGE_PATH)))
+    {
+        std::cout << "Could not load the texture: " << STATIC_IMAGE_PATH << std::endl;
+        return;
+    }
+    m_PictureTexture.setSmooth(false);
+    m_PictureSprite.setTexture(m_PictureTexture);
+
+    // Set correct scale.
+    auto localBounds = m_PictureSprite.getLocalBounds();
+    float xScale = m_Window.getSize().x / localBounds.width;
+    float yScale = m_Window.getSize().y / localBounds.height;
+    float minScale = std::min(xScale, yScale);
+    m_PictureSprite.setScale(minScale, minScale);
+
+    // Center the picture.
+    auto globalBounds = m_PictureSprite.getGlobalBounds();
+    float missingX = m_Window.getSize().x - globalBounds.width;
+    float missingY = m_Window.getSize().y - globalBounds.height;
+    m_PictureSprite.setPosition(missingX / 2.0f, missingY / 2.0f);
 }
 
 void RenderManager::PollEvents() 
@@ -53,6 +77,11 @@ void RenderManager::PollEvents()
 void RenderManager::Render() 
 {
     m_Window.clear(sf::Color(128, 0, 128));
+
+    // Pictures
+    {
+        m_Window.draw(m_PictureSprite);
+    }
 
     // DebugText
     {

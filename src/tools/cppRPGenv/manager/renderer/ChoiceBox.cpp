@@ -17,8 +17,10 @@ ChoiceBox::ChoiceBox()
     m_Text.setLineSpacing(1.5f);
     m_Text.setCharacterSize(17);
     m_Text.setFillColor(sf::Color::White);
+    m_Text.setOutlineColor(sf::Color::Black);
+    m_Text.setOutlineThickness(2.0f);
 
-    m_Box.setFillColor(sf::Color(0, 0, 128, 200));
+    m_Box.setFillColor(sf::Color(0, 0, 128, 230));
 
     m_SelectionBox.setOutlineColor(sf::Color::White);
     m_SelectionBox.setOutlineThickness(1.0f);
