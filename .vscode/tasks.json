@@ -63,6 +63,27 @@
 		},
 		{
 			"type": "process",
+			"label": "Memory Leak Checking (memcheck)",
+			"command": "valgrind",
+			"args": [
+				"--tool=memcheck",
+				"--leak-check=full",
+				"--show-leak-kinds=all",
+				"${command:cmake.launchTargetPath}",
+				"-g",
+                "playground/Tetris.gb",
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "none",
+			"detail": "Memory error check program by using memcheck"
+		},
+		{
+			"type": "process",
 			"label": "Open CPU profile data (kcachegrind)",
 			"command": "kcachegrind",
 			"args": [

@@ -117,6 +117,26 @@ gb2RPG: Gameboy 2 RPG Maker.
             - Need a better place for all the functions.
 
         - Performance:
+            
+            - Is opening 100.000 XML Documents slower then opening it once and then copying from it?
+                - Probably yes.
+                - currently it takes 30.426.029.952 cycles (30 Billion) to do the work with pokemon yellow.
+                - with no longer creating and destroying 125k times the map templates:
+                    - 
+                
+                - 21% for XML Parsing.
+                    => optimize: only parse once.
+                - 26% is DeepCloneInsertBack.
+                - 24% SafeFile.
+                    => optimize: not human readable.
+                    - 7,6 Billion for human readable
+                    - 3.8 Billion for non-human readable.
+                    => halfed that time :)
+                - 12%: XML Destructor.
+                    => optimize: only open templates once.
+                - 17%: Currently unknown.
+
+
             - 2 MByte Cartidge: 16GB RAM, 2m20s, 1.6GB XML File.
             - Loading the 1.6GB XML file takes up 14.1GB RAM and When Creating it I use up over 16GB!
             - Resulting Binary File is: 95,4 MByte.
@@ -176,7 +196,7 @@ gb2RPG: Gameboy 2 RPG Maker.
                         EndEventProcessing
                     ENDIF
                 
-                - Linear:
+                - Linear:l
                     - To combat the slowness of the system I could reduce VARS_PER_EPAGE.
                 
                 - Linear + Binary:

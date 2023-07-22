@@ -14,6 +14,7 @@ namespace MEMORYSIZES {
     const static int NUM_DMG_RAM_EVENTS = (DMG_RAM_SIZE * 8) / BITS_PER_EVENT_POS + 1;
 
 
+
     // Map-ROM:
     // TODO: which BYTES_PER_VAR values is best?
     // TODO: As a workaround for the large memory usage and large .xml files, BYTES_PER_VAR should be set to 3. This reduces the amount of generated code  for the map ROM drastically (which is the vast majority of the memory usage).

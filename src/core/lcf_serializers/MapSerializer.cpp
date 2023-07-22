@@ -12,6 +12,11 @@
 namespace lcf 
 {
 
+std::unique_ptr<tinyxml2::XMLDocument> MapSerializer::mapTempl;
+std::unique_ptr<tinyxml2::XMLDocument> MapSerializer::eventTempl;
+std::unique_ptr<tinyxml2::XMLDocument> MapSerializer::eventPageTempl;
+std::unique_ptr<tinyxml2::XMLDocument> MapSerializer::eventCommandTempl;
+
 Map MapSerializer::FromFile(std::string fileName) 
 {
     auto file = tinyxml2::XMLDocument(fileName.c_str());
@@ -36,28 +41,36 @@ Map MapSerializer::FromFile(std::string fileName)
 
 void MapSerializer::ToFile(std::string fileName, Map& map) 
 {
-    tinyxml2::XMLDocument mapTempl(TEMPLATES::MAP);
+    // Load templates.
+    mapTempl = std::make_unique<tinyxml2::XMLDocument>(TEMPLATES::MAP);
+    eventTempl = std::make_unique<tinyxml2::XMLDocument>(TEMPLATES::EVENT);
+    eventPageTempl = std::make_unique<tinyxml2::XMLDocument>(TEMPLATES::EVENT_PAGE);
+    eventCommandTempl = std::make_unique<tinyxml2::XMLDocument>(TEMPLATES::EVENT_COMMAND);
     
     // Insert map infos in to the maptree.
+    auto* eventTemplateElement = eventTempl->TraverseElement("/Event");
+    auto* mapInsertionPoint = mapTempl->TraverseElement("/LMU/Map/events");
     for(auto& event : map.events) 
     {
-        // TODO: This does not feel great but greatly reduces memory (because otherwise each iteration influences each other)
-        // TODO: Maybe make a copy of template every iteration?
-        tinyxml2::XMLDocument eventTempl(TEMPLATES::EVENT);
+        eventTemplateElement->DeepCloneInsertBack(mapTempl.get(), mapInsertionPoint);
 
-        auto* eventElement = eventTempl.TraverseElement("/Event");
-        EventToFileImpl(event, &eventTempl, eventElement);
-
-        eventElement->DeepCloneInsertBack(&mapTempl, mapTempl.TraverseElement("/LMU/Map/events"));
+        auto* eventElement = mapInsertionPoint->TraverseElement("\\Event");
+        EventToFileImpl(event, eventElement);
     }
 
     // TODO: compact could be an argument?
     bool compactMode = false;
-    mapTempl.SaveFile(fileName.c_str(), compactMode);
-    if (mapTempl.Error()) 
+    mapTempl->SaveFile(fileName.c_str(), compactMode);
+    if (mapTempl->Error()) 
     {
-        std::cout << mapTempl.ErrorStr() << std::endl;
+        std::cout << mapTempl->ErrorStr() << std::endl;
     }
+
+    // Delete Templates.
+    mapTempl.reset();
+    eventTempl.reset();
+    eventPageTempl.reset();
+    eventCommandTempl.reset();
 }
 
 Event MapSerializer::EventFromFileImpl(tinyxml2::XMLElement* eventElem)
@@ -88,7 +101,7 @@ Event MapSerializer::EventFromFileImpl(tinyxml2::XMLElement* eventElem)
     return newEvent;
 }
 
-void MapSerializer::EventToFileImpl(const Event& elem, tinyxml2::XMLDocument* doc, tinyxml2::XMLElement* eventElem)
+void MapSerializer::EventToFileImpl(const Event& elem, tinyxml2::XMLElement* eventElem)
 {
     // Set Event ID
     eventElem->SetAttribute("id", generateID(elem.id).c_str());
@@ -105,17 +118,14 @@ void MapSerializer::EventToFileImpl(const Event& elem, tinyxml2::XMLDocument* do
     yCoordElem->SetValue(std::to_string(elem.y).c_str());
 
     // Insert Event Pages
+    auto* eventPageTemplateElement = eventPageTempl->TraverseElement("/EventPage");
+    auto* eventInsertionPoint = eventElem->TraverseElement("/pages");
     for(auto& eventPage : elem.eventPages) 
     {
-        // TODO: This does not feel great but greatly reduces memory (because otherwise each iteration influences each other)
-        // TODO: I may need something to cut the pages of the eventElem away before generation? (delete every child in /pages) at the start of this function?
-        // TODO: Maybe make a copy of template every iteration?
-        tinyxml2::XMLDocument eventPageTempl(TEMPLATES::EVENT_PAGE);
-        auto* eventPageElement = eventPageTempl.TraverseElement("/EventPage");
-        EventPageToFileImpl(eventPage, &eventPageTempl, eventPageElement);
+        eventPageTemplateElement->DeepCloneInsertBack(mapTempl.get(), eventInsertionPoint);
 
-
-        eventPageElement->DeepCloneInsertBack(doc, eventElem->TraverseElement("/pages"));
+        auto* eventPageElement = eventInsertionPoint->TraverseElement("\\EventPage");
+        EventPageToFileImpl(eventPage, eventPageElement);
     }
 }
 
@@ -138,24 +148,20 @@ EventPage MapSerializer::EventPageFromFileImpl(tinyxml2::XMLElement* eventPageEl
     return newEventPage;
 }
 
-void MapSerializer::EventPageToFileImpl(const EventPage& elem, tinyxml2::XMLDocument* doc, tinyxml2::XMLElement* eventPageElem)
+void MapSerializer::EventPageToFileImpl(const EventPage& elem, tinyxml2::XMLElement* eventPageElem)
 {
     // Set Event ID
     eventPageElem->SetAttribute("id", generateID(elem.id).c_str());
 
-    int a = elem.eventCommands.size();
     // Add Event Commands
+    auto* eventCommandTemplateElement = eventCommandTempl->TraverseElement("/EventCommand");
+    auto* eventPageInsertionPoint = eventPageElem->TraverseElement("/event_commands");
     for(auto& eventCommand : elem.eventCommands) 
     {
-        // TODO: This does not feel great but greatly reduces memory (because otherwise each iteration influences each other)
-        // TODO: I may need something to cut the commands of the eventPageElem away before generation? (delete every child in /event_commands) at the start of this function?
-        // TODO: Maybe make a copy of template every iteration?
-        tinyxml2::XMLDocument eventCommandTempl(TEMPLATES::EVENT_COMMAND);
+        eventCommandTemplateElement->DeepCloneInsertBack(mapTempl.get(), eventPageInsertionPoint);
 
-        auto* eventCommandElem = eventCommandTempl.TraverseElement("/EventCommand");
-        EventCommandSerializer::ToFileImpl(eventCommand, eventCommandElem);
-
-        eventCommandElem->DeepCloneInsertBack(doc, eventPageElem->TraverseElement("/event_commands"));
+        auto* eventCommandElement = eventPageInsertionPoint->TraverseElement("\\EventCommand");
+        EventCommandSerializer::ToFileImpl(eventCommand, eventCommandElement);
     }
 }
 

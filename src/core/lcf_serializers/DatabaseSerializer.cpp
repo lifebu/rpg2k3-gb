@@ -124,7 +124,9 @@ void DatabaseSerializer::ToFile(std::string fileName, Database& database)
         commoneventElem->DeepCloneInsertBack(&databaseTempl, databaseTempl.TraverseElement("/LDB/Database/commonevents"));
     }
 
-    databaseTempl.SaveFile(fileName.c_str(), false);
+    // TODO: compact could be an argument?
+    bool compactMode = false;
+    databaseTempl.SaveFile(fileName.c_str(), compactMode);
     if (databaseTempl.Error()) 
     {
         std::cout << databaseTempl.ErrorStr() << std::endl;
