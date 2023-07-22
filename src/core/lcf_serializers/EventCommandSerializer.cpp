@@ -94,7 +94,7 @@ void EventCommandSerializer::ToFileImpl(const EventCommand& elem, tinyxml2::XMLE
 
 std::vector<int32_t> EventCommandSerializer::parseParamString(const std::string& paramString) 
 {
-    std::vector<int32_t> params;
+    std::vector<int32_t> params(4); // Testruns have shown average of 2.1 params => Reserve for 4.
 
     std::stringstream stream(paramString);
     std::string temp;
