@@ -162,7 +162,7 @@ namespace ChangeExp
 {
     enum class ActorRange
     {
-        ENTIRE_PARTY = 0,
+        ENTIRE_PARTY = 0, // TODO: Should I support the "Entire Party" Range? Does this even make sense for the emu?
         FIXED_ID = 1,
         VARIABLE_ID = 2
     };

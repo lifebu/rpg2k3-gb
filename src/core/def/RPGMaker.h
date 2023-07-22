@@ -8,6 +8,7 @@
 
 namespace RPGMAKER {
     // Ids:
+    const static int INVALID_ID = 0;
     const static int MIN_ID = 1;
     const static int MAX_ID = 9999;
 

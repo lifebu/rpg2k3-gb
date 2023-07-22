@@ -3,6 +3,7 @@
 #include "utilities/RPGHelper.h"
 
 #include <iostream>
+#include <algorithm>
 
 namespace lcf 
 {
@@ -27,5 +28,33 @@ const uint16_t Map::nextEventID()
     return getNextID(events.size());
 }
 
+Event* Map::GetEventByID(uint16_t id)
+{
+    auto foundIt = std::find_if(events.begin(), events.end(), [id](const Event& a)
+    { 
+        return a.GetID() == id;
+    });
 
+    if(foundIt != events.end())
+    {
+        return &(*foundIt);
+    }
+
+    return nullptr;
+}
+
+Event* Map::GetEventByPosition(uint16_t x, uint16_t y)
+{
+    auto foundIt = std::find_if(events.begin(), events.end(), [x, y](const Event& a)
+    { 
+        return a.x == x && a.y == y;
+    });
+
+    if(foundIt != events.end())
+    {
+        return &(*foundIt);
+    }
+
+    return nullptr;
+}
 }

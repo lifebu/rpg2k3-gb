@@ -30,6 +30,9 @@ public:
     uint16_t HeadID;
     uint16_t AccessoryID;
 
+    // party
+    bool isInParty = false;
+
 private:
     const std::string name;
 };

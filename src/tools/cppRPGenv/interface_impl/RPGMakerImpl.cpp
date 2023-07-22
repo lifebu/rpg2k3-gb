@@ -32,57 +32,163 @@ void RPGMakerImpl::ChangeItem(lcf::ChangeItem::Operation operation,
     lcf::ChangeItem::ItemIDType idType, uint16_t idTypeValue, 
     lcf::ChangeItem::OperandType operandType, uint16_t operand)
 {
-    /*
-    auto* lcfManager = LCFManager::Get();
+    assert(idTypeValue >= RPGMAKER::MIN_ID && idTypeValue <= RPGMAKER::MAX_ID);
 
-    lcf::Item& item = lcfManager->GetDatabase().GetItemByID(idType, idTypeValue);
-    int changeBy = operandType == lcf::ChangeItem::Operation::INCREASE ? : ;
-    */
+    auto* lcfManager = LCFManager::Get();
+    assert(lcfManager);
+
+    lcf::Item* item = lcfManager->GetDatabase().GetItemByID(idTypeValue);
+    assert(item);
+
+    int8_t factor = operation == lcf::ChangeItem::Operation::INCREASE ? 1: -1;
+    item->amount += operand * factor;
 }
 
 void RPGMakerImpl::ChangePartyMember(lcf::ChangePartyMember::Operation operation,
     lcf::ChangePartyMember::ActorIDType actorIDType, uint16_t actorID)
 {
+    assert(actorID >= RPGMAKER::MIN_ID && actorID <= RPGMAKER::MAX_NUM_CHARS);
 
+    auto* lcfManager = LCFManager::Get();
+    assert(lcfManager);
+
+    lcf::Character* character = lcfManager->GetDatabase().GetCharacterByID(actorID);
+    assert(character);
+
+    bool partyValue = operation == lcf::ChangePartyMember::Operation::ADD ? true : false;
+    character->isInParty = partyValue;
 }
 
-void RPGMakerImpl::ChangeEXP(lcf::ChangeExp::ActorRange, uint16_t actorID, 
+void RPGMakerImpl::ChangeEXP(lcf::ChangeExp::ActorRange actorRange, uint16_t actorID, 
     lcf::ChangeExp::Operation operation, lcf::ChangeExp::Operand operand, uint16_t value)
 {
+    assert(actorID >= RPGMAKER::MIN_ID && actorID <= RPGMAKER::MAX_NUM_CHARS);
 
+    auto* lcfManager = LCFManager::Get();
+    assert(lcfManager);
+
+    lcf::Character* character = lcfManager->GetDatabase().GetCharacterByID(actorID);
+    assert(character);
+
+    int8_t factor = operation == lcf::ChangeExp::Operation::INCREASE ? 1: -1;
+    character->exp += value * factor;
 }
 
 void RPGMakerImpl::ChangeParameters(lcf::ChangeParam::ActorRange actorRange, uint16_t actorID, 
     lcf::ChangeParam::Operation operation, lcf::ChangeParam::Parameter parameter, 
     lcf::ChangeParam::Operand operandType, uint16_t operand)
 {
+    assert(actorID >= RPGMAKER::MIN_ID && actorID <= RPGMAKER::MAX_NUM_CHARS);
 
+    auto* lcfManager = LCFManager::Get();
+    assert(lcfManager);
+
+    lcf::Character* character = lcfManager->GetDatabase().GetCharacterByID(actorID);
+    assert(character);
+
+    int8_t factor = operation == lcf::ChangeParam::Operation::INCREASE ? 1: -1;
+    int16_t delta = operand * factor;
+
+    switch(parameter)
+    {
+        case lcf::ChangeParam::Parameter::MAX_HP:
+            character->maxHP += delta;
+            break;
+        case lcf::ChangeParam::Parameter::MAX_MP:
+            character->maxMP += delta;
+            break;
+        case lcf::ChangeParam::Parameter::ATTACK:
+            character->attack += delta;
+            break;
+        case lcf::ChangeParam::Parameter::DEFENSE:
+            character->defense += delta;
+            break;
+        case lcf::ChangeParam::Parameter::MIND:
+            character->mind += delta;
+            break;
+        case lcf::ChangeParam::Parameter::AGILITY:
+            character->agility += delta;
+            break;
+    }
 }
 
 void RPGMakerImpl::ChangeEquipment(lcf::ChangeEquip::ActorRange actorRange, uint16_t actorID, 
     lcf::ChangeEquip::Operation operation, lcf::ChangeEquip::ItemIDType itemIDType, 
     lcf::ChangeEquip::Item whichItem, uint16_t itemID)
 {
+    assert(actorID >= RPGMAKER::MIN_ID && actorID <= RPGMAKER::MAX_NUM_CHARS);
+    assert(itemID >= RPGMAKER::MIN_ID && itemID <= RPGMAKER::MAX_ID);
 
+    auto* lcfManager = LCFManager::Get();
+    assert(lcfManager);
+
+    lcf::Character* character = lcfManager->GetDatabase().GetCharacterByID(actorID);
+    assert(character);
+
+    int16_t resultID = operation == lcf::ChangeEquip::Operation::CHANGE_EQUIPMENT ? itemID : RPGMAKER::INVALID_ID;
+
+    switch(whichItem)
+    {
+        case lcf::ChangeEquip::Item::UNEQUIP_WEAPON:
+            character->WeaponID = resultID;
+            break;
+        case lcf::ChangeEquip::Item::UNEQUIP_SHIELD:
+            character->ShieldID = resultID;
+            break;
+        case lcf::ChangeEquip::Item::UNEQUIP_BODY:
+            character->BodyID = resultID;
+            break;
+        case lcf::ChangeEquip::Item::UNEQUIP_HEAD:
+            character->HeadID = resultID;
+            break;
+        case lcf::ChangeEquip::Item::UNEQUIP_ACCESSORY:
+            character->AccessoryID = resultID;
+            break;
+        case lcf::ChangeEquip::Item::UNEQUIP_ALL:
+            character->WeaponID = resultID;
+            character->ShieldID = resultID;
+            character->BodyID = resultID;
+            character->HeadID = resultID;
+            character->AccessoryID = resultID;
+            break;
+    }
 }
 
 // Events
-void RPGMakerImpl::SetEventLocation(lcf::SetEventLocation::EventIDType eventIDType, 
+void RPGMakerImpl::SetEventLocation(uint16_t eventID, 
     lcf::SetEventLocation::LocationType locationType, uint16_t xPos, uint16_t yPos)
 {
+    assert((eventID >= RPGMAKER::MIN_ID && eventID <= RPGMAKER::MAX_ID) 
+         || eventID == static_cast<uint16_t>(lcf::SetEventLocation::EventIDType::THIS_EVENT_ID));
 
+    auto* lcfManager = LCFManager::Get();
+    assert(lcfManager);
+
+    lcf::Event* event = lcfManager->GetMap().GetEventByID(eventID);
+    assert(event);
+
+    // TODO: Should make sure that the event is not outside of the map.
+    event->x = xPos;
+    event->y = yPos;
 }
 
 uint16_t RPGMakerImpl::GetEventID(lcf::GetEventID::LocationType locationType, 
     uint16_t xPos, uint16_t yPos)
 {
-    return 0;
+    auto* lcfManager = LCFManager::Get();
+    assert(lcfManager);
+
+    lcf::Event* event = lcfManager->GetMap().GetEventByPosition(xPos, yPos);
+    assert(event);
+
+    return event->GetID();
 }
 
 void RPGMakerImpl::CallEvent(lcf::CallEvent::EventType eventType, uint16_t eventID, 
     uint16_t pageNumber)
 {
     // TODO: The code will use this to read the ROM and RAM on the Map, so do not call the actual database but write to the expected variables like the generated code would.
+    // TODO: Unsure how this would work here.
     return;
 }
 

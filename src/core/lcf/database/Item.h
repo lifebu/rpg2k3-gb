@@ -20,10 +20,17 @@ public:
 
     Item(const uint16_t id, const std::string name, const ItemType type);
 
+    uint16_t GetID() const;
+
 private:
+    // static
     const uint16_t id;
     const std::string name;
     const ItemType type;
+
+public:
+    // runtime
+    int amount = 0;
 };
 
 };

@@ -23,4 +23,9 @@ void Event::addEventPage(EventPage& other)
     eventPages.push_back(other);
 }
 
+uint16_t Event::GetID() const
+{ 
+    return id; 
+}
+
 };

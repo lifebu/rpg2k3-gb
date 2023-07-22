@@ -25,7 +25,7 @@ public:
     void ChangePartyMember(lcf::ChangePartyMember::Operation operation, 
         lcf::ChangePartyMember::ActorIDType actorIDType, uint16_t actorID) override;
 
-    void ChangeEXP(lcf::ChangeExp::ActorRange, uint16_t actorID, 
+    void ChangeEXP(lcf::ChangeExp::ActorRange actorRange, uint16_t actorID, 
         lcf::ChangeExp::Operation operation, lcf::ChangeExp::Operand operand, uint16_t value) override;
 
     void ChangeParameters(lcf::ChangeParam::ActorRange actorRange, uint16_t actorID, 
@@ -41,7 +41,7 @@ public:
     // Events
     // IF locationType = CONSTANT => xPos and yPos are positions
     // IF locationType = VARIABLE_IDS => xPos and yPos are Variable IDs
-    void SetEventLocation(lcf::SetEventLocation::EventIDType eventIDType, 
+    void SetEventLocation(uint16_t eventID, 
         lcf::SetEventLocation::LocationType locationType, uint16_t xPos, uint16_t yPos) override;
 
     // IF locationType = CONSTANT => xPos and yPos are positions

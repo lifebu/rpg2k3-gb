@@ -23,8 +23,33 @@ CppRPGEnv: C++-RPG Maker Environment
         - ShowPicture():
             Should be in RPGMaker coordinates.
         - If I have a more simplified interface I need to document the transformation from the easier interface to the actual RPGMaker commands.
+        - Think about how some information can be infered with the compiler later.
+            - If this can be infered, than I don't need to set it here.
+        
+        - example:
+        ShowPicture(pictureID, x, y, r, g, b).
+        - pictureID or x,y can be either be constants or variables.
+        => 4 overloads:
+        rpgMaker->ShowPicture(pictureID, x, y, Vector3(0.5f, 0.5f, 0.5f)); // var id, var pos
+        rpgMaker->ShowPicture(0, x, y, Vector3(0.5f, 0.5f, 0.5f));         // const id, var pos
+        rpgMaker->ShowPicture(pictureID, 0, 0, Vector3(0.5f, 0.5f, 0.5f)); // var id, const pos
+        rpgMaker->ShowPicture(0, 0, 0, Vector3(0.5f, 0.5f, 0.5f));         // const id, const pos
+        All of those overloads can be easily detected by the compiler.
     
     - Think about how I want to handle the RPGMaker variables.
+
+    - Should I rename character to actor?
+
+    - How do I handle event calls?
+        - Every function I will write in the emu are common events.
+        - The call of those functions is done by the compiler.
+        - But how Do I handle event calls?
+            - 1. Call DMG_ROM: => Call a function that returns the value you want to read from the rom to a ocation in DMG ROM (like the one I generate).
+            - 2. Call MAP_ROM: => Call a function that returns the value you want to read from the rom to a location in Cartridge ROM (like the one I generate).
+            - 3. Call MAP_RAM: => NOOP.
+    
+    - To reduce loading times add serializer flags to the database and map serializer:
+        - Flags allow you to skip loading the variables, switches and map events commands.
                 
 
 - Interface:

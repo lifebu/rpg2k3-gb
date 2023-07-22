@@ -12,4 +12,8 @@ Item::Item(const uint16_t id, const std::string name, const ItemType type) :
     assert(1 <= id < RPGMAKER::MAX_NUM_ITEMS);
 }
 
+uint16_t Item::GetID() const
+{
+    return id;
+}
 };

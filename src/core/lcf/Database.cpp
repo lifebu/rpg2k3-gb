@@ -1,5 +1,7 @@
 #include "Database.h"
 
+#include <algorithm>
+
 #include "utilities/RPGHelper.h"
 
 namespace lcf 
@@ -70,4 +72,33 @@ void Database::addCommonEvent(const CommonEvent& newCommonEvent)
     commonEvents.push_back(newCommonEvent);
 }
 
+Item* Database::GetItemByID(uint16_t id)
+{
+    auto foundIt = std::find_if(items.begin(), items.end(), [id](const Item& a)
+    { 
+        return a.GetID() == id;
+    });
+
+    if(foundIt != items.end())
+    {
+        return &(*foundIt);
+    }
+
+    return nullptr;
+}
+
+Character* Database::GetCharacterByID(int16_t id)
+{
+    auto foundIt = std::find_if(characters.begin(), characters.end(), [id](const Character& a)
+    { 
+        return a.id == id;
+    });
+    
+    if(foundIt != characters.end())
+    {
+        return &(*foundIt);
+    }
+
+    return nullptr;
+}
 };

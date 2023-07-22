@@ -20,9 +20,12 @@ public:
     EventPage& addEventPage();
     void addEventPage(EventPage& other);
 
+    uint16_t GetID() const;
+
 public:
     uint16_t x;
     uint16_t y;
+
 private:
     uint16_t id;
     std::string name;

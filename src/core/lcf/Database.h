@@ -33,6 +33,9 @@ public:
     void addCommonEvents(const std::vector<CommonEvent>& newCommonEvents);
     void addCommonEvent(const CommonEvent& command);
 
+    Item* GetItemByID(uint16_t id);
+    Character* GetCharacterByID(int16_t id);
+
 private:
     std::vector<Switch> switches;
     std::vector<Variable> variables;
