@@ -179,18 +179,19 @@ std::vector<lcf::EventCommand> Map::setupMapRomHeader(int numLabels)
     // Empty comment
     //mapRomHeader.push_back(lcf::EventCommandFactory::GenFirstLineComment(""));
 
+    assert(mapRomHeader.size() == MEMORYSIZES::MAP_ROM_HEADER_COUNT);
     return mapRomHeader;
 }
 
 std::vector<lcf::EventCommand> Map::setupMapRomLabel(int labelID, int numLabels, int firstVar, int secondVar) 
 {
-    std::vector<lcf::EventCommand> mapRomHeader;
+    std::vector<lcf::EventCommand> mapRomLabel;
 
     // Label X
-    mapRomHeader.push_back(lcf::EventCommandFactory::GenLabel(labelID));
+    mapRomLabel.push_back(lcf::EventCommandFactory::GenLabel(labelID));
 
     // IF(LabelID < X)
-    mapRomHeader.push_back(lcf::EventCommandFactory::GenConditionalBranch(
+    mapRomLabel.push_back(lcf::EventCommandFactory::GenConditionalBranch(
         lcf::ConditionalBranch::Type::VARIABLE,
         VARMAPPING::LABEL_ID, 
         lcf::ConditionalBranch::RHSType::USE_CONSTANT, labelID, 
@@ -201,22 +202,22 @@ std::vector<lcf::EventCommand> Map::setupMapRomLabel(int labelID, int numLabels,
     if(labelID == 1) 
     {
         // The first MapRomLabel does not need to jump here, instead change the command to EndEventProcessing
-        mapRomHeader.push_back(lcf::EventCommandFactory::GenEndEventProcessing());
+        mapRomLabel.push_back(lcf::EventCommandFactory::GenEndEventProcessing());
     }
     else 
     {
         int newID = labelID - ceil(minDistance/2.0f);
-        mapRomHeader.push_back(lcf::EventCommandFactory::GenJumpToLabel(newID));
+        mapRomLabel.push_back(lcf::EventCommandFactory::GenJumpToLabel(newID));
     }
 
     // NOOP
-    //mapRomHeader.push_back(lcf::EventCommandFactory::GenNoOp());
+    //mapRomLabel.push_back(lcf::EventCommandFactory::GenNoOp());
 
     // ENDIF
-    mapRomHeader.push_back(lcf::EventCommandFactory::GenEndBranch());
+    mapRomLabel.push_back(lcf::EventCommandFactory::GenEndBranch());
 
     // IF(LabelID > X)
-    mapRomHeader.push_back(lcf::EventCommandFactory::GenConditionalBranch(
+    mapRomLabel.push_back(lcf::EventCommandFactory::GenConditionalBranch(
         lcf::ConditionalBranch::Type::VARIABLE,
         VARMAPPING::LABEL_ID, 
         lcf::ConditionalBranch::RHSType::USE_CONSTANT, labelID, 
@@ -226,22 +227,22 @@ std::vector<lcf::EventCommand> Map::setupMapRomLabel(int labelID, int numLabels,
     if(labelID == numLabels) 
     {
         // The last MapRomLabel does not need to jump here, instead change the command to EndEventProcessing.
-        mapRomHeader.push_back(lcf::EventCommandFactory::GenEndEventProcessing());
+        mapRomLabel.push_back(lcf::EventCommandFactory::GenEndEventProcessing());
     } 
     else 
     {
         int newID = labelID + ceil(minDistance/2.0f);
-        mapRomHeader.push_back(lcf::EventCommandFactory::GenJumpToLabel(newID));
+        mapRomLabel.push_back(lcf::EventCommandFactory::GenJumpToLabel(newID));
     }
 
     // NOOP
-    //mapRomHeader.push_back(lcf::EventCommandFactory::GenNoOp());
+    //mapRomLabel.push_back(lcf::EventCommandFactory::GenNoOp());
 
     // ENDIF
-    mapRomHeader.push_back(lcf::EventCommandFactory::GenEndBranch());
+    mapRomLabel.push_back(lcf::EventCommandFactory::GenEndBranch());
 
     // READVAR1 = LABELXVALUE1
-    mapRomHeader.push_back(lcf::EventCommandFactory::GenControlVariable(
+    mapRomLabel.push_back(lcf::EventCommandFactory::GenControlVariable(
         lcf::ControlVariable::Type::SINGLE_VARIABLE,
         VARMAPPING::READ_VAR_1, VARMAPPING::READ_VAR_1,
         lcf::ControlVariable::Operation::OPERATION_SET,
@@ -249,7 +250,7 @@ std::vector<lcf::EventCommand> Map::setupMapRomLabel(int labelID, int numLabels,
         firstVar, 0));
 
     // READVAR2 = LABELXVALUE2
-    mapRomHeader.push_back(lcf::EventCommandFactory::GenControlVariable(
+    mapRomLabel.push_back(lcf::EventCommandFactory::GenControlVariable(
         lcf::ControlVariable::Type::SINGLE_VARIABLE,
         VARMAPPING::READ_VAR_2, VARMAPPING::READ_VAR_2,
         lcf::ControlVariable::Operation::OPERATION_SET,
@@ -257,7 +258,8 @@ std::vector<lcf::EventCommand> Map::setupMapRomLabel(int labelID, int numLabels,
         secondVar, 0));
     
     // End Event Processing
-    mapRomHeader.push_back(lcf::EventCommandFactory::GenEndEventProcessing());
+    mapRomLabel.push_back(lcf::EventCommandFactory::GenEndEventProcessing());
 
-    return mapRomHeader;
+    assert(mapRomLabel.size() == MEMORYSIZES::MAP_ROM_LABEL_COUNT);
+    return mapRomLabel;
 }

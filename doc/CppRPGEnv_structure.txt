@@ -3,8 +3,6 @@ CppRPGEnv: C++-RPG Maker Environment
         - Plattform Code that runs my code (kinda like engine).
 
 - To-Do:
-    - Implement Code that changes the LCFData.
-
     - Clean up the Renderer classes:
         - The 3 Rendererclasses (ChoiceBox, InputBox and TextBox) share a lot of code just have it in the RenderManager.
             
@@ -41,16 +39,25 @@ CppRPGEnv: C++-RPG Maker Environment
     - Should I rename character to actor?
 
     - How do I handle event calls?
-        - Every function I will write in the emu are common events.
-        - The call of those functions is done by the compiler.
-        - But how Do I handle event calls?
-            - 1. Call DMG_ROM: => Call a function that returns the value you want to read from the rom to a ocation in DMG ROM (like the one I generate).
-            - 2. Call MAP_ROM: => Call a function that returns the value you want to read from the rom to a location in Cartridge ROM (like the one I generate).
+        - How Do I handle map event calls?
+
+            - 1. & 2. Call MAP_ROM & DMG_ROM: 
+                - Call a function that returns the value you want to read from the rom to a location in Cartridge ROM (like the one I generate).
+                - Simplest version: 
+                    - Size of the MapRomHeader and MapRomLabel are known 
+                    - use MEMORYSIZES::MAP_ROM_HEADER_COUNT and MEMORYSIZES::MAP_ROM_LABEL_COUNT
+                    - use that to calculate which command to look into in the event to get the data.
+            
             - 3. Call MAP_RAM: => NOOP.
+                - For that I need to know if the called event is a map-ram, how?
     
     - To reduce loading times add serializer flags to the database and map serializer:
         - Flags allow you to skip loading the variables, switches and map events commands.
                 
+    - Parameter strings are wrong!
+        - Is this when I generate the xml?
+            => It is broken there somehow.
+        - Or when I parse them?
 
 - Interface:
     - RPG Maker Commands:

@@ -108,9 +108,10 @@ std::vector<int32_t> EventCommandSerializer::parseParamString(const std::string&
 std::string EventCommandSerializer::generateParamString(const std::vector<int32_t>& params) 
 {
     std::string paramString = "";
-    for (auto& param : params) 
+    for (int i = 0; i < params.size(); ++i) 
     {
-        std::string emptySpace = param != params.back() ? " " : "";
+        std::string emptySpace = i < (params.size() - 1)  ? " " : "";
+        int32_t param = params.at(i);
         paramString.append(std::to_string(param) + emptySpace);
     }
 

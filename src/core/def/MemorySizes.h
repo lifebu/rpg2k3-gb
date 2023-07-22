@@ -38,6 +38,10 @@ namespace MEMORYSIZES {
     "VARS_PER_EPAGE needs to be in Range [VARS_PER_READWRITE, MAX_LABELS_PER_EPAGE]");
     // How many Bytes one event-page is responsible for. This is needed for converting Gameboy Addresses to EventIDs and Per Event-Page ByteOffsets.
     const static int BYTES_PER_EPAGE = VARS_PER_EPAGE * BYTES_PER_VAR;
+    // How many commands the map rom header has.
+    const static int MAP_ROM_HEADER_COUNT = 4;
+    // How many commands the map rom label has.
+    const static int MAP_ROM_LABEL_COUNT = 10;
 
 
     // CHARA-RAM:
