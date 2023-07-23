@@ -4,16 +4,23 @@
 #include "manager/LCFManager.h"
 #include "manager/RenderManager.h"
 
+#include <iostream>
+
 namespace rpgenv
 {
 
-SystemStateMachine::SystemStateMachine() 
+const static std::string ERR_LOADING_FAILED = "Error: Loading Failed. Check previous Errors.\n";
+const static std::string ERR_GB_PANIC = "GB Panic: Cannot continue.\n"
+                                        "Pleace check logs for more details.";
+
+SystemStateMachine::SystemStateMachine()
 {
     AddUpdateFunction(SystemStates::LOADING,                [this](){ UpdateLoadingState(); });
     AddUpdateFunction(SystemStates::RUN_EMU,                [this](){ UpdateRunEmuState(); });
     AddUpdateFunction(SystemStates::PROCESS_TEXTBOX,        [this](){ UpdateTextboxState(); });
     AddUpdateFunction(SystemStates::PROCESS_CHOICES,        [this](){ UpdateChoiceState(); });
     AddUpdateFunction(SystemStates::PROCESS_NUMBER_INPUT,   [this](){ UpdateInputState(); });
+    AddUpdateFunction(SystemStates::GB_PANIC,               [    ](){ });
 }
 
 void SystemStateMachine::UpdateLoadingState() 
@@ -23,10 +30,17 @@ void SystemStateMachine::UpdateLoadingState()
 
     renderManager->ShowDebugText("Loading...");
     lcfManager->ContinueLoading();
-    if(lcfManager->isLoadingFinished())
+    if(lcfManager->IsLoadingFinished())
     {
         renderManager->ShowDebugText("");
         ChangeState(SystemStates::RUN_EMU);
+    }
+
+    if(lcfManager->HadLoadingErrors())
+    {
+        std::cout << ERR_LOADING_FAILED << std::endl;
+        RenderManager::Get()->OpenTextBox(ERR_GB_PANIC);
+        ChangeState(SystemStates::GB_PANIC);
     }
 }
 

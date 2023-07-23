@@ -4,10 +4,22 @@
 #define GET_VARIABLE_NAME(Variable) (#Variable)
 
 // Defines the mapping of the variables used in RPG Maker.
-namespace VARMAPPING {
-    const static int BYTE_OFFSET_ID = 1;
-    const static int LABEL_ID = 2;
-    const static int READ_VAR_1 = 3;
+enum class VARMAPPING : int
+{
+    BYTE_OFFSET_ID = 1,
+    LABEL_ID = 2,
+    READ_VAR_1 = 3,
     // Second Variable is overhead for the case that a 2-Byte R/W Op needs the last Byte of the first Var and the next byte.
-    const static int READ_VAR_2 = 4;
+    READ_VAR_2 = 4,
+    
+    COUNT
+};
+
+static const char* VARMAPPING_NAMES[] = 
+{
+    "", 
+    "BYTE_OFFSET_ID", 
+    "LABEL_ID", 
+    "READ_VAR_1", 
+    "READ_VAR_2"
 };

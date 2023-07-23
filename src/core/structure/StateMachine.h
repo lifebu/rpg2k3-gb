@@ -40,6 +40,11 @@ public:
         foundIt->second();
     }
 
+    bool IsInState(T newState)
+    {
+        return m_CurrState == newState;
+    }
+
 protected:
     void AddUpdateFunction(T state, std::function<void()> func)
     {

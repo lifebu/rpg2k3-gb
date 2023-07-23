@@ -20,19 +20,22 @@ private:
         NOT_LOADED,
         LOADING_DATABASE,
         LOADING_MAP,
+        LOADING_ERROR,
         LOADING_FINISHED
     };
 
 public:
     void ContinueLoading();
 
-    bool isLoadingFinished();
+    bool IsLoadingFinished();
+    bool HadLoadingErrors();
 
     lcf::Database& GetDatabase();
     lcf::Map& GetMap();
 
 private:
     LoadingPhases m_LoadingPhases = LoadingPhases::NOT_LOADED;
+    bool m_HadLoadingError = false;
 
     lcf::Database m_Database;
     lcf::Map m_Map;

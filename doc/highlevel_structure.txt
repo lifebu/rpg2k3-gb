@@ -4,6 +4,9 @@ Learnings:
   - Other C++ Tools: Static Code Analysis and Linting, Format, Unit Test Integration (CMake + Catch2).
   - Data-oriented Design.
 
+To-Do:
+  - Add a packaging step to the CMake setup.
+
 Use-Time:
   Main-Tool (gb2rpg.exe) that has simple CLI.
   1) Create RPG Maker Project:

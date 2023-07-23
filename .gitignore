@@ -37,6 +37,9 @@ templates/project/ultimate_rt_eb.dll
 project/*
 *.gb
 
+## Packaged Version
+package/*
+
 ## completed build files in the main folder
 easyrpg-player
 lcf2xml

@@ -10,12 +10,14 @@
 #include <tuple>
 #include <iostream>
 #include <fstream>
+#include <filesystem>
 
+namespace fs = std::filesystem;
 using namespace gb2rpg;
 
 const static std::string WARN_NO_SWITCH_NAMES = "Info: Could not find 'project/switch_names.txt'. Using default names for switches instead.\n";
 const static std::string WARN_NO_VAR_NAMES = "Info: Could not find 'project/var_names.txt'. Using default names for variables instead.\n";
-const static std::string WARN_NO_COMMON_EVENTS = "Info: Could not find 'project/common_events.xml'. Skipping common events.\n";
+const static std::string WARN_NO_COMMON_EVENTS = "Info: Could not find 'project/common_events.xml'. No generated code will be added to the project.\n";
 
 
 
@@ -40,10 +42,16 @@ void Database::genSwitches(lcf::Database& database) {
     std::ifstream nameFile(GLOBALS::PROJECT::PROJECT_DIR + GLOBALS::PROJECT::SWITCH_NAMES);
     if(!nameFile.is_open()) std::cout << WARN_NO_SWITCH_NAMES;
 
-    for(int id = 1; id < RPGMAKER::MAX_NUM_SWITCHES; ++id) {
-        // Use a file that supplies names or use default names.
-        std::string name = "SW" + generateID(id);
-        if(nameFile.is_open()) nameFile >> name;
+    for(int id = RPGMAKER::MIN_ID; id < RPGMAKER::MAX_NUM_SWITCHES; ++id) {
+        std::string name;
+        // use supplied names
+        if(nameFile.is_open()) {
+            nameFile >> name;
+        }
+        // use default names
+        else {
+            name = "SW" + generateID(id);
+        }
 
         database.addSwitch(name);
     }
@@ -53,11 +61,21 @@ void Database::genVariables(lcf::Database& database) {
     std::ifstream nameFile(GLOBALS::PROJECT::PROJECT_DIR + GLOBALS::PROJECT::VAR_NAMES);
     if(!nameFile.is_open()) std::cout << WARN_NO_VAR_NAMES;
 
-    for(int id = 1; id < RPGMAKER::MAX_NUM_VARIABLES; ++id) {
-        // Use a file that supplies names or use default names.
-        std::string name = "VAR" + generateID(id);
-        if(nameFile.is_open()) nameFile >> name;
-
+    for(int id = RPGMAKER::MIN_ID; id < RPGMAKER::MAX_NUM_VARIABLES; ++id) {
+        std::string name;
+        // Use names from static variable mapping
+        if (id < static_cast<int>(VARMAPPING::COUNT)) {
+            name = VARMAPPING_NAMES[id];
+        }
+        // use supplied names
+        else if (nameFile.is_open()) {
+            nameFile >> name;
+        }
+        // use default names
+        else {
+            name = "VAR" + generateID(id);
+        }
+        
         database.addVariable(name);
     }
 }
@@ -107,9 +125,13 @@ void Database::genCharacters(lcf::Database& database) {
 }
 
 void Database::genCommonEvents(lcf::Database& database) {
-    
-    // TODO: check if file exists
-    std::vector<lcf::CommonEvent> commonEvents = lcf::CommonEventSerializer::MultipleFromFile(GLOBALS::PROJECT::PROJECT_DIR + GLOBALS::PROJECT::COMMON_EVENTS);
+    std::string filePath = GLOBALS::PROJECT::PROJECT_DIR + GLOBALS::PROJECT::COMMON_EVENTS;
+    if(!fs::exists({filePath})) {
+        std::cout << WARN_NO_COMMON_EVENTS;
+        return;
+    }
+
+    std::vector<lcf::CommonEvent> commonEvents = lcf::CommonEventSerializer::MultipleFromFile(filePath);
 
     database.addCommonEvents(commonEvents);
 }

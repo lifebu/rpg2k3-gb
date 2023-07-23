@@ -100,7 +100,8 @@
         "stack": "cpp",
         "__verbose_abort": "cpp",
         "valarray": "cpp",
-        "*.in": "cpp"
+        "*.in": "cpp",
+        "filesystem": "cpp"
     },
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }

@@ -21,6 +21,8 @@ enum class SystemStates : int
     PROCESS_CHOICES,
     // Processing a textbox with a number input. The emulator will not be updated.
     PROCESS_NUMBER_INPUT,
+    // An error was detected and we abort.
+    GB_PANIC,
 
     STATES_NUM
 };

@@ -9,11 +9,13 @@
 
 int main (int argc, char* argv[]) 
 {
-    gb2rpg::ProjectGenerator::cleanProjectFolder();    
-
     gb2rpg::CLIOptions cli = gb2rpg::CLIOptions(argc, argv);
     if(cli.shouldEnd()) return 0;
     
+    gb2rpg::ProjectGenerator::cleanProjectFolder(); 
+
+    if(cli.stopAfterClean()) return 0;
+
     gb2rpg::GBFileGenerator gbGen;
     std::vector<gb2rpg::GBFile> gbFiles = gbGen.genGBFiles(cli);
     if(gbGen.hadErrors()) return 0;
