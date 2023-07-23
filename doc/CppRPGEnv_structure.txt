@@ -3,16 +3,7 @@ CppRPGEnv: C++-RPG Maker Environment
         - Plattform Code that runs my code (kinda like engine).
 
 - To-Do:
-    - Clean up the Renderer classes:
-        - The 3 Rendererclasses (ChoiceBox, InputBox and TextBox) share a lot of code just have it in the RenderManager.
-            
-        - I can more clearly seperate the Render stuff from the Logic of moving the textbox.
-            - Most of the code of the textbox seems to belong more to actual game logic not rendering.
-            - currently a lot of those classes have some game logic and some render logic.
-            - Maybe some of the "game logic" stuff either wanders into a seperate manager or is part of the RPGMakerInterface?
-
-        - Initialization based on the view does not need to happen when you open Textboxes etc. it can happen once and be done once IFF the view could change (which it cannot).
-
+    Next:
     - Think again about the Interface.
         - Currently it is a 1-to-1 mapping to the commands in RPG Maker that are not basic logic features.
         - Think about how it would be easiest to use.
@@ -55,13 +46,7 @@ CppRPGEnv: C++-RPG Maker Environment
             
             - 3. Call MAP_RAM: => NOOP.
                 - For that I need to know if the called event is a map-ram, how?
-    
-    - To reduce loading times add serializer flags to the database and map serializer:
-        - Flags allow you to skip loading the variables, switches and map events commands.
-        - Think again what the Environment actually needs to load from the generated files.
-            - No CommonEvents.
-            - No Variables and Switches.
-                  
+                
     - I need a better log/error system for my code base.
         - logfile.
         - ImGUI.
@@ -69,6 +54,24 @@ CppRPGEnv: C++-RPG Maker Environment
                 https://github.com/SFML/imgui-sfml
         - MessageBox: To inform about errors existing.
         - cout.
+
+    Later:
+    - Clean up the Renderer classes:
+        - The 3 Rendererclasses (ChoiceBox, InputBox and TextBox) share a lot of code just have it in the RenderManager.
+            
+        - I can more clearly seperate the Render stuff from the Logic of moving the textbox.
+            - Most of the code of the textbox seems to belong more to actual game logic not rendering.
+            - currently a lot of those classes have some game logic and some render logic.
+            - Maybe some of the "game logic" stuff either wanders into a seperate manager or is part of the RPGMakerInterface?
+
+        - Initialization based on the view does not need to happen when you open Textboxes etc. it can happen once and be done once IFF the view could change (which it cannot).
+
+    - To reduce loading times add serializer flags to the database and map serializer:
+        - Flags allow you to skip loading the variables, switches and map events commands.
+        - Think again what the Environment actually needs to load from the generated files.
+            - No CommonEvents.
+            - No Variables and Switches.
+
 
 - Interface:
     - RPG Maker Commands:
