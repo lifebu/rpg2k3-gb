@@ -9,7 +9,6 @@
 namespace rpgenv
 {
 
-const static std::string ERR_LOADING_FAILED = "Error: Loading Failed. Check previous Errors.\n";
 const static std::string ERR_GB_PANIC = "GB Panic: Cannot continue.\n"
                                         "Pleace check logs for more details.";
 
@@ -38,7 +37,7 @@ void SystemStateMachine::UpdateLoadingState()
 
     if(lcfManager->HadLoadingErrors())
     {
-        std::cout << ERR_LOADING_FAILED << std::endl;
+        std::cout << ERR_GB_PANIC << std::endl;
         RenderManager::Get()->OpenTextBox(ERR_GB_PANIC);
         ChangeState(SystemStates::GB_PANIC);
     }

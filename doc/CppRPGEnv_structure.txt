@@ -35,6 +35,11 @@ CppRPGEnv: C++-RPG Maker Environment
         All of those overloads can be easily detected by the compiler.
     
     - Think about how I want to handle the RPGMaker variables.
+        - Some variables are only used by the compiler and generated stack frames, based on the variables I declare in the c++ code.
+        - This is irrelevant for the actual emulator code.
+        - So probably the only variables I have and want to interact with are the hardcoded once.
+        - They are used for the generated code.
+        - I can detect in the compiler that I am accessing these hardcoded globale variables.
 
     - Should I rename character to actor?
 
@@ -53,22 +58,16 @@ CppRPGEnv: C++-RPG Maker Environment
     
     - To reduce loading times add serializer flags to the database and map serializer:
         - Flags allow you to skip loading the variables, switches and map events commands.
-                
-    
+        - Think again what the Environment actually needs to load from the generated files.
+            - No CommonEvents.
+            - No Variables and Switches.
+                  
     - I need a better log/error system for my code base.
         - logfile.
         - ImGUI.
+            - Imgui and SFML:
+                https://github.com/SFML/imgui-sfml
         - MessageBox: To inform about errors existing.
-        - cout.
-
-    - The Environment should have a print system.
-        - That system prints errors into cout and as the DebugMessages on Screen.
-        - Would be nice to have a viewable log in the environment itself.
-        - You can show the log somehow. Maybe even integrate Dear ImGUI?
-    
-    - Generally having a better way to display errors / logs in both systems would be nice.
-        - logfile.
-        - ImGUI.
         - cout.
 
 - Interface:
