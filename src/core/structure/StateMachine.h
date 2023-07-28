@@ -34,6 +34,9 @@ public:
 
     void Update()
     {
+        if(m_AnyUpdateFunction)
+            m_AnyUpdateFunction();
+
         auto foundIt = m_UpdateFunctions.find(m_CurrState);
         assert(foundIt != m_UpdateFunctions.end());
 
@@ -46,6 +49,11 @@ public:
     }
 
 protected:
+    void SetAnyUpdateFunction(std::function<void()> func)
+    {
+        m_AnyUpdateFunction = func;
+    }
+
     void AddUpdateFunction(T state, std::function<void()> func)
     {
         m_UpdateFunctions[state] = func;
@@ -58,6 +66,8 @@ protected:
 
 private:
     T m_CurrState;
+    // Called regardless of what state we are in.
+    std::function<void()> m_AnyUpdateFunction;                      
     std::map<T, std::function<void()>> m_UpdateFunctions;
     std::map<std::pair<T, T>, std::function<void()>> m_Transitions;
 };

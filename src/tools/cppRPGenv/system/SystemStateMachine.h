@@ -37,6 +37,7 @@ private:
     // State Transitions
 
     // State Functions
+    void UpdateAnyState();
     void UpdateLoadingState();
     void UpdateRunEmuState();
     void UpdateTextboxState();

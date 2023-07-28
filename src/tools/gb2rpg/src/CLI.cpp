@@ -3,6 +3,8 @@
 #include <iostream>
 #include <algorithm>
 
+#include "core/structure/Logger.h"
+
 using namespace gb2rpg;
 
 const static std::string VERSION_STRING = "0.1\n";
@@ -23,7 +25,7 @@ CLIOptions::CLIOptions(int argc, char* argv[])
     parseArguments(argc, argv);
 
     // TODO: This is spaghetti.
-    if(filePaths.size() > 1) {std::cout << ERR_TO_MANY_GB_FILES; error = true;}
+    if(filePaths.size() > 1) { Logger::Get()->Log(ERR_TO_MANY_GB_FILES, LogLevel::ERROR); error = true;}
     if(printVersion) std::cout << VERSION_STRING;
     if(printHelp || (!printHelp && !printVersion && !cleanProjectFolder && filePaths.empty())) std::cout << HELP_STRING;
 

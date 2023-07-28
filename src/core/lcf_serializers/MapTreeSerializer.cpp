@@ -3,6 +3,8 @@
 #include "Templates.h"
 
 #include "utilities/RPGHelper.h"
+#include "structure/Logger.h"
+
 #include "thirdparty/tinyxml2/tinyxml2.h"
 
 #include <iostream>
@@ -15,7 +17,7 @@ MapTree MapTreeSerializer::FromFile(std::string fileName)
     auto file = tinyxml2::XMLDocument(fileName.c_str());
     if (file.Error()) 
     {
-        std::cout << file.ErrorStr() << std::endl;
+        Logger::Get()->Log(file.ErrorStr(), LogLevel::ERROR);
         return MapTree(0);
     }
 
@@ -55,7 +57,7 @@ void MapTreeSerializer::ToFile(std::string fileName, MapTree& mapTree)
     mapTreeTempl.SaveFile(fileName.c_str(), false);
     if (mapTreeTempl.Error()) 
     {
-        std::cout << mapTreeTempl.ErrorStr() << std::endl;
+        Logger::Get()->Log(mapTreeTempl.ErrorStr(), LogLevel::ERROR);
     }
 }
 

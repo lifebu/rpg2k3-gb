@@ -46,14 +46,6 @@ CppRPGEnv: C++-RPG Maker Environment
             
             - 3. Call MAP_RAM: => NOOP.
                 - For that I need to know if the called event is a map-ram, how?
-                
-    - I need a better log/error system for my code base.
-        - logfile.
-        - ImGUI.
-            - Imgui and SFML:
-                https://github.com/SFML/imgui-sfml
-        - MessageBox: To inform about errors existing.
-        - cout.
 
     Later:
     - Clean up the Renderer classes:

@@ -5,6 +5,8 @@
 #include "EventCommandSerializer.h"
 
 #include "utilities/RPGHelper.h"
+#include "structure/Logger.h"
+
 #include "thirdparty/tinyxml2/tinyxml2.h"
 
 #include <iostream>
@@ -22,7 +24,7 @@ Map MapSerializer::FromFile(std::string fileName)
     auto file = tinyxml2::XMLDocument(fileName.c_str());
     if (file.Error()) 
     {
-        std::cout << file.ErrorStr() << std::endl;
+        Logger::Get()->Log(file.ErrorStr(), LogLevel::ERROR);
         return Map(0);
     }
 
@@ -63,7 +65,7 @@ void MapSerializer::ToFile(std::string fileName, Map& map)
     mapTempl->SaveFile(fileName.c_str(), compactMode);
     if (mapTempl->Error()) 
     {
-        std::cout << mapTempl->ErrorStr() << std::endl;
+        Logger::Get()->Log(mapTempl->ErrorStr(), LogLevel::ERROR);
     }
 
     // Delete Templates.

@@ -1,5 +1,7 @@
 #include "RenderManager.h"
 
+#include "core/structure/Logger.h"
+
 #include <cassert>
 #include <iostream>
 
@@ -21,7 +23,7 @@ void RenderManager::Init()
     
     if(!m_Font.loadFromFile(std::string(FONT_PATH)))
     {
-        std::cout << "Could not load the font: " << FONT_PATH << std::endl;
+        Logger::Get()->Log("Could not load the font: " + std::string(FONT_PATH), LogLevel::ERROR);
         return;
     }
 
@@ -43,7 +45,7 @@ void RenderManager::Init()
     // Pictures
     if(!m_PictureTexture.loadFromFile(std::string(STATIC_IMAGE_PATH)))
     {
-        std::cout << "Could not load the texture: " << STATIC_IMAGE_PATH << std::endl;
+        Logger::Get()->Log("Could not load the texture: " + std::string(STATIC_IMAGE_PATH), LogLevel::ERROR);
         return;
     }
     m_PictureTexture.setSmooth(false);

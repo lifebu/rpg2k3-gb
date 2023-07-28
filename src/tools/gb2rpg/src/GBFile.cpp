@@ -2,6 +2,7 @@
 
 #include "CLI.h"
 #include "core/def/MemorySizes.h"
+#include "core/structure/Logger.h"
 
 #include <iostream>
 #include <cassert>
@@ -9,13 +10,15 @@
 using namespace gb2rpg;
 
 // GBFile
+const static std::string ERR_FILE_NOT_FOUND = "Error, File not found: ";
+
 // public
 GBFile::GBFile(std::string path)
     : bytesRead(0), supportLevel(GAMEBOY_ONLY), valid(false)  {
     
     file.open(path, std::ios::binary);
     if (!file.is_open()) {
-        std::cout << "Error, File not found: " << path << "\n"; 
+        Logger::Get()->Log(ERR_FILE_NOT_FOUND + path, LogLevel::ERROR);
     } else {
         valid = true;
         GBHeader header;
@@ -151,17 +154,17 @@ std::vector<GBFile> GBFileGenerator::genGBFiles(gb2rpg::CLIOptions& cli) {
         }
 
         if (file.getRamSize() > MEMORYSIZES::MAX_CARTRIDGE_RAM) {
-            std::cout << ERR_TO_MUCH_RAM << path << std::endl;
+            Logger::Get()->Log(ERR_TO_MUCH_RAM + path, LogLevel::ERROR);
             error = true;
         }
 
         if (file.getGameboySupportLevel() == GBFile::COLOR_SUPPORT) {
-            std::cout << ERR_NO_COLOR_SUPPORT << path << std::endl;
+            Logger::Get()->Log(ERR_NO_COLOR_SUPPORT + path, LogLevel::ERROR);
             error = true;
         }
 
         if (file.getGameboySupportLevel() == GBFile::COLOR_ONLY) {
-            std::cout << ERR_NO_COLOR_EXCLUSIVE << path << std::endl;
+            Logger::Get()->Log(ERR_NO_COLOR_EXCLUSIVE + path, LogLevel::ERROR);
             error = true;
         }
 

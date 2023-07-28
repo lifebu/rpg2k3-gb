@@ -1,10 +1,13 @@
 #include "ChoiceBox.h"
 
 #include <iostream>
+#include <sstream>
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/View.hpp>
+
+#include <core/structure/Logger.h>
 
 namespace rpgenv
 {
@@ -112,7 +115,10 @@ std::string ChoiceBox::generateChoiceString(std::vector<std::string>& choices)
         const auto& choice = *choiceIt;
         if(choice.length() > MAX_CHAR_PER_LINE)
         {
-            std::cout << "Maximum size of a choice for the ChoiceBox is " << MAX_CHAR_PER_LINE << " characters, tried to set a choice with the size of " + choice.length() << "." << std::endl;
+            std::stringstream message;
+            message << "Maximum size of a choice for the ChoiceBox is " << MAX_CHAR_PER_LINE << " characters, tried to set a choice with the size of " + choice.length() << "." << std::endl;
+            Logger::Get()->Log(message.str(), LogLevel::WARNING);
+
             return "";
         }
 

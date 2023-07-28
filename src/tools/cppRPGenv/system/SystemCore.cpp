@@ -8,8 +8,10 @@
 
 namespace rpgenv
 {
+
 void SystemCore::Init() 
 {
+    m_Logger.Init("cppRPGenv_", LOGMASK::LOG_MODE_FILE | LOGMASK::LOG_MODE_STDOUT);
     m_InputManager.Init();
     m_LCFManager.Init();
     m_RenderManager.Init();
@@ -18,6 +20,7 @@ void SystemCore::Init()
 
 void SystemCore::Shutdown() 
 {
+    m_Logger.Shutdown();
     m_InputManager.Shutdown();
     m_LCFManager.Shutdown();
     m_RenderManager.Shutdown();

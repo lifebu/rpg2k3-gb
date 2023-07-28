@@ -59,8 +59,12 @@ set(serializer_source
     lcf_serializers/MapTreeSerializer.cpp)
 
 set(structure_headers
+    structure/Logger.h
     structure/Singleton.h
     structure/StateMachine.h)
+
+set(structure_source
+    structure/Logger.cpp)
 
 set(utility_headers utilities/RPGHelper.h)
 set(utility_source utilities/RPGHelper.cpp)
@@ -77,7 +81,7 @@ project(core VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Core files for the other t
 add_library(core 
     ${lcf_headers} ${lcf_source}
     ${emu_headers}
-    ${structure_headers}
+    ${structure_headers} ${structure_source}
     ${serializer_headers} ${serializer_source}
     ${utility_headers} ${utility_source}
     ${def_headers})

@@ -6,6 +6,7 @@
 #include "core/lcf/Database.h"
 #include "core/lcf_serializers/DatabaseSerializer.h"
 #include "core/lcf_serializers/CommonEventSerializer.h"
+#include "core/structure/Logger.h"
 
 #include <tuple>
 #include <iostream>
@@ -15,9 +16,9 @@
 namespace fs = std::filesystem;
 using namespace gb2rpg;
 
-const static std::string WARN_NO_SWITCH_NAMES = "Info: Could not find 'project/switch_names.txt'. Using default names for switches instead.\n";
-const static std::string WARN_NO_VAR_NAMES = "Info: Could not find 'project/var_names.txt'. Using default names for variables instead.\n";
-const static std::string WARN_NO_COMMON_EVENTS = "Info: Could not find 'project/common_events.xml'. No generated code will be added to the project.\n";
+const static std::string INFO_NO_SWITCH_NAMES = "Could not find 'project/switch_names.txt'. Using default names for switches instead.";
+const static std::string INFO_NO_VAR_NAMES = "Could not find 'project/var_names.txt'. Using default names for variables instead.";
+const static std::string INFO_NO_COMMON_EVENTS = "Could not find 'project/common_events.xml'. No generated code will be added to the project.";
 
 
 
@@ -27,7 +28,7 @@ void Database::genDatabase() {
         RPGMAKER::MAX_NUM_SWITCHES, RPGMAKER::MAX_NUM_VARIABLES,
         MEMORYSIZES::TOTAL_USED_ITEMS, RPGMAKER::MAX_NUM_CHARS);
 
-    std::cout << "Generating Database: RPG_RT.edb\n";
+    Logger::Get()->Log("Generating Database: RPG_RT.edb", LogLevel::INFO);
 
     genSwitches(database);
     genVariables(database);
@@ -40,7 +41,9 @@ void Database::genDatabase() {
 
 void Database::genSwitches(lcf::Database& database) {
     std::ifstream nameFile(GLOBALS::PROJECT::PROJECT_DIR + GLOBALS::PROJECT::SWITCH_NAMES);
-    if(!nameFile.is_open()) std::cout << WARN_NO_SWITCH_NAMES;
+    if(!nameFile.is_open()) { 
+        Logger::Get()->Log(INFO_NO_SWITCH_NAMES, LogLevel::INFO);
+    }
 
     for(int id = RPGMAKER::MIN_ID; id < RPGMAKER::MAX_NUM_SWITCHES; ++id) {
         std::string name;
@@ -59,7 +62,9 @@ void Database::genSwitches(lcf::Database& database) {
 
 void Database::genVariables(lcf::Database& database) {
     std::ifstream nameFile(GLOBALS::PROJECT::PROJECT_DIR + GLOBALS::PROJECT::VAR_NAMES);
-    if(!nameFile.is_open()) std::cout << WARN_NO_VAR_NAMES;
+    if(!nameFile.is_open()) {
+        Logger::Get()->Log(INFO_NO_VAR_NAMES, LogLevel::INFO);
+    }
 
     for(int id = RPGMAKER::MIN_ID; id < RPGMAKER::MAX_NUM_VARIABLES; ++id) {
         std::string name;
@@ -119,7 +124,6 @@ void Database::genItems(lcf::Database& database) {
 void Database::genCharacters(lcf::Database& database) {
     for (int id = 1; id < RPGMAKER::MAX_NUM_CHARS; ++id) {
         std::string name = "CHAR" + generateID(id);
-
         database.addCharacter(name);
     }
 }
@@ -127,7 +131,7 @@ void Database::genCharacters(lcf::Database& database) {
 void Database::genCommonEvents(lcf::Database& database) {
     std::string filePath = GLOBALS::PROJECT::PROJECT_DIR + GLOBALS::PROJECT::COMMON_EVENTS;
     if(!fs::exists({filePath})) {
-        std::cout << WARN_NO_COMMON_EVENTS;
+        Logger::Get()->Log(INFO_NO_COMMON_EVENTS, LogLevel::INFO);
         return;
     }
 

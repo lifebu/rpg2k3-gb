@@ -9,6 +9,7 @@
 #include "core/lcf_serializers/MapSerializer.h"
 #include "core/lcf_serializers/MapSerializerRAPID.h"
 #include "core/lcf_serializers/EventCommandSerializer.h"
+#include "core/structure/Logger.h"
 
 #include <iostream>
 #include <cassert>
@@ -25,7 +26,7 @@ const static int MAP_ROM_ID = 2;
 // public
 void Map::genMapFiles(std::vector<GBFile>& gbFiles, CLIOptions::XMLParser parserToUse) 
 {
-    std::cout << "Generating Map Files.\n";
+    Logger::Get()->Log("Generating Map Files.", LogLevel::INFO);
     for(int i = 0; i < gbFiles.size(); ++i) 
     {
         auto& gbFile = gbFiles.at(i);
@@ -33,7 +34,7 @@ void Map::genMapFiles(std::vector<GBFile>& gbFiles, CLIOptions::XMLParser parser
 
         std::string fileName = GLOBALS::EXPORTS::MAP_FILE_BASE + generateID(i + 1) + GLOBALS::EXPORTS::MAP_FILE_TYPE;
         std::string filePath = GLOBALS::PROJECT::PROJECT_DIR + fileName;
-        std::cout << "Generating Map: " << fileName << "\n";
+        Logger::Get()->Log("Generating Map: " + fileName, LogLevel::INFO);
 
         lcf::Map map(1 + numOfMapROMs + MEMORYSIZES::NUM_DMG_RAM_EVENTS);
 

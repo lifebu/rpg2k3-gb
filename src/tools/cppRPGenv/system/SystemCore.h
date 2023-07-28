@@ -1,5 +1,6 @@
 #pragma once
 
+#include <core/structure/Logger.h>
 #include <core/structure/Singleton.h>
 
 #include "manager/InputManager.h"
@@ -26,6 +27,7 @@ public:
     void ChangeSystemState(SystemStates newState);
 
 private:
+    Logger         m_Logger;
     InputManager   m_InputManager;
     LCFManager     m_LCFManager;
     RenderManager  m_RenderManager; 

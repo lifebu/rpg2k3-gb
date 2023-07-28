@@ -1,6 +1,7 @@
 #include "EventCommandFactory.h"
 
 #include "EventCommand.h"
+#include "structure/Logger.h"
 
 #include <iostream>
 
@@ -337,7 +338,7 @@ int EventCommandFactory::GenChoiceID(std::vector<std::string>& choices, bool inc
 {
     if(choices.size() > 4)
     {
-        std::cout << "More than 4 choices are not supported!" << std::endl;
+        Logger::Get()->Log("More than 4 choices are not supported!", LogLevel::WARNING);
         return 0;
     }
 

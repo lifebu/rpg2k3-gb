@@ -4,6 +4,8 @@
 #include "CommonEventSerializer.h"
 
 #include "utilities/RPGHelper.h"
+#include "structure/Logger.h"
+
 #include "thirdparty/tinyxml2/tinyxml2.h"
 
 #include <iostream>
@@ -16,7 +18,7 @@ Database DatabaseSerializer::FromFile(std::string fileName)
     auto file = tinyxml2::XMLDocument(fileName.c_str());
     if (file.Error()) 
     {
-        std::cout << file.ErrorStr() << std::endl;
+        Logger::Get()->Log(file.ErrorStr(), LogLevel::ERROR);
         return Database();
     }
 
@@ -129,7 +131,7 @@ void DatabaseSerializer::ToFile(std::string fileName, Database& database)
     databaseTempl.SaveFile(fileName.c_str(), compactMode);
     if (databaseTempl.Error()) 
     {
-        std::cout << databaseTempl.ErrorStr() << std::endl;
+        Logger::Get()->Log(databaseTempl.ErrorStr(), LogLevel::ERROR);
     }
 }
 

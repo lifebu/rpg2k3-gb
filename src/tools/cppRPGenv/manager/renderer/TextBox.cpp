@@ -1,10 +1,13 @@
 #include "TextBox.h"
 
 #include <iostream>
+#include <sstream>
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/View.hpp>
+
+#include <core/structure/Logger.h>
 
 namespace rpgenv
 {
@@ -33,7 +36,10 @@ void TextBox::Setup(const sf::View& view, std::string text)
     int size = text.size();
     if(size > MAX_STRING_SIZE)
     {
-        std::cout << "Maximum size of text for the Textbox is " << MAX_STRING_SIZE << " characters, tried to set a text with the size of " + text.size() << "." << std::endl;
+        std::stringstream message;
+       message << "Maximum size of text for the Textbox is " << MAX_STRING_SIZE << " characters, tried to set a text with the size of " + text.size() << ".";
+       Logger::Get()->Log(message.str(), LogLevel::WARNING);
+
         return;
     }
 

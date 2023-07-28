@@ -49,3 +49,6 @@ lcf2xml
 
 ## Profiling Data
 temp/*.out
+
+## Log files
+*log.txt

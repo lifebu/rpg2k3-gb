@@ -1,7 +1,6 @@
 #pragma once
 
-namespace rpgenv 
-{
+#include <cassert>
 
 template <class T>
 class Singleton
@@ -25,6 +24,7 @@ public:
 
     static T* Get()
     {
+        assert(s_Instance != nullptr);
         return static_cast<T*>(s_Instance);
     }
 
@@ -34,5 +34,3 @@ private:
 
 template<class T>
 Singleton<T>* Singleton<T>::s_Instance = nullptr;
-
-};

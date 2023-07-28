@@ -2,6 +2,8 @@
 
 #include "lcf_serializers/Templates.h"
 #include "utilities/RPGHelper.h"
+#include "structure/Logger.h"
+
 #include "thirdparty/tinyxml2/tinyxml2.h"
 
 #include <iostream>
@@ -17,7 +19,7 @@ std::vector<EventCommand> EventCommandSerializer::MultipleFromFile(std::string f
     auto file = tinyxml2::XMLDocument(fileName.c_str());
     if (file.Error()) 
     {
-        std::cout << file.ErrorStr() << std::endl;
+        Logger::Get()->Log(file.ErrorStr(), LogLevel::ERROR);
         return ret;
     }
 
@@ -47,7 +49,7 @@ void EventCommandSerializer::MultipleToFile(std::string fileName, std::vector<Ev
     file.SaveFile(fileName.c_str());
     if (file.Error()) 
     {
-        std::cout << file.ErrorStr() << std::endl;
+        Logger::Get()->Log(file.ErrorStr(), LogLevel::ERROR);
         return;
     }
 };

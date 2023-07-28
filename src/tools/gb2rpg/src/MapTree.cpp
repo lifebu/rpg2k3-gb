@@ -5,6 +5,7 @@
 
 #include "core/def/Globals.h"
 #include "core/lcf_serializers/MapTreeSerializer.h"
+#include "core/structure/Logger.h"
 
 #include <iostream>
 
@@ -14,7 +15,7 @@ void MapTree::genMapTree(std::vector<GBFile>& gbFiles)
 {
     lcf::MapTree mapTree(gbFiles.size());
 
-    std::cout << "Generating Maptree: RPG_RT.emt\n";
+    Logger::Get()->Log("Generating Maptree: RPG_RT.emt", LogLevel::INFO);
 
     for(auto& gbFile : gbFiles) 
     {
