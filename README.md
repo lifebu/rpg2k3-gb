@@ -44,6 +44,8 @@ The other tools needed will be worked on in the following order:
 - SFML: To create the simple RPG Maker runtime.
 - tinyxml: XMLParser used for custom toolchain.
 - rapidxml: XMLParser used for custom toolchain.
+- Dear ImGUI: Immediate mode GUI for C++.
+- imgui-sfml: Official imgui integration for SFML.
 
 ## How To Run
 This project requires original RPG Maker 2003 project files that cannot be shared for legal reasons. You can acquire the RPG Maker 2003 from [Steam](https://store.steampowered.com/app/362870/RPG_Maker_2003/). Create a new project called "Gameboy_Emulator". Copy the following files into the `templates/project` folder: `Gameboy_Emulator.r3proj`, `RPG_RT.exe`, `RPG_RT.ini`, `ultimate_rt_eb.dll`.
@@ -78,6 +80,8 @@ Tools:
 - [rapidxml](https://rapidxml.sourceforge.net/): to read/write xml files in C++.
 - [SFML](https://www.sfml-dev.org/): Simple runtime that allows 2D graphics, audio and networking.
 - [RPG Maker 2003](https://www.rpgmakerweb.com/products/rpg-maker-2003): To run the projects on the original RPG Maker you can buy it on [Steam](https://store.steampowered.com/app/362870/RPG_Maker_2003/).
+- [Dear ImGUI](https://github.com/ocornut/imgui): Immediate mode GUI for C++.
+- [imgui-sfml](https://github.com/SFML/imgui-sfml): Official imgui integration for SFML.
 
 Documentation:
 - [Pan Docs](https://gbdev.io/pandocs/About.html): Comprehensive Gameboy technical reference.

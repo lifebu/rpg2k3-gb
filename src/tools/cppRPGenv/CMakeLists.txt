@@ -15,6 +15,7 @@ set(cppRPGEnv_headers
     manager/renderer/TextBox.h
     manager/renderer/ChoiceBox.h
     manager/renderer/InputBox.h
+    manager/renderer/ImGUIRenderer.h
     manager/structure/ManagerInterface.h)
 
 set(cppRPGEnv_source
@@ -24,7 +25,8 @@ set(cppRPGEnv_source
     system/SystemStateMachine.cpp
     manager/renderer/TextBox.cpp
     manager/renderer/ChoiceBox.cpp
-    manager/renderer/InputBox.cpp)
+    manager/renderer/InputBox.cpp
+    manager/renderer/ImGUIRenderer.cpp)
 
 add_executable(cppRPGEnv cppRPGenv.cpp ${cppRPGEnv_source} ${cppRPGEnv_headers})
 
@@ -39,6 +41,6 @@ target_link_libraries(cppRPGEnv PRIVATE emu)
 target_link_libraries(cppRPGEnv PRIVATE sfml-system)
 target_link_libraries(cppRPGEnv PRIVATE sfml-window)
 target_link_libraries(cppRPGEnv PRIVATE sfml-graphics)
-
+target_link_libraries(cppRPGEnv PRIVATE ImGui-SFML::ImGui-SFML)
 
 target_compile_features(cppRPGEnv PUBLIC cxx_std_17)

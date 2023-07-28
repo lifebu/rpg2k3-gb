@@ -52,3 +52,6 @@ temp/*.out
 
 ## Log files
 *log.txt
+
+## ImGUI
+imgui.ini

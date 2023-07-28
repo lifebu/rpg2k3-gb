@@ -35,3 +35,15 @@ Files extracted from upstream source:
 - Upstream: https://github.com/EasyRPG/Player
 - Version: 0-7-0-stable (69aaeb2d, 2022)
 - License: GPLv3
+
+## ImGUI
+
+- Upstream: https://github.com/ocornut/imgui
+- Version: git (556ce9f543a311455d980912e24131b45f2cf769, 2023)
+- License: MIT
+
+## ImGUI-SFML
+
+- Upstream: https://github.com/SFML/imgui-sfml
+- Version: git (c063ec641741f935b914106801e8d607687129dc, 2023)
+- License: MIT

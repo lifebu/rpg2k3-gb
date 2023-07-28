@@ -12,6 +12,7 @@
 #include "renderer/TextBox.h"
 #include "renderer/ChoiceBox.h"
 #include "renderer/InputBox.h"
+#include "renderer/ImGUIRenderer.h"
 
 namespace rpgenv 
 {
@@ -25,6 +26,7 @@ class RenderManager : public Singleton<RenderManager>, public IManager
 
 public:
     void Init() override;
+    void Shutdown() override;
 
     void PollEvents();
     void Render();
@@ -74,6 +76,10 @@ private:
     // Pictures are pixel in this texture.
     sf::Texture m_PictureTexture;
     sf::Sprite m_PictureSprite;
+
+    // ImGUI
+    ImGUIRenderer m_ImGUIRenderer;
+    sf::Clock m_RenderClock;
 };
 
 }

@@ -47,6 +47,12 @@ CppRPGEnv: C++-RPG Maker Environment
             - 3. Call MAP_RAM: => NOOP.
                 - For that I need to know if the called event is a map-ram, how?
 
+    - ImGUI.
+        https://github.com/ocornut/imgui
+        - Imgui and SFML:
+            https://github.com/SFML/imgui-sfml
+
+
     Later:
     - Clean up the Renderer classes:
         - The 3 Rendererclasses (ChoiceBox, InputBox and TextBox) share a lot of code just have it in the RenderManager.

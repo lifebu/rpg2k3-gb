@@ -63,6 +63,14 @@ void RenderManager::Init()
     float missingX = m_Window.getSize().x - globalBounds.width;
     float missingY = m_Window.getSize().y - globalBounds.height;
     m_PictureSprite.setPosition(missingX / 2.0f, missingY / 2.0f);
+
+    // Initialize ImGUI
+    m_ImGUIRenderer.Init(m_Window);
+}
+
+void RenderManager::Shutdown() 
+{
+    m_ImGUIRenderer.Shutdown();
 }
 
 void RenderManager::PollEvents() 
@@ -70,6 +78,8 @@ void RenderManager::PollEvents()
     sf::Event event;
     while (m_Window.pollEvent(event))
     {
+        m_ImGUIRenderer.ProcessEvent(event);
+
         if(event.type == sf::Event::Closed)
         {
             m_Window.close();
@@ -105,6 +115,8 @@ void RenderManager::Render()
     {
         m_Window.draw(m_InputBox);
     }
+
+    m_ImGUIRenderer.Render(m_Window, m_RenderClock);
 
     m_Window.display();
 }
@@ -227,4 +239,5 @@ void RenderManager::PutPixel(int x, int y, uint32_t value)
     uint8_t* valuePtr = reinterpret_cast<uint8_t*>(&value);
     m_PictureTexture.update(valuePtr, 1, 1, x, y);
 }
-};
+
+}; // namespace rpgenv

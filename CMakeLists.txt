@@ -23,5 +23,11 @@ add_subdirectory(thirdparty/rapidxml)
 add_subdirectory(thirdparty/liblcf)
 file(COPY "build/thirdparty/liblcf/lcf2xml" DESTINATION ${CMAKE_SOURCE_DIR})
 add_subdirectory(thirdparty/SFML)
+
+set(IMGUI_DIR "../imgui") #relative to thirdparty/imgui-sfml
+set(IMGUI_SFML_FIND_SFML OFF)
+set(IMGUI_SFML_IMGUI_DEMO ON)
+add_subdirectory(thirdparty/imgui-sfml)
+
 #add_subdirectory(thirdparty/EasyRPGPlayer)
 #file(COPY "build/thirdparty/EasyRPGPlayer/easyrpg-player" DESTINATION ${CMAKE_SOURCE_DIR})
