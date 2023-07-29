@@ -11,5 +11,7 @@ namespace gb2rpg {
     private:
         static void createProjectData(int numOfMaps);
         static void genFolders();
+        static void genRPGProjFile();
+        static void genRPGIniFile();
     };
 };

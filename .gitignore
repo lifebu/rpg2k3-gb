@@ -30,9 +30,7 @@ build/*
 
 ## Proprietary Testdata not to be included in the repository
 playground/*
-templates/project/Gameboy_Emulator.r3proj
 templates/project/RPG_RT.exe
-templates/project/RPG_RT.ini
 templates/project/ultimate_rt_eb.dll
 project/*
 *.gb

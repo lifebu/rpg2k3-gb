@@ -20,10 +20,10 @@ namespace PROJECT
     const static std::string COMMON_EVENTS = "common_events.xml";
 
     // Proprietary RPG Maker Files
-    const static std::string RPGMAKER_FILES[] = {
-        "Gameboy_Emulator.r3proj",
+    const static std::string RPGMAKER_PRJ_FILE = "Gameboy_Emulator.r3proj";
+    const static std::string RPGMAKER_INI_FILE = "RPG_RT.ini";
+    const static std::string REQUIRED_RPGMAKER_FILES[] = {
         "RPG_RT.exe",
-        "RPG_RT.ini",
         "ultimate_rt_eb.dll"
     };
 

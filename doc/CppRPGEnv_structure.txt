@@ -32,8 +32,6 @@ CppRPGEnv: C++-RPG Maker Environment
         - They are used for the generated code.
         - I can detect in the compiler that I am accessing these hardcoded globale variables.
 
-    - Should I rename character to actor?
-
     - How do I handle event calls?
         - How Do I handle map event calls?
 
@@ -47,13 +45,13 @@ CppRPGEnv: C++-RPG Maker Environment
             - 3. Call MAP_RAM: => NOOP.
                 - For that I need to know if the called event is a map-ram, how?
 
-    - ImGUI.
-        https://github.com/ocornut/imgui
-        - Imgui and SFML:
-            https://github.com/SFML/imgui-sfml
-
-
     Later:
+    - Should I rename character to actor?
+
+    - Make the async Loading threadsafe and be able to return an error.
+        - Probably enough to have the Logger being ThreadSafe.
+        - Also I could just load both of them in parallel if I wanted to.
+
     - Clean up the Renderer classes:
         - The 3 Rendererclasses (ChoiceBox, InputBox and TextBox) share a lot of code just have it in the RenderManager.
             
@@ -348,7 +346,10 @@ CppRPGEnv: C++-RPG Maker Environment
                 - Get the input state and create the number (1-24)
             - LCF: 
                 - Store the number into the variable specified.
-    
 
 - Can use SFML to create the basic graphic/window layer.
     https://www.sfml-dev.org
+    - ImGUI.
+        https://github.com/ocornut/imgui
+        - Imgui and SFML:
+            https://github.com/SFML/imgui-sfml

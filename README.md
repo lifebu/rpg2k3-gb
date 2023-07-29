@@ -28,8 +28,6 @@ Gameboy system emulator written in C++. Custom toolchain is used to run the emul
 ## Current State
 The only tool currently being worked on is GB2RPG. It loads the Gameboy file and can read each byte from it. Additionally the map file and maptree generation works. This software is still very early in development.
 
-**Warning: The generation of the XML file is currently very inefficient and stores the entire file in Memory. Therefore the tool can need up to 16GB RAM for a 2MB ROM file. This will be fixed soon.**
-
 The other tools needed will be worked on in the following order:
 - CppRPGEnv: To allow C++ code to be written against a RPG Maker like interface.
 - Gameboy Emulator: Write the actual emulator using the interface given by CppRPGEnv.
@@ -48,7 +46,7 @@ The other tools needed will be worked on in the following order:
 - imgui-sfml: Official imgui integration for SFML.
 
 ## How To Run
-This project requires original RPG Maker 2003 project files that cannot be shared for legal reasons. You can acquire the RPG Maker 2003 from [Steam](https://store.steampowered.com/app/362870/RPG_Maker_2003/). Create a new project called "Gameboy_Emulator". Copy the following files into the `templates/project` folder: `Gameboy_Emulator.r3proj`, `RPG_RT.exe`, `RPG_RT.ini`, `ultimate_rt_eb.dll`.
+This project requires original RPG Maker 2003 project files that cannot be shared for legal reasons. You can acquire the RPG Maker 2003 from [Steam](https://store.steampowered.com/app/362870/RPG_Maker_2003/). Create a new project and Copy the following files into the `templates/project` folder: `RPG_RT.exe`, `ultimate_rt_eb.dll`.
 
 The project uses CMake to compile and create all the software and tools necessary. 
 

@@ -7,6 +7,7 @@
 #include "core/structure/Logger.h"
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <filesystem>
 
@@ -15,7 +16,9 @@ using namespace gb2rpg;
 
 const static std::string ERR_LCF = "Could not create one of the binary files using lcf2xml, do 3 files exist in the project/ folder?";
 const static std::string ERR_PROPRIETARY = "Could not find proprietary RPG Maker file in " + GLOBALS::PROJECT::TEMPLATE_DIR + ": ";
-const static std::string INFO_PROPRIETARY = "At least one proprietary RPG Maker file not found. Create a new project in RPG Maker 2003 called 'Gameboy_Emulator' and copy the missing files to " + GLOBALS::PROJECT::TEMPLATE_DIR + ".";
+const static std::string INFO_PROPRIETARY = "At least one proprietary RPG Maker file not found. Create a new project in RPG Maker 2003 and copy the missing files to " + GLOBALS::PROJECT::TEMPLATE_DIR + ".";
+const static std::string ERR_GEN_PROJ_FILE = "Could not create RPG Maker project file";
+const static std::string ERR_GEN_INI_FILE = "Could not create RPG Maker ini file";
 
 // public
 void ProjectGenerator::cleanProjectFolder() 
@@ -64,10 +67,14 @@ void ProjectGenerator::createProjectData(int numOfMaps)
     if(ret) logger->Log(ERR_LCF, LogLevel::ERROR);
 
     fs::current_path(currentPath);
+
+    // generate config files
+    genRPGProjFile();
+    genRPGIniFile();
     
     // copy proprietary data from templates/project to project/rpg2k3
     bool oneProprietaryNotFound = false;
-    for (auto& rpgFile : GLOBALS::PROJECT::RPGMAKER_FILES) {
+    for (auto& rpgFile : GLOBALS::PROJECT::REQUIRED_RPGMAKER_FILES) {
         try 
         {
             fs::copy(GLOBALS::PROJECT::TEMPLATE_DIR + rpgFile, GLOBALS::PROJECT::RPG_PROJECT_DIR + rpgFile);
@@ -95,4 +102,40 @@ void ProjectGenerator::genFolders()
     {
         Logger::Get()->Log(err.what(), LogLevel::ERROR);
     }
+}
+
+void gb2rpg::ProjectGenerator::genRPGProjFile() 
+{
+    Logger* const logger = Logger::Get();
+    logger->Log("Generating project file " + GLOBALS::PROJECT::RPGMAKER_PRJ_FILE + ".", LogLevel::INFO);
+
+    std::ofstream projFile(GLOBALS::PROJECT::RPG_PROJECT_DIR + GLOBALS::PROJECT::RPGMAKER_PRJ_FILE);
+    if(!projFile.is_open())
+    {
+        logger->Log(ERR_GEN_PROJ_FILE, LogLevel::ERROR);
+        return;
+    }
+
+    projFile << "RPG2003 v1.12a" << std::endl;
+    projFile.close();
+}
+
+void gb2rpg::ProjectGenerator::genRPGIniFile() 
+{
+    Logger* const logger = Logger::Get();
+    logger->Log("Generating ini file " + GLOBALS::PROJECT::RPGMAKER_INI_FILE + ".", LogLevel::INFO);
+
+    std::ofstream iniFile(GLOBALS::PROJECT::RPG_PROJECT_DIR + GLOBALS::PROJECT::RPGMAKER_INI_FILE);
+    if(!iniFile.is_open())
+    {
+        logger->Log(ERR_GEN_INI_FILE, LogLevel::ERROR);
+        return;
+    }
+
+    iniFile << "[RPG_RT]" << std::endl
+            << "GameTitle=Gameboy_Emulator" << std::endl
+            << "MapEditMode=0" << std::endl
+            << "MapEditZoom=0" << std::endl;
+
+    iniFile.close();
 }
