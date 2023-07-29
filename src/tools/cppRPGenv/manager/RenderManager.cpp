@@ -10,14 +10,14 @@ namespace rpgenv
 
 void RenderManager::Init() 
 {
-    m_Window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "C++ RPG Env", 
+    m_Window.create(sf::VideoMode(RENDERER::WINDOW_WIDTH, RENDERER::WINDOW_HEIGHT), "C++ RPG Env", 
         sf::Style::Titlebar | sf::Style::Close);
 
     // Position window in the middle of the screen.
     auto currentRes = sf::VideoMode::getDesktopMode();
     m_Window.setPosition(sf::Vector2i(
-        currentRes.width / 2 - WINDOW_WIDTH / 2, 
-        currentRes.height / 2 - WINDOW_HEIGHT / 2));
+        currentRes.width / 2 - RENDERER::WINDOW_WIDTH / 2, 
+        currentRes.height / 2 - RENDERER::WINDOW_HEIGHT / 2));
     
     m_Window.setFramerateLimit(15);
     
@@ -54,15 +54,14 @@ void RenderManager::Init()
     // Set correct scale.
     auto localBounds = m_PictureSprite.getLocalBounds();
     float xScale = m_Window.getSize().x / localBounds.width;
-    float yScale = m_Window.getSize().y / localBounds.height;
+    float yScale = (m_Window.getSize().y - RENDERER::MENU_HEIGHT) / localBounds.height;
     float minScale = std::min(xScale, yScale);
     m_PictureSprite.setScale(minScale, minScale);
 
     // Center the picture.
     auto globalBounds = m_PictureSprite.getGlobalBounds();
     float missingX = m_Window.getSize().x - globalBounds.width;
-    float missingY = m_Window.getSize().y - globalBounds.height;
-    m_PictureSprite.setPosition(missingX / 2.0f, missingY / 2.0f);
+    m_PictureSprite.setPosition(missingX / 2.0f, RENDERER::MENU_HEIGHT);
 
     // Initialize ImGUI
     m_ImGUIRenderer.Init(m_Window);

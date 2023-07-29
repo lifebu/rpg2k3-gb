@@ -44,8 +44,34 @@ void ImGUIRenderer::Render(sf::RenderWindow &window,
 // private
 void ImGUIRenderer::BuildImGUI() 
 {
-    // TODO: Create own IMGUI Stuff here!
-    ImGui::ShowDemoWindow();
+    const bool isExpanded = m_LogIsEnabled;
+    float verticalSize = isExpanded ? m_ExpandedSize : 0.0f;
+    ImGui::SetNextWindowSize(ImVec2(640.0f, verticalSize));
+    ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
+
+    ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoSavedSettings;
+    if(!isExpanded)
+    {
+        windowFlags |= ImGuiWindowFlags_NoBackground;
+    }
+    ImGui::Begin("###Menu", nullptr, windowFlags);
+
+    if(ImGui::BeginMenuBar())
+    {
+        ImGui::MenuItem("Log", nullptr, &m_LogIsEnabled);
+        ImGui::EndMenuBar();
+    }
+
+    if(m_LogIsEnabled)
+    {
+        const std::vector<std::string>& currentLog = Logger::Get()->GetLog();
+        for(const auto& logLine : currentLog)
+        {
+            ImGui::TextWrapped(logLine.c_str());
+        }
+    }
+
+    ImGui::End();
 }
 
 

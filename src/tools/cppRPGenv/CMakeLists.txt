@@ -12,6 +12,7 @@ set(cppRPGEnv_headers
     manager/InputManager.h manager/LCFManager.h manager/RenderManager.h
     system/SystemCore.h
     system/SystemStateMachine.h
+    manager/renderer/RenderDef.h
     manager/renderer/TextBox.h
     manager/renderer/ChoiceBox.h
     manager/renderer/InputBox.h

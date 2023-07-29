@@ -1,5 +1,7 @@
 #pragma once
 
+#include "manager/renderer/RenderDef.h"
+
 namespace sf
 {
     class Clock;
@@ -21,6 +23,10 @@ public:
 
 private:
     void BuildImGUI();
+
+private:
+    bool m_LogIsEnabled = false;
+    float m_ExpandedSize = (1.0f - RENDERER::TEXT_BOX_SIZE) * RENDERER::WINDOW_HEIGHT;
 };
 
 }

@@ -12,6 +12,7 @@
 #include "renderer/TextBox.h"
 #include "renderer/ChoiceBox.h"
 #include "renderer/InputBox.h"
+#include "renderer/RenderDef.h"
 #include "renderer/ImGUIRenderer.h"
 
 namespace rpgenv 
@@ -19,8 +20,7 @@ namespace rpgenv
 
 class RenderManager : public Singleton<RenderManager>, public IManager
 {
-    static constexpr int WINDOW_WIDTH = 640;
-    static constexpr int WINDOW_HEIGHT = 480;
+private:
     static constexpr std::string_view FONT_PATH = "data/GamegirlClassic.ttf";
     static constexpr std::string_view STATIC_IMAGE_PATH = "data/background.png";
 
