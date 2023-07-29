@@ -1,5 +1,6 @@
 #pragma once
 
+#include <future>
 #include <string>
 
 #include <core/lcf/Database.h>
@@ -34,6 +35,7 @@ public:
     lcf::Map& GetMap();
 
 private:
+    std::future<void> m_LoadingFuture;
     LoadingPhases m_LoadingPhases = LoadingPhases::NOT_LOADED;
     bool m_HadLoadingError = false;
 

@@ -30,34 +30,67 @@ void LCFManager::ContinueLoading()
         } break;
         case LoadingPhases::LOADING_DATABASE:
         {
-            std::string filePath = GLOBALS::PROJECT::PROJECT_DIR + GLOBALS::EXPORTS::DATABASE_FILE;
-            if(!fs::exists({filePath})) 
+            if(!m_LoadingFuture.valid())
             {
-                Logger::Get()->Log(ERR_NO_PROJECT_FILE + filePath, LogLevel::ERROR);
-                m_HadLoadingError = true;
+                std::string filePath = GLOBALS::PROJECT::PROJECT_DIR + GLOBALS::EXPORTS::DATABASE_FILE;
+                if(!fs::exists({filePath})) 
+                {
+                    Logger::Get()->Log(ERR_NO_PROJECT_FILE + filePath, LogLevel::ERROR);
+                    m_HadLoadingError = true;
+                    m_LoadingPhases = LoadingPhases::LOADING_MAP;
+                }
+                else 
+                {
+                    m_LoadingFuture = std::async(std::launch::async, [this, filePath]()
+                    {
+                        // TODO: Nobody will know if this throws an exception.
+                        // TODO: The Return value is not thread safe.
+                        m_Database = lcf::DatabaseSerializer::FromFile(filePath);
+                    });
+                }
             }
-            else 
+            else
             {
-                m_Database = lcf::DatabaseSerializer::FromFile(filePath);
+                std::future_status result = m_LoadingFuture.wait_for(std::chrono::milliseconds(10));
+                if(result == std::future_status::ready)
+                {
+                    m_LoadingFuture = std::future<void>();
+                    m_LoadingPhases = LoadingPhases::LOADING_MAP;
+                }
             }
-
-            m_LoadingPhases = LoadingPhases::LOADING_MAP;
         } break;
         case LoadingPhases::LOADING_MAP:
         {
-            std::string fileName = GLOBALS::EXPORTS::MAP_FILE_BASE + generateID(1) + GLOBALS::EXPORTS::MAP_FILE_TYPE;
-            std::string filePath = GLOBALS::PROJECT::PROJECT_DIR + fileName;
-            if(!fs::exists({filePath})) 
+            if(!m_LoadingFuture.valid())
             {
-                Logger::Get()->Log(ERR_NO_PROJECT_FILE + filePath, LogLevel::ERROR);
-                m_HadLoadingError = true;
+                std::string fileName = GLOBALS::EXPORTS::MAP_FILE_BASE + generateID(1) + GLOBALS::EXPORTS::MAP_FILE_TYPE;
+                std::string filePath = GLOBALS::PROJECT::PROJECT_DIR + fileName;
+                if(!fs::exists({filePath})) 
+                {
+                    Logger::Get()->Log(ERR_NO_PROJECT_FILE + filePath, LogLevel::ERROR);
+                    m_HadLoadingError = true;
+                    m_LoadingPhases = LoadingPhases::LOADING_ERROR;
+                }
+                else 
+                {
+                    m_LoadingFuture = std::async(std::launch::async, [this, filePath]()
+                    {
+                        // TODO: Nobody will know if this throws an exception.
+                        // TODO: The Return value is not thread safe.
+                        lcf::Map tempMap = lcf::MapSerializer::FromFile(filePath);
+                    });
+                }
             }
-            else 
+            else
             {
-                m_Map = lcf::MapSerializer::FromFile(filePath);
+                std::future_status result = m_LoadingFuture.wait_for(std::chrono::milliseconds(10));
+                
+                if(result == std::future_status::ready)
+                {
+                    m_LoadingFuture = std::future<void>();
+                    m_LoadingPhases =  m_HadLoadingError ? LoadingPhases::LOADING_ERROR : LoadingPhases::LOADING_FINISHED;
+                }
             }
-
-            m_LoadingPhases =  m_HadLoadingError ? LoadingPhases::LOADING_ERROR : LoadingPhases::LOADING_FINISHED;
         } break;
     }
 }

@@ -34,6 +34,8 @@ void Logger::Shutdown()
 
 void Logger::Log(std::string message, LogLevel logLevel)
 {
+    std::scoped_lock(m_loggingMutex);
+
     const std::string newEntry = GenerateLogLevelPrefix(logLevel) + message;
     m_Log.push_back(newEntry);
 

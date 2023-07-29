@@ -3,6 +3,7 @@
 #include "Singleton.h"
 
 #include <fstream>
+#include <mutex>
 #include <string>
 #include <vector>
 
@@ -40,6 +41,7 @@ private:
     std::string GenerateLogLevelPrefix(LogLevel logLevel);
 
 private:
+    std::mutex m_loggingMutex;
     bool m_IsInPanic = false;
     std::vector<std::string> m_Log;
     int m_LogMask;
