@@ -19,6 +19,7 @@ void RenderManager::Init()
         currentRes.width / 2 - RENDERER::WINDOW_WIDTH / 2, 
         currentRes.height / 2 - RENDERER::WINDOW_HEIGHT / 2));
     
+    // TODO: This FPS Limit was chosen in order to reduce input being very sensitive. Should probably have a better system to check for input.
     m_Window.setFramerateLimit(15);
     
     if(!m_Font.loadFromFile(std::string(FONT_PATH)))
@@ -88,6 +89,7 @@ void RenderManager::PollEvents()
 
 void RenderManager::Render() 
 {
+    m_LastDelta = m_RenderClock.restart();
     m_Window.clear(sf::Color::Black);
 
     // Pictures
@@ -115,7 +117,7 @@ void RenderManager::Render()
         m_Window.draw(m_InputBox);
     }
 
-    m_ImGUIRenderer.Render(m_Window, m_RenderClock);
+    m_ImGUIRenderer.Render(m_Window, m_LastDelta);
 
     m_Window.display();
 }
@@ -230,13 +232,12 @@ int RenderManager::CloseNumberInput()
     return m_InputBox.GetNumber();
 }
 
-void RenderManager::PutPixel(int x, int y, uint32_t value)
+void RenderManager::PutPixel(int x, int y, std::vector<uint8_t> rgba)
 {
     assert(x >= 0 && x < m_PictureTexture.getSize().x 
         && y >= 0 && y < m_PictureTexture.getSize().y);
 
-    uint8_t* valuePtr = reinterpret_cast<uint8_t*>(&value);
-    m_PictureTexture.update(valuePtr, 1, 1, x, y);
+    m_PictureTexture.update(&rgba.at(0), 1, 1, x, y);
 }
 
 }; // namespace rpgenv

@@ -48,34 +48,50 @@ void EMUEntryPoint::RPGMain()
     //x = std::clamp(x, 0, 160 - 1);
     //y = std::clamp(y, 0, 144 - 1);
 
-    if(!done)
+    if(rpgMaker->KeyInputProcessing(RPGMAKER::KeyCodes::UP))
     {
-        for(int y = 0; y < 144; ++y)
+        int newOffset = yOffset - 1;
+        if(newOffset < 0) newOffset = 0;
+        yOffset = newOffset;
+    }
+    if(rpgMaker->KeyInputProcessing(RPGMAKER::KeyCodes::DOWN))
+    {
+        int newOffset = yOffset + 1;
+        int maxByteOffset = 159 + (143 + newOffset) * 144;
+        // TODO: This should use the actual ROM-Size.
+        if(maxByteOffset < 32'768)
         {
-            for (int x = 0; x < 160; ++x)
-            {
-                int byteOffset = x + y * 144;
-                int maxNumOfBytesPerEvent = MEMORYSIZES::BYTES_PER_EPAGE * RPGMAKER::MAX_PAGES_PER_EVENT;
-                uint16_t eventID = 2 + (byteOffset / maxNumOfBytesPerEvent);
-                uint16_t pageID = 1 + (byteOffset / MEMORYSIZES::BYTES_PER_EPAGE);
-
-                int byteOffsetInEpage = byteOffset % MEMORYSIZES::BYTES_PER_EPAGE;
-
-                rpgMaker->ControlVariables(static_cast<uint16_t>(VARMAPPING::BYTE_OFFSET_ID), byteOffsetInEpage);
-                rpgMaker->CallEvent(lcf::CallEvent::EventType::CONST_MAP_EVENT, eventID, pageID);
-                int32_t firstVar = rpgMaker->ControlVariables(static_cast<uint16_t>(VARMAPPING::READ_VAR_1));
-                int32_t secondVar = rpgMaker->ControlVariables(static_cast<uint16_t>(VARMAPPING::READ_VAR_2));
-                std::vector<uint8_t> bytes = unpackVariable(firstVar);
-
-                rpgMaker->ShowPicture(lcf::ShowPicture::PictureIDType::CONSTANT, 0, lcf::ShowPicture::PosType::CONSTANT, x, y, 
-                    (float)bytes.at(0) / 255.0f, 
-                    (float)bytes.at(1) / 255.0f, 
-                    (float)bytes.at(2) / 255.0f);
-            }
+            yOffset = newOffset;
         }
     }
 
-    done = true;
+    // splat rom data.
+    for(int y = 0; y < 144; ++y)
+    {
+        for (int x = 0; x < 160; ++x)
+        {
+            int byteOffset = x + (y + yOffset) * 144;
+            int maxNumOfBytesPerEvent = MEMORYSIZES::BYTES_PER_EPAGE * RPGMAKER::MAX_PAGES_PER_EVENT;
+            uint16_t eventID = 2 + (byteOffset / maxNumOfBytesPerEvent);
+            uint16_t pageID = 1 + (byteOffset / MEMORYSIZES::BYTES_PER_EPAGE);
+
+            int byteOffsetInEpage = byteOffset % MEMORYSIZES::BYTES_PER_EPAGE;
+
+            rpgMaker->ControlVariables(static_cast<uint16_t>(VARMAPPING::BYTE_OFFSET_ID), byteOffsetInEpage);
+            rpgMaker->CallEvent(lcf::CallEvent::EventType::CONST_MAP_EVENT, eventID, pageID);
+            int32_t firstVar = rpgMaker->ControlVariables(static_cast<uint16_t>(VARMAPPING::READ_VAR_1));
+            int32_t secondVar = rpgMaker->ControlVariables(static_cast<uint16_t>(VARMAPPING::READ_VAR_2));
+            std::vector<uint8_t> bytes = unpackVariable(firstVar);
+
+            int byteIndex = byteOffset % 3;
+            float r = (float)bytes.at(byteIndex) / 255.0f;
+            float g = (float)bytes.at(byteIndex) / 255.0f;
+            float b = (float)bytes.at(byteIndex) / 255.0f;
+
+            rpgMaker->ShowPicture(lcf::ShowPicture::PictureIDType::CONSTANT, 0, lcf::ShowPicture::PosType::CONSTANT, x, y, r, g, b);
+        }
+    }
+
     return;
 }
 

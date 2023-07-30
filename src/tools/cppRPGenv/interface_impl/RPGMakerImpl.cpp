@@ -263,9 +263,9 @@ void RPGMakerImpl::ShowPicture(lcf::ShowPicture::PictureIDType pictureIDType, ui
     uint8_t green8 = static_cast<uint8_t>(green * 255.0f);
     uint8_t blue8 = static_cast<uint8_t>(blue * 255.0f);
 
-    sf::Color color = sf::Color(red8, green8, blue8, 255);
+    std::vector<uint8_t> rgba = {red8, green8, blue8, 255};
 
-    RenderManager::Get()->PutPixel(xPos, yPos, color.toInteger());
+    RenderManager::Get()->PutPixel(xPos, yPos, rgba);
 }
 
 // Input

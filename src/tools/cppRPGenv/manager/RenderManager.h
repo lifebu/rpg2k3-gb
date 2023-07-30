@@ -57,7 +57,7 @@ public:
     int CloseNumberInput();
 
     // Pictures
-    void PutPixel(int x,  int y, uint32_t value);
+    void PutPixel(int x,  int y, std::vector<uint8_t> rgba);
 
 private:
     sf::RenderWindow m_Window;
@@ -80,6 +80,7 @@ private:
     // ImGUI
     ImGUIRenderer m_ImGUIRenderer;
     sf::Clock m_RenderClock;
+    sf::Time m_LastDelta;
 };
 
 }

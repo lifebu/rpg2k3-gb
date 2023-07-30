@@ -34,15 +34,15 @@ void ImGUIRenderer::ProcessEvent(const sf::Event &event)
 }
 
 void ImGUIRenderer::Render(sf::RenderWindow &window,
-                           sf::Clock &clock) 
+                           const sf::Time &deltaTime) 
 {
-    ImGui::SFML::Update(window, clock.restart());
-    BuildImGUI();
+    ImGui::SFML::Update(window, deltaTime);
+    BuildImGUI(deltaTime);
     ImGui::SFML::Render(window);
 }
 
 // private
-void ImGUIRenderer::BuildImGUI() 
+void ImGUIRenderer::BuildImGUI(const sf::Time& deltaTime) 
 {
     const bool isExpanded = m_LogIsEnabled;
     float verticalSize = isExpanded ? m_ExpandedSize : 0.0f;
@@ -59,6 +59,11 @@ void ImGUIRenderer::BuildImGUI()
     if(ImGui::BeginMenuBar())
     {
         ImGui::MenuItem("Log", nullptr, &m_LogIsEnabled);
+
+        int fps = 1'000 / deltaTime.asMilliseconds();
+        std::string fpsLabel = "FPS: " + std::to_string(fps);
+
+        ImGui::MenuItem(fpsLabel.c_str());
         ImGui::EndMenuBar();
     }
 

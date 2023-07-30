@@ -11,9 +11,7 @@ public:
     void RPGMain() override;
 
 private:
-    int x = 0;
-    int y = 0;
-    int done = false;
+    int yOffset = 0;
 };
 
 };

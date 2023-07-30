@@ -4,7 +4,7 @@
 
 namespace sf
 {
-    class Clock;
+    class Time;
     class Event;
     class RenderWindow;
 };
@@ -19,10 +19,10 @@ public:
     void Shutdown();
 
     void ProcessEvent(const sf::Event& event);
-    void Render(sf::RenderWindow& window, sf::Clock& clock);
+    void Render(sf::RenderWindow& window, const sf::Time& deltaTime);
 
 private:
-    void BuildImGUI();
+    void BuildImGUI(const sf::Time& deltaTime);
 
 private:
     bool m_LogIsEnabled = false;
