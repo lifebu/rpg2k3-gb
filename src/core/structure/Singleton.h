@@ -8,6 +8,7 @@ class Singleton
 public:
     Singleton()
     {
+        assert(s_Instance == nullptr);
         s_Instance = this;
     }
 

@@ -1,5 +1,6 @@
 #include "Event.h"
 
+#include <algorithm>
 #include <cassert>
 
 #include "utilities/RPGHelper.h"
@@ -28,4 +29,23 @@ uint16_t Event::GetID() const
     return id; 
 }
 
+std::string Event::GetEventName() const
+{
+    return name;
+}
+
+EventPage* Event::GetEventPageByID(uint16_t id)
+{
+    auto foundIt = std::find_if(eventPages.begin(), eventPages.end(), [id](const EventPage& a)
+    { 
+        return a.GetID() == id;
+    });
+
+    if(foundIt != eventPages.end())
+    {
+        return &(*foundIt);
+    }
+
+    return nullptr;
+}
 };

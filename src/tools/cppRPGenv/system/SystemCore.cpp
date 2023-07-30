@@ -15,6 +15,7 @@ void SystemCore::Init()
     m_InputManager.Init();
     m_LCFManager.Init();
     m_RenderManager.Init();
+    m_VariableManager.Init();
     m_SystemStateMachine.Init(SystemStates::LOADING);
 }
 
@@ -24,6 +25,7 @@ void SystemCore::Shutdown()
     m_InputManager.Shutdown();
     m_LCFManager.Shutdown();
     m_RenderManager.Shutdown();
+    m_VariableManager.Shutdown();
 }
 
 bool SystemCore::ShouldShutdown()

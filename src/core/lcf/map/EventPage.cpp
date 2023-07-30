@@ -23,4 +23,17 @@ void EventPage::addEventCommand(const EventCommand& command)
     eventCommands.push_back(command);
 }
 
+uint16_t EventPage::GetID() const
+{ 
+    return id;
+}
+
+EventCommand* EventPage::GetEventCommandByIndex(uint32_t index)
+{
+    if(index >= eventCommands.size())
+    {
+        return nullptr;
+    }
+    return &eventCommands.at(index);
+}
 };

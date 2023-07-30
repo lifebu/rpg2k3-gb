@@ -21,6 +21,8 @@ public:
     void addEventPage(EventPage& other);
 
     uint16_t GetID() const;
+    std::string GetEventName() const;
+    EventPage* GetEventPageByID(uint16_t id);
 
 public:
     uint16_t x;

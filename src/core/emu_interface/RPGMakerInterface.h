@@ -42,6 +42,10 @@ public:
     virtual void ChangeEquipment(lcf::ChangeEquip::ActorRange actorRange, uint16_t actorID, 
         lcf::ChangeEquip::Operation operation, lcf::ChangeEquip::ItemIDType itemIDType, 
         lcf::ChangeEquip::Item whichItem, uint16_t itemID) = 0;
+    
+    // Variables
+    virtual int32_t ControlVariables(uint16_t id) = 0;
+    virtual void ControlVariables(uint16_t id, int32_t value) = 0;
 
     // Events
     // IF locationType = CONSTANT => xPos and yPos are positions
@@ -56,7 +60,7 @@ public:
     
     // TODO: Maybe this is not part of the interface but is something that is generated based on function calls in the emulator. This might just be used to get the values of the ROM?
     virtual void CallEvent(lcf::CallEvent::EventType eventType, uint16_t eventID, 
-        uint16_t pageNumber) = 0;
+        uint16_t pageID) = 0;
 
     // Rendering
     virtual void ShowPicture(lcf::ShowPicture::PictureIDType pictureIDType, uint16_t pictureID, 

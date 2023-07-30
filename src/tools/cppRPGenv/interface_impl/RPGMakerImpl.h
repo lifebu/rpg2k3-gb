@@ -38,6 +38,10 @@ public:
         lcf::ChangeEquip::Operation operation, lcf::ChangeEquip::ItemIDType itemIDType, 
         lcf::ChangeEquip::Item whichItem, uint16_t itemID) override;
 
+    // Variables
+    int32_t ControlVariables(uint16_t id) override;
+    void ControlVariables(uint16_t id, int32_t value) override;
+
     // Events
     // IF locationType = CONSTANT => xPos and yPos are positions
     // IF locationType = VARIABLE_IDS => xPos and yPos are Variable IDs
@@ -49,9 +53,8 @@ public:
     uint16_t GetEventID(lcf::GetEventID::LocationType locationType, 
         uint16_t xPos, uint16_t yPos) override;
 
-    // TODO: Maybe this is not part of the interface but is something that is generated based on function calls in the emulator. This might just be used to get the values of the ROM?
     void CallEvent(lcf::CallEvent::EventType eventType, uint16_t eventID, 
-        uint16_t pageNumber) override;
+        uint16_t pageID) override;
 
     // Rendering
     void ShowPicture(lcf::ShowPicture::PictureIDType pictureIDType, uint16_t pictureID, 

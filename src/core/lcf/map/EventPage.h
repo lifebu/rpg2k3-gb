@@ -20,6 +20,9 @@ public:
     void addEventCommands(const std::vector<EventCommand>& commands);
     void addEventCommand(const EventCommand& command);
 
+    uint16_t GetID() const;
+    EventCommand* GetEventCommandByIndex(uint32_t index);
+
 private:
     const uint16_t id;
     std::vector<EventCommand> eventCommands;

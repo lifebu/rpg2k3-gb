@@ -1,8 +1,12 @@
+
 #include "RPGMakerImpl.h"
 
+#include "core/def/MemorySizes.h"
+#include "core/def/VarMapping.h"
 #include "tools/cppRPGenv/manager/InputManager.h"
 #include "tools/cppRPGenv/manager/LCFManager.h"
 #include "tools/cppRPGenv/manager/RenderManager.h"
+#include "tools/cppRPGenv/manager/VariableManager.h"
 #include "tools/cppRPGenv/system/SystemCore.h"
 #include "tools/cppRPGenv/system/SystemStateMachine.h"
 
@@ -154,6 +158,19 @@ void RPGMakerImpl::ChangeEquipment(lcf::ChangeEquip::ActorRange actorRange, uint
     }
 }
 
+// Variables
+int32_t RPGMakerImpl::ControlVariables(uint16_t id)
+{
+    const auto* const variableManager = VariableManager::Get();
+    return variableManager->GetVariable(id);
+}
+
+void RPGMakerImpl::ControlVariables(uint16_t id, int32_t value) 
+{
+    auto* const variableManager = VariableManager::Get();
+    variableManager->SetVariable(id, value);
+}
+
 // Events
 void RPGMakerImpl::SetEventLocation(uint16_t eventID, 
     lcf::SetEventLocation::LocationType locationType, uint16_t xPos, uint16_t yPos)
@@ -185,10 +202,54 @@ uint16_t RPGMakerImpl::GetEventID(lcf::GetEventID::LocationType locationType,
 }
 
 void RPGMakerImpl::CallEvent(lcf::CallEvent::EventType eventType, uint16_t eventID, 
-    uint16_t pageNumber)
+    uint16_t pageID)
 {
-    // TODO: The code will use this to read the ROM and RAM on the Map, so do not call the actual database but write to the expected variables like the generated code would.
-    // TODO: Unsure how this would work here.
+    // The only events that this function supports are the generated MAP ROM Events.
+    auto* lcfManager = LCFManager::Get();
+    assert(lcfManager);
+
+    lcf::Event* event = lcfManager->GetMap().GetEventByID(eventID);
+    assert(event);
+    assert(event->GetEventName().find("ROM") != std::string::npos);
+
+    lcf::EventPage* eventPage = event->GetEventPageByID(pageID);
+    assert(eventPage);
+    
+    auto* variableManager = VariableManager::Get();
+    assert(variableManager);
+
+    int32_t byteOffset = variableManager->GetVariable(static_cast<uint16_t>(VARMAPPING::BYTE_OFFSET_ID));
+    int32_t labelID = (byteOffset / 3) + 1;
+
+    int32_t eventCommandIndex = MEMORYSIZES::MAP_ROM_HEADER_COUNT + (labelID - 1) * MEMORYSIZES::MAP_ROM_LABEL_COUNT;
+    eventCommandIndex += 7;
+
+    auto* eventCommand = eventPage->GetEventCommandByIndex(eventCommandIndex);
+    assert(eventCommand);
+
+    // Make sure that the eventCommand that we need is the correct one.
+    assert(eventCommand->stringParam == "");
+    assert(eventCommand->type == lcf::EventCommand::CommandType::CONTROL_VARIABLE);
+    const std::vector<int32_t>& parameters = eventCommand->parameters;
+    assert(parameters.size() == 7);
+    assert(parameters.at(0) == 0);
+    assert(parameters.at(1) == static_cast<int32_t>(VARMAPPING::READ_VAR_1));
+    assert(parameters.at(2) == static_cast<int32_t>(VARMAPPING::READ_VAR_1));
+    assert(parameters.at(3) == 0);
+    assert(parameters.at(4) == 0);
+    assert(parameters.at(6) == 0);
+
+    int32_t packedByteValue = parameters.at(5);
+    variableManager->SetVariable(static_cast<uint16_t>(VARMAPPING::READ_VAR_1), packedByteValue);
+
+    // TODO: This assumes that we only have two READ_VAR!
+    // Set the 2nd variable.
+    eventCommand = eventPage->GetEventCommandByIndex(eventCommandIndex + 1);
+    assert(eventCommand);
+
+    packedByteValue = eventCommand->parameters.at(5);
+    variableManager->SetVariable(static_cast<uint16_t>(VARMAPPING::READ_VAR_2), packedByteValue);
+
     return;
 }
 

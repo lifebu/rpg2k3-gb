@@ -17,6 +17,7 @@ set(cppRPGEnv_headers
     manager/renderer/ChoiceBox.h
     manager/renderer/InputBox.h
     manager/renderer/ImGUIRenderer.h
+    manager/VariableManager.h
     manager/structure/ManagerInterface.h)
 
 set(cppRPGEnv_source
@@ -27,7 +28,8 @@ set(cppRPGEnv_source
     manager/renderer/TextBox.cpp
     manager/renderer/ChoiceBox.cpp
     manager/renderer/InputBox.cpp
-    manager/renderer/ImGUIRenderer.cpp)
+    manager/renderer/ImGUIRenderer.cpp
+    manager/VariableManager.cpp)
 
 add_executable(cppRPGEnv cppRPGenv.cpp ${cppRPGEnv_source} ${cppRPGEnv_headers})
 
