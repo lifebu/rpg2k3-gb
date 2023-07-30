@@ -19,8 +19,7 @@ void RenderManager::Init()
         currentRes.width / 2 - RENDERER::WINDOW_WIDTH / 2, 
         currentRes.height / 2 - RENDERER::WINDOW_HEIGHT / 2));
     
-    // TODO: This FPS Limit was chosen in order to reduce input being very sensitive. Should probably have a better system to check for input.
-    m_Window.setFramerateLimit(15);
+    m_Window.setFramerateLimit(60);
     
     if(!m_Font.loadFromFile(std::string(FONT_PATH)))
     {
@@ -44,13 +43,19 @@ void RenderManager::Init()
     m_InputBox.SetFont(m_Font);
 
     // Pictures
-    if(!m_PictureTexture.loadFromFile(std::string(STATIC_IMAGE_PATH)))
+    if(!m_PictureGPUTexture.loadFromFile(std::string(STATIC_IMAGE_PATH)))
     {
         Logger::Get()->Log("Could not load the texture: " + std::string(STATIC_IMAGE_PATH), LogLevel::ERROR);
         return;
     }
-    m_PictureTexture.setSmooth(false);
-    m_PictureSprite.setTexture(m_PictureTexture);
+    m_PictureGPUTexture.setSmooth(false);
+    m_PictureSprite.setTexture(m_PictureGPUTexture);
+
+    if(!m_PictureCPUTexture.loadFromFile(std::string(STATIC_IMAGE_PATH)))
+    {
+        Logger::Get()->Log("Could not load the texture: " + std::string(STATIC_IMAGE_PATH), LogLevel::ERROR);
+        return;
+    }
 
     // Set correct scale.
     auto localBounds = m_PictureSprite.getLocalBounds();
@@ -94,6 +99,8 @@ void RenderManager::Render()
 
     // Pictures
     {
+        // CPU to GPU texture swap.
+        m_PictureGPUTexture.loadFromImage(m_PictureCPUTexture);
         m_Window.draw(m_PictureSprite);
     }
 
@@ -232,12 +239,12 @@ int RenderManager::CloseNumberInput()
     return m_InputBox.GetNumber();
 }
 
-void RenderManager::PutPixel(int x, int y, std::vector<uint8_t> rgba)
+void RenderManager::PutPixel(int x, int y, sf::Color color)
 {
-    assert(x >= 0 && x < m_PictureTexture.getSize().x 
-        && y >= 0 && y < m_PictureTexture.getSize().y);
+    assert(x >= 0 && x < m_PictureGPUTexture.getSize().x 
+        && y >= 0 && y < m_PictureGPUTexture.getSize().y);
 
-    m_PictureTexture.update(&rgba.at(0), 1, 1, x, y);
+    m_PictureCPUTexture.setPixel(x, y, color);
 }
 
 }; // namespace rpgenv

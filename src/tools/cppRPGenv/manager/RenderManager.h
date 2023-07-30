@@ -57,7 +57,7 @@ public:
     int CloseNumberInput();
 
     // Pictures
-    void PutPixel(int x,  int y, std::vector<uint8_t> rgba);
+    void PutPixel(int x, int y, sf::Color color);
 
 private:
     sf::RenderWindow m_Window;
@@ -74,7 +74,8 @@ private:
     renderer::InputBox m_InputBox;
 
     // Pictures are pixel in this texture.
-    sf::Texture m_PictureTexture;
+    sf::Image m_PictureCPUTexture; // PutPixel changes the CPU texture
+    sf::Texture m_PictureGPUTexture; // This is swapped with the CPU texture once per frame.
     sf::Sprite m_PictureSprite;
 
     // ImGUI
