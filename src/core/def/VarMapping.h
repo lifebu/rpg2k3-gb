@@ -8,8 +8,9 @@ enum class VARMAPPING : int
 {
     BYTE_OFFSET_ID = 1,
     LABEL_ID = 2,
+    // TODO: When I add VARS_PER_LABEL as a parameters this needs a dynamic amount of statically mapped variables.
     READ_VAR_1 = 3,
-    // Second Variable is overhead for the case that a 2-Byte R/W Op needs the last Byte of the first Var and the next byte.
+    // Second Variable is overhead (overlap) for the case that a 2-Byte R/W Op needs the last Byte of the first Var and the next byte.
     READ_VAR_2 = 4,
     
     COUNT

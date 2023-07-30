@@ -27,6 +27,9 @@ namespace MEMORYSIZES {
     // If address falls onto last byte of one Var, I need the next Var. 
     // Therefore always return 2 Vars (6 Byte).
     const static int VARS_PER_READWRITE = 2;
+    // TODO: I should change the following variables: 
+        // TODO: LABELS_PER_EPAGE: [1, RPGMAKER::MAX_LABELS_PER_EPAGE]. This will make MAX_LABELS_PER_EPAGE unecessary. With this variable I can set how many labels I want to have. Less Labels means less code. Halfing this from n to n/2: O(log(n)) => O(log(n/2))
+        // TODO: VARS_PER_LABEL: [2, ...]. This would allow a single Label to have multiple variables. Right now we always have two variables per Label. Increasing this will increase the amount of static variables for reading, but drastically reduce the number of labels I need in all pages. This could be a good tradeoff to increase the performance. Because having something like 10 extra static variables that can read 10*BYTES_PER_VAR at once. But it is currently unclear how much time writing to these static variables takes compared to the jump. But just doubling the number of variables per E-Page from 2 to 4, will half the amount of Labels you need per EPage for the same amount of Memory you can address in a single event page. And this halves the total amount of generated code!
     // Maximum number of labels possible per event page.
     const static int MAX_LABELS_PER_EPAGE = 1000; 
     // TODO: need to test which VARS_PER_EPAGE gives best performance! 

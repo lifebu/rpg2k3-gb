@@ -24,26 +24,8 @@ CppRPGEnv: C++-RPG Maker Environment
         rpgMaker->ShowPicture(pictureID, 0, 0, Vector3(0.5f, 0.5f, 0.5f)); // var id, const pos
         rpgMaker->ShowPicture(0, 0, 0, Vector3(0.5f, 0.5f, 0.5f));         // const id, const pos
         All of those overloads can be easily detected by the compiler.
-    
-    - Think about how I want to handle the RPGMaker variables.
-        - Some variables are only used by the compiler and generated stack frames, based on the variables I declare in the c++ code.
-        - This is irrelevant for the actual emulator code.
-        - So probably the only variables I have and want to interact with are the hardcoded once.
-        - They are used for the generated code.
-        - I can detect in the compiler that I am accessing these hardcoded globale variables.
-
-    - How do I handle event calls?
-        - How Do I handle map event calls?
-
-            - 1. & 2. Call MAP_ROM & DMG_ROM: 
-                - Call a function that returns the value you want to read from the rom to a location in Cartridge ROM (like the one I generate).
-                - Simplest version: 
-                    - Size of the MapRomHeader and MapRomLabel are known 
-                    - use MEMORYSIZES::MAP_ROM_HEADER_COUNT and MEMORYSIZES::MAP_ROM_LABEL_COUNT
-                    - use that to calculate which command to look into in the event to get the data.
-            
-            - 3. Call MAP_RAM: => NOOP.
-                - For that I need to know if the called event is a map-ram, how?
+       
+    - Need an access in the Interface to the static compile time variables in the Variable Manager.
 
     Later:
     - Should I rename character to actor?

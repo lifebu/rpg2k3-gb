@@ -30,9 +30,17 @@ gb2RPG: Gameboy 2 RPG Maker.
             - makes it uneccessarily complex.
         
         - use a precompiled header for the STL elements I use.
+
+        - Order of includes!
+
+        - Create typedefs for common types like ID.
+            - So that I don't have to know if an ID is uint16_t or something.
+            - ID, VariableValue
    
         
     - Code Style:
+        - precompiled header.
+
         - Write a small code style guide.
 
         - Add Documentation!
@@ -56,6 +64,14 @@ gb2RPG: Gameboy 2 RPG Maker.
         Next:
         
         Later: 
+        - Core: Asserts
+            - An assert system that throws asserts itself but also can log them.
+
+        - Improve Code Gen:
+            - introduce LABELS_PER_EPAGE and VARS_PER_LABEL to MemorySizes.
+            - How can I then have a different amount of READ_VAR_* in the VarMapping depending on the setting?
+            - This can drastically improve code gen speed and probably even Speed in the RPG Maker!
+
         - Configuration File:
             - It would be cool to have a way to allow configuration of certain parameters.
             - Like the packaging size (how many vars).

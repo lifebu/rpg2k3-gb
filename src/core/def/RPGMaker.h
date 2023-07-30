@@ -26,6 +26,8 @@ namespace RPGMAKER {
     // Events:
     // How many pages one Event can have
     const static int MAX_PAGES_PER_EVENT = 100;
+    // How many Lables I can have per Event Page
+    const static int MAX_LABELS_PER_EPAGE = 1'000;
 
     // Map
     const static int MAP_SIZE_X = 500;
