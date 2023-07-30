@@ -12,6 +12,7 @@ public:
 
 private:
     int yOffset = 0;
+    int speed = 1;
 };
 
 };

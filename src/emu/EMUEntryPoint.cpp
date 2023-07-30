@@ -14,58 +14,58 @@ void EMUEntryPoint::RPGMain()
 {
     auto* rpgMaker = rpgenv::RPGMakerInterface::Get();
 
-    /*
-    rpgMaker->ShowText(
-        "Emulator is running pretty well I would say so!!!"
-        "Emulator is running pretty well I would say so!!!"
-        "Emulator is running pretty well I would say so!!!"
-        "Emulator is running pretty well I would say so!!!");
-    */
+    // This testcode allows the entire cartridge content to be viewed.
 
-    //rpgMaker->ShowChoices({"Yes", "No", "Maybe?", "Definetly"}, lcf::Choices::ChoiceCaseOnCancel::OWN_BRANCH);
+    // Get the size of the ROM.
+    const int cartridgeHeaderOffset = 256;
+    const int romSizeByteOffset = cartridgeHeaderOffset + 72; // Offset into the CartridgeHeader
+    rpgMaker->ControlVariables(static_cast<uint16_t>(VARMAPPING::BYTE_OFFSET_ID), romSizeByteOffset);
+    rpgMaker->CallEvent(lcf::CallEvent::EventType::CONST_MAP_EVENT, 2, 1);
+    int32_t firstVar = rpgMaker->ControlVariables(static_cast<uint16_t>(VARMAPPING::READ_VAR_1));
+    std::vector<uint8_t> bytes = unpackVariable(firstVar);
+    const int headerRomSize = bytes.at(romSizeByteOffset % 3);
 
-    
-    //rpgMaker->InputNumber(5);
-    /*
+    int romSizeKByte = 0;
+    if (headerRomSize == 0x00)      romSizeKByte = 32;
+    else if (headerRomSize == 0x01) romSizeKByte = 64;
+    else if (headerRomSize == 0x02) romSizeKByte = 128;
+    else if (headerRomSize == 0x03) romSizeKByte = 256;
+    else if (headerRomSize == 0x04) romSizeKByte = 512;
+    else if (headerRomSize == 0x05) romSizeKByte = 1'024;
+    else if (headerRomSize == 0x06) romSizeKByte = 2'048;
+    else if (headerRomSize == 0x07) romSizeKByte = 4'096;
+    else if (headerRomSize == 0x08) romSizeKByte = 8'192;
+
+    // Change speed.
+    if(rpgMaker->KeyInputProcessing(RPGMAKER::KeyCodes::SYMBOL_PLUS)) 
+    {
+        speed++;
+    }
+    if(rpgMaker->KeyInputProcessing(RPGMAKER::KeyCodes::SYMBOL_MINUS)) 
+    {
+        speed--;
+        if(speed < 1) speed = 1;
+    }
+
+    // Move the view.
     if(rpgMaker->KeyInputProcessing(RPGMAKER::KeyCodes::UP))
     {
-        y--;
-    }
-    if(rpgMaker->KeyInputProcessing(RPGMAKER::KeyCodes::DOWN))
-    {
-        y++;
-    }
-    if(rpgMaker->KeyInputProcessing(RPGMAKER::KeyCodes::LEFT))
-    {
-        x--;
-    }
-    if(rpgMaker->KeyInputProcessing(RPGMAKER::KeyCodes::RIGHT))
-    {
-        x++;
-    }
-    */
-
-    //x = std::clamp(x, 0, 160 - 1);
-    //y = std::clamp(y, 0, 144 - 1);
-
-    if(rpgMaker->KeyInputProcessing(RPGMAKER::KeyCodes::UP))
-    {
-        int newOffset = yOffset - 1;
+        int newOffset = yOffset - speed;
         if(newOffset < 0) newOffset = 0;
         yOffset = newOffset;
     }
     if(rpgMaker->KeyInputProcessing(RPGMAKER::KeyCodes::DOWN))
     {
-        int newOffset = yOffset + 1;
+        int newOffset = yOffset + speed;
         int maxByteOffset = 159 + (143 + newOffset) * 144;
-        // TODO: This should use the actual ROM-Size.
-        if(maxByteOffset < 32'768)
+
+        if(maxByteOffset < romSizeKByte * 1'024)
         {
             yOffset = newOffset;
         }
     }
 
-    // splat rom data.
+    // Splat rom data.
     for(int y = 0; y < 144; ++y)
     {
         for (int x = 0; x < 160; ++x)
@@ -74,6 +74,11 @@ void EMUEntryPoint::RPGMain()
             int maxNumOfBytesPerEvent = MEMORYSIZES::BYTES_PER_EPAGE * RPGMAKER::MAX_PAGES_PER_EVENT;
             uint16_t eventID = 2 + (byteOffset / maxNumOfBytesPerEvent);
             uint16_t pageID = 1 + (byteOffset / MEMORYSIZES::BYTES_PER_EPAGE);
+
+            while(pageID > 100)
+            {
+                pageID /= 100;
+            }
 
             int byteOffsetInEpage = byteOffset % MEMORYSIZES::BYTES_PER_EPAGE;
 
