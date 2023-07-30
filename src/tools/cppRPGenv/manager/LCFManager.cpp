@@ -77,7 +77,7 @@ void LCFManager::ContinueLoading()
                     {
                         // TODO: Nobody will know if this throws an exception.
                         // TODO: The Return value is not thread safe.
-                        lcf::Map tempMap = lcf::MapSerializer::FromFile(filePath);
+                        m_Map = lcf::MapSerializer::FromFile(filePath);
                     });
                 }
             }
