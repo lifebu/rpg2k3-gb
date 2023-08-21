@@ -7,10 +7,10 @@
 			"command": "valgrind",
 			"args": [
 				"--tool=callgrind",
-				"--callgrind-out-file=temp/callgrind.out",
+				"--callgrind-out-file=build/callgrind.out",
 				"${command:cmake.launchTargetPath}",
 				"-g",
-                "playground/Tetris.gb",
+                "build/Tetris.gb",
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"
@@ -27,10 +27,10 @@
 			"command": "valgrind",
 			"args": [
 				"--tool=cachegrind",
-				"--cachegrind-out-file=temp/cachegrind.out",
+				"--cachegrind-out-file=build/cachegrind.out",
 				"${command:cmake.launchTargetPath}",
 				"-g",
-                "playground/Tetris.gb",
+                "build/Tetris.gb",
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"
@@ -47,10 +47,10 @@
 			"command": "valgrind",
 			"args": [
 				"--tool=massif",
-				"--massif-out-file=temp/massif.out",
+				"--massif-out-file=build/massif.out",
 				"${command:cmake.launchTargetPath}",
 				"-g",
-                "playground/Tetris.gb",
+                "build/Tetris.gb",
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"
@@ -71,7 +71,7 @@
 				"--show-leak-kinds=all",
 				"${command:cmake.launchTargetPath}",
 				"-g",
-                "playground/Tetris.gb",
+                "build/Tetris.gb",
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"
@@ -87,7 +87,7 @@
 			"label": "Open CPU profile data (kcachegrind)",
 			"command": "kcachegrind",
 			"args": [
-				"temp/callgrind.out"
+				"build/callgrind.out"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"
@@ -103,7 +103,7 @@
 			"label": "Open cache profile data (kcachegrind)",
 			"command": "kcachegrind",
 			"args": [
-				"temp/cachegrind.out"
+				"build/cachegrind.out"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"
@@ -119,7 +119,7 @@
 			"label": "Open memory profile data (massif-visualizer)",
 			"command": "massif-visualizer",
 			"args": [
-				"temp/massif.out"
+				"build/massif.out"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"

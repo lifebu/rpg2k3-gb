@@ -1,11 +1,11 @@
 Do changes in this order:
 - folders:
-    .github/
-    .vscode/
-    build/
-    data/
+    d_.github/
+    d_.vscode/
+    d_build/
+    d_data/
         templates/
-    data_raw/
+    d_data_raw/
     doc/
         html/
         *.txt
@@ -17,9 +17,9 @@ Do changes in this order:
         core/
         emu/
         tools/
-    playground/ (this also is temp)
+    d_playground/ (this also is temp)
         run from debug programs in this folder (so that the log files and output will end up here!)
-    test/
+    tests/
         src/
     tools/
         cmake/
@@ -56,6 +56,9 @@ Do changes in this order:
 - CMake and VSCode:
     Make everything I want to do a CMake target (like calling cachegrind) 
     then create a vscode task that will just call a specific cmake target directly?
+
+- targets:
+    - 
 
 
 - Add the following tools:
