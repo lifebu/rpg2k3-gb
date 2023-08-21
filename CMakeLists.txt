@@ -14,8 +14,8 @@ add_subdirectory(src/core)
 add_subdirectory(src/emu)
 
 # tools
-add_subdirectory(src/tools/gb2rpg)
-add_subdirectory(src/tools/cppRPGenv)
+add_subdirectory(src/gb2rpg)
+add_subdirectory(src/cppRPGenv)
 
 # thirdparty
 add_subdirectory(thirdparty/tinyxml2)

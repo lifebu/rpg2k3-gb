@@ -3,12 +3,12 @@
 
 #include "core/def/MemorySizes.h"
 #include "core/def/VarMapping.h"
-#include "tools/cppRPGenv/manager/InputManager.h"
-#include "tools/cppRPGenv/manager/LCFManager.h"
-#include "tools/cppRPGenv/manager/RenderManager.h"
-#include "tools/cppRPGenv/manager/VariableManager.h"
-#include "tools/cppRPGenv/system/SystemCore.h"
-#include "tools/cppRPGenv/system/SystemStateMachine.h"
+#include "cppRPGenv/manager/InputManager.h"
+#include "cppRPGenv/manager/LCFManager.h"
+#include "cppRPGenv/manager/RenderManager.h"
+#include "cppRPGenv/manager/VariableManager.h"
+#include "cppRPGenv/system/SystemCore.h"
+#include "cppRPGenv/system/SystemStateMachine.h"
 
 namespace rpgenv 
 {

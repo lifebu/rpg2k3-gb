@@ -12,11 +12,13 @@ Do changes in this order:
     include/ => public interface
         core/
         emu/
-        tools/
+        cppRPGenv/
+        gb2rpg/
     src/ => private implementation
         core/
         emu/
-        tools/
+        cppRPGenv/
+        gb2rpg/
     d_playground/ (this also is temp)
         run from debug programs in this folder (so that the log files and output will end up here!)
     tests/
