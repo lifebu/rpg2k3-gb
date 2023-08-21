@@ -1,0 +1,71 @@
+Do changes in this order:
+- folders:
+    .github/
+    .vscode/
+    build/
+    data/
+        templates/
+    data_raw/
+    doc/
+        html/
+        *.txt
+    include/ => public interface
+        core/
+        emu/
+        tools/
+    src/ => private implementation
+        core/
+        emu/
+        tools/
+    playground/ (this also is temp)
+        run from debug programs in this folder (so that the log files and output will end up here!)
+    test/
+        src/
+    tools/
+        cmake/
+            config.hpp.in
+            CMake modules
+        have tool configs here!
+        Doxyfile
+        run-clang-format.py
+        run-clang-tidy.py
+    thirdparty/
+
+- CMake problems:
+    - file(COPY "build/thirdparty/liblcf/lcf2xml" DESTINATION ${CMAKE_SOURCE_DIR}) in CMakeLists.txt does only work if it has been build before. This should be part of an install target.
+        - we need a better way so that gb2rpg can find and call another tool (lcf2xml).
+    
+    - remove unused build targets
+        - sfml-audio, sfml-network
+        - it does not even compile (cannot find uint16_t?)
+        - remove every target that I don't actually need
+        - look into sfml flags to use to reduce the code to build.
+        - also do I need to build the entire lcf package? (lcfstrings, test_runner_lcf)?
+    
+    - check how the include dirs are handled.
+        I would like to have them based on the src folder.
+        don't have tools folder like this?
+        have gb2rpg and cppRPGenv be direclty under src!
+    
+    - I should be able to install the project.
+        package/ => don't know about this one. Maybe this is automatically via install?
+            the following things need to be in the package:
+            - data/ folder and compiled code.
+
+
+- CMake and VSCode:
+    Make everything I want to do a CMake target (like calling cachegrind) 
+    then create a vscode task that will just call a specific cmake target directly?
+
+
+- Add the following tools:
+    - Doxygen, fmt, clang-format, clang-tidy, include-what-you-use, valgrind, cpplint, cppcheck, conan, cpm, cmake-format, catch2, ccache.
+
+- Use github actions:
+    - give people completed builds they can just download.
+    - github pages and documentation (?).
+    - unit tests for ubuntu and windows.
+
+- base it on:
+    https://github.com/filipdutescu/modern-cpp-template
+    https://github.com/franneck94/CppProjectTemplate

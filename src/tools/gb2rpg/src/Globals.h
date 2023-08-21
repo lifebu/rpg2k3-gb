@@ -9,8 +9,8 @@ namespace gb2rpg
     namespace TEMPLATES 
     {
         // general
-        const static char* DMG_ROM = "templates/dmg_rom.xml";
-        const static char* MAP_ROM_HEADER = "templates/map_rom_header.xml";
-        const static char* MAP_ROM_LABEL = "templates/map_rom_label.xml";
+        const static char* DMG_ROM = "data/templates/dmg_rom.xml";
+        const static char* MAP_ROM_HEADER = "data/templates/map_rom_header.xml";
+        const static char* MAP_ROM_LABEL = "data/templates/map_rom_label.xml";
     };  
 };

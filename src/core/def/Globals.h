@@ -8,7 +8,7 @@ namespace GLOBALS
 namespace PROJECT 
 {
     // Folders:
-    const static std::string TEMPLATE_DIR = "templates/project/";
+    const static std::string TEMPLATE_DIR = "data/templates/project/";
     const static std::string PROJECT_DIR = "project/";
     const static std::string RPG_PROJECT_DIR = "project/rpg2k3/";
 

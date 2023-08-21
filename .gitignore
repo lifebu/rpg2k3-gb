@@ -30,13 +30,13 @@ build/*
 
 ## Proprietary Testdata not to be included in the repository
 playground/*
-templates/project/RPG_RT.exe
-templates/project/ultimate_rt_eb.dll
-project/*
+data/templates/project/RPG_RT.exe
+data/templates/project/ultimate_rt_eb.dll
+project/
 *.gb
 
 ## Packaged Version
-package/*
+package/
 
 ## completed build files in the main folder
 easyrpg-player

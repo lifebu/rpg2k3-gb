@@ -72,7 +72,7 @@ void ProjectGenerator::createProjectData(int numOfMaps)
     genRPGProjFile();
     genRPGIniFile();
     
-    // copy proprietary data from templates/project to project/rpg2k3
+    // copy proprietary data from data/templates/project to project/rpg2k3
     bool oneProprietaryNotFound = false;
     for (auto& rpgFile : GLOBALS::PROJECT::REQUIRED_RPGMAKER_FILES) {
         try 
