@@ -1,11 +1,11 @@
 Do changes in this order:
 - folders:
-    d_.github/
-    d_.vscode/
-    d_build/
-    d_data/
+    .github/
+    .vscode/
+    build/
+    data/
         templates/
-    d_data_raw/
+    data_raw/
     doc/
         html/
         *.txt
@@ -19,7 +19,7 @@ Do changes in this order:
         emu/
         cppRPGenv/
         gb2rpg/
-    d_playground/ (this also is temp)
+    playground/ (this also is temp)
         run from debug programs in this folder (so that the log files and output will end up here!)
     tests/
         src/

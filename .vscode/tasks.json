@@ -10,7 +10,7 @@
 				"--callgrind-out-file=build/callgrind.out",
 				"${command:cmake.launchTargetPath}",
 				"-g",
-                "build/Tetris.gb",
+                "playground/Tetris.gb",
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"
@@ -30,7 +30,7 @@
 				"--cachegrind-out-file=build/cachegrind.out",
 				"${command:cmake.launchTargetPath}",
 				"-g",
-                "build/Tetris.gb",
+                "playground/Tetris.gb",
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"
@@ -50,7 +50,7 @@
 				"--massif-out-file=build/massif.out",
 				"${command:cmake.launchTargetPath}",
 				"-g",
-                "build/Tetris.gb",
+                "playground/Tetris.gb",
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"
@@ -71,7 +71,7 @@
 				"--show-leak-kinds=all",
 				"${command:cmake.launchTargetPath}",
 				"-g",
-                "build/Tetris.gb",
+                "playground/Tetris.gb",
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"
@@ -129,6 +129,25 @@
 			],
 			"group": "none",
 			"detail": "Open memory profile data using massif-visualizer"
+		},
+		{
+			"type": "process",
+			"label": "CMake Dependencies",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--target", 
+				"run_graphviz"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "none",
+			"detail": "Generate a cmake depedency diagram",
 		}
 	]
 }

@@ -1,33 +1,21 @@
 cmake_minimum_required(VERSION 3.16...3.22)
 if(${CMAKE_VERSION} VERSION_LESS 3.12)
-    cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
-else()
-    cmake_policy(VERSION 3.22)
+	# Use most recent policies, even for older cmake
+	cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 endif()
 
 project(rpg2k3-gb VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Gameboy emulator for RPG Maker 2003")
 
-# core
-add_subdirectory(src/core)
+# modules
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/tools/cmake/)
+include(Dependencies)
 
-# emu
-add_subdirectory(src/emu)
+# execute modules
+add_cmake_graphviz_target()
 
-# tools
-add_subdirectory(src/gb2rpg)
-add_subdirectory(src/cppRPGenv)
+# code
+add_subdirectory(src)
+add_subdirectory(thirdparty)
 
-# thirdparty
-add_subdirectory(thirdparty/tinyxml2)
-add_subdirectory(thirdparty/rapidxml)
-add_subdirectory(thirdparty/liblcf)
+# Todo find a better way to do this.
 file(COPY "build/thirdparty/liblcf/lcf2xml" DESTINATION ${CMAKE_SOURCE_DIR})
-add_subdirectory(thirdparty/SFML)
-
-set(IMGUI_DIR "../imgui") #relative to thirdparty/imgui-sfml
-set(IMGUI_SFML_FIND_SFML OFF)
-set(IMGUI_SFML_IMGUI_DEMO ON)
-add_subdirectory(thirdparty/imgui-sfml)
-
-#add_subdirectory(thirdparty/EasyRPGPlayer)
-#file(COPY "build/thirdparty/EasyRPGPlayer/easyrpg-player" DESTINATION ${CMAKE_SOURCE_DIR})

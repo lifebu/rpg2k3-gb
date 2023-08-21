@@ -1,17 +1,8 @@
-cmake_minimum_required(VERSION 3.16...3.22)
-if(${CMAKE_VERSION} VERSION_LESS 3.12)
-    cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
-else()
-    cmake_policy(VERSION 3.22)
-endif()
-
+project(emu VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Gameboy emulator written to run in RPG Maker 2003.")
 
 set(emu_header EMUEntryPoint.h)
 
 set(emu_source EMUEntryPoint.cpp)
-
-project(emu VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Gameboy emulator written to run in RPG Maker 2003.")
-
 
 add_library(emu ${emu_header} ${emu_source})
 

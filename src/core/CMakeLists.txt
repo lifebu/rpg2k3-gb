@@ -1,10 +1,4 @@
-cmake_minimum_required(VERSION 3.16...3.22)
-if(${CMAKE_VERSION} VERSION_LESS 3.12)
-    cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
-else()
-    cmake_policy(VERSION 3.22)
-endif()
-
+project(core VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Core files for the other tools of the project")
 
 set(lcf_headers
     lcf/event/EventCommand.h
@@ -75,9 +69,6 @@ set(def_headers
     def/VarMapping.h)
 
 
-project(core VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Core files for the other tools of the project")
-
-
 add_library(core 
     ${lcf_headers} ${lcf_source}
     ${emu_headers}
@@ -97,5 +88,6 @@ cmake_print_variables(PROJECT_SOURCE_DIR)
 
 # third party
 target_link_libraries(core PRIVATE tinyxml2)
+target_link_libraries(core PRIVATE rapidxml)
 
 target_compile_features(core PUBLIC cxx_std_17)
