@@ -3,7 +3,7 @@
 #include <iostream>
 #include <algorithm>
 
-#include "core/structure/Logger.h"
+#include <core/structure/Logger.h>
 
 using namespace gb2rpg;
 

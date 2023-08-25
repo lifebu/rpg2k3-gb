@@ -1,9 +1,9 @@
 #pragma once
 
-#include "CLI.h"
-
 #include <vector>
 #include <string>
+
+#include "gb2rpg/cli/CLI.h"
 
 
 namespace lcf {

@@ -1,11 +1,13 @@
 #include "GBFile.h"
 
-#include "CLI.h"
-#include "core/def/MemorySizes.h"
-#include "core/structure/Logger.h"
-
 #include <iostream>
 #include <cassert>
+
+#include <core/def/MemorySizes.h>
+#include <core/structure/Logger.h>
+
+#include "gb2rpg/cli/CLI.h"
+
 
 using namespace gb2rpg;
 

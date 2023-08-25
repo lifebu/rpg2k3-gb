@@ -1,15 +1,15 @@
 #include "ProjectGenerator.h"
 
-#include "Globals.h"
-
-#include "core/def/Globals.h"
-#include "core/utilities/RPGHelper.h"
-#include "core/structure/Logger.h"
-
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <filesystem>
+
+#include <core/def/Globals.h>
+#include <core/utilities/RPGHelper.h>
+#include <core/structure/Logger.h>
+
+#include "gb2rpg/def/Globals.h"
 
 namespace fs = std::filesystem;
 using namespace gb2rpg;

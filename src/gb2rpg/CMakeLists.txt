@@ -1,17 +1,22 @@
 project(gb2rpg VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Gameboy rom to RPG Maker")
 
-set(gp2rpg_headers
-    src/CLI.h src/Database.h src/GBFile.h src/Map.h src/MapTree.h 
-     src/ProjectGenerator.h src/Globals.h)
+set(gb2rpg_cli_headers cli/CLI.h)
+set(gb2rpg_cli_sources cli/CLI.cpp)
 
-set(gp2rpg_source
-    src/CLI.cpp src/Database.cpp src/GBFile.cpp src/Map.cpp src/MapTree.cpp
-     src/ProjectGenerator.cpp) 
+set(gb2rpg_def_headers def/Globals.h)
 
-add_executable(gb2rpg gb2rpg.cpp ${gp2rpg_source} ${gp2rpg_headers})
+set(gb2rpg_file_headers file/Database.h file/GBFile.h file/Map.h file/MapTree.h)
+set(gb2rpg_file_sources file/Database.cpp file/GBFile.cpp file/Map.cpp file/MapTree.cpp)
 
-target_include_directories(gb2rpg PRIVATE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>")
-target_include_directories(gb2rpg PRIVATE ${PROJECT_SOURCE_DIR})
+set(gb2rpg_project_headers project/ProjectGenerator.h)
+set(gb2rpg_project_sources project/ProjectGenerator.cpp)
+
+add_executable(gb2rpg gb2rpg.cpp 
+    ${gb2rpg_cli_headers} ${gb2rpg_cli_sources}
+    ${gb2rpg_def_headers}
+    ${gb2rpg_file_headers} ${gb2rpg_file_sources}
+    ${gb2rpg_project_headers} ${gb2rpg_project_sources})
+
 target_include_directories(gb2rpg PRIVATE ${CMAKE_SOURCE_DIR}/src)
 
 target_link_libraries(gb2rpg PRIVATE core)

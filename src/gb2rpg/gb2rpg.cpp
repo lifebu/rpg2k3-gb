@@ -1,11 +1,11 @@
-#include "src/GBFile.h"
-#include "src/CLI.h"
-#include "src/Map.h"
-#include "src/MapTree.h"
-#include "src/Database.h"
-#include "src/ProjectGenerator.h"
+#include <core/structure/Logger.h>
 
-#include "core/structure/Logger.h"
+#include "gb2rpg/cli/CLI.h"
+#include "gb2rpg/file/GBFile.h"
+#include "gb2rpg/file/Map.h"
+#include "gb2rpg/file/MapTree.h"
+#include "gb2rpg/file/Database.h"
+#include "gb2rpg/project/ProjectGenerator.h"
 
 int main (int argc, char* argv[]) 
 {

@@ -32,7 +32,7 @@ build/*
 playground/*
 data/templates/project/RPG_RT.exe
 data/templates/project/ultimate_rt_eb.dll
-project/
+/project/
 *.gb
 
 ## Packaged Version
