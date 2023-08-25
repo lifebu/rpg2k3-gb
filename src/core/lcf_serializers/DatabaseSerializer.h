@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../lcf/Database.h"
-
 #include <string>
+
+#include "core/lcf/Database.h"
 
 
 namespace tinyxml2 {class XMLDocument; class XMLElement;};

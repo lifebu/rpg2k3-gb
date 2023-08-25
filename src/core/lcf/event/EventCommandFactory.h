@@ -4,7 +4,7 @@
 #include <vector>
 #include <cstdint>
 
-#include "EventCommandFactoryDef.h"
+#include "core/lcf/event/EventCommandFactoryDef.h"
 
 namespace lcf 
 {

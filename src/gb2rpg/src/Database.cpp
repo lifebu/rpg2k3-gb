@@ -3,10 +3,12 @@
 #include "Globals.h"
 
 #include "core/def/Globals.h"
+#include "core/def/RPGMaker.h"
 #include "core/lcf/Database.h"
 #include "core/lcf_serializers/DatabaseSerializer.h"
 #include "core/lcf_serializers/CommonEventSerializer.h"
 #include "core/structure/Logger.h"
+#include "core/utilities/RPGHelper.h"
 
 #include <tuple>
 #include <iostream>

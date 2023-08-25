@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../lcf/MapTree.h"
-
 #include <string>
+
+#include "core/lcf/MapTree.h"
 
 namespace tinyxml2 {class XMLElement;};
 

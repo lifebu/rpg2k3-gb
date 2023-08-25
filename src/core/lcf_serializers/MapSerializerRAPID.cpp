@@ -1,16 +1,15 @@
 #include "MapSerializerRAPID.h"
 
-#include "Templates.h"
-
-#include "EventCommandSerializerRAPID.h"
-
-#include "utilities/RPGHelper.h"
-//#include "thirdparty/tinyxml2/tinyxml2.h"
-#include "thirdparty/rapidxml/rapidxml_ext.hpp"
-
 #include <iostream>
 #include <fstream>
 #include <sstream>
+
+#include <thirdparty/rapidxml/rapidxml_ext.hpp>
+
+#include "core/lcf_serializers/Templates.h"
+#include "core/lcf_serializers/EventCommandSerializerRAPID.h"
+#include "core/utilities/RPGHelper.h"
+
 
 namespace lcf 
 {

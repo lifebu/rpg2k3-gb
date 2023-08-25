@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <cassert>
 
-#include "utilities/RPGHelper.h"
+#include "core/utilities/RPGHelper.h"
 
 namespace lcf {
 

@@ -1,11 +1,11 @@
 #include "EventCommandSerializerRAPID.h"
 
-#include "lcf_serializers/Templates.h"
-#include "utilities/RPGHelper.h"
-#include "thirdparty/rapidxml/rapidxml_ext.hpp"
-
 #include <iostream>
 #include <sstream>
+
+#include <thirdparty/rapidxml/rapidxml_ext.hpp>
+
+#include "core/lcf_serializers/Templates.h"
 
 namespace lcf 
 {

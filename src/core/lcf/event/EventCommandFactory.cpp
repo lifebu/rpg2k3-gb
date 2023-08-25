@@ -1,9 +1,10 @@
 #include "EventCommandFactory.h"
 
-#include "EventCommand.h"
-#include "structure/Logger.h"
-
 #include <iostream>
+
+#include "core/lcf/event/EventCommand.h"
+#include "core/structure/Logger.h"
+
 
 namespace lcf 
 {

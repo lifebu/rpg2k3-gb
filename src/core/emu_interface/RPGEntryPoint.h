@@ -1,7 +1,5 @@
 #pragma once
 
-#include "RPGMakerInterface.h"
-
 namespace rpgenv 
 {
 

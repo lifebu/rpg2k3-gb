@@ -1,8 +1,9 @@
 #pragma once
 
-#include "../lcf/event/EventCommand.h"
-
 #include <string>
+
+#include "core/lcf/event/EventCommand.h"
+
 
 namespace tinyxml2 {class XMLDocument; class XMLElement; };
 

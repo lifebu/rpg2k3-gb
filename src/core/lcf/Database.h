@@ -1,13 +1,12 @@
 #pragma once
 
-#include "database/LCFType.h"
-#include "database/Character.h"
-#include "database/Item.h"
-#include "database/CommonEvent.h"
-#include "event/EventCommand.h"
-
 #include <string>
 
+#include "core/lcf/database/LCFType.h"
+#include "core/lcf/database/Character.h"
+#include "core/lcf/database/Item.h"
+#include "core/lcf/database/CommonEvent.h"
+#include "core/lcf/event/EventCommand.h"
 
 namespace lcf {
 

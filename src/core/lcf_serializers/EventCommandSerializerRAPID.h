@@ -1,12 +1,13 @@
 #pragma once
 
-#include "../lcf/event/EventCommand.h"
-
 #include <string>
 
-// TODO: How to have the include in the cpp?
-// TODO: Why is this include so strange??
-#include "../../../thirdparty/rapidxml/rapidxml_ext.hpp"
+namespace rapidxml
+{
+    template<class Ch> class xml_node;
+};
+
+#include "core/lcf/event/EventCommand.h"
 
 namespace lcf 
 {
@@ -20,8 +21,8 @@ public:
     static void MultipleToFile(std::string fileName, std::vector<EventCommand>& elems);
 
 private:
-    static EventCommand FromFileImpl(rapidxml::xml_node<>* eventCommand);
-    static void ToFileImpl(const EventCommand& elem, rapidxml::xml_node<>* eventCommand);
+    static EventCommand FromFileImpl(rapidxml::xml_node<char>* eventCommand);
+    static void ToFileImpl(const EventCommand& elem, rapidxml::xml_node<char>* eventCommand);
 
     static std::vector<int32_t> parseParamString(const std::string& paramString);
     static std::string generateParamString(const std::vector<int32_t>& params);

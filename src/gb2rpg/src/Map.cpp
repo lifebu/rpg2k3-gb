@@ -3,17 +3,19 @@
 #include "GBFile.h"
 #include "Globals.h"
 
+#include <iostream>
+#include <cassert>
+#include <cmath>
+
 #include "core/def/Globals.h"
+#include "core/def/RPGMaker.h"
 #include "core/lcf/event/EventCommandFactory.h"
 #include "core/lcf/Map.h"
 #include "core/lcf_serializers/MapSerializer.h"
 #include "core/lcf_serializers/MapSerializerRAPID.h"
 #include "core/lcf_serializers/EventCommandSerializer.h"
 #include "core/structure/Logger.h"
-
-#include <iostream>
-#include <cassert>
-#include <cmath>
+#include "core/utilities/RPGHelper.h"   
 
 using namespace gb2rpg;
 

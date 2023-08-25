@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Singleton.h"
-
 #include <fstream>
 #include <mutex>
 #include <string>
 #include <vector>
+
+#include "core/structure/Singleton.h"
 
 namespace core 
 {

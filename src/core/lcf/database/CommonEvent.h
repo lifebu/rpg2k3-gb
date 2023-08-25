@@ -1,11 +1,10 @@
 #pragma once
 
-#include "../event/EventCommand.h"
-
 #include <string>
 #include <vector>
 #include <cstdint>
 
+#include "core/lcf/event/EventCommand.h"
 
 namespace lcf 
 {

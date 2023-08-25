@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../event/EventCommand.h"
-
 #include <string>
 #include <vector>
+
+#include "core/lcf/event/EventCommand.h"
 
 
 namespace lcf {

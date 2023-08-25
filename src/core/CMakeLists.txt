@@ -78,14 +78,8 @@ add_library(core
     ${utility_headers} ${utility_source}
     ${def_headers})
 
-target_include_directories(core PRIVATE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>")
-target_include_directories(core PRIVATE 
-        ${PROJECT_SOURCE_DIR}
-        ${CMAKE_SOURCE_DIR})
 
-include(CMakePrintHelpers)
-cmake_print_variables(PROJECT_SOURCE_DIR) 
-
+target_include_directories(core PRIVATE ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR})
 
 # third party
 target_link_libraries(core PRIVATE tinyxml2)

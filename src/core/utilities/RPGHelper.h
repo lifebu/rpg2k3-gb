@@ -5,10 +5,9 @@
 #include <string>
 #include <cassert>
 
-#include "../def/VarMapping.h"
-#include "../def/MemorySizes.h"
-#include "../def/RPGMaker.h"
-
+#include "core/def/VarMapping.h"
+#include "core/def/MemorySizes.h"
+#include "core/def/RPGMaker.h"
 
 int32_t packVariable(std::vector<uint8_t> bytes);
 std::vector<uint8_t> unpackVariable(int32_t var);

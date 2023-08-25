@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include "utilities/RPGHelper.h"
+#include "core/utilities/RPGHelper.h"
 
 namespace lcf 
 {

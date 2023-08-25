@@ -2,8 +2,6 @@
 
 #include <cassert>
 
-#include "utilities/RPGHelper.h"
-
 namespace lcf {
 
 // public

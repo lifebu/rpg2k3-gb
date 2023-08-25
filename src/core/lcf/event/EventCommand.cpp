@@ -1,8 +1,5 @@
 #include "EventCommand.h"
 
-#include "utilities/RPGHelper.h"
-
-
 namespace lcf {
 
 // public

@@ -1,14 +1,13 @@
 #include "DatabaseSerializer.h"
 
-#include "Templates.h"
-#include "CommonEventSerializer.h"
-
-#include "utilities/RPGHelper.h"
-#include "structure/Logger.h"
-
-#include "thirdparty/tinyxml2/tinyxml2.h"
-
 #include <iostream>
+
+#include <thirdparty/tinyxml2/tinyxml2.h>
+
+#include "core/lcf_serializers/Templates.h"
+#include "core/lcf_serializers/CommonEventSerializer.h"
+#include "core/structure/Logger.h"
+#include "core/utilities/RPGHelper.h"
 
 namespace lcf 
 {

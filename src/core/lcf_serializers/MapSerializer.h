@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../lcf/Map.h"
-
 #include <memory>
 #include <string>
+
+#include "core/lcf/Map.h"
 
 namespace tinyxml2 {class XMLDocument; class XMLElement;};
 

@@ -1,10 +1,9 @@
 #include "CommonEvent.h"
 
-#include "lcf/event/EventCommand.h"
-#include "utilities/RPGHelper.h"
-
 #include <cassert>
 
+#include "core/def/RPGMaker.h"
+#include "core/lcf/event/EventCommand.h"
 
 namespace lcf 
 {

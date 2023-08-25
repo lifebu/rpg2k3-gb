@@ -1,9 +1,9 @@
 #include "Map.h"
 
-#include "utilities/RPGHelper.h"
-
 #include <iostream>
 #include <algorithm>
+
+#include "core/utilities/RPGHelper.h"
 
 namespace lcf 
 {

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../lcf/database/CommonEvent.h"
-
 #include <string>
 #include <memory>
+
+#include "core/lcf/database/CommonEvent.h"
 
 namespace tinyxml2 {class XMLDocument; class XMLElement;};
 

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "MemorySizes.h"
-
 #include <cstdint>
 #include <cmath>
 #include <string>
+
+#include "core/def/MemorySizes.h"
 
 namespace RPGMAKER {
     // Ids:
