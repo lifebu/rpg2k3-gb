@@ -1,7 +1,6 @@
 #include "RenderManager.h"
 
 #include <cassert>
-#include <iostream>
 
 #include "core/structure/Logger.h"
 

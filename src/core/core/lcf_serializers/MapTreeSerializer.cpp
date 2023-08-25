@@ -1,6 +1,5 @@
 #include "MapTreeSerializer.h"
 
-#include <iostream>
 #include <memory>
 
 #include <tinyxml2/tinyxml2.h>

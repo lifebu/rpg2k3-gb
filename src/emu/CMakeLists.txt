@@ -7,6 +7,7 @@ set(emu_source emu/EMUEntryPoint.cpp)
 add_library(emu ${emu_header} ${emu_source})
 
 target_include_directories(emu PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_precompile_headers(emu PRIVATE emu/pch.h)
     
 target_link_libraries(emu PRIVATE core)
 

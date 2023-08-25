@@ -1,7 +1,5 @@
 #include "DatabaseSerializer.h"
 
-#include <iostream>
-
 #include <tinyxml2/tinyxml2.h>
 
 #include "core/lcf_serializers/Templates.h"

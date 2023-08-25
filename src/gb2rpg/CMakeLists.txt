@@ -28,8 +28,10 @@ add_executable(gb2rpg gb2rpg.cpp
 target_compile_features(gb2rpg PUBLIC cxx_std_17)
 
 target_include_directories(gb2rpg PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_precompile_headers(gb2rpg PRIVATE gb2rpg/pch.h)
 
 target_link_libraries(gb2rpg PRIVATE core)
+
 
 # lcf2xml is a usage, but not a build requirement
 add_dependencies(gb2rpg lcf2xml)

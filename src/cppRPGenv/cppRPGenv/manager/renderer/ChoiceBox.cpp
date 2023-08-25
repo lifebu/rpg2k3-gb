@@ -1,6 +1,5 @@
 #include "ChoiceBox.h"
 
-#include <iostream>
 #include <sstream>
 
 #include <SFML/Graphics/RenderStates.hpp>

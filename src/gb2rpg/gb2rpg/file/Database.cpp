@@ -1,7 +1,6 @@
 #include "Database.h"
 
 #include <tuple>
-#include <iostream>
 #include <fstream>
 #include <filesystem>
 

@@ -36,8 +36,6 @@ d- folders:
 - CMake problems:   
     - target_compile_features(core PUBLIC cxx_std_17)
         - this should be set globally once for the entire project!           
-    
-    - precompiled header for some of the common std header?
 
     - file(COPY "build/thirdparty/liblcf/lcf2xml" DESTINATION ${CMAKE_SOURCE_DIR}) in CMakeLists.txt does only work if it has been build before. This should be part of an install target.
         - we need a better way so that gb2rpg can find and call another tool (lcf2xml).

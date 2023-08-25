@@ -1,6 +1,5 @@
 #include "EventCommandSerializerRAPID.h"
 
-#include <iostream>
 #include <sstream>
 
 #include <rapidxml/rapidxml_ext.hpp>

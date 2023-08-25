@@ -1,7 +1,5 @@
 #include "MapTree.h"
 
-#include <iostream>
-
 #include <core/def/Globals.h>
 #include <core/lcf_serializers/MapTreeSerializer.h>
 #include <core/structure/Logger.h>

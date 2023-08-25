@@ -7,7 +7,6 @@
 #include "cppRPGenv/manager/RenderManager.h"
 
 #include <cassert>
-#include <iostream>
 
 namespace rpgenv
 {

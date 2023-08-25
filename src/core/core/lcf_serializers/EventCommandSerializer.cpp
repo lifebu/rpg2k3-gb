@@ -1,6 +1,5 @@
 #include "EventCommandSerializer.h"
 
-#include <iostream>
 #include <sstream>
 
 #include <tinyxml2/tinyxml2.h>

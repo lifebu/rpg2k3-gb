@@ -1,8 +1,6 @@
 #include "InputBox.h"
 
 #include <cmath>
-#include <numeric>
-#include <iostream>
 
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/RenderStates.hpp>

@@ -1,6 +1,5 @@
 #include "MapSerializerRAPID.h"
 
-#include <iostream>
 #include <fstream>
 #include <sstream>
 

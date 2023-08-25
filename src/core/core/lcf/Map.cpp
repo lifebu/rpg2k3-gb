@@ -1,6 +1,5 @@
 #include "Map.h"
 
-#include <iostream>
 #include <algorithm>
 
 #include "core/utilities/RPGHelper.h"

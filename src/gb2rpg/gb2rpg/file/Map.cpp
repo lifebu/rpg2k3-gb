@@ -1,6 +1,5 @@
 #include "Map.h"
 
-#include <iostream>
 #include <cassert>
 #include <cmath>
 

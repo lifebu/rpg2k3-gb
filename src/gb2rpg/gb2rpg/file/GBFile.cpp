@@ -1,6 +1,5 @@
 #include "GBFile.h"
 
-#include <iostream>
 #include <cassert>
 
 #include <core/def/MemorySizes.h>

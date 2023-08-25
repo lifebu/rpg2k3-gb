@@ -1,6 +1,5 @@
 #include "InputManager.h"
 
-#include <iostream>
 #include <cassert>
 
 #include <SFML/Window.hpp>

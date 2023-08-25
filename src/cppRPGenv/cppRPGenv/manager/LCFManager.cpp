@@ -1,7 +1,6 @@
 #include "LCFManager.h"
 
 #include <cassert>
-#include <iostream>
 #include <filesystem>
 
 #include <core/def/Globals.h>

@@ -1,7 +1,5 @@
 #include "EventCommandFactory.h"
 
-#include <iostream>
-
 #include "core/lcf/event/EventCommand.h"
 #include "core/structure/Logger.h"
 

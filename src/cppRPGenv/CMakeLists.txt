@@ -28,6 +28,7 @@ set(cppRPGEnv_source
 add_executable(cppRPGEnv cppRPGenv.cpp ${cppRPGEnv_source} ${cppRPGEnv_headers})
 
 target_include_directories(cppRPGEnv PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_precompile_headers(cppRPGEnv PRIVATE cppRPGenv/pch.h)
 
 target_link_libraries(cppRPGEnv PRIVATE core)
 target_link_libraries(cppRPGEnv PRIVATE emu)

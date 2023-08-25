@@ -1,7 +1,6 @@
 #include "ImGUIRenderer.h"
 
 #include <cassert>
-#include <iostream>
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
