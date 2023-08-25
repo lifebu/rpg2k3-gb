@@ -16,6 +16,3 @@ add_cmake_graphviz_target()
 # code
 add_subdirectory(src)
 add_subdirectory(thirdparty)
-
-# Todo find a better way to do this.
-file(COPY "build/thirdparty/liblcf/lcf2xml" DESTINATION ${CMAKE_SOURCE_DIR})
