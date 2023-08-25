@@ -1,5 +1,7 @@
 project(core VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Core files for the other tools of the project")
 
+
+### files
 set(lcf_headers
     core/lcf/event/EventCommand.h
     core/lcf/event/EventCommandFactory.h
@@ -69,7 +71,6 @@ set(def_headers
     core/def/RPGMaker.h 
     core/def/VarMapping.h)
 
-
 add_library(core 
     ${lcf_headers} ${lcf_source}
     ${emu_headers}
@@ -78,12 +79,15 @@ add_library(core
     ${utility_headers} ${utility_source}
     ${def_headers})
 
-
 target_include_directories(core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_precompile_headers(core PRIVATE core/pch.h)
 
+
+### features
+target_compile_features(core PUBLIC cxx_std_17)
+
+
+### dependencies
 # third party
 target_link_libraries(core PRIVATE tinyxml2)
 target_link_libraries(core PRIVATE rapidxml)
-
-target_compile_features(core PUBLIC cxx_std_17)
