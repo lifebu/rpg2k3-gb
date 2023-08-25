@@ -12,7 +12,7 @@ set(SFML_BUILD_NETWORK OFF)
 set(SFML_BUILD_AUDIO OFF)
 add_subdirectory(SFML)
 
-set(IMGUI_DIR "../imgui") #relative to imgui-sfml
+set(IMGUI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/imgui)
 set(IMGUI_SFML_FIND_SFML OFF)
 set(IMGUI_SFML_IMGUI_DEMO OFF)
 add_subdirectory(imgui-sfml)

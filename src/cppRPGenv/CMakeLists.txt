@@ -1,29 +1,33 @@
 project(cppRPGEnv VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Runtime Environment similar to RPG Maker 2003")
 
 set(cppRPGEnv_headers
-    interface_impl/RPGMakerImpl.h
-    manager/InputManager.h manager/LCFManager.h manager/RenderManager.h
-    system/SystemStateMachine.h
-    manager/renderer/RenderDef.h
-    manager/renderer/TextBox.h
-    manager/renderer/ChoiceBox.h
-    manager/renderer/InputBox.h
-    manager/renderer/ImGUIRenderer.h
-    manager/VariableManager.h)
+    cppRPGenv/interface_impl/RPGMakerImpl.h
+    cppRPGenv/manager/InputManager.h 
+    cppRPGenv/manager/LCFManager.h 
+    cppRPGenv/manager/RenderManager.h
+    cppRPGenv/system/SystemStateMachine.h
+    cppRPGenv/manager/renderer/RenderDef.h
+    cppRPGenv/manager/renderer/TextBox.h
+    cppRPGenv/manager/renderer/ChoiceBox.h
+    cppRPGenv/manager/renderer/InputBox.h
+    cppRPGenv/manager/renderer/ImGUIRenderer.h
+    cppRPGenv/manager/VariableManager.h)
 
 set(cppRPGEnv_source
-    interface_impl/RPGMakerImpl.cpp
-    manager/InputManager.cpp manager/LCFManager.cpp manager/RenderManager.cpp
-    system/SystemStateMachine.cpp
-    manager/renderer/TextBox.cpp
-    manager/renderer/ChoiceBox.cpp
-    manager/renderer/InputBox.cpp
-    manager/renderer/ImGUIRenderer.cpp
-    manager/VariableManager.cpp)
+    cppRPGenv/interface_impl/RPGMakerImpl.cpp
+    cppRPGenv/manager/InputManager.cpp 
+    cppRPGenv/manager/LCFManager.cpp 
+    cppRPGenv/manager/RenderManager.cpp
+    cppRPGenv/system/SystemStateMachine.cpp
+    cppRPGenv/manager/renderer/TextBox.cpp
+    cppRPGenv/manager/renderer/ChoiceBox.cpp
+    cppRPGenv/manager/renderer/InputBox.cpp
+    cppRPGenv/manager/renderer/ImGUIRenderer.cpp
+    cppRPGenv/manager/VariableManager.cpp)
 
 add_executable(cppRPGEnv cppRPGenv.cpp ${cppRPGEnv_source} ${cppRPGEnv_headers})
 
-target_include_directories(cppRPGEnv PRIVATE ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/thirdparty)
+target_include_directories(cppRPGEnv PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(cppRPGEnv PRIVATE core)
 target_link_libraries(cppRPGEnv PRIVATE emu)
