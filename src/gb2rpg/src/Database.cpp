@@ -28,7 +28,7 @@ void Database::genDatabase() {
         RPGMAKER::MAX_NUM_SWITCHES, RPGMAKER::MAX_NUM_VARIABLES,
         MEMORYSIZES::TOTAL_USED_ITEMS, RPGMAKER::MAX_NUM_CHARS);
 
-    Logger::Get()->Log("Generating Database: RPG_RT.edb", LogLevel::INFO);
+    core::Logger::Get()->Log("Generating Database: RPG_RT.edb", core::LogLevel::INFO);
 
     genSwitches(database);
     genVariables(database);
@@ -42,7 +42,7 @@ void Database::genDatabase() {
 void Database::genSwitches(lcf::Database& database) {
     std::ifstream nameFile(GLOBALS::PROJECT::PROJECT_DIR + GLOBALS::PROJECT::SWITCH_NAMES);
     if(!nameFile.is_open()) { 
-        Logger::Get()->Log(INFO_NO_SWITCH_NAMES, LogLevel::INFO);
+        core::Logger::Get()->Log(INFO_NO_SWITCH_NAMES, core::LogLevel::INFO);
     }
 
     for(int id = RPGMAKER::MIN_ID; id < RPGMAKER::MAX_NUM_SWITCHES; ++id) {
@@ -63,7 +63,7 @@ void Database::genSwitches(lcf::Database& database) {
 void Database::genVariables(lcf::Database& database) {
     std::ifstream nameFile(GLOBALS::PROJECT::PROJECT_DIR + GLOBALS::PROJECT::VAR_NAMES);
     if(!nameFile.is_open()) {
-        Logger::Get()->Log(INFO_NO_VAR_NAMES, LogLevel::INFO);
+        core::Logger::Get()->Log(INFO_NO_VAR_NAMES, core::LogLevel::INFO);
     }
 
     for(int id = RPGMAKER::MIN_ID; id < RPGMAKER::MAX_NUM_VARIABLES; ++id) {
@@ -131,7 +131,7 @@ void Database::genCharacters(lcf::Database& database) {
 void Database::genCommonEvents(lcf::Database& database) {
     std::string filePath = GLOBALS::PROJECT::PROJECT_DIR + GLOBALS::PROJECT::COMMON_EVENTS;
     if(!fs::exists({filePath})) {
-        Logger::Get()->Log(INFO_NO_COMMON_EVENTS, LogLevel::INFO);
+        core::Logger::Get()->Log(INFO_NO_COMMON_EVENTS, core::LogLevel::INFO);
         return;
     }
 

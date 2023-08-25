@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <vector>
 
-#include "structure/ManagerInterface.h"
+#include "core/structure/ManagerInterface.h"
 
 namespace rpgenv 
 {

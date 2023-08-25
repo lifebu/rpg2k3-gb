@@ -3,20 +3,17 @@ project(cppRPGEnv VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Runtime Environment s
 set(cppRPGEnv_headers
     interface_impl/RPGMakerImpl.h
     manager/InputManager.h manager/LCFManager.h manager/RenderManager.h
-    system/SystemCore.h
     system/SystemStateMachine.h
     manager/renderer/RenderDef.h
     manager/renderer/TextBox.h
     manager/renderer/ChoiceBox.h
     manager/renderer/InputBox.h
     manager/renderer/ImGUIRenderer.h
-    manager/VariableManager.h
-    manager/structure/ManagerInterface.h)
+    manager/VariableManager.h)
 
 set(cppRPGEnv_source
     interface_impl/RPGMakerImpl.cpp
     manager/InputManager.cpp manager/LCFManager.cpp manager/RenderManager.cpp
-    system/SystemCore.cpp
     system/SystemStateMachine.cpp
     manager/renderer/TextBox.cpp
     manager/renderer/ChoiceBox.cpp

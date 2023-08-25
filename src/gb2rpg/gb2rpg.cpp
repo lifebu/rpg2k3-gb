@@ -9,8 +9,8 @@
 
 int main (int argc, char* argv[]) 
 {
-    Logger logger;
-    logger.Init("gb2rpg_", LOGMASK::LOG_MODE_FILE | LOGMASK::LOG_MODE_STDOUT);
+    core::Logger logger;
+    logger.Init("gb2rpg_", core::LOGMASK::LOG_MODE_FILE | core::LOGMASK::LOG_MODE_STDOUT);
 
     gb2rpg::CLIOptions cli = gb2rpg::CLIOptions(argc, argv);
     if(cli.shouldEnd()) return 0;

@@ -3,6 +3,9 @@
 #include <cassert>
 #include <iostream>
 
+namespace core 
+{
+
 const static std::string ERR_LOGFILE_IO = "Logfile could not be opened.";
 
 Logger::~Logger() 
@@ -87,4 +90,6 @@ std::string Logger::GenerateLogLevelPrefix(LogLevel logLevel)
     }
 
     return "";
+}
+
 }

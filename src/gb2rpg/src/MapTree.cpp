@@ -15,7 +15,7 @@ void MapTree::genMapTree(std::vector<GBFile>& gbFiles)
 {
     lcf::MapTree mapTree(gbFiles.size());
 
-    Logger::Get()->Log("Generating Maptree: RPG_RT.emt", LogLevel::INFO);
+    core::Logger::Get()->Log("Generating Maptree: RPG_RT.emt", core::LogLevel::INFO);
 
     for(auto& gbFile : gbFiles) 
     {

@@ -19,7 +19,7 @@ std::vector<EventCommand> EventCommandSerializer::MultipleFromFile(std::string f
     auto file = tinyxml2::XMLDocument(fileName.c_str());
     if (file.Error()) 
     {
-        Logger::Get()->Log(file.ErrorStr(), LogLevel::ERROR);
+        core::Logger::Get()->Log(file.ErrorStr(), core::LogLevel::ERROR);
         return ret;
     }
 
@@ -49,7 +49,7 @@ void EventCommandSerializer::MultipleToFile(std::string fileName, std::vector<Ev
     file.SaveFile(fileName.c_str());
     if (file.Error()) 
     {
-        Logger::Get()->Log(file.ErrorStr(), LogLevel::ERROR);
+        core::Logger::Get()->Log(file.ErrorStr(), core::LogLevel::ERROR);
         return;
     }
 };

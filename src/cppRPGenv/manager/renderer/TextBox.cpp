@@ -38,7 +38,7 @@ void TextBox::Setup(const sf::View& view, std::string text)
     {
         std::stringstream message;
        message << "Maximum size of text for the Textbox is " << MAX_STRING_SIZE << " characters, tried to set a text with the size of " + text.size() << ".";
-       Logger::Get()->Log(message.str(), LogLevel::WARNING);
+       core::Logger::Get()->Log(message.str(), core::LogLevel::WARNING);
 
         return;
     }

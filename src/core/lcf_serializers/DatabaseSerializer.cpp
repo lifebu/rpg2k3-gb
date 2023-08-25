@@ -18,7 +18,7 @@ Database DatabaseSerializer::FromFile(std::string fileName)
     auto file = tinyxml2::XMLDocument(fileName.c_str());
     if (file.Error()) 
     {
-        Logger::Get()->Log(file.ErrorStr(), LogLevel::ERROR);
+        core::Logger::Get()->Log(file.ErrorStr(), core::LogLevel::ERROR);
         return Database();
     }
 
@@ -131,7 +131,7 @@ void DatabaseSerializer::ToFile(std::string fileName, Database& database)
     databaseTempl.SaveFile(fileName.c_str(), compactMode);
     if (databaseTempl.Error()) 
     {
-        Logger::Get()->Log(databaseTempl.ErrorStr(), LogLevel::ERROR);
+        core::Logger::Get()->Log(databaseTempl.ErrorStr(), core::LogLevel::ERROR);
     }
 }
 

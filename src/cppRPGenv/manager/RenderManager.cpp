@@ -23,7 +23,7 @@ void RenderManager::Init()
     
     if(!m_Font.loadFromFile(std::string(FONT_PATH)))
     {
-        Logger::Get()->Log("Could not load the font: " + std::string(FONT_PATH), LogLevel::ERROR);
+        core::Logger::Get()->Log("Could not load the font: " + std::string(FONT_PATH), core::LogLevel::ERROR);
         return;
     }
 
@@ -45,7 +45,7 @@ void RenderManager::Init()
     // Pictures
     if(!m_PictureGPUTexture.loadFromFile(std::string(STATIC_IMAGE_PATH)))
     {
-        Logger::Get()->Log("Could not load the texture: " + std::string(STATIC_IMAGE_PATH), LogLevel::ERROR);
+        core::Logger::Get()->Log("Could not load the texture: " + std::string(STATIC_IMAGE_PATH), core::LogLevel::ERROR);
         return;
     }
     m_PictureGPUTexture.setSmooth(false);
@@ -53,7 +53,7 @@ void RenderManager::Init()
 
     if(!m_PictureCPUTexture.loadFromFile(std::string(STATIC_IMAGE_PATH)))
     {
-        Logger::Get()->Log("Could not load the texture: " + std::string(STATIC_IMAGE_PATH), LogLevel::ERROR);
+        core::Logger::Get()->Log("Could not load the texture: " + std::string(STATIC_IMAGE_PATH), core::LogLevel::ERROR);
         return;
     }
 

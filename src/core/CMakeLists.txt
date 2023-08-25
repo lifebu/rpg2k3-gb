@@ -54,6 +54,7 @@ set(serializer_source
 
 set(structure_headers
     structure/Logger.h
+    structure/ManagerInterface.h
     structure/Singleton.h
     structure/StateMachine.h)
 

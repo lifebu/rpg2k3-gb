@@ -117,7 +117,7 @@ std::string ChoiceBox::generateChoiceString(std::vector<std::string>& choices)
         {
             std::stringstream message;
             message << "Maximum size of a choice for the ChoiceBox is " << MAX_CHAR_PER_LINE << " characters, tried to set a choice with the size of " + choice.length() << "." << std::endl;
-            Logger::Get()->Log(message.str(), LogLevel::WARNING);
+            core::Logger::Get()->Log(message.str(), core::LogLevel::WARNING);
 
             return "";
         }

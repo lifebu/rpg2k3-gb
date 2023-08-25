@@ -26,7 +26,7 @@ const static int MAP_ROM_ID = 2;
 // public
 void Map::genMapFiles(std::vector<GBFile>& gbFiles, CLIOptions::XMLParser parserToUse) 
 {
-    Logger::Get()->Log("Generating Map Files.", LogLevel::INFO);
+    core::Logger::Get()->Log("Generating Map Files.", core::LogLevel::INFO);
     for(int i = 0; i < gbFiles.size(); ++i) 
     {
         auto& gbFile = gbFiles.at(i);
@@ -34,7 +34,7 @@ void Map::genMapFiles(std::vector<GBFile>& gbFiles, CLIOptions::XMLParser parser
 
         std::string fileName = GLOBALS::EXPORTS::MAP_FILE_BASE + generateID(i + 1) + GLOBALS::EXPORTS::MAP_FILE_TYPE;
         std::string filePath = GLOBALS::PROJECT::PROJECT_DIR + fileName;
-        Logger::Get()->Log("Generating Map: " + fileName, LogLevel::INFO);
+        core::Logger::Get()->Log("Generating Map: " + fileName, core::LogLevel::INFO);
 
         lcf::Map map(1 + numOfMapROMs + MEMORYSIZES::NUM_DMG_RAM_EVENTS);
 

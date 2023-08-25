@@ -64,6 +64,11 @@ gb2RPG: Gameboy 2 RPG Maker.
         Next:
         
         Later: 
+        - I should refactor the CLIOptions:
+            - Because it is not very clear what it does.
+            - As it parses the arguments and automatically does some stuff (like print errors).
+            - This makes it not obvious how some of the edgecases are handled if you look at it from main().
+
         - Core: Asserts
             - An assert system that throws asserts itself but also can log them.
 

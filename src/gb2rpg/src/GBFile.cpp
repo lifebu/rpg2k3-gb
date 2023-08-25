@@ -18,7 +18,7 @@ GBFile::GBFile(std::string path)
     
     file.open(path, std::ios::binary);
     if (!file.is_open()) {
-        Logger::Get()->Log(ERR_FILE_NOT_FOUND + path, LogLevel::ERROR);
+        core::Logger::Get()->Log(ERR_FILE_NOT_FOUND + path, core::LogLevel::ERROR);
     } else {
         valid = true;
         GBHeader header;
@@ -154,17 +154,17 @@ std::vector<GBFile> GBFileGenerator::genGBFiles(gb2rpg::CLIOptions& cli) {
         }
 
         if (file.getRamSize() > MEMORYSIZES::MAX_CARTRIDGE_RAM) {
-            Logger::Get()->Log(ERR_TO_MUCH_RAM + path, LogLevel::ERROR);
+            core::Logger::Get()->Log(ERR_TO_MUCH_RAM + path, core::LogLevel::ERROR);
             error = true;
         }
 
         if (file.getGameboySupportLevel() == GBFile::COLOR_SUPPORT) {
-            Logger::Get()->Log(ERR_NO_COLOR_SUPPORT + path, LogLevel::ERROR);
+            core::Logger::Get()->Log(ERR_NO_COLOR_SUPPORT + path, core::LogLevel::ERROR);
             error = true;
         }
 
         if (file.getGameboySupportLevel() == GBFile::COLOR_ONLY) {
-            Logger::Get()->Log(ERR_NO_COLOR_EXCLUSIVE + path, LogLevel::ERROR);
+            core::Logger::Get()->Log(ERR_NO_COLOR_EXCLUSIVE + path, core::LogLevel::ERROR);
             error = true;
         }
 

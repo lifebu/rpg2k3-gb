@@ -19,7 +19,7 @@ void ImGUIRenderer::Init(sf::RenderWindow &window)
 {
     if(!ImGui::SFML::Init(window))
     {
-        Logger::Get()->Log("Failed to Initialize ImGui", LogLevel::GB_PANIC);
+        core::Logger::Get()->Log("Failed to Initialize ImGui", core::LogLevel::GB_PANIC);
     }
 }
 
@@ -69,7 +69,7 @@ void ImGUIRenderer::BuildImGUI(const sf::Time& deltaTime)
 
     if(m_LogIsEnabled)
     {
-        const std::vector<std::string>& currentLog = Logger::Get()->GetLog();
+        const std::vector<std::string>& currentLog = core::Logger::Get()->GetLog();
         for(const auto& logLine : currentLog)
         {
             ImGui::TextWrapped(logLine.c_str());

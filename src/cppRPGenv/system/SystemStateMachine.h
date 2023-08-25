@@ -1,5 +1,6 @@
 #pragma once
 
+#include <core/structure/Singleton.h>
 #include <core/structure/StateMachine.h>
 
 #include <emu/EMUEntryPoint.h>
@@ -28,7 +29,7 @@ enum class SystemStates : int
 };
 
 // Responsible for the System states and most of the logic glueing everything else together.
-class SystemStateMachine : public StateMachine<SystemStates>
+class SystemStateMachine : public StateMachine<SystemStates>, public Singleton<SystemStateMachine>
 {
 public:
     SystemStateMachine();

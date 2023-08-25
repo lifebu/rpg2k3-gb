@@ -7,7 +7,6 @@
 #include "cppRPGenv/manager/LCFManager.h"
 #include "cppRPGenv/manager/RenderManager.h"
 #include "cppRPGenv/manager/VariableManager.h"
-#include "cppRPGenv/system/SystemCore.h"
 #include "cppRPGenv/system/SystemStateMachine.h"
 
 namespace rpgenv 
@@ -16,19 +15,19 @@ namespace rpgenv
 void RPGMakerImpl::ShowText(std::string text)
 {
     RenderManager::Get()->OpenTextBox(text);
-    SystemCore::Get()->ChangeSystemState(SystemStates::PROCESS_TEXTBOX);
+    SystemStateMachine::Get()->ChangeState(SystemStates::PROCESS_TEXTBOX);
 }
 
 void RPGMakerImpl::ShowChoices(std::vector<std::string> choices, lcf::Choices::ChoiceCaseOnCancel cancelBehaviour)
 {
     RenderManager::Get()->OpenChoiceBox(choices, cancelBehaviour);
-    SystemCore::Get()->ChangeSystemState(SystemStates::PROCESS_CHOICES);
+    SystemStateMachine::Get()->ChangeState(SystemStates::PROCESS_CHOICES);
 }
 
 void RPGMakerImpl::InputNumber(uint8_t numOfDigits)
 {
     RenderManager::Get()->OpenNumberInput(numOfDigits);
-    SystemCore::Get()->ChangeSystemState(SystemStates::PROCESS_NUMBER_INPUT);
+    SystemStateMachine::Get()->ChangeState(SystemStates::PROCESS_NUMBER_INPUT);
 }
 
 // Chara Ram

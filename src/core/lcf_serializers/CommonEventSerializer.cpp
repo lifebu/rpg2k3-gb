@@ -21,7 +21,7 @@ std::vector<CommonEvent> CommonEventSerializer::MultipleFromFile(std::string fil
     auto file = tinyxml2::XMLDocument(fileName.c_str());
     if (file.Error()) 
     {
-        Logger::Get()->Log(file.ErrorStr(), LogLevel::ERROR);
+        core::Logger::Get()->Log(file.ErrorStr(), core::LogLevel::ERROR);
         return ret;
     }
 
@@ -52,7 +52,7 @@ void CommonEventSerializer::MultipleToFile(std::string fileName, std::vector<Com
     file.SaveFile(fileName.c_str());
     if (file.Error()) 
     {
-        Logger::Get()->Log(file.ErrorStr(), LogLevel::ERROR);
+        core::Logger::Get()->Log(file.ErrorStr(), core::LogLevel::ERROR);
         return;
     }
 };

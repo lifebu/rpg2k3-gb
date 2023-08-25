@@ -29,7 +29,7 @@ SystemStateMachine::SystemStateMachine()
 
 void SystemStateMachine::UpdateAnyState() 
 {
-    if(Logger::Get()->IsInPanic())
+    if(core::Logger::Get()->IsInPanic())
     {
         auto* renderManager = rpgenv::RenderManager::Get();
 
@@ -53,7 +53,7 @@ void SystemStateMachine::UpdateLoadingState()
 
     if(lcfManager->HadLoadingErrors())
     {
-        Logger::Get()->Log(ERR_GB_PANIC, LogLevel::GB_PANIC);
+        core::Logger::Get()->Log(ERR_GB_PANIC, core::LogLevel::GB_PANIC);
     }
 }
 

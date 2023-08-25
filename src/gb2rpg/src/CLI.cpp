@@ -25,7 +25,7 @@ CLIOptions::CLIOptions(int argc, char* argv[])
     parseArguments(argc, argv);
 
     // TODO: This is spaghetti.
-    if(filePaths.size() > 1) { Logger::Get()->Log(ERR_TO_MANY_GB_FILES, LogLevel::ERROR); error = true;}
+    if(filePaths.size() > 1) { core::Logger::Get()->Log(ERR_TO_MANY_GB_FILES, core::LogLevel::ERROR); error = true;}
     if(printVersion) std::cout << VERSION_STRING;
     if(printHelp || (!printHelp && !printVersion && !cleanProjectFolder && filePaths.empty())) std::cout << HELP_STRING;
 

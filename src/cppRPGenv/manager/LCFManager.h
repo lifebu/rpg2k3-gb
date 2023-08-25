@@ -7,7 +7,7 @@
 #include <core/lcf/Map.h>
 #include <core/structure/Singleton.h>
 
-#include "structure/ManagerInterface.h"
+#include "core/structure/ManagerInterface.h"
 
 namespace rpgenv 
 {

@@ -30,6 +30,15 @@ CppRPGEnv: C++-RPG Maker Environment
     Later:
     - Should I rename character to actor?
 
+    - Dependencies might not be clear.
+        - Currently I use Singletons to make it easier to include systems.
+        - But the only systems that talk to each other are:
+            - RPGMakerImpl: uses every Manager.
+            - StateMachine: uses every Manager.
+            - InputManager: uses RenderManager to only get input when the window is focused.
+        - So the requirement for singletons can be lessoned by using dependency injection for the RPGMakerImpl and the StateMachine.
+        - They would be injected in the Init function for those two clases and can be easily seen in the main function.
+
     - Make the async Loading threadsafe and be able to return an error.
         - Probably enough to have the Logger being ThreadSafe.
         - Also I could just load both of them in parallel if I wanted to.

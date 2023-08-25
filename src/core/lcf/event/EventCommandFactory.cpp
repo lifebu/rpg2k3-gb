@@ -338,7 +338,7 @@ int EventCommandFactory::GenChoiceID(std::vector<std::string>& choices, bool inc
 {
     if(choices.size() > 4)
     {
-        Logger::Get()->Log("More than 4 choices are not supported!", LogLevel::WARNING);
+        core::Logger::Get()->Log("More than 4 choices are not supported!", core::LogLevel::WARNING);
         return 0;
     }
 

@@ -24,7 +24,7 @@ Map MapSerializer::FromFile(std::string fileName)
     auto file = tinyxml2::XMLDocument(fileName.c_str());
     if (file.Error()) 
     {
-        Logger::Get()->Log(file.ErrorStr(), LogLevel::ERROR);
+        core::Logger::Get()->Log(file.ErrorStr(), core::LogLevel::ERROR);
         return Map(0);
     }
 
@@ -65,7 +65,7 @@ void MapSerializer::ToFile(std::string fileName, Map& map)
     mapTempl->SaveFile(fileName.c_str(), compactMode);
     if (mapTempl->Error()) 
     {
-        Logger::Get()->Log(mapTempl->ErrorStr(), LogLevel::ERROR);
+        core::Logger::Get()->Log(mapTempl->ErrorStr(), core::LogLevel::ERROR);
     }
 
     // Delete Templates.

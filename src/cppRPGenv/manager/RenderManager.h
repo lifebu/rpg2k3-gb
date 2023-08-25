@@ -7,7 +7,7 @@
 #include <core/lcf/event/EventCommandFactoryDef.h>
 #include <core/structure/Singleton.h>
 
-#include "structure/ManagerInterface.h"
+#include "core/structure/ManagerInterface.h"
 // TODO: this should be forward declared. Or we use a simple interface class for the Render Manager. Users should not know these classes here.
 #include "renderer/TextBox.h"
 #include "renderer/ChoiceBox.h"

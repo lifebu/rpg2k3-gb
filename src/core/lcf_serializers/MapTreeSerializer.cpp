@@ -17,7 +17,7 @@ MapTree MapTreeSerializer::FromFile(std::string fileName)
     auto file = tinyxml2::XMLDocument(fileName.c_str());
     if (file.Error()) 
     {
-        Logger::Get()->Log(file.ErrorStr(), LogLevel::ERROR);
+        core::Logger::Get()->Log(file.ErrorStr(), core::LogLevel::ERROR);
         return MapTree(0);
     }
 
@@ -57,7 +57,7 @@ void MapTreeSerializer::ToFile(std::string fileName, MapTree& mapTree)
     mapTreeTempl.SaveFile(fileName.c_str(), false);
     if (mapTreeTempl.Error()) 
     {
-        Logger::Get()->Log(mapTreeTempl.ErrorStr(), LogLevel::ERROR);
+        core::Logger::Get()->Log(mapTreeTempl.ErrorStr(), core::LogLevel::ERROR);
     }
 }
 

@@ -23,7 +23,7 @@ const static std::string ERR_GEN_INI_FILE = "Could not create RPG Maker ini file
 // public
 void ProjectGenerator::cleanProjectFolder() 
 {
-    Logger::Get()->Log("Cleaning/Creating project folder: project/", LogLevel::INFO);
+    core::Logger::Get()->Log("Cleaning/Creating project folder: project/", core::LogLevel::INFO);
     try 
     {
         fs::remove_all(GLOBALS::PROJECT::PROJECT_DIR);  
@@ -32,13 +32,13 @@ void ProjectGenerator::cleanProjectFolder()
 
     } catch (fs::filesystem_error err) 
     {
-        Logger::Get()->Log(err.what(), LogLevel::ERROR);
+        core::Logger::Get()->Log(err.what(), core::LogLevel::ERROR);
     }
 }
 
 void ProjectGenerator::genProjectFolder(int numOfMaps) 
 {
-    Logger::Get()->Log("Creating project folder: project/rpg2k3", LogLevel::INFO);
+    core::Logger::Get()->Log("Creating project folder: project/rpg2k3", core::LogLevel::INFO);
     createProjectData(numOfMaps);
     genFolders();
 }
@@ -46,25 +46,25 @@ void ProjectGenerator::genProjectFolder(int numOfMaps)
 // private
 void ProjectGenerator::createProjectData(int numOfMaps) 
 {
-    Logger* const logger = Logger::Get();
+    core::Logger* const logger = core::Logger::Get();
 
     // create the binary files
     auto currentPath = fs::current_path();
     fs::current_path(GLOBALS::PROJECT::RPG_PROJECT_DIR);
 
     int ret;
-    logger->Log("Converting database to: RPG_RT.ldb", LogLevel::INFO);
+    logger->Log("Converting database to: RPG_RT.ldb", core::LogLevel::INFO);
     ret = system(std::string("./../../lcf2xml ../" + GLOBALS::EXPORTS::DATABASE_FILE).c_str());
-    logger->Log("Converting map tree to: RPG_RT.lmt", LogLevel::INFO);
+    logger->Log("Converting map tree to: RPG_RT.lmt", core::LogLevel::INFO);
     ret = system(std::string("./../../lcf2xml ../" + GLOBALS::EXPORTS::MAPTREE_FILE).c_str());
     for(int mapID = 1; mapID <= numOfMaps; ++mapID) 
     {
         std::string mapName = GLOBALS::EXPORTS::MAP_FILE_BASE + generateID(mapID) + GLOBALS::EXPORTS::MAP_FILE_TYPE;
-        logger->Log("Converting map to: " + mapName, LogLevel::INFO);
+        logger->Log("Converting map to: " + mapName, core::LogLevel::INFO);
         std::string mapFile = "./../../lcf2xml ../" + mapName;
         ret = system(mapFile.c_str());
     }
-    if(ret) logger->Log(ERR_LCF, LogLevel::ERROR);
+    if(ret) logger->Log(ERR_LCF, core::LogLevel::ERROR);
 
     fs::current_path(currentPath);
 
@@ -79,13 +79,13 @@ void ProjectGenerator::createProjectData(int numOfMaps)
         {
             fs::copy(GLOBALS::PROJECT::TEMPLATE_DIR + rpgFile, GLOBALS::PROJECT::RPG_PROJECT_DIR + rpgFile);
         } catch(fs::filesystem_error err) {
-            logger->Log(ERR_PROPRIETARY + rpgFile, LogLevel::ERROR);
+            logger->Log(ERR_PROPRIETARY + rpgFile, core::LogLevel::ERROR);
             oneProprietaryNotFound = true;
         }
     }
 
     if(oneProprietaryNotFound) {
-        logger->Log(INFO_PROPRIETARY, LogLevel::INFO);
+        logger->Log(INFO_PROPRIETARY, core::LogLevel::INFO);
     }
 }
 
@@ -100,19 +100,19 @@ void ProjectGenerator::genFolders()
     
     } catch(fs::filesystem_error err) 
     {
-        Logger::Get()->Log(err.what(), LogLevel::ERROR);
+        core::Logger::Get()->Log(err.what(), core::LogLevel::ERROR);
     }
 }
 
 void gb2rpg::ProjectGenerator::genRPGProjFile() 
 {
-    Logger* const logger = Logger::Get();
-    logger->Log("Generating project file " + GLOBALS::PROJECT::RPGMAKER_PRJ_FILE + ".", LogLevel::INFO);
+    core::Logger* const logger = core::Logger::Get();
+    logger->Log("Generating project file " + GLOBALS::PROJECT::RPGMAKER_PRJ_FILE + ".", core::LogLevel::INFO);
 
     std::ofstream projFile(GLOBALS::PROJECT::RPG_PROJECT_DIR + GLOBALS::PROJECT::RPGMAKER_PRJ_FILE);
     if(!projFile.is_open())
     {
-        logger->Log(ERR_GEN_PROJ_FILE, LogLevel::ERROR);
+        logger->Log(ERR_GEN_PROJ_FILE, core::LogLevel::ERROR);
         return;
     }
 
@@ -122,13 +122,13 @@ void gb2rpg::ProjectGenerator::genRPGProjFile()
 
 void gb2rpg::ProjectGenerator::genRPGIniFile() 
 {
-    Logger* const logger = Logger::Get();
-    logger->Log("Generating ini file " + GLOBALS::PROJECT::RPGMAKER_INI_FILE + ".", LogLevel::INFO);
+    core::Logger* const logger = core::Logger::Get();
+    logger->Log("Generating ini file " + GLOBALS::PROJECT::RPGMAKER_INI_FILE + ".", core::LogLevel::INFO);
 
     std::ofstream iniFile(GLOBALS::PROJECT::RPG_PROJECT_DIR + GLOBALS::PROJECT::RPGMAKER_INI_FILE);
     if(!iniFile.is_open())
     {
-        logger->Log(ERR_GEN_INI_FILE, LogLevel::ERROR);
+        logger->Log(ERR_GEN_INI_FILE, core::LogLevel::ERROR);
         return;
     }
 

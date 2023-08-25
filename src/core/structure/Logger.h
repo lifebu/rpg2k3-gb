@@ -7,6 +7,9 @@
 #include <string>
 #include <vector>
 
+namespace core 
+{
+
 enum class LogLevel
 {
     INFO = 0,
@@ -46,4 +49,6 @@ private:
     std::vector<std::string> m_Log;
     int m_LogMask;
     std::ofstream m_LogFile;
+};
+
 };

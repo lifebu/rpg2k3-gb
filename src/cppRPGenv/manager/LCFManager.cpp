@@ -35,7 +35,7 @@ void LCFManager::ContinueLoading()
                 std::string filePath = GLOBALS::PROJECT::PROJECT_DIR + GLOBALS::EXPORTS::DATABASE_FILE;
                 if(!fs::exists({filePath})) 
                 {
-                    Logger::Get()->Log(ERR_NO_PROJECT_FILE + filePath, LogLevel::ERROR);
+                    core::Logger::Get()->Log(ERR_NO_PROJECT_FILE + filePath, core::LogLevel::ERROR);
                     m_HadLoadingError = true;
                     m_LoadingPhases = LoadingPhases::LOADING_MAP;
                 }
@@ -67,7 +67,7 @@ void LCFManager::ContinueLoading()
                 std::string filePath = GLOBALS::PROJECT::PROJECT_DIR + fileName;
                 if(!fs::exists({filePath})) 
                 {
-                    Logger::Get()->Log(ERR_NO_PROJECT_FILE + filePath, LogLevel::ERROR);
+                    core::Logger::Get()->Log(ERR_NO_PROJECT_FILE + filePath, core::LogLevel::ERROR);
                     m_HadLoadingError = true;
                     m_LoadingPhases = LoadingPhases::LOADING_ERROR;
                 }
