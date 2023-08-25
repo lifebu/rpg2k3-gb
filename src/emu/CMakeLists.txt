@@ -13,6 +13,7 @@ target_precompile_headers(emu PRIVATE emu/pch.h)
 
 ### features
 target_compile_features(emu PUBLIC cxx_std_17)
+#target_set_warnings(emu ON)
 
 
 ### dependencies

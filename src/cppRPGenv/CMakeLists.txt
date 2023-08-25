@@ -34,6 +34,7 @@ target_precompile_headers(cppRPGEnv PRIVATE cppRPGenv/pch.h)
 
 ### features
 target_compile_features(cppRPGEnv PUBLIC cxx_std_17)
+#target_set_warnings(cppRPGEnv ON)
 
 
 ### dependencies

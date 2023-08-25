@@ -85,6 +85,7 @@ target_precompile_headers(core PRIVATE core/pch.h)
 
 ### features
 target_compile_features(core PUBLIC cxx_std_17)
+#target_set_warnings(core ON)
 
 
 ### dependencies

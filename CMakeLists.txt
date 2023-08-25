@@ -9,6 +9,7 @@ project(rpg2k3-gb VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Gameboy emulator for 
 # modules
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/tools/cmake/)
 include(Dependencies)
+include(Warnings)
 
 # execute modules
 add_cmake_graphviz_target()
