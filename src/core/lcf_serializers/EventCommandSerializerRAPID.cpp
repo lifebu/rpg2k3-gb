@@ -3,7 +3,7 @@
 #include <iostream>
 #include <sstream>
 
-#include <thirdparty/rapidxml/rapidxml_ext.hpp>
+#include <rapidxml/rapidxml_ext.hpp>
 
 #include "core/lcf_serializers/Templates.h"
 

@@ -1,11 +1,11 @@
 #include <core/structure/Logger.h>
 
-#include "manager/InputManager.h"
-#include "manager/LCFManager.h"
-#include "manager/RenderManager.h"
-#include "manager/VariableManager.h"
-#include "system/SystemStateMachine.h"
-#include "interface_impl/RPGMakerImpl.h"
+#include "cppRPGenv/manager/InputManager.h"
+#include "cppRPGenv/manager/LCFManager.h"
+#include "cppRPGenv/manager/RenderManager.h"
+#include "cppRPGenv/manager/VariableManager.h"
+#include "cppRPGenv/system/SystemStateMachine.h"
+#include "cppRPGenv/interface_impl/RPGMakerImpl.h"
 
 
 int main (int argc, char* argv[]) 

@@ -1,8 +1,8 @@
 #include "VariableManager.h"
 
-#include <core/def/VarMapping.h>
-
 #include <limits>
+
+#include <core/def/VarMapping.h>
 
 namespace rpgenv
 {

@@ -1,11 +1,11 @@
 #include "InputManager.h"
 
-#include <SFML/Window.hpp>
-
-#include "RenderManager.h"
-
 #include <iostream>
 #include <cassert>
+
+#include <SFML/Window.hpp>
+
+#include "cppRPGenv/manager/RenderManager.h"
 
 namespace rpgenv
 {

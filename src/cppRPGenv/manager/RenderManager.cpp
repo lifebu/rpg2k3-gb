@@ -1,9 +1,9 @@
 #include "RenderManager.h"
 
-#include "core/structure/Logger.h"
-
 #include <cassert>
 #include <iostream>
+
+#include "core/structure/Logger.h"
 
 namespace rpgenv
 {

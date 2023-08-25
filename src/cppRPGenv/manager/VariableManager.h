@@ -1,11 +1,11 @@
 #pragma once
 
+#include <core/structure/ManagerInterface.h>
 #include <core/structure/Singleton.h>
 
 #include <cstdint>
 #include <vector>
 
-#include "core/structure/ManagerInterface.h"
 
 namespace rpgenv 
 {

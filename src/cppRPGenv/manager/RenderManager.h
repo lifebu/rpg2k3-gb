@@ -5,15 +5,15 @@
 #include <SFML/Graphics.hpp>
 
 #include <core/lcf/event/EventCommandFactoryDef.h>
+#include <core/structure/ManagerInterface.h>
 #include <core/structure/Singleton.h>
 
-#include "core/structure/ManagerInterface.h"
 // TODO: this should be forward declared. Or we use a simple interface class for the Render Manager. Users should not know these classes here.
-#include "renderer/TextBox.h"
-#include "renderer/ChoiceBox.h"
-#include "renderer/InputBox.h"
-#include "renderer/RenderDef.h"
-#include "renderer/ImGUIRenderer.h"
+#include "cppRPGenv/manager/renderer/TextBox.h"
+#include "cppRPGenv/manager/renderer/ChoiceBox.h"
+#include "cppRPGenv/manager/renderer/InputBox.h"
+#include "cppRPGenv/manager/renderer/RenderDef.h"
+#include "cppRPGenv/manager/renderer/ImGUIRenderer.h"
 
 namespace rpgenv 
 {

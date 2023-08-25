@@ -2,9 +2,9 @@
 
 #include <core/structure/Logger.h>
 
-#include "manager/InputManager.h"
-#include "manager/LCFManager.h"
-#include "manager/RenderManager.h"
+#include "cppRPGenv/manager/InputManager.h"
+#include "cppRPGenv/manager/LCFManager.h"
+#include "cppRPGenv/manager/RenderManager.h"
 
 #include <cassert>
 #include <iostream>

@@ -23,9 +23,7 @@ set(cppRPGEnv_source
 
 add_executable(cppRPGEnv cppRPGenv.cpp ${cppRPGEnv_source} ${cppRPGEnv_headers})
 
-target_include_directories(cppRPGEnv PRIVATE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>")
-target_include_directories(cppRPGEnv PRIVATE ${PROJECT_SOURCE_DIR})
-target_include_directories(cppRPGEnv PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_include_directories(cppRPGEnv PRIVATE ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/thirdparty)
 
 target_link_libraries(cppRPGEnv PRIVATE core)
 target_link_libraries(cppRPGEnv PRIVATE emu)

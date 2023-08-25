@@ -3,7 +3,7 @@
 #include <iostream>
 #include <memory>
 
-#include <thirdparty/tinyxml2/tinyxml2.h>
+#include <tinyxml2/tinyxml2.h>
 
 #include "core/lcf_serializers/Templates.h"
 #include "core/structure/Logger.h"

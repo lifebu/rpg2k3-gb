@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include <thirdparty/tinyxml2/tinyxml2.h>
+#include <tinyxml2/tinyxml2.h>
 
 #include "core/lcf_serializers/Templates.h"
 #include "core/lcf_serializers/EventCommandSerializer.h"

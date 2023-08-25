@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/emu_interface/RPGMakerInterface.h"
+#include <core/emu_interface/RPGMakerInterface.h>
 
 namespace rpgenv 
 {

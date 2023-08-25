@@ -7,8 +7,8 @@
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
 
-#include <imgui-SFML.h>
-#include <imgui.h>
+#include <imgui-sfml/imgui-SFML.h>
+#include <imgui/imgui.h>
 
 #include <core/structure/Logger.h>
 
