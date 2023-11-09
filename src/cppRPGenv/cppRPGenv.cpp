@@ -8,7 +8,7 @@
 #include "cppRPGenv/interface_impl/RPGMakerImpl.h"
 
 
-int main (int argc, char* argv[]) 
+int main (int, char**) 
 {
     core::Logger                logger;
     rpgenv::InputManager        inputManager;

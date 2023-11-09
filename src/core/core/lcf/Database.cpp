@@ -87,7 +87,7 @@ Item* Database::GetItemByID(uint16_t id)
     return nullptr;
 }
 
-Character* Database::GetCharacterByID(int16_t id)
+Character* Database::GetCharacterByID(uint16_t id)
 {
     auto foundIt = std::find_if(characters.begin(), characters.end(), [id](const Character& a)
     { 

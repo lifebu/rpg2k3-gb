@@ -15,5 +15,5 @@ std::string generateID(int id);
 // Generate the next ID given the number of elements that already exist.
 
 constexpr uint16_t getNextID(int numElems) {
-    return RPGMAKER::MIN_ID + numElems;
+    return static_cast<uint16_t>(RPGMAKER::MIN_ID + numElems);
 }

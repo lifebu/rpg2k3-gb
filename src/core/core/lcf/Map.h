@@ -22,7 +22,7 @@ public:
     Event& addEvent(const std::string name, const uint16_t x, const uint16_t y);
     void addEvent(Event& other);
 
-    const uint16_t nextEventID();
+    uint16_t nextEventID();
 
     Event* GetEventByID(uint16_t id);
     Event* GetEventByPosition(uint16_t x, uint16_t y);

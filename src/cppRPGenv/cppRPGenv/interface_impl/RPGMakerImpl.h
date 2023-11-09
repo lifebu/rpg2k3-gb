@@ -26,7 +26,7 @@ public:
         lcf::ChangePartyMember::ActorIDType actorIDType, uint16_t actorID) override;
 
     void ChangeEXP(lcf::ChangeExp::ActorRange actorRange, uint16_t actorID, 
-        lcf::ChangeExp::Operation operation, lcf::ChangeExp::Operand operand, uint16_t value) override;
+        lcf::ChangeExp::Operation operation, lcf::ChangeExp::Operand operand, uint32_t value) override;
 
     void ChangeParameters(lcf::ChangeParam::ActorRange actorRange, uint16_t actorID, 
         lcf::ChangeParam::Operation operation, lcf::ChangeParam::Parameter parameter, 

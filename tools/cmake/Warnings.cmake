@@ -48,9 +48,9 @@ function(target_set_warnings target warning_as_errors)
                             # track down memory errors
             -Wold-style-cast # warn for c-style casts
             -Wcast-align     # warn for potential performance problem casts
-            -Wunused         # warn on anything being unused
             -Woverloaded-virtual # warn if you overload (not override) a virtual
                                 # function
+            -Wno-unused-variable
             -Wpedantic   # warn if non-standard C++ is used
             -Wconversion # warn on type conversions that may lose data
             -Wsign-conversion  # warn on sign conversions

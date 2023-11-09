@@ -31,7 +31,7 @@ public:
         lcf::ChangePartyMember::ActorIDType actorIDType, uint16_t actorID) = 0;
 
     virtual void ChangeEXP(lcf::ChangeExp::ActorRange actorRange, uint16_t actorID, 
-        lcf::ChangeExp::Operation operation, lcf::ChangeExp::Operand operand, uint16_t value) = 0;
+        lcf::ChangeExp::Operation operation, lcf::ChangeExp::Operand operand, uint32_t value) = 0;
 
     virtual void ChangeParameters(lcf::ChangeParam::ActorRange actorRange, uint16_t actorID, 
         lcf::ChangeParam::Operation operation, lcf::ChangeParam::Parameter parameter, 

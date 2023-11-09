@@ -22,7 +22,7 @@ void Map::addEvent(Event& other)
     events.push_back(other);
 }
 
-const uint16_t Map::nextEventID() 
+uint16_t Map::nextEventID() 
 {
     return getNextID(events.size());
 }

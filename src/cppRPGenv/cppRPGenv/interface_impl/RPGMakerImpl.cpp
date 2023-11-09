@@ -63,7 +63,7 @@ void RPGMakerImpl::ChangePartyMember(lcf::ChangePartyMember::Operation operation
 }
 
 void RPGMakerImpl::ChangeEXP(lcf::ChangeExp::ActorRange actorRange, uint16_t actorID, 
-    lcf::ChangeExp::Operation operation, lcf::ChangeExp::Operand operand, uint16_t value)
+    lcf::ChangeExp::Operation operation, lcf::ChangeExp::Operand operand, uint32_t value)
 {
     assert(actorID >= RPGMAKER::MIN_ID && actorID <= RPGMAKER::MAX_NUM_CHARS);
 
@@ -73,8 +73,10 @@ void RPGMakerImpl::ChangeEXP(lcf::ChangeExp::ActorRange actorRange, uint16_t act
     lcf::Character* character = lcfManager->GetDatabase().GetCharacterByID(actorID);
     assert(character);
 
-    int8_t factor = operation == lcf::ChangeExp::Operation::INCREASE ? 1: -1;
-    character->exp += value * factor;
+    int32_t factor = operation == lcf::ChangeExp::Operation::INCREASE ? 1: -1;
+    int32_t newExp = static_cast<int32_t>(character->exp) + static_cast<int32_t>(value) * factor;
+    //std::clamp(newExp, 0, )
+    character->exp = static_cast<uint32_t>(newExp);
 }
 
 void RPGMakerImpl::ChangeParameters(lcf::ChangeParam::ActorRange actorRange, uint16_t actorID, 

@@ -16,7 +16,7 @@ namespace RPGMAKER {
     // If I use the Value Bias.
     const static bool USE_RPG_VALUE_BIAS = true;
     // Check if disabling the value_bias creates an overflow:
-    static_assert(USE_RPG_VALUE_BIAS == false && MEMORYSIZES::BYTES_PER_VAR < 3 || USE_RPG_VALUE_BIAS == true, 
+    static_assert(USE_RPG_VALUE_BIAS == true || MEMORYSIZES::BYTES_PER_VAR < 3, 
     "USE_RPG_VALUE_BIAS is disabled, but when using 3 Bytes per Var, the Bias is needed to avoid overflow in RPG Maker.");
     // int32_t to RPG Maker Value Bias. I want a symmetrical value range in RPG Maker. 
     // e.g. MEMORYSIZE::BYTES_PER_VAR = 3 =>
