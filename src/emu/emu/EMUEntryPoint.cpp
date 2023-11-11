@@ -1,6 +1,6 @@
 #include "EMUEntryPoint.h"
 
-#include <algorithm>
+#include "emu/pch.h"
 
 #include "core/def/VarMapping.h"
 #include "core/def/RPGMaker.h"
@@ -22,7 +22,7 @@ void EMUEntryPoint::RPGMain()
     rpgMaker->ControlVariables(static_cast<uint16_t>(VARMAPPING::BYTE_OFFSET_ID), romSizeByteOffset);
     rpgMaker->CallEvent(lcf::CallEvent::EventType::CONST_MAP_EVENT, 2, 1);
     int32_t firstVar = rpgMaker->ControlVariables(static_cast<uint16_t>(VARMAPPING::READ_VAR_1));
-    std::vector<uint8_t> bytes = unpackVariable(firstVar);
+    std::array<uint8_t, MEMORYSIZES::BYTES_PER_VAR> bytes = unpackVariable(firstVar);
     const int headerRomSize = bytes.at(romSizeByteOffset % 3);
 
     int romSizeKByte = 0;
@@ -86,7 +86,7 @@ void EMUEntryPoint::RPGMain()
             rpgMaker->CallEvent(lcf::CallEvent::EventType::CONST_MAP_EVENT, eventID, pageID);
             int32_t firstVar = rpgMaker->ControlVariables(static_cast<uint16_t>(VARMAPPING::READ_VAR_1));
             int32_t secondVar = rpgMaker->ControlVariables(static_cast<uint16_t>(VARMAPPING::READ_VAR_2));
-            std::vector<uint8_t> bytes = unpackVariable(firstVar);
+            std::array<uint8_t, MEMORYSIZES::BYTES_PER_VAR> bytes = unpackVariable(firstVar);
 
             int byteIndex = byteOffset % 3;
             float r = (float)bytes.at(byteIndex) / 255.0f;

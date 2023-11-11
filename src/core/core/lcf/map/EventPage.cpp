@@ -1,6 +1,6 @@
 #include "EventPage.h"
 
-#include <cassert>
+#include "core/pch.h"
 
 #include "core/def/RPGMaker.h"
 
@@ -30,10 +30,8 @@ uint16_t EventPage::GetID() const
 
 EventCommand* EventPage::GetEventCommandByIndex(uint32_t index)
 {
-    if(index >= eventCommands.size())
-    {
-        return nullptr;
-    }
-    return &eventCommands.at(index);
+    const bool inRange = index < eventCommands.size();
+    return inRange ? &eventCommands[index] : nullptr;
 }
+
 };

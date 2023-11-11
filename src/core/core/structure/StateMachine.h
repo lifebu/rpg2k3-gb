@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cassert>
+#include "core/pch.h"
 #include <functional>
 #include <map>
 #include <utility>

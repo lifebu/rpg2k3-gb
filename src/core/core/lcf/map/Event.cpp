@@ -1,7 +1,8 @@
 #include "Event.h"
 
+#include "core/pch.h"
+
 #include <algorithm>
-#include <cassert>
 
 #include "core/utilities/RPGHelper.h"
 
@@ -36,16 +37,11 @@ std::string Event::GetEventName() const
 
 EventPage* Event::GetEventPageByID(uint16_t id)
 {
-    auto foundIt = std::find_if(eventPages.begin(), eventPages.end(), [id](const EventPage& a)
-    { 
-        return a.GetID() == id;
-    });
+    assert(id >= RPGMAKER::MIN_ID && id <= RPGMAKER::MAX_PAGES_PER_EVENT);
 
-    if(foundIt != eventPages.end())
-    {
-        return &(*foundIt);
-    }
-
-    return nullptr;
+    const int pageIndex = getIndexFromID(id);
+    const bool inRange = pageIndex < eventPages.size();
+    return inRange ? &eventPages[pageIndex] : nullptr;
 }
+
 };

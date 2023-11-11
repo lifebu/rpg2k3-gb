@@ -40,7 +40,7 @@ public:
     CommandType type;
     // ~ 240 bit, rarely used
     std::string stringParam;
-    // ~ 7 parameters @ int12: 84bit
+    // ~ 7 parameters @ int12: 84bit. Worst: 30 (show picture), 14 (KeyEventProcessing), 7 (ControlVariables)
     std::vector<int32_t> parameters;
 private:
     // TODO: should create a system to automatically manage indentation.

@@ -1,6 +1,7 @@
 #include "Map.h"
 
-#include <cassert>
+#include "gb2rpg/pch.h"
+
 #include <cmath>
 
 #include <core/def/Globals.h>

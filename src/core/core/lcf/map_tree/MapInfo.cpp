@@ -1,6 +1,6 @@
 #include "MapInfo.h"
 
-#include <cassert>
+#include "core/pch.h"
 
 namespace lcf {
 

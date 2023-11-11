@@ -29,21 +29,16 @@ uint16_t Map::nextEventID()
 
 Event* Map::GetEventByID(uint16_t id)
 {
-    auto foundIt = std::find_if(events.begin(), events.end(), [id](const Event& a)
-    { 
-        return a.GetID() == id;
-    });
+    assert(id >= RPGMAKER::MIN_ID && id <= RPGMAKER::MAX_ID);
 
-    if(foundIt != events.end())
-    {
-        return &(*foundIt);
-    }
-
-    return nullptr;
+    const int eventIndex = getIndexFromID(id);
+    const bool inRange = eventIndex < events.size();
+    return inRange ? &events[eventIndex] : nullptr;
 }
 
 Event* Map::GetEventByPosition(uint16_t x, uint16_t y)
 {
+    // TODO: Can we make this more efficient? How often is this really used?
     auto foundIt = std::find_if(events.begin(), events.end(), [x, y](const Event& a)
     { 
         return a.x == x && a.y == y;

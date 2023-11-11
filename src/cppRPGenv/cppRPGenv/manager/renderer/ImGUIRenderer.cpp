@@ -1,6 +1,6 @@
 #include "ImGUIRenderer.h"
 
-#include <cassert>
+#include "cppRPGenv/pch.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
@@ -40,6 +40,11 @@ void ImGUIRenderer::Render(sf::RenderWindow &window,
     ImGui::SFML::Render(window);
 }
 
+bool ImGUIRenderer::ShouldExit() const
+{
+    return m_ExitPressed;
+}
+
 // private
 void ImGUIRenderer::BuildImGUI(const sf::Time& deltaTime) 
 {
@@ -57,9 +62,11 @@ void ImGUIRenderer::BuildImGUI(const sf::Time& deltaTime)
 
     if(ImGui::BeginMenuBar())
     {
+        ImGui::MenuItem("Exit (CTRL+Q)", nullptr, &m_ExitPressed);
         ImGui::MenuItem("Log", nullptr, &m_LogIsEnabled);
 
-        int fps = 1'000 / deltaTime.asMilliseconds();
+        int ms = deltaTime.asMilliseconds();
+        int fps = (ms > 0) ? 1'000 / ms : 0;
         std::string fpsLabel = "FPS: " + std::to_string(fps);
 
         ImGui::MenuItem(fpsLabel.c_str());

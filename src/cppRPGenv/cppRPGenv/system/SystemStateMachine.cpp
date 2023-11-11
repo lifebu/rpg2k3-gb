@@ -1,12 +1,12 @@
 #include "SystemStateMachine.h"
 
+#include "cppRPGenv/pch.h"
+
 #include <core/structure/Logger.h>
 
 #include "cppRPGenv/manager/InputManager.h"
 #include "cppRPGenv/manager/LCFManager.h"
 #include "cppRPGenv/manager/RenderManager.h"
-
-#include <cassert>
 
 namespace rpgenv
 {

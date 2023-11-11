@@ -1,6 +1,6 @@
 #include "GBFile.h"
 
-#include <cassert>
+#include "gb2rpg/pch.h"
 
 #include <core/def/MemorySizes.h>
 #include <core/structure/Logger.h>

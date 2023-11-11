@@ -1,6 +1,6 @@
 #include "RenderManager.h"
 
-#include <cassert>
+#include "cppRPGenv/pch.h"
 
 #include "core/structure/Logger.h"
 
@@ -85,6 +85,16 @@ void RenderManager::PollEvents()
         m_ImGUIRenderer.ProcessEvent(event);
 
         if(event.type == sf::Event::Closed)
+        {
+            m_Window.close();
+        }
+
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
+        {
+            m_Window.close();
+        }
+
+        if(m_ImGUIRenderer.ShouldExit())
         {
             m_Window.close();
         }

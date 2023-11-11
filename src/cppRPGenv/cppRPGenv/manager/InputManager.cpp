@@ -1,6 +1,6 @@
 #include "InputManager.h"
 
-#include <cassert>
+#include "cppRPGenv/pch.h"
 
 #include <SFML/Window.hpp>
 

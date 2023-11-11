@@ -1,3 +1,8 @@
+// Disables asserts
+#ifdef DISABLE_ASSERTS
+#define NDEBUG
+#endif
+
 #include <algorithm>
 #include <cassert>
 #include <cmath>

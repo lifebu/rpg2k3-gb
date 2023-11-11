@@ -1,6 +1,6 @@
 #include "CommonEvent.h"
 
-#include <cassert>
+#include "core/pch.h"
 
 #include "core/def/RPGMaker.h"
 #include "core/lcf/event/EventCommand.h"

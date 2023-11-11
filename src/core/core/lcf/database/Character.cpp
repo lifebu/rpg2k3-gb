@@ -1,6 +1,6 @@
 #include "Character.h"
 
-#include <cassert>
+#include "core/pch.h"
 
 #include "core/def/RPGMaker.h"
 

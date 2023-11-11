@@ -233,14 +233,14 @@ void RPGMakerImpl::CallEvent(lcf::CallEvent::EventType eventType, uint16_t event
     assert(eventCommand->type == lcf::EventCommand::CommandType::CONTROL_VARIABLE);
     const std::vector<int32_t>& parameters = eventCommand->parameters;
     assert(parameters.size() == 7);
-    assert(parameters.at(0) == 0);
-    assert(parameters.at(1) == static_cast<int32_t>(VARMAPPING::READ_VAR_1));
-    assert(parameters.at(2) == static_cast<int32_t>(VARMAPPING::READ_VAR_1));
-    assert(parameters.at(3) == 0);
-    assert(parameters.at(4) == 0);
-    assert(parameters.at(6) == 0);
+    assert(parameters[0] == 0);
+    assert(parameters[1] == static_cast<int32_t>(VARMAPPING::READ_VAR_1));
+    assert(parameters[2] == static_cast<int32_t>(VARMAPPING::READ_VAR_1));
+    assert(parameters[3] == 0);
+    assert(parameters[4] == 0);
+    assert(parameters[6] == 0);
 
-    int32_t packedByteValue = parameters.at(5);
+    int32_t packedByteValue = parameters[5];
     variableManager->SetVariable(static_cast<uint16_t>(VARMAPPING::READ_VAR_1), packedByteValue);
 
     // TODO: This assumes that we only have two READ_VAR!
@@ -248,7 +248,7 @@ void RPGMakerImpl::CallEvent(lcf::CallEvent::EventType eventType, uint16_t event
     eventCommand = eventPage->GetEventCommandByIndex(eventCommandIndex + 1);
     assert(eventCommand);
 
-    packedByteValue = eventCommand->parameters.at(5);
+    packedByteValue = eventCommand->parameters[5];
     variableManager->SetVariable(static_cast<uint16_t>(VARMAPPING::READ_VAR_2), packedByteValue);
 
     return;

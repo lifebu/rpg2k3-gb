@@ -1,6 +1,7 @@
 #include "Logger.h"
 
-#include <cassert>
+#include "core/pch.h"
+
 #include <iostream>
 
 namespace core 

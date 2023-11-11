@@ -130,6 +130,9 @@ gb2RPG: Gameboy 2 RPG Maker.
                 Switch-IDs: 1-RPGMAKER::MAX_NUM_SWITCHES
                 Variable-IDs: 1-RPGMAKER::MAX_NUM_VARIABLES
                 Event-Pages: 1-RPGMAKER::MAX_PAGES_PER_EVENT
+            - Redefine types (in32_t) as templates with range check?
+            - To have additional range checks and not as asserts everywhere.
+            - With a flag I could disable it and the template will just fall back to being an int32_t with no overhead (flag set in CMake).
 
         - EventCommandFactories:
             - I now have low-level factories to set the actual event command.

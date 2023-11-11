@@ -74,31 +74,20 @@ void Database::addCommonEvent(const CommonEvent& newCommonEvent)
 
 Item* Database::GetItemByID(uint16_t id)
 {
-    auto foundIt = std::find_if(items.begin(), items.end(), [id](const Item& a)
-    { 
-        return a.GetID() == id;
-    });
+    assert(id >= RPGMAKER::MIN_ID && id <= RPGMAKER::MAX_ID);
 
-    if(foundIt != items.end())
-    {
-        return &(*foundIt);
-    }
-
-    return nullptr;
+    const int itemIndex = getIndexFromID(id);
+    const bool inRange = itemIndex < items.size();
+    return inRange ? &items[itemIndex] : nullptr;
 }
 
 Character* Database::GetCharacterByID(uint16_t id)
 {
-    auto foundIt = std::find_if(characters.begin(), characters.end(), [id](const Character& a)
-    { 
-        return a.id == id;
-    });
-    
-    if(foundIt != characters.end())
-    {
-        return &(*foundIt);
-    }
+    assert(id >= RPGMAKER::MIN_ID && id <= RPGMAKER::MAX_ID);
 
-    return nullptr;
+    const int characterIndex = getIndexFromID(id);
+    const bool inRange = characterIndex < characters.size();
+    return inRange ? &characters[characterIndex] : nullptr;
 }
+
 };

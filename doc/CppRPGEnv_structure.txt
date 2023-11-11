@@ -2,6 +2,7 @@ CppRPGEnv: C++-RPG Maker Environment
     - C++-code can be run outside of RPG Maker so that I can debug it normally without dependencies.
         - Plattform Code that runs my code (kinda like engine).
 
+
 - To-Do:
     Next:
     - Think again about the Interface.
@@ -58,6 +59,23 @@ CppRPGEnv: C++-RPG Maker Environment
         - Think again what the Environment actually needs to load from the generated files.
             - No CommonEvents.
             - No Variables and Switches.
+
+    - Memory Locality and most used functions:
+        - Memory Usage:
+            - Tetris: ~16MByte in Memory for Map. Most of it the MAP-ROM.
+        - Most used:
+            CallEvent => MAP-ROM Access
+            ChangeItem, ChangePartyMember, ChangeEXP, ChangeParameters, ChangeEquipment => Chara-RAM.
+            SetEventLocation => MAP-RAM Write.
+            ShowPicture => Rendering
+        - Chara-RAM:
+            - Database -> Vector (Heap) -> Items.
+            - Database -> Vector (Heap) -> Character.
+        - Map-ROM Access:
+            - Call-Event does a lot of code.
+        - SetEventLocation:
+            - 
+        - ID Search is slow.
 
 
 - Interface:

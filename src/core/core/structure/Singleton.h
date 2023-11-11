@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cassert>
+#include "core/pch.h"
 
 template <class T>
 class Singleton

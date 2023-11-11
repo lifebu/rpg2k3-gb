@@ -1,6 +1,7 @@
 #include "LCFManager.h"
 
-#include <cassert>
+#include "cppRPGenv/pch.h"
+
 #include <filesystem>
 
 #include <core/def/Globals.h>

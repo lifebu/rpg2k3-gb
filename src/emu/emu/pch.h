@@ -1,4 +1,6 @@
 #include <algorithm>
+
+#define NDEBUG
 #include <cassert>
 #include <cmath>
 #include <cstdint>
