@@ -20,13 +20,10 @@ void PrintROM(int yOffset)
         for (int x = 0; x < 160; ++x)
         {
             int byteOffset = x + (y + yOffset) * 144;
-            int32_t firstVar = MMU::ReadMapROM(byteOffset);
-            std::array<uint8_t, MEMORYSIZES::BYTES_PER_VAR> bytes = unpackVariable(firstVar);
-
-            int byteIndex = byteOffset % 3;
-            float r = (float)bytes.at(byteIndex) / 255.0f;
-            float g = (float)bytes.at(byteIndex) / 255.0f;
-            float b = (float)bytes.at(byteIndex) / 255.0f;
+            uint8_t byteValue = MMU::ReadByte(byteOffset);
+            float r = static_cast<float>(byteValue) / 255.0f;
+            float g = static_cast<float>(byteValue) / 255.0f;
+            float b = static_cast<float>(byteValue) / 255.0f;
 
             rpgMaker->ShowPicture(lcf::ShowPicture::PictureIDType::CONSTANT, 0, lcf::ShowPicture::PosType::CONSTANT, x, y, r, g, b);
         }

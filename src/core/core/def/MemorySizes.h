@@ -8,10 +8,10 @@ namespace MEMORYSIZES {
     const static int MAX_CARTRIDGE_RAM = 32768;
 
     // Map-RAM:
-    // map-size = 500x500 = 250000_10 >= 131072_10 = 2^17
-    const static int BITS_PER_EVENT_POS = 17;
-    // 7906 Events needed.
-    const static int NUM_DMG_RAM_EVENTS = (DMG_RAM_SIZE * 8) / BITS_PER_EVENT_POS + 1;
+    // map-size = <=500x500 = 250.000_10 >= 65.536_10 = 2^16
+    const static int BYTES_PER_EVENT_POS = 2;
+    // 8400 Events needed.
+    const static int NUM_DMG_RAM_EVENTS = DMG_RAM_SIZE / BYTES_PER_EVENT_POS;
 
 
 

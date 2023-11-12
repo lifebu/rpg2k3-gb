@@ -172,6 +172,60 @@ void RPGMakerImpl::ControlVariables(uint16_t id, int32_t value)
     variableManager->SetVariable(id, value);
 }
 
+uint16_t RPGMakerImpl::ControlVariables_GetEventXPos(uint16_t eventID) 
+{
+    assert(eventID >= RPGMAKER::MIN_ID && eventID <= RPGMAKER::MAX_ID);
+
+    auto* const lcfManager = LCFManager::Get();
+    assert(lcfManager);
+
+    lcf::Event* const event = lcfManager->GetMap().GetEventByID(eventID);
+    assert(event);
+
+    return event->x;
+}
+
+void RPGMakerImpl::ControlVariables_SetEventXPos(uint16_t eventID, uint16_t eventXPos) 
+{
+    assert(eventID >= RPGMAKER::MIN_ID && eventID <= RPGMAKER::MAX_ID);
+
+        auto* const lcfManager = LCFManager::Get();
+    assert(lcfManager);
+
+    lcf::Event* const event = lcfManager->GetMap().GetEventByID(eventID);
+    assert(event);
+
+    // TODO: Make sure that this position is not outside of the map.
+    event->x = eventXPos;
+}
+
+uint16_t RPGMakerImpl::ControlVariables_GetEventYPos(uint16_t eventID) 
+{
+    assert(eventID >= RPGMAKER::MIN_ID && eventID <= RPGMAKER::MAX_ID);
+
+    auto* const lcfManager = LCFManager::Get();
+    assert(lcfManager);
+
+    lcf::Event* const event = lcfManager->GetMap().GetEventByID(eventID);
+    assert(event);
+
+    return event->y;
+}
+
+void RPGMakerImpl::ControlVariables_SetEventYPos(uint16_t eventID, uint16_t eventYPos) 
+{
+    assert(eventID >= RPGMAKER::MIN_ID && eventID <= RPGMAKER::MAX_ID);
+
+        auto* const lcfManager = LCFManager::Get();
+    assert(lcfManager);
+
+    lcf::Event* const event = lcfManager->GetMap().GetEventByID(eventID);
+    assert(event);
+
+    // TODO: Make sure that this position is not outside of the map.
+    event->y = eventYPos;
+}
+
 // Events
 void RPGMakerImpl::SetEventLocation(uint16_t eventID, 
     lcf::SetEventLocation::LocationType locationType, uint16_t xPos, uint16_t yPos)

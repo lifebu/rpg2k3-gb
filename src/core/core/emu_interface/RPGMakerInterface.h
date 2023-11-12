@@ -46,6 +46,11 @@ public:
     // Variables
     virtual int32_t ControlVariables(uint16_t id) = 0;
     virtual void ControlVariables(uint16_t id, int32_t value) = 0;
+    // These are all functionalities that ControlVariables in RPG Maker provides, but we use shortforms here to not make it as convoluted.
+    virtual uint16_t ControlVariables_GetEventXPos(uint16_t eventID) = 0;
+    virtual void ControlVariables_SetEventXPos(uint16_t eventID, uint16_t eventXPos) = 0;
+    virtual uint16_t ControlVariables_GetEventYPos(uint16_t eventID) = 0;
+    virtual void ControlVariables_SetEventYPos(uint16_t eventID, uint16_t eventYPos) = 0;
 
     // Events
     // IF locationType = CONSTANT => xPos and yPos are positions
