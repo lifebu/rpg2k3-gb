@@ -1,5 +1,5 @@
 // Disables asserts
-#ifdef DISABLE_ASSERTS
+#if DISABLE_ASSERTS
 #define NDEBUG
 #endif
 
