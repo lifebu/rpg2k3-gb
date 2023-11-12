@@ -17,7 +17,7 @@ uint8_t MMU::ReadByte(uint16_t address)
     if(IsMapROMAddress(address))
     {
         uint32_t mapROMAddress = GBAddressToMapROM(address);
-        uint32_t mapROMValue = ReadMapROM(static_cast<uint32_t>(address));
+        uint32_t mapROMValue = ReadMapROM(mapROMAddress);
         std::array<uint8_t, MEMORYSIZES::BYTES_PER_VAR> bytes = unpackVariable(mapROMValue);
         return bytes.at(address % MEMORYSIZES::BYTES_PER_VAR);
     }
