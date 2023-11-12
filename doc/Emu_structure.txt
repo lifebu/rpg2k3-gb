@@ -67,7 +67,7 @@ Memory:
     - BG / OBJ Palettes (CGB).
 
     - Graphics Control:
-        - LCD Contro, Status, Position, Scrolling and Palletes.
+        - LCD Control, Status, Position, Scrolling and Palletes.
         - Written by CPU, Reacted by PPU.
         - Memory itself does not do special things with it.
     

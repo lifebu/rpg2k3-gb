@@ -1,6 +1,8 @@
 #pragma one
 
-#include "core/emu_interface/RPGEntryPoint.h"
+#include <core/emu_interface/RPGEntryPoint.h>
+
+#include "emu/def/EmuState.h"
 
 namespace emu 
 {
@@ -11,8 +13,11 @@ public:
     void RPGMain() override;
 
 private:
+    static constexpr int CYCLES_PER_FRAME = 70'224;
+
     int yOffset = 0;
-    int speed = 1;
+
+    EmuState emuState;
 };
 
 };

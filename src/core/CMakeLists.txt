@@ -63,8 +63,13 @@ set(structure_headers
 set(structure_source
     core/structure/Logger.cpp)
 
-set(utility_headers core/utilities/RPGHelper.h)
-set(utility_source core/utilities/RPGHelper.cpp)
+set(utility_headers 
+    core/utilities/RPGHelper.h
+    core/utilities/GBHelper.h)
+
+set(utility_source 
+    core/utilities/RPGHelper.cpp
+    core/utilities/GBHelper.cpp)
 
 set(def_headers 
     core/def/MemorySizes.h 

@@ -2,9 +2,16 @@ project(emu VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Gameboy emulator written to
 
 
 ### files
-set(emu_header emu/EMUEntryPoint.h)
+set(emu_header 
+    emu/EMUEntryPoint.h
+    emu/def/EmuState.h
+    emu/memory/MMU.h
+    emu/util/DebugUtil.h)
 
-set(emu_source emu/EMUEntryPoint.cpp)
+set(emu_source 
+    emu/EMUEntryPoint.cpp
+    emu/memory/MMU.cpp
+    emu/util/DebugUtil.cpp)
 
 add_library(emu ${emu_header} ${emu_source})
 
