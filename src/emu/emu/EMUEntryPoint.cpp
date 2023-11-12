@@ -62,16 +62,33 @@ void EMUEntryPoint::RPGMain()
         int newOffset = yOffset + 1;
         int maxByteOffset = 159 + (143 + newOffset) * 144;
 
+        if(maxByteOffset < 32'768)
+        {
+            yOffset = newOffset;
+        }
+    }
+
+    // Change ROM Mapping
+    if(rpgMaker->KeyInputProcessing(RPGMAKER::KeyCodes::SHIFT))
+    {
+        const int newBankIndex = emuState.romBankIndex + 1;
+
         // Get the size of the ROM.
         const int cartridgeHeaderOffset = 256;
         const int romSizeByteOffset = cartridgeHeaderOffset + 72; // Offset into the CartridgeHeader
         
         uint8_t headerRomSize = MMU::ReadByte(romSizeByteOffset);
         const int romSizeKByte = ConvertROMSizetoKByte(headerRomSize);
+        const int numBanks = (romSizeKByte / 16) - 2; // Each Bank has 16kByte and the Index = 0 is for the 2nd 16kByte in the ROM.
 
-        if(maxByteOffset < romSizeKByte * 1'024)
+        // Wrap around the Banks
+        if(newBankIndex > numBanks)
         {
-            yOffset = newOffset;
+            emuState.romBankIndex = 0;
+        }
+        else
+        {
+            emuState.romBankIndex = newBankIndex;
         }
     }
 

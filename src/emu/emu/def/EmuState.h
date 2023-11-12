@@ -2,9 +2,13 @@
 
 #include <cstdint>
 
+#include <core/structure/Singleton.h>
+
 // TODO: This might be could candidates to be static variables later :)
-struct EmuState
+// TODO: This as a singleton is also not very good to have shared state like this, but fine for now.
+class EmuState : public Singleton<EmuState>
 {
+public:
     //////////////////////////////////////////////////////////// 
     // Cartridge
     // Which Rom bank is currently loaded (up to 511 (512 - 1 (always loaded))).

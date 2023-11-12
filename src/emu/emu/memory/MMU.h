@@ -101,15 +101,15 @@ public:
 
 private:
     // Read MapROM: Used for Cartridge ROM.
-    static int32_t  ReadMapROM(uint16_t address);
+    static int32_t  ReadMapROM(uint32_t address);
 
     // Read/Write MapRAM: Used for WorkRAM, VRAM, OAM
-    static int32_t  ReadMapRAM(uint16_t address);
-    static void     WriteMapRAM(uint16_t address, int32_t value);
+    static int32_t  ReadMapRAM(uint32_t address);
+    static void     WriteMapRAM(uint32_t address, int32_t value);
 
     // Read/Write CharaRAM: Used for Cartridge RAM.
-    static int32_t  ReadCharaRAM(uint16_t address);
-    static void     WriteCharaRAM(uint16_t address, int32_t value);
+    static int32_t  ReadCharaRAM(uint32_t address);
+    static void     WriteCharaRAM(uint32_t address, int32_t value);
 };
 
 };

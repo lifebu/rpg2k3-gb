@@ -7,6 +7,8 @@
 #include <core/emu_interface/RPGMakerInterface.h>
 #include <core/utilities/RPGHelper.h>
 
+#include "emu/def/EmuState.h"
+
 namespace emu
 {
 
@@ -16,14 +18,17 @@ uint8_t MMU::ReadByte(uint16_t address)
 
     if(address >= ROM_LOW.first && address <= ROM_LOW.second)
     {
-        uint32_t mapROMValue = ReadMapROM(address);
+        uint32_t mapROMValue = ReadMapROM(static_cast<uint32_t>(address));
         std::array<uint8_t, MEMORYSIZES::BYTES_PER_VAR> bytes = unpackVariable(mapROMValue);
         return bytes.at(address % MEMORYSIZES::BYTES_PER_VAR);
     }
     else if (address >= ROM_HIGH.first && address <= ROM_HIGH.second)
     {
-        // TODO: We need to calculate the address of the ROM High region to support memory banking (Implement MBC!). I basically need a "local" address here :).
-        uint32_t mapROMValue = ReadMapROM(address);
+        const auto* const emuState = EmuState::Get();
+        assert(emuState);
+
+        uint32_t highROMAddress = address + (ROM_HIGH.first * emuState->romBankIndex);
+        uint32_t mapROMValue = ReadMapROM(highROMAddress);
         std::array<uint8_t, MEMORYSIZES::BYTES_PER_VAR> bytes = unpackVariable(mapROMValue);
         return bytes.at(address % MEMORYSIZES::BYTES_PER_VAR);
     }
@@ -69,11 +74,11 @@ void MMU::WriteByte(uint16_t address, uint8_t value)
     return;
 }
 
-int32_t MMU::ReadMapROM(uint16_t address)
+int32_t MMU::ReadMapROM(uint32_t address)
 {
     auto* rpgMaker = rpgenv::RPGMakerInterface::Get();
 
-    int maxNumOfBytesPerEvent = MEMORYSIZES::BYTES_PER_EPAGE * RPGMAKER::MAX_PAGES_PER_EVENT;
+    int32_t maxNumOfBytesPerEvent = MEMORYSIZES::BYTES_PER_EPAGE * RPGMAKER::MAX_PAGES_PER_EVENT;
     uint16_t eventID = 2 + (address / maxNumOfBytesPerEvent);
     uint16_t pageID = 1 + (address / MEMORYSIZES::BYTES_PER_EPAGE);
 
@@ -91,7 +96,7 @@ int32_t MMU::ReadMapROM(uint16_t address)
     return firstVar; 
 }
 
-int32_t MMU::ReadMapRAM(uint16_t address)
+int32_t MMU::ReadMapRAM(uint32_t address)
 {
     auto* rpgMaker = rpgenv::RPGMakerInterface::Get();
 
@@ -109,7 +114,7 @@ int32_t MMU::ReadMapRAM(uint16_t address)
     return packedValue;
 }
 
-void MMU::WriteMapRAM(uint16_t address, int32_t value)
+void MMU::WriteMapRAM(uint32_t address, int32_t value)
 {
     auto* rpgMaker = rpgenv::RPGMakerInterface::Get();
 
@@ -126,12 +131,12 @@ void MMU::WriteMapRAM(uint16_t address, int32_t value)
     rpgMaker->ControlVariables_SetEventYPos(eventIndex, yPos);
 }
 
-int32_t MMU::ReadCharaRAM(uint16_t address)
+int32_t MMU::ReadCharaRAM(uint32_t address)
 {
     return 0;
 }
 
-void MMU::WriteCharaRAM(uint16_t address, int32_t value)
+void MMU::WriteCharaRAM(uint32_t address, int32_t value)
 {
 
 }
