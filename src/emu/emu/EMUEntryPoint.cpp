@@ -37,6 +37,7 @@ void EMUEntryPoint::RPGMain()
     }
 
     // MMU Testcode.
+    // TODO: Test this some more. I get the unpacked second value, and not the one I expect.
     MMU::WriteByte(MMU::VRAM.first, 60);
     uint8_t redByte = MMU::ReadByte(MMU::VRAM.first);
     MMU::WriteByte(MMU::VRAM.first + 1, 62);
@@ -46,6 +47,10 @@ void EMUEntryPoint::RPGMain()
     redByte = MMU::ReadByte(MMU::VRAM.first);
     redByte = MMU::ReadByte(MMU::VRAM.first + 1);
     redByte = MMU::ReadByte(MMU::VRAM.first + 2);
+
+    MMU::WriteByte(MMU::WORK_RAM.first, 14);
+    MMU::WriteByte(MMU::OAM.first, 15);
+    MMU::WriteByte(MMU::IE_REGISTER.first, 16);
 
     // This testcode allows the entire cartridge content to be viewed.
     auto* rpgMaker = rpgenv::RPGMakerInterface::Get();

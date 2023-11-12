@@ -15,7 +15,7 @@ namespace emu
 class MMU
 {
 public:
-    // Memory Map:
+    // GB Memory Map:
     // ROM
     constexpr static std::pair<uint16_t, uint16_t> ROM_LOW = 
                                     std::make_pair(0x0000, 0x3FFF);
@@ -67,10 +67,18 @@ public:
     // Work RAM
     constexpr static std::pair<uint16_t, uint16_t> WORK_RAM = 
                                     std::make_pair(0xC000, 0xDFFF);
+    
+    // Echo RAM (unused)
+    constexpr static std::pair<uint16_t, uint16_t> ECHO_RAM = 
+                                    std::make_pair(0xE000, 0xFDFF);
 
-    // Work RAM
+    // OAM
     constexpr static std::pair<uint16_t, uint16_t> OAM = 
                                     std::make_pair(0xFE00, 0xFE9F);
+
+    // Unused (unused)
+    constexpr static std::pair<uint16_t, uint16_t> UNUSED = 
+                                    std::make_pair(0xFEA0, 0xFEFF);
 
     // I/O
     constexpr static std::pair<uint16_t, uint16_t> JOYPAD = 
@@ -90,9 +98,15 @@ public:
     constexpr static std::pair<uint16_t, uint16_t> DISABLE_BOOT_ROM = 
                                     std::make_pair(0xFF50, 0xFF50);
 
+    // HRAM
+    constexpr static std::pair<uint16_t, uint16_t> HRAM = 
+                                    std::make_pair(0xFF80, 0xFFFE);
+
     // IE Register
     constexpr static std::pair<uint16_t, uint16_t> IE_REGISTER = 
                                     std::make_pair(0xFFFF, 0xFFFF);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Memory Access:
     // Read/Write memory from the 16-Bit GB address space. Will redirect to the correct ROM/RAM in RPG Maker.
@@ -110,6 +124,13 @@ private:
     // Read/Write CharaRAM: Used for Cartridge RAM.
     static int32_t  ReadCharaRAM(uint32_t address);
     static void     WriteCharaRAM(uint32_t address, int32_t value);
+
+    // RPG Maker Address Mapping:
+    static uint32_t GBAddressToMapRAM(uint16_t address);
+    static bool IsMapRAMAddress(uint16_t address);
+
+    static uint32_t GBAddressToMapROM(uint16_t address);
+    static bool IsMapROMAddress(uint16_t address);
 };
 
 };
