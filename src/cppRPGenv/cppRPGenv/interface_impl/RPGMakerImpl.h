@@ -47,6 +47,11 @@ public:
     uint16_t ControlVariables_GetEventYPos(uint16_t eventID) override;
     void ControlVariables_SetEventYPos(uint16_t eventID, uint16_t eventYPos) override;
 
+    uint32_t ControlVariables_GetCharEXP(uint16_t charID) override;
+    uint16_t ControlVariables_GetCharParameter(uint16_t charID, lcf::ChangeParam::Parameter parameter) override;
+    uint16_t ControlVariables_GetCharItemID(uint16_t charID, lcf::ChangeEquip::Item whichItem) override;
+
+
     // Events
     // IF locationType = CONSTANT => xPos and yPos are positions
     // IF locationType = VARIABLE_IDS => xPos and yPos are Variable IDs

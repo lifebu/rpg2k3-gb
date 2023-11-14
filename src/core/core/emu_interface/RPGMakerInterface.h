@@ -52,6 +52,10 @@ public:
     virtual uint16_t ControlVariables_GetEventYPos(uint16_t eventID) = 0;
     virtual void ControlVariables_SetEventYPos(uint16_t eventID, uint16_t eventYPos) = 0;
 
+    virtual uint32_t ControlVariables_GetCharEXP(uint16_t charID) = 0;
+    virtual uint16_t ControlVariables_GetCharParameter(uint16_t charID, lcf::ChangeParam::Parameter parameter) = 0;
+    virtual uint16_t ControlVariables_GetCharItemID(uint16_t charID, lcf::ChangeEquip::Item whichItem) = 0;
+
     // Events
     // IF locationType = CONSTANT => xPos and yPos are positions
     // IF locationType = VARIABLE_IDS => xPos and yPos are Variable IDs

@@ -118,13 +118,13 @@ RPG Maker: Programming Language Functionality:
                         - Experience (0-9.999.999):
                             - Linked to EXP, cannot modify freely:
                                 - Level (1-99).
-                            - 9.999.999 >= 8.388.608_10 = 2^23 => 23 Bits
+                            - 9.999.999 >= 8.388.608_10 = 2^23 => 23 Bits >= 2^16 = 2Byte
                         - Character Data:
                                 - Is that REALLY Independent from the EXP?
                                     - Can I set the curve to 0?
-                                1-9.999, 9.998_10 >= 8.192_10 = 2^13 = 13 Bits
+                                1-9.999, 9.998_10 >= 8.192_10 = 2^13 = 13 Bits >= 2^8 = 1Byte
                                 Max HP, Max MP, Attack, Defense, Mind, Agility (6)
-                                => 78 Bits
+                                => 78 Bits ~ 6 Bytes
                     - Item Ids: 
                         => Probably only one of them as all the 9.999 items have to be either Weapon, Shield, Body, Head OR Acessory
                         - Weapon, Shield. Body, Head, Acessory
@@ -133,11 +133,20 @@ RPG Maker: Programming Language Functionality:
                         - 10.000 in 5 buckets (Weapon, Shield. Body, Head, Acessory)
                             => 2.048 * 4 + 1 * 1024 = 9.216 < 10.000
                             => 4 * 11-Bits + 1 * 10-Bits = 54 Bits
+                        - Can also have 1Byte per Item (loose some data, but easier encoding/decoding).
                     
                     => Per Player: 23(EXP) + 78(CHARDATA) "+ 54(ITEMIDS)" = 101-155 Bits
                     => Total 293.910 - 451.050 Bits ~ 36.738 - 56.381 Bytes
 
                     => 32kByte = 262.144 Bit / (23+78) Bit = 2.596 Chars needed
+
+                    - Bytewise encoding:
+                        - EXP: 2Byte
+                        - CharData: 6*1Byte = 6Byte
+                        - ItemIds: 5*1Byte = 5Byte.
+                        - Total: 13 Bytes / Char
+                        => Max: 37.830 Bytes.
+                        => 32kByte = 32.768 / 13 Bytes = 2.521 Chars needed
             - Savegames: 
                 - I do not know what the savefiles for RPG-Maker saves
                 - Savegame for 2966 Chars in DB is larger then 3 Chars in DB.

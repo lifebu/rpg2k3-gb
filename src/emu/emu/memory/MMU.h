@@ -108,6 +108,16 @@ public:
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    // Chara Memory Map:
+    constexpr static std::pair<uint8_t, uint8_t> EXP = 
+                                    std::make_pair(0, 1);
+    constexpr static std::pair<uint8_t, uint8_t> PARAMETERS = 
+                                    std::make_pair(2, 7);
+    constexpr static std::pair<uint8_t, uint8_t> ITEMS = 
+                                    std::make_pair(8, 12);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
     // Memory Access:
     // Read/Write memory from the 16-Bit GB address space. Will redirect to the correct ROM/RAM in RPG Maker.
     static uint8_t  ReadByte(uint16_t address);
@@ -126,11 +136,14 @@ private:
     static void     WriteCharaRAM(uint32_t address, int32_t value);
 
     // RPG Maker Address Mapping:
-    static uint32_t GBAddressToMapRAM(uint16_t address);
-    static bool IsMapRAMAddress(uint16_t address);
-
     static uint32_t GBAddressToMapROM(uint16_t address);
-    static bool IsMapROMAddress(uint16_t address);
+    static bool     IsMapROMAddress(uint16_t address);
+
+    static uint32_t GBAddressToMapRAM(uint16_t address);
+    static bool     IsMapRAMAddress(uint16_t address);
+
+    static uint32_t GBAddressToCharaRAM(uint16_t address);
+    static bool     IsCharaRAMAddress(uint16_t address);
 };
 
 };

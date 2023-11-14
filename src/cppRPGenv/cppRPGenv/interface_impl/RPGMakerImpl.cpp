@@ -216,7 +216,7 @@ void RPGMakerImpl::ControlVariables_SetEventYPos(uint16_t eventID, uint16_t even
 {
     assert(eventID >= RPGMAKER::MIN_ID && eventID <= RPGMAKER::MAX_ID);
 
-        auto* const lcfManager = LCFManager::Get();
+    auto* const lcfManager = LCFManager::Get();
     assert(lcfManager);
 
     lcf::Event* const event = lcfManager->GetMap().GetEventByID(eventID);
@@ -224,6 +224,80 @@ void RPGMakerImpl::ControlVariables_SetEventYPos(uint16_t eventID, uint16_t even
 
     // TODO: Make sure that this position is not outside of the map.
     event->y = eventYPos;
+}
+
+uint32_t RPGMakerImpl::ControlVariables_GetCharEXP(uint16_t charID)
+{
+    auto* lcfManager = LCFManager::Get();
+    assert(lcfManager);
+
+    lcf::Character* character = lcfManager->GetDatabase().GetCharacterByID(charID);
+    assert(character);
+
+    return character->exp;
+}
+
+uint16_t RPGMakerImpl::ControlVariables_GetCharParameter(uint16_t charID, lcf::ChangeParam::Parameter parameter)
+{
+    auto* lcfManager = LCFManager::Get();
+    assert(lcfManager);
+
+    lcf::Character* character = lcfManager->GetDatabase().GetCharacterByID(charID);
+    assert(character);
+
+    switch(parameter)
+    {
+        case lcf::ChangeParam::Parameter::MAX_HP:
+            return character->maxHP;
+
+        case lcf::ChangeParam::Parameter::MAX_MP:
+            return character->maxMP;
+
+        case lcf::ChangeParam::Parameter::ATTACK:
+            return character->attack;
+
+        case lcf::ChangeParam::Parameter::DEFENSE:
+            return character->defense;
+
+        case lcf::ChangeParam::Parameter::MIND:
+            return character->mind;
+
+        case lcf::ChangeParam::Parameter::AGILITY:
+            return character->agility;
+    }
+
+    assert(false && "Unknown character parameter case discovered!");
+    return 0;
+}
+
+uint16_t RPGMakerImpl::ControlVariables_GetCharItemID(uint16_t charID, lcf::ChangeEquip::Item whichItem)
+{
+    auto* lcfManager = LCFManager::Get();
+    assert(lcfManager);
+
+    lcf::Character* character = lcfManager->GetDatabase().GetCharacterByID(charID);
+    assert(character);
+
+    switch(whichItem)
+    {
+        case lcf::ChangeEquip::Item::UNEQUIP_WEAPON:
+            return character->WeaponID;
+
+        case lcf::ChangeEquip::Item::UNEQUIP_SHIELD:
+            return character->ShieldID;
+
+        case lcf::ChangeEquip::Item::UNEQUIP_BODY:
+            return character->BodyID;
+
+        case lcf::ChangeEquip::Item::UNEQUIP_HEAD:
+            return character->HeadID;
+
+        case lcf::ChangeEquip::Item::UNEQUIP_ACCESSORY:
+            return character->AccessoryID;
+    }
+
+    assert(false && "Unknown item case discovered!");
+    return 0;
 }
 
 // Events
