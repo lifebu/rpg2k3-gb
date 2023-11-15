@@ -99,6 +99,30 @@ void EMUEntryPoint::RPGMain()
         }
     }
 
+    // Change RAM Mapping
+    if(rpgMaker->KeyInputProcessing(RPGMAKER::KeyCodes::SELECT))
+    {
+        const int newBankIndex = emuState.ramBankIndex + 1;
+
+        // Get the size of the RAM.
+        const int cartridgeHeaderOffset = 256;
+        const int ramSizeByteOffset = cartridgeHeaderOffset + 73; // Offset into the CartridgeHeader
+        
+        uint8_t headerRamSize = MMU::ReadByte(ramSizeByteOffset);
+        const int ramSizeKByte = ConvertRAMSizetoKByte(headerRamSize);
+        const int numBanks = (ramSizeKByte / 8) - 1; // Each Bank has 8kByte and the Index = 0 is for the 2nd 16kByte in the ROM.
+
+        // Wrap around the Banks
+        if(newBankIndex > numBanks)
+        {
+            emuState.ramBankIndex = 0;
+        }
+        else
+        {
+            emuState.ramBankIndex = newBankIndex;
+        }
+    }
+
     PrintAddressSpace(yOffset);
 }
 

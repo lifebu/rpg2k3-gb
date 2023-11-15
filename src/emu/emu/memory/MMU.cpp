@@ -260,7 +260,7 @@ uint32_t MMU::GBAddressToMapROM(uint16_t address)
         const auto* const emuState = EmuState::Get();
         assert(emuState);
 
-        const uint16_t bankSize = ROM_HIGH.second - ROM_HIGH.first;
+        const uint16_t bankSize = ROM_HIGH.second - ROM_HIGH.first + 1;
         uint32_t highROMAddress = address - ROM_LOW.first;
         highROMAddress += bankSize * emuState->romBankIndex;
         return highROMAddress;
@@ -361,7 +361,7 @@ uint32_t MMU::GBAddressToCharaRAM(uint16_t address)
         const auto* const emuState = EmuState::Get();
         assert(emuState);
 
-        const uint16_t bankSize = CARTRIDGE_RAM.second - CARTRIDGE_RAM.first;
+        const uint16_t bankSize = CARTRIDGE_RAM.second - CARTRIDGE_RAM.first + 1;
         uint32_t charaRAMAddress = address - CARTRIDGE_RAM.first;
         charaRAMAddress += bankSize * emuState->ramBankIndex;
         return charaRAMAddress;
