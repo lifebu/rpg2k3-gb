@@ -30,18 +30,13 @@ public:
     virtual void ChangePartyMember(lcf::ChangePartyMember::Operation operation, 
         lcf::ChangePartyMember::ActorIDType actorIDType, uint16_t actorID) = 0;
 
-    virtual void ChangeEXP(lcf::ChangeExp::ActorRange actorRange, uint16_t actorID, 
-        lcf::ChangeExp::Operation operation, lcf::ChangeExp::Operand operand, uint32_t value) = 0;
+    virtual void ChangeEXP(uint16_t actorID, uint32_t value) = 0;
 
-    virtual void ChangeParameters(lcf::ChangeParam::ActorRange actorRange, uint16_t actorID, 
-        lcf::ChangeParam::Operation operation, lcf::ChangeParam::Parameter parameter, 
-        lcf::ChangeParam::Operand operandType, uint16_t operand) = 0;
+    virtual void ChangeParameters(uint16_t actorID, lcf::ChangeParam::Parameter parameter, uint16_t value) = 0;
     
     // IF operation == CHANGE_EQUIPMENT => operation is used
     // IF operaiton == REMOVE_EQUIPMENT => whichItem is used
-    virtual void ChangeEquipment(lcf::ChangeEquip::ActorRange actorRange, uint16_t actorID, 
-        lcf::ChangeEquip::Operation operation, lcf::ChangeEquip::ItemIDType itemIDType, 
-        lcf::ChangeEquip::Item whichItem, uint16_t itemID) = 0;
+    virtual void ChangeEquipment(uint16_t actorID, lcf::ChangeEquip::Item whichItem, uint16_t itemID) = 0;
     
     // Variables
     virtual int32_t ControlVariables(uint16_t id) = 0;

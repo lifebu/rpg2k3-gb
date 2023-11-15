@@ -144,6 +144,9 @@ private:
 
     static uint32_t GBAddressToCharaRAM(uint16_t address);
     static bool     IsCharaRAMAddress(uint16_t address);
+    static bool     IsCharaRAMValuePacked(uint16_t address);
+
+    static bool     IsKnownUnsupportedRAM(uint16_t address);
 };
 
 };

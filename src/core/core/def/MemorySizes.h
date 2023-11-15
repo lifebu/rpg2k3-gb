@@ -3,9 +3,11 @@
 namespace MEMORYSIZES {
     // Gameboy Memory Sizes:
     // (Byte), 8KiB VRAM + 8KiB Work Ram + 160B OAM + 128B I/O + 127B High RAM + 1B Interrupt Register
-    const static int DMG_RAM_SIZE = 16800;
+    const static int DMG_RAM_SIZE = 16'800;
     // (Byte), How much cartridge RAM we can support (64kB and 128kB are possible for a cartridge, but not supported).
-    const static int MAX_CARTRIDGE_RAM = 32768;
+    const static int MAX_CARTRIDGE_RAM = 32'768;
+    // The maximum size of the addressable addressspace in the Gameboy.
+    const static int ADDRESS_SPACE_SIZE = 65'536;
 
     // Map-RAM:
     // map-size = <=500x500 = 250.000_10 >= 65.536_10 = 2^16
@@ -56,6 +58,10 @@ namespace MEMORYSIZES {
     const static int NUM_OF_ACCESSORY = 1024;
     const static int TOTAL_USED_ITEMS = NUM_OF_WEAPONS + NUM_OF_SHIELDS + NUM_OF_BODY + NUM_OF_HEAD + NUM_OF_ACCESSORY;
     const static int MAX_NUM_ITEMS = 10000;
+    // How many Bytes can be represented with the Exp of one character.
+    const static int BYTES_PER_EXP = 2;
+    // How many Bytes a single character can store.
+    const static int BYTES_PER_CHAR = 13;
 
     static_assert(TOTAL_USED_ITEMS <= MAX_NUM_ITEMS);
 };

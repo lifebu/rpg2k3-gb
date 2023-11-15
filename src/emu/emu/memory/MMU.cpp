@@ -31,6 +31,22 @@ uint8_t MMU::ReadByte(uint16_t address)
     else if (IsCharaRAMAddress(address))
     {
         uint32_t charaRAMAddress = GBAddressToCharaRAM(address);
+        int32_t packedValue = ReadCharaRAM(charaRAMAddress);
+        if(IsCharaRAMValuePacked(address))
+        {
+            std::array<uint8_t, MEMORYSIZES::BYTES_PER_EXP> bytes = unpackEXP(packedValue);
+            const uint8_t offset = address % MEMORYSIZES::BYTES_PER_CHAR;
+            const uint8_t byteOffset = (offset - EXP.first) % 2;
+            return bytes.at(byteOffset);
+        }
+        else
+        {
+            return packedValue;
+        }
+    }
+    else if (IsKnownUnsupportedRAM(address))
+    {
+        return 0xFF;
     }
 
     assert(false && "Unsupported memory read detected!");
@@ -58,6 +74,24 @@ void MMU::WriteByte(uint16_t address, uint8_t value)
     else if (IsCharaRAMAddress(address))
     {
         uint32_t charaRAMAddress = GBAddressToCharaRAM(address);
+        int32_t packedValue = ReadCharaRAM(charaRAMAddress);
+        if(IsCharaRAMValuePacked(address))
+        {
+            std::array<uint8_t, MEMORYSIZES::BYTES_PER_EXP> bytes = unpackEXP(packedValue);
+            const uint8_t offset = address % MEMORYSIZES::BYTES_PER_CHAR;
+            const uint8_t byteOffset = (offset - EXP.first) % 2;
+            bytes.at(byteOffset) = value;
+            packedValue = packEXP(bytes);
+
+        }
+        else
+        {
+            WriteCharaRAM(address, packedValue);
+        }
+    }
+    else if (IsKnownUnsupportedRAM(address))
+    {
+        return;
     }
 
     assert(false && "Unsupported memory write detected!");
@@ -145,25 +179,22 @@ int32_t MMU::ReadCharaRAM(uint32_t address)
 
     auto* rpgMaker = rpgenv::RPGMakerInterface::Get();
     
-    // TODO: A const somewhere else?
-    const uint8_t BYTES_PER_CHAR = 13;
-    const uint16_t charID = static_cast<uint16_t>(address / BYTES_PER_CHAR);
-    const uint8_t offset = address % BYTES_PER_CHAR;
+    const uint16_t charID = static_cast<uint16_t>(address / MEMORYSIZES::BYTES_PER_CHAR) + 1;
+    const uint8_t offset = address % MEMORYSIZES::BYTES_PER_CHAR;
 
     if(offset >= EXP.first && offset <= EXP.second)
     {
-        // EXP
-        uint32_t packedValue = rpgMaker->ControlVariables_GetCharEXP(charID);
+        return rpgMaker->ControlVariables_GetCharEXP(charID);
     }
     else if (offset >= PARAMETERS.first && offset <= PARAMETERS.second)
     {
-        // Change Parameters
-        //return rpgMaker->ControlVariables_GetCharParameter(charID, ???);
+        lcf::ChangeParam::Parameter parameterType = static_cast<lcf::ChangeParam::Parameter>(offset - PARAMETERS.first);
+        return rpgMaker->ControlVariables_GetCharParameter(charID, parameterType);
     }
     else if (offset >= ITEMS.first && offset <= ITEMS.second)
     {
-        // ItemIDs
-        //return rpgMaker->ControlVariables_GetCharItemID(charID, ???);
+        lcf::ChangeEquip::Item itemType = static_cast<lcf::ChangeEquip::Item>(offset - ITEMS.first);
+        return rpgMaker->ControlVariables_GetCharItemID(charID, itemType);
     }
 
     assert(false && "Unknown Chara RAM address discovered!");
@@ -172,7 +203,50 @@ int32_t MMU::ReadCharaRAM(uint32_t address)
 
 void MMU::WriteCharaRAM(uint32_t address, int32_t value)
 {
+    // CharaRAM: [0, 32.768] Bytes
+        // <= 2910 Chars
+            // EXP: ~10Mio ~ 2^23 >= 2^16 = 2Byte
+            // CharData: ~10K ~ 2^13 >= 2^8 = 1Byte
+                // 6 Attributes => 6Bytes
+            // ItemIds:
+                // WeaponID: 2048 = 2^11 >= 2^8 = 1Byte
+                // ShieldID: 2048 = 2^11 >= 2^8 = 1Byte
+                // BodyID: 2048 = 2^11 >= 2^8 = 1Byte
+                // HeadID: 2048 = 2^11 >= 2^8 = 1Byte
+                // AccessoryID: 1024 = 2^10 >= 2^8 = 1Byte
+                // 5 Slots => 5 Byte
+            // Total: 13 Bytes per Char
+        // Total: 37.830 Bytes
+        // => Need 32kByte / 13Bytes = 2521 Chars.
+        // Mapping: 
+        // Cartridge RAM: 8Kib, MapRAM[0, 8.191], address[CARTRIDGE_RAM]
+        // Banking, up to: 4*8KiB Banks = 32KiB
+    // 
 
+    auto* rpgMaker = rpgenv::RPGMakerInterface::Get();
+    
+    const uint16_t charID = static_cast<uint16_t>(address / MEMORYSIZES::BYTES_PER_CHAR);
+    const uint8_t offset = address % MEMORYSIZES::BYTES_PER_CHAR;
+
+    if(offset >= EXP.first && offset <= EXP.second)
+    {
+        rpgMaker->ChangeEXP(charID, value);
+        return;
+    }
+    else if (offset >= PARAMETERS.first && offset <= PARAMETERS.second)
+    {
+        lcf::ChangeParam::Parameter parameterType = static_cast<lcf::ChangeParam::Parameter>(offset - PARAMETERS.first);
+        rpgMaker->ChangeParameters(charID, parameterType, value);
+        return;
+    }
+    else if (offset >= ITEMS.first && offset <= ITEMS.second)
+    {
+        lcf::ChangeEquip::Item itemType = static_cast<lcf::ChangeEquip::Item>(offset - ITEMS.first);
+        rpgMaker->ChangeEquipment(charID, itemType, value);
+        return;
+    }
+
+    assert(false && "Unknown Chara RAM address discovered!");
 }
 
 uint32_t MMU::GBAddressToMapROM(uint16_t address)
@@ -236,7 +310,7 @@ uint32_t MMU::GBAddressToMapRAM(uint16_t address)
         return address - OAM.first;
     }
     // Unused (unused) between those
-    else if (address >= JOYPAD.first && address >= IE_REGISTER.second)
+    else if (address >= JOYPAD.first && address <= IE_REGISTER.second)
     {
         return address - JOYPAD.first;
     }
@@ -272,7 +346,7 @@ bool MMU::IsMapRAMAddress(uint16_t address)
         return true;
     }
     // Unused (unused) between those
-    else if (address >= JOYPAD.first && address >= IE_REGISTER.second)
+    else if (address >= JOYPAD.first && address <= IE_REGISTER.second)
     {
         return true;
     }
@@ -300,6 +374,42 @@ uint32_t MMU::GBAddressToCharaRAM(uint16_t address)
 bool MMU::IsCharaRAMAddress(uint16_t address)
 {
     if(address >= CARTRIDGE_RAM.first && address <= CARTRIDGE_RAM.second)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+bool MMU::IsCharaRAMValuePacked(uint16_t address)
+{
+    if(!IsCharaRAMAddress(address))
+    {
+        return false;
+    }
+
+    // TODO: A const somewhere else?
+    const uint8_t BYTES_PER_CHAR = 13;
+    const uint8_t offset = address % BYTES_PER_CHAR;
+
+    if(offset >= EXP.first && offset <= EXP.second)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+bool MMU::IsKnownUnsupportedRAM(uint16_t address)
+{
+    // Echo RAM (unused)
+    if (address >= ECHO_RAM.first && address <= ECHO_RAM.second)
+    {
+        return true;
+    }
+
+    // Unused (unused).
+    if (address >= UNUSED.first && address <= UNUSED.second)
     {
         return true;
     }

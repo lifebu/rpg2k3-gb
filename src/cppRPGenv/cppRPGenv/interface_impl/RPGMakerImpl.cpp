@@ -62,8 +62,7 @@ void RPGMakerImpl::ChangePartyMember(lcf::ChangePartyMember::Operation operation
     character->isInParty = partyValue;
 }
 
-void RPGMakerImpl::ChangeEXP(lcf::ChangeExp::ActorRange actorRange, uint16_t actorID, 
-    lcf::ChangeExp::Operation operation, lcf::ChangeExp::Operand operand, uint32_t value)
+void RPGMakerImpl::ChangeEXP(uint16_t actorID, uint32_t value)
 {
     assert(actorID >= RPGMAKER::MIN_ID && actorID <= RPGMAKER::MAX_NUM_CHARS);
 
@@ -73,15 +72,10 @@ void RPGMakerImpl::ChangeEXP(lcf::ChangeExp::ActorRange actorRange, uint16_t act
     lcf::Character* character = lcfManager->GetDatabase().GetCharacterByID(actorID);
     assert(character);
 
-    int32_t factor = operation == lcf::ChangeExp::Operation::INCREASE ? 1: -1;
-    int32_t newExp = static_cast<int32_t>(character->exp) + static_cast<int32_t>(value) * factor;
-    //std::clamp(newExp, 0, )
-    character->exp = static_cast<uint32_t>(newExp);
+    character->exp = value;
 }
 
-void RPGMakerImpl::ChangeParameters(lcf::ChangeParam::ActorRange actorRange, uint16_t actorID, 
-    lcf::ChangeParam::Operation operation, lcf::ChangeParam::Parameter parameter, 
-    lcf::ChangeParam::Operand operandType, uint16_t operand)
+void RPGMakerImpl::ChangeParameters(uint16_t actorID, lcf::ChangeParam::Parameter parameter, uint16_t value)
 {
     assert(actorID >= RPGMAKER::MIN_ID && actorID <= RPGMAKER::MAX_NUM_CHARS);
 
@@ -90,36 +84,31 @@ void RPGMakerImpl::ChangeParameters(lcf::ChangeParam::ActorRange actorRange, uin
 
     lcf::Character* character = lcfManager->GetDatabase().GetCharacterByID(actorID);
     assert(character);
-
-    int8_t factor = operation == lcf::ChangeParam::Operation::INCREASE ? 1: -1;
-    int16_t delta = operand * factor;
 
     switch(parameter)
     {
         case lcf::ChangeParam::Parameter::MAX_HP:
-            character->maxHP += delta;
+            character->maxHP = value;
             break;
         case lcf::ChangeParam::Parameter::MAX_MP:
-            character->maxMP += delta;
+            character->maxMP = value;
             break;
         case lcf::ChangeParam::Parameter::ATTACK:
-            character->attack += delta;
+            character->attack = value;
             break;
         case lcf::ChangeParam::Parameter::DEFENSE:
-            character->defense += delta;
+            character->defense = value;
             break;
         case lcf::ChangeParam::Parameter::MIND:
-            character->mind += delta;
+            character->mind = value;
             break;
         case lcf::ChangeParam::Parameter::AGILITY:
-            character->agility += delta;
+            character->agility = value;
             break;
     }
 }
 
-void RPGMakerImpl::ChangeEquipment(lcf::ChangeEquip::ActorRange actorRange, uint16_t actorID, 
-    lcf::ChangeEquip::Operation operation, lcf::ChangeEquip::ItemIDType itemIDType, 
-    lcf::ChangeEquip::Item whichItem, uint16_t itemID)
+void RPGMakerImpl::ChangeEquipment(uint16_t actorID, lcf::ChangeEquip::Item whichItem, uint16_t itemID)
 {
     assert(actorID >= RPGMAKER::MIN_ID && actorID <= RPGMAKER::MAX_NUM_CHARS);
     assert(itemID >= RPGMAKER::MIN_ID && itemID <= RPGMAKER::MAX_ID);
@@ -130,31 +119,29 @@ void RPGMakerImpl::ChangeEquipment(lcf::ChangeEquip::ActorRange actorRange, uint
     lcf::Character* character = lcfManager->GetDatabase().GetCharacterByID(actorID);
     assert(character);
 
-    int16_t resultID = operation == lcf::ChangeEquip::Operation::CHANGE_EQUIPMENT ? itemID : RPGMAKER::INVALID_ID;
-
     switch(whichItem)
     {
         case lcf::ChangeEquip::Item::UNEQUIP_WEAPON:
-            character->WeaponID = resultID;
+            character->WeaponID = itemID;
             break;
         case lcf::ChangeEquip::Item::UNEQUIP_SHIELD:
-            character->ShieldID = resultID;
+            character->ShieldID = itemID;
             break;
         case lcf::ChangeEquip::Item::UNEQUIP_BODY:
-            character->BodyID = resultID;
+            character->BodyID = itemID;
             break;
         case lcf::ChangeEquip::Item::UNEQUIP_HEAD:
-            character->HeadID = resultID;
+            character->HeadID = itemID;
             break;
         case lcf::ChangeEquip::Item::UNEQUIP_ACCESSORY:
-            character->AccessoryID = resultID;
+            character->AccessoryID = itemID;
             break;
         case lcf::ChangeEquip::Item::UNEQUIP_ALL:
-            character->WeaponID = resultID;
-            character->ShieldID = resultID;
-            character->BodyID = resultID;
-            character->HeadID = resultID;
-            character->AccessoryID = resultID;
+            character->WeaponID = itemID;
+            character->ShieldID = itemID;
+            character->BodyID = itemID;
+            character->HeadID = itemID;
+            character->AccessoryID = itemID;
             break;
     }
 }

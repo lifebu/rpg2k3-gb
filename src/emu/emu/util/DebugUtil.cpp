@@ -11,7 +11,7 @@
 namespace emu
 {
 
-void PrintROM(int yOffset)
+void PrintAddressSpace(int yOffset)
 {
     auto* rpgMaker = rpgenv::RPGMakerInterface::Get();
 

@@ -25,18 +25,13 @@ public:
     void ChangePartyMember(lcf::ChangePartyMember::Operation operation, 
         lcf::ChangePartyMember::ActorIDType actorIDType, uint16_t actorID) override;
 
-    void ChangeEXP(lcf::ChangeExp::ActorRange actorRange, uint16_t actorID, 
-        lcf::ChangeExp::Operation operation, lcf::ChangeExp::Operand operand, uint32_t value) override;
+    void ChangeEXP(uint16_t actorID, uint32_t value) override;
 
-    void ChangeParameters(lcf::ChangeParam::ActorRange actorRange, uint16_t actorID, 
-        lcf::ChangeParam::Operation operation, lcf::ChangeParam::Parameter parameter, 
-        lcf::ChangeParam::Operand operandType, uint16_t operand) override;
+    void ChangeParameters(uint16_t actorID, lcf::ChangeParam::Parameter parameter, uint16_t value) override;
     
     // IF operation == CHANGE_EQUIPMENT => operation is used
     // IF operaiton == REMOVE_EQUIPMENT => whichItem is used
-    void ChangeEquipment(lcf::ChangeEquip::ActorRange actorRange, uint16_t actorID, 
-        lcf::ChangeEquip::Operation operation, lcf::ChangeEquip::ItemIDType itemIDType, 
-        lcf::ChangeEquip::Item whichItem, uint16_t itemID) override;
+    void ChangeEquipment(uint16_t actorID, lcf::ChangeEquip::Item whichItem, uint16_t itemID) override;
 
     // Variables
     int32_t ControlVariables(uint16_t id) override;
