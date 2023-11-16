@@ -32,12 +32,11 @@ uint8_t MMU::ReadByte(uint16_t address)
     {
         uint32_t charaRAMAddress = GBAddressToCharaRAM(address);
         int32_t packedValue = ReadCharaRAM(charaRAMAddress);
-        if(IsCharaRAMValuePacked(address))
+        if(IsCharaRAMAddressPacked(charaRAMAddress))
         {
             std::array<uint8_t, MEMORYSIZES::BYTES_PER_EXP> bytes = unpackEXP(packedValue);
-            const uint8_t offset = address % MEMORYSIZES::BYTES_PER_CHAR;
-            const uint8_t byteOffset = (offset - EXP.first) % 2;
-            return bytes.at(byteOffset);
+            const uint8_t offset = charaRAMAddress % MEMORYSIZES::BYTES_PER_CHAR;
+            return bytes.at(offset);
         }
         else
         {
@@ -46,10 +45,12 @@ uint8_t MMU::ReadByte(uint16_t address)
     }
     else if (IsKnownUnsupportedRAM(address))
     {
-        return 0xFF;
+    }
+    else
+    {
+        assert(false && "Unsupported memory read detected!");
     }
 
-    assert(false && "Unsupported memory read detected!");
     return 0xFF;
 }
 
@@ -58,7 +59,6 @@ void MMU::WriteByte(uint16_t address, uint8_t value)
     if(IsMapROMAddress(address))
     {
         // TODO: This might effect the MBC!
-        return;
     }
     else if(IsMapRAMAddress(address))
     {
@@ -69,33 +69,31 @@ void MMU::WriteByte(uint16_t address, uint8_t value)
         packedValue = packMapPosition(bytes);
 
         WriteMapRAM(mapRAMAddress, packedValue);
-        return;
     }
     else if (IsCharaRAMAddress(address))
     {
         uint32_t charaRAMAddress = GBAddressToCharaRAM(address);
-        int32_t packedValue = ReadCharaRAM(charaRAMAddress);
-        if(IsCharaRAMValuePacked(address))
+        if(IsCharaRAMAddressPacked(charaRAMAddress))
         {
+            int32_t packedValue = ReadCharaRAM(charaRAMAddress);
             std::array<uint8_t, MEMORYSIZES::BYTES_PER_EXP> bytes = unpackEXP(packedValue);
-            const uint8_t offset = address % MEMORYSIZES::BYTES_PER_CHAR;
-            const uint8_t byteOffset = (offset - EXP.first) % 2;
-            bytes.at(byteOffset) = value;
+            const uint8_t offset = charaRAMAddress % MEMORYSIZES::BYTES_PER_CHAR;
+            bytes.at(offset) = value;
             packedValue = packEXP(bytes);
-
+            WriteCharaRAM(charaRAMAddress, packedValue);
         }
         else
         {
-            WriteCharaRAM(address, packedValue);
+            WriteCharaRAM(charaRAMAddress, value);
         }
     }
     else if (IsKnownUnsupportedRAM(address))
     {
-        return;
     }
-
-    assert(false && "Unsupported memory write detected!");
-    return;
+    else
+    {
+        assert(false && "Unsupported memory write detected!");
+    }
 }
 
 int32_t MMU::ReadMapROM(uint32_t address)
@@ -225,7 +223,7 @@ void MMU::WriteCharaRAM(uint32_t address, int32_t value)
 
     auto* rpgMaker = rpgenv::RPGMakerInterface::Get();
     
-    const uint16_t charID = static_cast<uint16_t>(address / MEMORYSIZES::BYTES_PER_CHAR);
+    const uint16_t charID = static_cast<uint16_t>(address / MEMORYSIZES::BYTES_PER_CHAR) + 1;
     const uint8_t offset = address % MEMORYSIZES::BYTES_PER_CHAR;
 
     if(offset >= EXP.first && offset <= EXP.second)
@@ -381,13 +379,8 @@ bool MMU::IsCharaRAMAddress(uint16_t address)
     return false;
 }
 
-bool MMU::IsCharaRAMValuePacked(uint16_t address)
+bool MMU::IsCharaRAMAddressPacked(uint16_t address)
 {
-    if(!IsCharaRAMAddress(address))
-    {
-        return false;
-    }
-
     // TODO: A const somewhere else?
     const uint8_t BYTES_PER_CHAR = 13;
     const uint8_t offset = address % BYTES_PER_CHAR;
