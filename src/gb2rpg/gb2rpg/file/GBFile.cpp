@@ -55,32 +55,6 @@ std::string GBFile::getTitle() {
     return title;
 }
 
-// peek x Bytes from the gbFile. Does not advance file pointer.
-std::vector<uint8_t> GBFile::peekBytes(int numBytes) {
-    auto filePos = file.tellg();
-
-    std::vector<uint8_t> ret = getBytes(numBytes);
-
-    // reset filepos and bytesRead
-    file.seekg(filePos);
-    bytesRead -= numBytes;
-    return ret;
-}
-
-// get x Bytes from the gbFile. Advances file pointer.
-std::vector<uint8_t> GBFile::getBytes(int numBytes) {
-    std::vector<uint8_t> ret;
-    ret.reserve(numBytes);
-
-    char val[numBytes] = {};
-    // If numBytes > remainingBytes => The last bytes in the array will be untouched => equal to zero.
-    file.read(val, numBytes);
-    ret.insert(ret.end(), val, val + numBytes);
-
-    bytesRead += numBytes;
-    return ret;
-}
-
 // how many Bytes are left in the file.
 int GBFile::bytesRemaining() {
     // .gb files have the same size as the original rom.

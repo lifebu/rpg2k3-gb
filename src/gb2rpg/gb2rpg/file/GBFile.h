@@ -54,9 +54,11 @@ namespace gb2rpg {
 
 
         // peek x Bytes from the gbFile.
-        std::vector<uint8_t> peekBytes(int numBytes);
+        template<uint8_t N>
+        std::array<uint8_t, N> peekBytes();
         // get x Bytes from the gbFile. Advances file pointer.
-        std::vector<uint8_t> getBytes(int numBytes);
+        template<uint8_t N>
+        std::array<uint8_t, N> getBytes();
         // how many Bytes are left in the file.
         int bytesRemaining();
         
@@ -91,3 +93,5 @@ namespace gb2rpg {
         bool error;
     };
 };
+
+#include "GBFile.inl"

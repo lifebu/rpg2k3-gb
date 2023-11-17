@@ -6,6 +6,11 @@
 
 #include "core/def/MemorySizes.h"
 
+// TODO: Hacky way to get constexpr pow.
+constexpr int64_t ipow(int64_t base, int exp, int64_t result = 1) {
+  return exp < 1 ? result : ipow(base*base, exp/2, (exp % 2) ? result*base : result);
+}
+
 namespace RPGMAKER {
     // Ids:
     const static int INVALID_ID = 0;
@@ -21,7 +26,7 @@ namespace RPGMAKER {
     // int32_t to RPG Maker Value Bias. I want a symmetrical value range in RPG Maker. 
     // e.g. MEMORYSIZE::BYTES_PER_VAR = 3 =>
     // 2^24 = ceil((16.777.216) / 2) = 8.388.608 => RPG Maker: [-8.338.608, 8.338.607]
-    const static uint32_t RPG_VALUE_BIAS = std::pow(2, MEMORYSIZES::BYTES_PER_VAR*8) / 2;
+    const static uint32_t RPG_VALUE_BIAS = ipow(2, MEMORYSIZES::BYTES_PER_VAR*8) / 2;
 
     // Events:
     // How many pages one Event can have

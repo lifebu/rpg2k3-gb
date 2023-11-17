@@ -126,7 +126,7 @@ int32_t MMU::ReadMapRAM(uint32_t address)
     const uint16_t mapRAMStart = 3; //TODO: Hardcoded Boot-Rom + One Map ROM for now
     const uint16_t positionIndex = static_cast<uint16_t>(address) / MEMORYSIZES::BYTES_PER_EVENT_POS;
 
-    const int16_t eventIndex = mapRAMStart + positionIndex / 2;
+    const int16_t eventIndex = mapRAMStart + positionIndex;
     
     const uint16_t xPos = rpgMaker->ControlVariables_GetEventXPos(eventIndex);
     const uint16_t yPos = rpgMaker->ControlVariables_GetEventYPos(eventIndex);
@@ -144,7 +144,7 @@ void MMU::WriteMapRAM(uint32_t address, int32_t value)
     const uint16_t mapRAMStart = 3; //TODO: Hardcoded Boot-Rom + One Map ROM for now
     const uint16_t positionIndex = static_cast<uint16_t>(address) / MEMORYSIZES::BYTES_PER_EVENT_POS;
 
-    const int16_t eventIndex = mapRAMStart + positionIndex / 2;
+    const int16_t eventIndex = mapRAMStart + positionIndex;
 
     const uint16_t xPos = value % RPGMAKER::MAP_SIZE_X;
     const uint16_t yPos = value / RPGMAKER::MAP_SIZE_X;
@@ -292,6 +292,10 @@ uint32_t MMU::GBAddressToMapRAM(uint16_t address)
         // IO: 128B,    MapRAM[16.544, 16.671], address[JOYPAD, DISABLE_BOOT_ROM]
         // HRAM: 127B,  MapRAM[16.672, 16.798], address[HRAM]
         // IE: 1B,      MapRAM[16.799, 16.800], address[IE_REGISTER]
+
+    constexpr uint16_t VRAM_SIZE = VRAM.second - VRAM.first + 1;
+    constexpr uint16_t WORK_RAM_SIZE = WORK_RAM.second - WORK_RAM.first + 1;
+    constexpr uint16_t OAM_SIZE = OAM.second - OAM.first + 1;
     
     if(address >= VRAM.first && address <= VRAM.second)
     {
@@ -300,17 +304,17 @@ uint32_t MMU::GBAddressToMapRAM(uint16_t address)
     // Cartridge RAM between those
     else if (address >= WORK_RAM.first && address <= WORK_RAM.second)
     {
-        return address - WORK_RAM.first;
+        return address - WORK_RAM.first + VRAM_SIZE;
     }
     // Echo RAM (unused) between those
     else if (address >= OAM.first && address <= OAM.second)
     {
-        return address - OAM.first;
+        return address - OAM.first + VRAM_SIZE + WORK_RAM_SIZE;
     }
     // Unused (unused) between those
     else if (address >= JOYPAD.first && address <= IE_REGISTER.second)
     {
-        return address - JOYPAD.first;
+        return address - JOYPAD.first + VRAM_SIZE + WORK_RAM_SIZE + OAM_SIZE;
     }
 
     assert(false && "Unsupported address given to MapRAM!");

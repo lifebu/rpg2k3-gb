@@ -10,10 +10,7 @@
 #include "core/def/MemorySizes.h"
 #include "core/def/RPGMaker.h"
 
-// TODO: Maybe a template for this with Bias and NumBytes?
-// TODO: Maybe also support 1Byte pack which is just a straight value.
-// TODO: also cool to put a single byte in that structure :) with a templated function. The templated function will just set a single byte.
-int32_t packVariable(std::vector<uint8_t> bytes);
+int32_t packVariable(std::array<uint8_t, MEMORYSIZES::BYTES_PER_VAR> bytes);
 std::array<uint8_t, MEMORYSIZES::BYTES_PER_VAR> unpackVariable(int32_t var);
 
 uint16_t packMapPosition(std::array<uint8_t, MEMORYSIZES::BYTES_PER_EVENT_POS> bytes);

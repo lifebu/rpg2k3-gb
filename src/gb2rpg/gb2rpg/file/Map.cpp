@@ -89,11 +89,11 @@ void Map::generateMapROM(lcf::Map& map, GBFile& gbFile, int numOfMapROMs)
             // Fill event-page with map-rom-header commands
             std::vector<lcf::EventCommand> mapRomHeader = setupMapRomHeader(numLabels);
             eventPage.addEventCommands(mapRomHeader);
-
+ 
             // Fill event-page with map-rom-label commands
             for (int labelID = 1; labelID <= numLabels; ++labelID) {
-                int firstVar = packVariable(gbFile.getBytes(MEMORYSIZES::BYTES_PER_VAR));
-                int secondVar = packVariable(gbFile.peekBytes(MEMORYSIZES::BYTES_PER_VAR));
+                int firstVar = packVariable(gbFile.getBytes<MEMORYSIZES::BYTES_PER_VAR>());
+                int secondVar = packVariable(gbFile.peekBytes<MEMORYSIZES::BYTES_PER_VAR>());
                 if(lastEventPage && labelID == numLabels) {
                     // Second variable should indicate garbage value, as it contains data after the GBFile. 
                     secondVar = -9999999;

@@ -2,25 +2,31 @@
 
 #include "core/pch.h"
 
-
-int32_t packVariable(std::vector<uint8_t> bytes) {
-    assert(bytes.size() == MEMORYSIZES::BYTES_PER_VAR);
+template<uint8_t N, bool USE_BIAS, uint32_t BIAS>
+inline int32_t packBytes(std::array<uint8_t, N> bytes)
+{
     int32_t var = 0;
-    for(int i = 0; i < MEMORYSIZES::BYTES_PER_VAR; ++i) {
+
+    for(int i = 0; i < N; ++i) 
+    {
         var += bytes.at(i) << (i * 8);
     }
-    if (RPGMAKER::USE_RPG_VALUE_BIAS) 
-        var -= RPGMAKER::RPG_VALUE_BIAS;
+
+    if (USE_BIAS) 
+        var -= BIAS;
     
     return var;
 }
 
-std::array<uint8_t, MEMORYSIZES::BYTES_PER_VAR> unpackVariable(int32_t var) {
-    if (RPGMAKER::USE_RPG_VALUE_BIAS)
-        var += RPGMAKER::RPG_VALUE_BIAS;
+template<uint8_t N, bool USE_BIAS, uint32_t BIAS>
+inline std::array<uint8_t, N> unpackBytes(int32_t var)
+{
+    if (USE_BIAS)
+        var += BIAS;
 
-    std::array<uint8_t, MEMORYSIZES::BYTES_PER_VAR> bytes;
-    for(int i = 0; i < MEMORYSIZES::BYTES_PER_VAR; ++i) {
+    std::array<uint8_t, N> bytes;
+    for(int i = 0; i < N; ++i) 
+    {
         // all 8 Bits are 1.
         uint32_t mask = 255;
         uint32_t byte = var & mask;
@@ -29,71 +35,40 @@ std::array<uint8_t, MEMORYSIZES::BYTES_PER_VAR> unpackVariable(int32_t var) {
     }
 
     return bytes;
+}
+
+int32_t packVariable(std::array<uint8_t, MEMORYSIZES::BYTES_PER_VAR> bytes)
+{
+    return packBytes<MEMORYSIZES::BYTES_PER_VAR, RPGMAKER::USE_RPG_VALUE_BIAS, RPGMAKER::RPG_VALUE_BIAS>(bytes);
+}
+
+std::array<uint8_t, MEMORYSIZES::BYTES_PER_VAR> unpackVariable(int32_t var) 
+{
+    return unpackBytes<MEMORYSIZES::BYTES_PER_VAR, RPGMAKER::USE_RPG_VALUE_BIAS, RPGMAKER::RPG_VALUE_BIAS>(var);
 }
 
 uint16_t packMapPosition(std::array<uint8_t, MEMORYSIZES::BYTES_PER_EVENT_POS> bytes)
 {
-    // TODO: This is the same code as pack variable, just without the bias added.
-    // TODO: And a helper version that also packs the position into one would be neat!
-    assert(bytes.size() == MEMORYSIZES::BYTES_PER_EVENT_POS);
-    int32_t var = 0;
-    for(int i = 0; i < MEMORYSIZES::BYTES_PER_EVENT_POS; ++i) 
-    {
-        var += bytes.at(i) << (i * 8);
-    }
-
-    return var;
+    return packBytes<MEMORYSIZES::BYTES_PER_EVENT_POS, false, 0>(bytes);
 }
 
 std::array<uint8_t, MEMORYSIZES::BYTES_PER_EVENT_POS> unpackMapPosition(uint16_t var)
 {
-    // TODO: This is the same code as pack variable, just without the bias added.
-    // TODO: And a helper version that also unpacks the position into one would be neat!
-    std::array<uint8_t, MEMORYSIZES::BYTES_PER_EVENT_POS> bytes;
-    for(int i = 0; i < MEMORYSIZES::BYTES_PER_EVENT_POS; ++i) 
-    {
-        // all 8 Bits are 1.
-        uint32_t mask = 255;
-        uint32_t byte = var & mask;
-        var = var >> 8;
-        bytes[i] = byte;
-    }
-
-    return bytes;
+    return unpackBytes<MEMORYSIZES::BYTES_PER_EVENT_POS, false, 0>(var);
 }
 
 uint16_t packEXP(std::array<uint8_t, MEMORYSIZES::BYTES_PER_EXP> bytes)
 {
-    // TODO: This is the same code as pack variable, just without the bias added.
-    // TODO: And a helper version that also packs the position into one would be neat!
-    assert(bytes.size() == MEMORYSIZES::BYTES_PER_EXP);
-    int32_t var = 0;
-    for(int i = 0; i < MEMORYSIZES::BYTES_PER_EXP; ++i) 
-    {
-        var += bytes.at(i) << (i * 8);
-    }
-
-    return var;
+    return packBytes<MEMORYSIZES::BYTES_PER_EXP, false, 0>(bytes);
 }
 
 std::array<uint8_t, MEMORYSIZES::BYTES_PER_EXP> unpackEXP(uint16_t var)
 {
-    // TODO: This is the same code as pack variable, just without the bias added.
-    // TODO: And a helper version that also unpacks the position into one would be neat!
-    std::array<uint8_t, MEMORYSIZES::BYTES_PER_EXP> bytes;
-    for(int i = 0; i < MEMORYSIZES::BYTES_PER_EXP; ++i) 
-    {
-        // all 8 Bits are 1.
-        uint32_t mask = 255;
-        uint32_t byte = var & mask;
-        var = var >> 8;
-        bytes[i] = byte;
-    }
-
-    return bytes;
+    return unpackBytes<MEMORYSIZES::BYTES_PER_EXP, false, 0>(var);
 }
 
-std::string generateID(int id) {
+std::string generateID(int id) 
+{
     assert(id > 0 && id < 10000);
     std::string str;
     // Add leading zeroes.

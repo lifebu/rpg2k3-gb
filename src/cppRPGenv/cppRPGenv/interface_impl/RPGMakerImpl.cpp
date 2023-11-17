@@ -176,7 +176,7 @@ void RPGMakerImpl::ControlVariables_SetEventXPos(uint16_t eventID, uint16_t even
 {
     assert(eventID >= RPGMAKER::MIN_ID && eventID <= RPGMAKER::MAX_ID);
 
-        auto* const lcfManager = LCFManager::Get();
+    auto* const lcfManager = LCFManager::Get();
     assert(lcfManager);
 
     lcf::Event* const event = lcfManager->GetMap().GetEventByID(eventID);
