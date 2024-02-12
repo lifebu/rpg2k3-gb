@@ -5,12 +5,14 @@ project(emu VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Gameboy emulator written to
 set(emu_header 
     emu/EMUEntryPoint.h
     emu/def/EmuState.h
+    emu/io/MMIO.h
     emu/memory/MMU.h
     emu/memory/MBC.h
     emu/util/DebugUtil.h)
 
 set(emu_source 
     emu/EMUEntryPoint.cpp
+    emu/io/MMIO.cpp
     emu/memory/MMU.cpp
     emu/memory/MBC.cpp
     emu/util/DebugUtil.cpp)

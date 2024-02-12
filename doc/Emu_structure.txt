@@ -37,7 +37,8 @@ To-Do:
     
     - Have a definition somewhere that gives me either the cartridge header values in static memory, or define the header offset for all the values I want.
 
-    - 
+    - Would be super nice to have a general bit twiddling functionality that I can use everywhere.
+        - 
 
 
 RPG Maker Features:

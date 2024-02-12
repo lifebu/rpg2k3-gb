@@ -14,6 +14,14 @@ public:
     void RPGMain() override;
 
 private:
+    // Initializes the emulator.
+    void Initialize();
+
+
+    // Test function
+    void TestPrintMMU();
+    void TestMBC();
+
     static constexpr int CYCLES_PER_FRAME = 70'224;
 
     int yOffset = 0;

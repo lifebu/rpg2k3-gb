@@ -11,7 +11,7 @@
 namespace emu
 {
 
-void PrintAddressSpace(int yOffset)
+void PrintAddressSpace(int yOffset, std::optional<uint8_t> valueOverwrite /*= std::nullopt*/)
 {
     auto* rpgMaker = rpgenv::RPGMakerInterface::Get();
 
@@ -19,8 +19,8 @@ void PrintAddressSpace(int yOffset)
     {
         for (int x = 0; x < 160; ++x)
         {
-            int byteOffset = x + (y + yOffset) * 144;
-            uint8_t byteValue = MMU::ReadByte(byteOffset);
+            const uint8_t byteValue = 
+                valueOverwrite.value_or(MMU::ReadByte(x + (y + yOffset) * 144));
             float r = static_cast<float>(byteValue) / 255.0f;
             float g = static_cast<float>(byteValue) / 255.0f;
             float b = static_cast<float>(byteValue) / 255.0f;
@@ -29,5 +29,4 @@ void PrintAddressSpace(int yOffset)
         }
     }
 }
-
 };
