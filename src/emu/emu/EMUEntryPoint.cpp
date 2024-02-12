@@ -8,7 +8,8 @@
 #include <core/utilities/GBHelper.h>
 #include <core/utilities/RPGHelper.h>
 
-#include "emu/io/MMIO.h"
+#include "emu/io/Joypad.h"
+#include "emu/io/Timer.h"
 #include "emu/memory/MMU.h"
 #include "emu/util/DebugUtil.h"
 
@@ -19,34 +20,31 @@ void EMUEntryPoint::RPGMain()
 {
     if(!emuState.isInitialized)
     {
-        Initialize();
+        mbc.Init();
+        emuState.bootRomEnabled = true; // The first 256 Bytes read from the Boot Rom, not the 1st ROM bank.
+        Joypad::Init();
+        Timer::Init();
+        // TODO: Set PPU to mode 2.
+
+        emuState.isInitialized = true;
     }
 
     // To make the test repeatable.
-    MMIO::Init();
-    MMU::WriteByte(MMU::JOYPAD.first, ~(1 << MMIO::JOYPAD_SELECT_DPAD)); 
+    //Joypad::Init();
+    //MMU::WriteByte(MMU::JOYPAD.first, ~(1 << Joypad::JOYPAD_SELECT_DPAD)); 
 
-    MMIO::Update();
+    Joypad::Update();
 
     for(int iCycle = 0; iCycle < CYCLES_PER_FRAME; ++iCycle)
     {
         // Memory Update
         // Timer Updates
+        Timer::Update();
         // CPU Cycle
         // PPU Dot
     }
     
     TestPrintMMU();
-}
-
-void EMUEntryPoint::Initialize() 
-{
-    mbc.Init();
-    emuState.bootRomEnabled = true; // The first 256 Bytes read from the Boot Rom, not the 1st ROM bank.
-    MMIO::Init();
-    // TODO: Set PPU to mode 2.
-
-    emuState.isInitialized = true;
 }
 
 void EMUEntryPoint::TestPrintMMU() 

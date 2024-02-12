@@ -12,6 +12,8 @@ namespace emu
     // This only helps if I mostly have local memory accesspatterns.
     // Similar to a TLB (MAC ~ Memory Access Cache)?
     // Packing/Unpacking all the time is expensive :O
+
+// TODO: The MMU currently has no support for mapping the boot ROM over the default memory. (use emuState.bootRomEnabled)
 class MMU
 {
 public:

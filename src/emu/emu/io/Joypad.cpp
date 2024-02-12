@@ -1,4 +1,4 @@
-#include "MMIO.h"
+#include "Joypad.h"
 
 #include <core/emu_interface/RPGMakerInterface.h>
 
@@ -7,13 +7,14 @@
 
 namespace emu
 {
-void MMIO::Init()
+
+void Joypad::Init()
 {
     // Setup Input Memory (all to 1).
     MMU::WriteByte(MMU::JOYPAD.first, 0xFF);
 }
 
-void MMIO::Update()
+void Joypad::Update()
 {
     // Joypad
     uint8_t joypad = MMU::ReadByte(MMU::JOYPAD.first);

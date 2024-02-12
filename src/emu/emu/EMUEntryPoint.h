@@ -14,10 +14,6 @@ public:
     void RPGMain() override;
 
 private:
-    // Initializes the emulator.
-    void Initialize();
-
-
     // Test function
     void TestPrintMMU();
     void TestMBC();
