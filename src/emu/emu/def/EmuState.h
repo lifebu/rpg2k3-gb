@@ -11,8 +11,10 @@ class EmuState : public Singleton<EmuState>
 public:
     //////////////////////////////////////////////////////////// 
     // Cartridge
-    // Which Rom bank is currently loaded (up to 511 (512 - 1 (always loaded))).
-    uint16_t romBankIndex = 0;
+    // Which Rom bank is currently laoded for the low 16kByte Region (up to 512 Banks). Defauls to 1st.
+    uint16_t lowRomBankIndex = 0;
+    // Which Rom bank is currently loaded for the high 16kByte Region (up to 512 Banks). Defaults to 2nd bank.
+    uint16_t highRomBankIndex = 1;
     // Which Ram bank is currently loaded (up to 8).
     uint8_t ramBankIndex = 0;
 

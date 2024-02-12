@@ -6,11 +6,13 @@ set(emu_header
     emu/EMUEntryPoint.h
     emu/def/EmuState.h
     emu/memory/MMU.h
+    emu/memory/MBC.h
     emu/util/DebugUtil.h)
 
 set(emu_source 
     emu/EMUEntryPoint.cpp
     emu/memory/MMU.cpp
+    emu/memory/MBC.cpp
     emu/util/DebugUtil.cpp)
 
 add_library(emu ${emu_header} ${emu_source})

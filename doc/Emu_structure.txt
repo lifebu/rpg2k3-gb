@@ -28,6 +28,17 @@ Structure:
     - CPU:
         - load and execute CPU Instructions, use registers, handle interrupts, change memory.
     
+To-Do:
+    - Change out all the if cases for the Range Checks.
+        - It should be easier to do this mathematically.
+    
+    - The same is true for all the comparison with some value out of the rom and trying to assing an enum value to it.
+        - Sth like a lookup table should be better.
+    
+    - Have a definition somewhere that gives me either the cartridge header values in static memory, or define the header offset for all the values I want.
+
+    - 
+
 
 RPG Maker Features:
     Memory compression:

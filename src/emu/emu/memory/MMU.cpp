@@ -8,6 +8,7 @@
 #include <core/utilities/RPGHelper.h>
 
 #include "emu/def/EmuState.h"
+#include "emu/memory/MBC.h"
 
 namespace emu
 {
@@ -58,7 +59,10 @@ void MMU::WriteByte(uint16_t address, uint8_t value)
 {
     if(IsMapROMAddress(address))
     {
-        // TODO: This might effect the MBC!
+        auto* const mbc = MBC::Get();
+        assert(mbc);
+
+        mbc->WriteByte(address, value);
     }
     else if(IsMapRAMAddress(address))
     {
@@ -249,19 +253,21 @@ void MMU::WriteCharaRAM(uint32_t address, int32_t value)
 
 uint32_t MMU::GBAddressToMapROM(uint16_t address)
 {
+    const auto* const emuState = EmuState::Get();
+    assert(emuState);
+    // TODO: Maybe this should a correct size noted somewhere as a constant? BankSize? Where? MMU?, MBC? General GB Constants?
+    const uint16_t bankSize = ROM_HIGH.second - ROM_HIGH.first + 1;
+    uint32_t MapROMAddress = (address - ROM_LOW.first) % bankSize;
+
     if(address >= ROM_LOW.first && address <= ROM_LOW.second)
     {
-        return address - ROM_LOW.first;
+        MapROMAddress += bankSize * emuState->lowRomBankIndex;
+        return MapROMAddress;
     }
     else if (address >= ROM_HIGH.first && address <= ROM_HIGH.second)
     {
-        const auto* const emuState = EmuState::Get();
-        assert(emuState);
-
-        const uint16_t bankSize = ROM_HIGH.second - ROM_HIGH.first + 1;
-        uint32_t highROMAddress = address - ROM_LOW.first;
-        highROMAddress += bankSize * emuState->romBankIndex;
-        return highROMAddress;
+        MapROMAddress += bankSize * emuState->highRomBankIndex;
+        return MapROMAddress;
     }
 
     assert(false && "Unsupported address given to MapROM!");

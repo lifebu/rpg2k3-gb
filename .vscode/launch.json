@@ -12,8 +12,8 @@
             "program": "${command:cmake.launchTargetPath}",
             "args": [
                 "-g",
-                "playground/Tetris.gb",
-                //"playground/Pokemon\\ Red.gb",
+                "playground/Tetris.gb",       // Testcase for simple 32kByte Cartridge
+                //"playground/DuckTales\\ 2.gb",  // Testcase for 128kByte Cartridge with MBC1.
                 "-x",
                 "tiny"
             ],

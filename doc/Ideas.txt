@@ -1200,6 +1200,61 @@ Gameboy Info:
             SET: Set bit b in register r.
             RES: Reset bit b in register r.
 
+    MBC:
+        - MBC1:
+            - 2 Wirings:
+            Wire 1: Multiple RAM Banks (<= 512 KiB ROM, <= 32KiB RAM)
+            Wire 2: Single RAM Bank (<= 2MiB ROM, <= 8KiB RAM).
+                - This is used in all MBC1 cartridges with at least 1MiB of ROM.
+         
+
+            - Memory:
+            0000-3FFF: ROM Bank X0 (read-only)
+                - The first 16KiB of the ROM are always mapped to this region.
+            
+            4000-7FFF: ROM Bank 01-7F (read-only)
+                - The second memory region can switch it's mapping.
+            
+            A000-BFFF: RAM Bank 00-03, (read only).
+
+            - Register:
+            All registers: Default value $00 => Results in "ROM Bank Number" to be treated as $01.
+
+            0000-1FFF: RAM Enable (Write Only): 
+                - Write $A (1010 in the last 4 bits) in this region to enable RAM.
+                - Write any other value in this region to disable RAM.
+                - Recommend to disable after accessing it to protect it's contents.
+            
+            2000-3FFF: ROM Bank Number (Write Only):
+                - 5 Bit Register (value range: $01 - $1F) for the 4000-7FFF region.
+                - Ignores the higher 3 bits.
+                - Zero Translation: 
+                    - If set to $00 behaves like if set to $01.
+                    - This looks at the full 5-Bit Register.
+                - It only "listens" to the lowest bits that it needs for a given size of the cartridge.
+                    - 256KiB Cartridge => 16 Banks, listens to lowest 4-bits.
+                    - In this case you can map Bank $00 to the 4000-7FFFF, by setting it to: 1 0000 (0x10)
+                - Wire 2: the second banking register (2-Bits) for range (4000-7FFF) is also used to switch ROMs.
+                    => Selected ROM Bank = (Secondary Bank << 5) + ROM Bank.
+                    - If you set to $20, $40, $60. Zero Translation will force this into $21, $41, $61 (because it only sees lowest 5 Bits).
+                    - To map this correctly you need to use Banking Mode 1 (instead of the default 0).
+            
+            4000-5FFF: RAM Bank Number or upper 2 Bits of ROM Bank (Write Only):
+                - 2 Bit Register (value range: $00-$03) to select RAM Bank.
+                - For 32KiB RAM Banks only.
+                - If neither ROM nor RAM is large enough setting this does nothing.
+
+            6000-7FFF: Banking Mode Select (Write Only):
+                - 1-Bit Register: Controls behaviour of 2-bit banking reigster.
+                - If cartridge is not large enough to use 2-bit register => no effect.
+                Mode 0:
+                    - 0000-3FFFF and A000-BFFF are locked to Bank 0 of ROM and SRAM respectively.
+                Mode 1:
+                    - 0000-3FFFF and A000-BFFF can be bank-switched via the 4000-5FFF register (2-bit).
+                    - This allows you to select the $20/$40/$60 Banks.
+                    - And allows you to switch between RAM Banks.
+                
+
 
 
 https://rpgmaker.net/tutorials/975/?post=573569 

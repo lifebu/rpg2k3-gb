@@ -3,6 +3,7 @@
 #include <core/emu_interface/RPGEntryPoint.h>
 
 #include "emu/def/EmuState.h"
+#include "emu/memory/MBC.h"
 
 namespace emu 
 {
@@ -18,6 +19,7 @@ private:
     int yOffset = 0;
 
     EmuState emuState;
+    MBC mbc;
 };
 
 };
