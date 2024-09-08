@@ -31,7 +31,7 @@ void EMUEntryPoint::RPGMain()
         // TODO: Timer Testcode:
         constexpr uint16_t tacRegisterAddr = MMU::TIMER.first + Timer::TAC_REGISTER_OFFSET;
         // Enables timer and sets it to the fastest speed
-        MMU::WriteByte(tacRegisterAddr, 0x04 & 0x00);
+        MMU::WriteByte(tacRegisterAddr, 0x04 | 0x00);
 
         // Which value to reset the timer to
         constexpr uint16_t timerModuleAddr = MMU::TIMER.first + Timer::TMA_REGISTER_OFFSET;
