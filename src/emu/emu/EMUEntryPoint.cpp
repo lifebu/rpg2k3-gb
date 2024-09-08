@@ -29,20 +29,18 @@ void EMUEntryPoint::RPGMain()
         emuState.isInitialized = true;
 
         // TODO: Timer Testcode:
-        constexpr uint16_t tacRegisterAddr = MMU::TIMER.first + Timer::TAC_REGISTER_OFFSET;
-        // Enables timer and sets it to the fastest speed
-        MMU::WriteByte(tacRegisterAddr, 0x04 | 0x00);
+        // Enables timer and set it's speed
+        MMU::WriteByte(MMU::TIMER.first + Timer::TAC_REGISTER_OFFSET, 
+            0b100 | 0b11);
 
         // Which value to reset the timer to
-        constexpr uint16_t timerModuleAddr = MMU::TIMER.first + Timer::TMA_REGISTER_OFFSET;
-        MMU::WriteByte(timerModuleAddr, 0x00);
+        MMU::WriteByte(MMU::TIMER.first + Timer::TMA_REGISTER_OFFSET, 
+            0x00);
     }
 
     // To make the test repeatable.
     //Joypad::Init();
     //MMU::WriteByte(MMU::JOYPAD.first, ~(1 << Joypad::JOYPAD_SELECT_DPAD));
-
-
 
     Joypad::Update();
 
@@ -112,8 +110,13 @@ void EMUEntryPoint::TestPrintMMU()
     }
 
     // Can override the visible values to check some systems
-    //uint8_t valueOverride = MMU::ReadByte(MMU::JOYPAD.first);
-    PrintAddressSpace(yOffset/*, valueOverride*/);
+    std::optional<uint8_t> valueOverride = 
+#if 0 
+    MMU::ReadByte(MMU::TIMER.first + Timer::TIMA_REGISTER_OFFSET);
+#else
+    std::nullopt;
+#endif
+    PrintAddressSpace(yOffset, valueOverride);
 }
 
 void EMUEntryPoint::TestMBC() 

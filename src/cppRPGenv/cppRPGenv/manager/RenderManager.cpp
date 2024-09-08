@@ -18,7 +18,7 @@ void RenderManager::Init()
         currentRes.width / 2 - RENDERER::WINDOW_WIDTH / 2, 
         currentRes.height / 2 - RENDERER::WINDOW_HEIGHT / 2));
     
-    m_Window.setFramerateLimit(60);
+    m_Window.setFramerateLimit(RENDERER::FPS);
     
     if(!m_Font.loadFromFile(std::string(FONT_PATH)))
     {

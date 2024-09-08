@@ -94,6 +94,7 @@ void GBFile::readHeader(GBHeader& header) {
 const static std::string ERR_TO_MUCH_RAM = "Only games that need a maximum of 32kByte of Cartridge RAM are supported: ";
 const static std::string ERR_NO_COLOR_SUPPORT = "Games that can run on both the Gameboy and Gameboy Color are not supported: ";
 const static std::string ERR_NO_COLOR_EXCLUSIVE = "Games that exclusively run on the Gameboy Color are not supported: ";
+const static std::string INFO_FILE = "Using GB ROM: ";
 
 // publlic
 GBFileGenerator::GBFileGenerator() 
@@ -126,6 +127,7 @@ std::vector<GBFile> GBFileGenerator::genGBFiles(gb2rpg::CLIOptions& cli) {
         }
 
 
+        core::Logger::Get()->Log(INFO_FILE + path, core::LogLevel::INFO);
         gbFiles.emplace_back(std::move(file));
     }
     return gbFiles;
