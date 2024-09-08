@@ -2,13 +2,11 @@
 
 #include <utility>
 
-#include <core/structure/Singleton.h>
-
 namespace emu
 {
 
 // Responsible for updating the Timer and Divider.
-class Timer : public Singleton<Timer>
+class Timer 
 {
 public:
     // Register Offsets:
