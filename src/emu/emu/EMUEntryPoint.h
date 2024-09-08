@@ -3,6 +3,7 @@
 #include <core/emu_interface/RPGEntryPoint.h>
 
 #include "emu/def/EmuState.h"
+#include "emu/io/Timer.h"
 #include "emu/memory/MBC.h"
 
 namespace emu 
@@ -23,6 +24,8 @@ private:
     int yOffset = 0;
 
     EmuState emuState;
+
+    Timer timer;
     MBC mbc;
 };
 

@@ -25,7 +25,7 @@ target_include_directories(emu PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_precompile_headers(emu PRIVATE emu/pch.h)
 
 ### features
-target_compile_features(emu PUBLIC cxx_std_17)
+target_compile_features(emu PUBLIC cxx_std_20)
 #target_set_warnings(emu OFF)
 
 

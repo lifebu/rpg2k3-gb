@@ -53,3 +53,6 @@ temp/*.out
 
 ## ImGUI
 imgui.ini
+
+## clang
+.cache

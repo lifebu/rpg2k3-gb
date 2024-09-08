@@ -23,15 +23,26 @@ void EMUEntryPoint::RPGMain()
         mbc.Init();
         emuState.bootRomEnabled = true; // The first 256 Bytes read from the Boot Rom, not the 1st ROM bank.
         Joypad::Init();
-        Timer::Init();
+        timer.Init();
         // TODO: Set PPU to mode 2.
 
         emuState.isInitialized = true;
+
+        // TODO: Timer Testcode:
+        constexpr uint16_t tacRegisterAddr = MMU::TIMER.first + Timer::TAC_REGISTER_OFFSET;
+        // Enables timer and sets it to the fastest speed
+        MMU::WriteByte(tacRegisterAddr, 0x04 & 0x00);
+
+        // Which value to reset the timer to
+        constexpr uint16_t timerModuleAddr = MMU::TIMER.first + Timer::TMA_REGISTER_OFFSET;
+        MMU::WriteByte(timerModuleAddr, 0x00);
     }
 
     // To make the test repeatable.
     //Joypad::Init();
-    //MMU::WriteByte(MMU::JOYPAD.first, ~(1 << Joypad::JOYPAD_SELECT_DPAD)); 
+    //MMU::WriteByte(MMU::JOYPAD.first, ~(1 << Joypad::JOYPAD_SELECT_DPAD));
+
+
 
     Joypad::Update();
 
@@ -39,7 +50,7 @@ void EMUEntryPoint::RPGMain()
     {
         // Memory Update
         // Timer Updates
-        Timer::Update();
+        timer.CycleUpdate();
         // CPU Cycle
         // PPU Dot
     }
@@ -82,7 +93,7 @@ void EMUEntryPoint::TestPrintMMU()
         uint8_t headerRomSize = MMU::ReadByte(romSizeByteOffset);
         const int romSizeKByte = ConvertROMSizetoKByte(headerRomSize);
         const int numBanks = (romSizeKByte / 16); // Each Bank has 16kByte
-        emuState.highRomBankIndex = newBankIndex % (numBanks - 1);
+        emuState.highRomBankIndex = (numBanks == 0) ? 0 : newBankIndex % numBanks;
     }
 
     // Change RAM Mapping
@@ -97,7 +108,7 @@ void EMUEntryPoint::TestPrintMMU()
         uint8_t headerRamSize = MMU::ReadByte(ramSizeByteOffset);
         const int ramSizeKByte = ConvertRAMSizetoKByte(headerRamSize);
         const int numBanks = (ramSizeKByte / 8); // Each Bank has 8kByte
-        emuState.ramBankIndex = newBankIndex % (numBanks - 1);
+        emuState.ramBankIndex = (numBanks == 0) ? 0 : newBankIndex % numBanks;
     }
 
     // Can override the visible values to check some systems

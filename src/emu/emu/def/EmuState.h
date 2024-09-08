@@ -45,6 +45,9 @@ public:
 
     /////////////////////////////////////////////////////////// 
     // CPU Registers
+    // The stop instruction can enable this.
+    // TODO: This also needs to reset the Timer Divider.
+    bool isStopped = false;
 
     /////////////////////////////////////////////////////////// 
     // Emulator

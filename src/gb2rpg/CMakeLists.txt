@@ -32,7 +32,7 @@ target_precompile_headers(gb2rpg PRIVATE gb2rpg/pch.h)
 
 
 ### features
-target_compile_features(gb2rpg PUBLIC cxx_std_17)
+target_compile_features(gb2rpg PUBLIC cxx_std_20)
 #target_set_warnings(gb2rpg ON)
 
 
