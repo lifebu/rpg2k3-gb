@@ -24,6 +24,7 @@ void EMUEntryPoint::RPGMain()
         emuState.bootRomEnabled = true; // The first 256 Bytes read from the Boot Rom, not the 1st ROM bank.
         Joypad::Init();
         timer.Init();
+        interrupHandler.Init();
         // TODO: Set PPU to mode 2.
 
         emuState.isInitialized = true;
@@ -36,6 +37,9 @@ void EMUEntryPoint::RPGMain()
         // Which value to reset the timer to
         MMU::WriteByte(MMU::TIMER.first + Timer::TMA_REGISTER_OFFSET, 
             0x00);
+
+        // TODO: Interrupt Handler testcode.
+        interrupHandler.EnableInterrupts();
     }
 
     // To make the test repeatable.
@@ -50,6 +54,7 @@ void EMUEntryPoint::RPGMain()
         // Timer Updates
         timer.CycleUpdate();
         // CPU Cycle
+        interrupHandler.CycleUpdate();
         // PPU Dot
     }
     

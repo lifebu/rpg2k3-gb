@@ -2,6 +2,7 @@
 
 #include <core/emu_interface/RPGEntryPoint.h>
 
+#include "emu/cpu/InterruptHandler.h"
 #include "emu/def/EmuState.h"
 #include "emu/io/Timer.h"
 #include "emu/memory/MBC.h"
@@ -25,6 +26,7 @@ private:
 
     EmuState emuState;
 
+    InterruptHandler interrupHandler;
     Timer timer;
     MBC mbc;
 };

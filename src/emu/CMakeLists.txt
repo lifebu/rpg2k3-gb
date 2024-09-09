@@ -4,6 +4,7 @@ project(emu VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Gameboy emulator written to
 ### files
 set(emu_header 
     emu/EMUEntryPoint.h
+    emu/cpu/InterruptHandler.h
     emu/def/EmuState.h
     emu/io/Joypad.h
     emu/io/Timer.h
@@ -13,6 +14,7 @@ set(emu_header
 
 set(emu_source 
     emu/EMUEntryPoint.cpp
+    emu/cpu/InterruptHandler.cpp
     emu/io/Joypad.cpp
     emu/io/Timer.cpp
     emu/memory/MMU.cpp
